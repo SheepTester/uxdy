@@ -5,14 +5,17 @@ What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦
 ## Development
 
 ```sh
-$ npm install --global coffeescript pug-cli sass
+$ npm install --global coffeescript pug-cli sass http-server
 
 # idk
-$ chmod +x build.sh deploy.sh
+$ chmod +x scripts/build.sh scripts/watch.sh scripts/deploy.sh
 
 # Build
-$ ./build.sh
+$ ./scripts/build.sh
+
+# Update files (run build.sh at least once first)
+$ ./scripts/watch.sh
 
 # Deploy
-$ ./deploy.sh
+$ ./scripts/deploy.sh
 ```

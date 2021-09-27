@@ -1,2 +1,3 @@
-console.log "hi"
-console.log 'ok'
+$ document
+.ready ->
+  console.log 'fff!'
