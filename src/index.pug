@@ -5,15 +5,22 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
 
     title uxdy
-    meta(name="description" content="schedule notifier for my classes at ucsd")
+    meta(name="description" content="schedule notifer for my classes at ucsd")
 
     //- link(rel="stylesheet" type="text/css" href="/sheep3.css")
     //- script(src="/sheep3.js" charset="utf-8")
 
     link(rel="stylesheet" href="./styles.css")
   body
-    h2#day
+    h2
+      button.button#prev-day <
+      span#day
+      button.button#next-day >
     ul#periods
+
+    h2 About
+    p.
+      thsi is open source on #[a.link(href="https://github.com/SheepTester/uxdy") Github]
 
     script(src="./jquery-3.6.0.slim.min.js")
     script(src="./index.js")

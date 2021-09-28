@@ -37,9 +37,27 @@ schedule.sort (a, b) -> a.start - b.start
 
 console.log schedule
 
+dayNames = ['sunday', 'nonday', 'tuesday', 'wensday', 'thursday', 'fridee', 'saturday']
+showDay = (dayNum) ->
+  $ '#day'
+  .text dayNames[dayNum]
+
+  $ '#periods'
+  .empty()
+  .append (($ '<li>').text name for {name, day} in schedule when day == dayNum)
+
+currentDay = (new Date).getDay()
+
 $ document
 .ready ->
-  $ '#day'
-  .text 'monday'
-  $ '#periods'
-  .append ($ '<li>').text name for {name, day} in schedule when day == 1
+  showDay currentDay
+
+  $ '#prev-day'
+  .click ->
+    currentDay = (currentDay - 1) %% 7
+    showDay currentDay
+
+  $ '#next-day'
+  .click ->
+    currentDay = (currentDay + 1) %% 7
+    showDay currentDay
