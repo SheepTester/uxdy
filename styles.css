@@ -4,11 +4,15 @@ body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 20px;
+  box-sizing: border-box;
   font-family: "Comic Sans MS", "Comic Sans", cursive;
   color: red;
   background-image: linear-gradient(180deg, #78b7d6, #394a68);
+  word-break: break-word;
 }
 
 button,
@@ -28,10 +32,81 @@ button:not(:disabled) {
 a {
   color: inherit;
   text-decoration: none;
+  color: cyan;
 }
 
 .link:hover {
   text-decoration: underline;
+}
+
+button {
+  color: orange;
+}
+
+#days {
+  flex: auto;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: [day-names] auto [meetings] 1fr;
+}
+
+.day {
+  flex: 1 0 0;
+}
+
+.day-name {
+  text-align: center;
+  grid-row: day-names;
+}
+
+.meetings {
+  grid-row: meetings;
+  position: relative;
+}
+.meetings:first-of-type {
+  grid-column: 1;
+}
+
+.meeting {
+  position: absolute;
+  border: 1px solid yellow;
+  color: yellow;
+  text-shadow: 2px 5px 10px magenta;
+  border-left-width: 5px;
+  box-sizing: border-box;
+}
+.meeting.lecture {
+  border-left-style: solid;
+}
+.meeting.discussion {
+  border-left-style: dotted;
+}
+.meeting p {
+  margin: 0;
+}
+
+.name {
+  word-break: break-all;
+  line-height: 0.8;
+}
+
+.time {
+  font-size: small;
+}
+
+.axis {
+  grid-row: meetings;
+  grid-column: 1;
+  position: relative;
+}
+
+.axis-marker {
+  position: absolute;
+  color: lightgrey;
+  border-top: 1px solid lightgrey;
+  width: calc(100vw - 40px);
+  z-index: -1;
 }
 
 .hidden {
