@@ -3,6 +3,8 @@ body
   height: 100%
 
 body
+  display: flex
+  flex-direction: column
   margin: 0
   padding: 20px
   box-sizing: border-box
@@ -33,16 +35,12 @@ a
 
 button
   color: orange
-#days,
-.meetings
-  list-style: none
-  margin: 0
-  padding: 0
 #days
+  flex: auto
   display: grid
   gap: 10px
   grid-template-columns: repeat(7, 1fr)
-  grid-template-rows: [day-names] auto [meetings] auto
+  grid-template-rows: [day-names] auto [meetings] 1fr
 .day
   flex: 1 0 0
 .day-name
@@ -52,15 +50,15 @@ button
   grid-row: meetings
   position: relative
 
-$scale: 1px
+  &:first-of-type
+    grid-column: 1
+
 .meeting
   position: absolute
   border: 1px solid yellow
   color: yellow
   text-shadow: 2px 5px 10px magenta
-  top: calc($scale * var(--start))
-  height: calc($scale * var(--duration))
-  border-left: 5px var(--colour)
+  border-left-width: 5px
   box-sizing: border-box
 
   &.lecture
@@ -74,6 +72,17 @@ $scale: 1px
   line-height: 0.8
 .time
   font-size: small
+
+.axis
+  grid-row: meetings
+  grid-column: 1
+  position: relative
+.axis-marker
+  position: absolute
+  color: lightgrey
+  border-top: 1px solid lightgrey
+  width: calc(100vw - 40px)
+  z-index: -1
 
 .hidden
   display: none

@@ -42,23 +42,26 @@ schedule.sort (a, b) -> a.start - b.start
 displayTime = (time) ->
   [time // 60, time % 60]
   .map (num) ->
-    num
-    .toString()
+    (do num.toString)
     .padStart 2, '0'
   .join ':'
 
 earliestTime = schedule.reduce (acc, curr) ->
   if acc.start < curr.start then acc else curr
 .start
+latestTime = schedule.reduce (acc, curr) ->
+  if acc.end > curr.end then acc else curr
+.end
+dayLength = latestTime - earliestTime
 colourPalette = ['red', 'orange', 'yellow', 'lime', 'cyan', 'blue', 'purple', 'magenta']
 colours = new Map
 renderMeeting = ({id, type, name, start, end}) ->
   colour = colours.get id
   if not colour?
-    colours.set id, colour = colourPalette.pop()
-  $ '<li>'
+    colours.set id, colour = do colourPalette.pop
+  $ '<div>'
   .addClass ['meeting', type]
-  .append(
+  .append (
     $ '<p>'
     .addClass 'name'
     .text name
@@ -68,9 +71,9 @@ renderMeeting = ({id, type, name, start, end}) ->
     .addClass 'time'
     .text "#{displayTime start}–#{displayTime end}"
   )
-  .css '--start', start - earliestTime
-  .css '--duration', end - start
-  .css '--colour', colour
+  .css 'top', "#{(start - earliestTime) / dayLength * 100}%"
+  .css 'bottom', "#{100 - (end - earliestTime) / dayLength * 100}%"
+  .css 'border-left-color', colour
 
 dayNames = ['sunday', 'nonday', 'tuesday', 'wensday', 'thursday', 'fridee', 'saturday']
 renderDay = (day) -> [
@@ -78,12 +81,23 @@ renderDay = (day) -> [
   .addClass 'day-name'
   .text dayNames[day]
 
-  $ '<ul>'
+  $ '<div>'
   .addClass 'meetings'
   .append (renderMeeting meeting for meeting in schedule when meeting.day == day)
 ]
 
+renderAxisMarker = (hour) ->
+  $ '<div>'
+  .addClass 'axis-marker'
+  .text "#{(do hour.toString).padStart 2, '0'}:00"
+  .css 'top', "#{(hour * 60 - earliestTime) / dayLength * 100}%"
+
 $ document
 .ready ->
   $ '#days'
-  .append (renderDay day for day in [0...7]).flat()
+  .append do (renderDay day for day in [0...7]).flat
+  .append (
+    $ '<div>'
+    .addClass 'axis'
+    .append (renderAxisMarker hour for hour in [earliestTime // 60 .. latestTime // 60])
+  )
