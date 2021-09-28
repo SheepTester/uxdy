@@ -9,6 +9,7 @@ body
   font-family: 'Comic Sans MS', 'Comic Sans', cursive
   color: red
   background-image: linear-gradient(180deg, #78b7d6, #394a68)
+  word-break: break-word
 
 button,
 input,
@@ -32,9 +33,47 @@ a
 
 button
   color: orange
-#day
-  width: 8ch
-  display: inline-block
+#days,
+.meetings
+  list-style: none
+  margin: 0
+  padding: 0
+#days
+  display: grid
+  gap: 10px
+  grid-template-columns: repeat(7, 1fr)
+  grid-template-rows: [day-names] auto [meetings] auto
+.day
+  flex: 1 0 0
+.day-name
+  text-align: center
+  grid-row: day-names
+.meetings
+  grid-row: meetings
+  position: relative
+
+$scale: 1px
+.meeting
+  position: absolute
+  border: 1px solid yellow
+  color: yellow
+  text-shadow: 2px 5px 10px magenta
+  top: calc($scale * var(--start))
+  height: calc($scale * var(--duration))
+  border-left: 5px var(--colour)
+  box-sizing: border-box
+
+  &.lecture
+    border-left-style: solid
+  &.discussion
+    border-left-style: dotted
+  p
+    margin: 0
+.name
+  word-break: break-all
+  line-height: 0.8
+.time
+  font-size: small
 
 .hidden
   display: none

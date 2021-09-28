@@ -19,6 +19,8 @@ for course in rawSchedule.split /\r?\n/
     .map parseTime
   for day from lectDays
     schedule.push
+      id: courseName
+      type: 'lecture'
       name: "#{courseName} @ #{lectLoc} (lecture)"
       day: +day
       start: start
@@ -29,35 +31,59 @@ for course in rawSchedule.split /\r?\n/
       .map parseTime
     for day from discDays
       schedule.push
+        id: courseName
+        type: 'discussion'
         name: "#{courseName} @ #{discLoc} (discussion)"
         day: +day
         start: start
         end: end
 schedule.sort (a, b) -> a.start - b.start
 
-console.log schedule
+displayTime = (time) ->
+  [time // 60, time % 60]
+  .map (num) ->
+    num
+    .toString()
+    .padStart 2, '0'
+  .join ':'
+
+earliestTime = schedule.reduce (acc, curr) ->
+  if acc.start < curr.start then acc else curr
+.start
+colourPalette = ['red', 'orange', 'yellow', 'lime', 'cyan', 'blue', 'purple', 'magenta']
+colours = new Map
+renderMeeting = ({id, type, name, start, end}) ->
+  colour = colours.get id
+  if not colour?
+    colours.set id, colour = colourPalette.pop()
+  $ '<li>'
+  .addClass ['meeting', type]
+  .append(
+    $ '<p>'
+    .addClass 'name'
+    .text name
+  )
+  .append (
+    $ '<p>'
+    .addClass 'time'
+    .text "#{displayTime start}–#{displayTime end}"
+  )
+  .css '--start', start - earliestTime
+  .css '--duration', end - start
+  .css '--colour', colour
 
 dayNames = ['sunday', 'nonday', 'tuesday', 'wensday', 'thursday', 'fridee', 'saturday']
-showDay = (dayNum) ->
-  $ '#day'
-  .text dayNames[dayNum]
+renderDay = (day) -> [
+  $ '<h2>'
+  .addClass 'day-name'
+  .text dayNames[day]
 
-  $ '#periods'
-  .empty()
-  .append (($ '<li>').text name for {name, day} in schedule when day == dayNum)
-
-currentDay = (new Date).getDay()
+  $ '<ul>'
+  .addClass 'meetings'
+  .append (renderMeeting meeting for meeting in schedule when meeting.day == day)
+]
 
 $ document
 .ready ->
-  showDay currentDay
-
-  $ '#prev-day'
-  .click ->
-    currentDay = (currentDay - 1) %% 7
-    showDay currentDay
-
-  $ '#next-day'
-  .click ->
-    currentDay = (currentDay + 1) %% 7
-    showDay currentDay
+  $ '#days'
+  .append (renderDay day for day in [0...7]).flat()
