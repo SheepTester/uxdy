@@ -4,8 +4,8 @@ REMOTE=$(git remote get-url origin)
 # https://stackoverflow.com/a/949391
 LAST_COMMIT=$(git rev-parse HEAD)
 
-# cd to dist/
-mkdir -p dist
+# Build and cd to dist/
+sh build.sh
 cd dist
 
 # Create a repo with the same remote in dist/ with branch gh-pages

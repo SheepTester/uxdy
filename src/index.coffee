@@ -53,6 +53,9 @@ latestTime = schedule.reduce (acc, curr) ->
   if acc.end > curr.end then acc else curr
 .end
 dayLength = latestTime - earliestTime
+timeToPosition = (time) ->
+  "#{(time - earliestTime) / dayLength * 100}%"
+
 colourPalette = ['red', 'orange', 'yellow', 'lime', 'cyan', 'blue', 'purple', 'magenta']
 colours = new Map
 renderMeeting = ({id, type, name, start, end}) ->
@@ -71,17 +74,18 @@ renderMeeting = ({id, type, name, start, end}) ->
     .addClass 'time'
     .text "#{displayTime start}–#{displayTime end}"
   )
-  .css 'top', "#{(start - earliestTime) / dayLength * 100}%"
-  .css 'bottom', "#{100 - (end - earliestTime) / dayLength * 100}%"
+  .css 'top', timeToPosition start
+  .css 'bottom', "#{(dayLength - (end - earliestTime)) / dayLength * 100}%"
   .css 'border-left-color', colour
 
+meetingses = []
 dayNames = ['sunday', 'nonday', 'tuesday', 'wensday', 'thursday', 'fridee', 'saturday']
 renderDay = (day) -> [
   $ '<h2>'
   .addClass 'day-name'
   .text dayNames[day]
 
-  $ '<div>'
+  meetingses[day] = $ '<div>'
   .addClass 'meetings'
   .append (renderMeeting meeting for meeting in schedule when meeting.day == day)
 ]
@@ -90,7 +94,44 @@ renderAxisMarker = (hour) ->
   $ '<div>'
   .addClass 'axis-marker'
   .text "#{(do hour.toString).padStart 2, '0'}:00"
-  .css 'top', "#{(hour * 60 - earliestTime) / dayLength * 100}%"
+  .css 'top', timeToPosition hour * 60
+
+# From https://github.com/Orbiit/gunn-web-app/blob/master/js/utils.js#L85-L152
+currentTime = do ->
+  timeZoneFormatter = new Intl.DateTimeFormat 'en-US',
+    timeZone: 'America/Los_Angeles'
+    hour12: off
+    weekday: 'short'
+    era: 'short'
+    year: 'numeric'
+    month: 'numeric'
+    day: 'numeric'
+    hour: 'numeric'
+    minute: 'numeric'
+    second: 'numeric'
+  ->
+    datetime = timeZoneFormatter.format now = new Date
+    [weekday, date, fullYear, time] = datetime.split /,\s+/
+    [month, day] = date.split ' '
+    [year, era] = fullYear.split ' '
+    [hour, minute, second] = time.split ':'
+    hour = if hour is '24' then 0 else +hour
+    {
+      date:
+        year: if era is 'BC' then -year + 1 else +year
+        month: +month - 1
+        day: +day
+      weekday: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf weekday
+      minutes: hour * 60 + +minute + (+second + do now.getMilliseconds / 1000) / 60
+    }
+
+currentTimeMarker = $ '<div>'
+  .addClass 'current-time'
+renderCurrentTime = ->
+  { weekday, minutes } = do currentTime
+  if (meetingses[weekday].has currentTimeMarker).length is 0
+    meetingses[weekday].append currentTimeMarker
+  currentTimeMarker.css 'top', timeToPosition minutes
 
 $ document
 .ready ->
@@ -101,3 +142,7 @@ $ document
     .addClass 'axis'
     .append (renderAxisMarker hour for hour in [earliestTime // 60 .. latestTime // 60])
   )
+
+  do paint = ->
+    do renderCurrentTime
+    window.requestAnimationFrame paint
