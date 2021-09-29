@@ -5,7 +5,7 @@ REMOTE=$(git remote get-url origin)
 LAST_COMMIT=$(git rev-parse HEAD)
 
 # Build and cd to dist/
-sh build.sh
+./scripts/build.sh
 cd dist
 
 # Create a repo with the same remote in dist/ with branch gh-pages

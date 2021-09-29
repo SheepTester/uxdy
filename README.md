@@ -7,17 +7,19 @@ What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦
 ```sh
 $ npm install --global coffeescript pug-cli sass http-server
 
-# idk
-$ chmod +x scripts/build.sh scripts/watch.sh scripts/deploy.sh
-
-# Build
+# Build to dist/
 $ ./scripts/build.sh
 
-# Update files (run build.sh at least once first)
-$ ./scripts/watch.sh
-
-# Deploy
+# Deploy to GitHub Pages
 $ ./scripts/deploy.sh
+```
+
+This will auto-build the files in `src/` whenever you edit them, but you need to
+run `./scripts/build.sh` at least once to copy over the `static/` files. This
+will also make the web app available locally at http://localhost:8080/dist/.
+
+```sh
+$ ./scripts/watch.sh
 ```
 
 ## Features that I want

@@ -37,7 +37,7 @@ for course in rawSchedule.split /\r?\n/
         day: +day
         start: start
         end: end
-schedule.sort (a, b) -> a.start - b.start
+schedule.sort (a, b) -> a.day - b.day or a.start - b.start
 
 displayTime = (time) ->
   [time // 60, time % 60]
@@ -132,6 +132,9 @@ renderCurrentTime = ->
   if (meetingses[weekday].has currentTimeMarker).length is 0
     meetingses[weekday].append currentTimeMarker
   currentTimeMarker.css 'top', timeToPosition minutes
+
+getTimeUntil = ->
+  0
 
 $ document
 .ready ->
