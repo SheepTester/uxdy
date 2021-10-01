@@ -21,7 +21,7 @@ for course in rawSchedule.split /\r?\n/
     schedule.push
       id: courseName
       type: 'lecture'
-      name: "#{courseName} @ #{lectLoc} (lecture)"
+      name: "#{courseName} #{sectionCode[0]}00 @ #{lectLoc} (LE)"
       day: +day
       start: start
       end: end
@@ -33,7 +33,7 @@ for course in rawSchedule.split /\r?\n/
       schedule.push
         id: courseName
         type: 'discussion'
-        name: "#{courseName} @ #{discLoc} (discussion)"
+        name: "#{courseName} #{sectionCode} @ #{discLoc} (DI)"
         day: +day
         start: start
         end: end
@@ -134,8 +134,10 @@ renderCurrentTime = ->
   currentTimeMarker.css 'top', timeToPosition minutes
 
 getTimeUntil = ->
-  0
-
+  { weekday, minutes } = do currentTime
+  nextMeetingIndex = schedule.findIndex ({ day, start }) ->
+    day > weekday or day is weekday and start > minutes
+console.log do getTimeUntil
 $ document
 .ready ->
   $ '#days'
