@@ -1,5 +1,7 @@
 # Installing Ruby: https://stackoverflow.com/a/37956249
 
+# https://act.ucsd.edu/webreg2/js/webreg/webreg-main.js (I just removed -min) from the URL
+
 require "open-uri"
 require "json"
 
@@ -11,7 +13,7 @@ class AuthorizedGetter
   end
 
   def get(path, query = {})
-    file_name = if query[:subjcode].length > 0
+    file_name = if query[:subjcode] && query[:subjcode].length > 0
         "#{path}_#{query[:subjcode].strip}_#{query[:crsecode].strip}"
       else
         path
@@ -87,12 +89,27 @@ class GroupTime
   end
 end
 
+def yn_to_bool(yn, empty_allowed = nil)
+  case yn
+  when "Y" then true
+  when "N" then false
+  when " "
+    if empty_allowed == nil
+      raise "Given a space, which is not allowed"
+    else
+      empty_allowed
+    end
+  else
+    raise "#{yn} is not Y or N"
+  end
+end
+
 class Group
   attr_reader :start, :end, :days, :start_date, :end_date, :capacity, :enrolled,
               :available, :waitlist, :can_enroll, :code, :group_type,
               :before_description, :description, :building, :room, :instructor,
               :instructor_pid, :section_id, :is_primary_instructor,
-              :spam_special_meeting_cd, :sst_section_statistic_cd
+              :sst_section_statistic_cd, :print_flag, :instruction_type
 
   @@keys = [
     :END_MM_TIME, :SCTN_CPCTY_QTY, :LONG_DESC, :SCTN_ENRLT_QTY, :BEGIN_HH_TIME,
@@ -102,9 +119,23 @@ class Group
     :FK_SPM_SPCL_MTG_CD, :PRINT_FLAG, :BLDG_CODE, :FK_SST_SCTN_STATCD,
     :FK_CDI_INSTR_TYPE, :SECT_CODE, :AVAIL_SEAT,
   ]
+
   @@day_names = [
     "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
   ]
+
+  # https://registrar.ucsd.edu/StudentLink/instr_codes.html
+  @@group_types = {
+    "  " => :default, "FI" => :final_exam, "TBA" => :to_be_announced,
+    "MI" => :midterm, "MU" => :make_up_session, "RE" => :review_session,
+    "PB" => :problem_session, "OT" => :other_additional_meeting,
+  }
+  @@instruction_types = {
+    "DI" => :discussion, "LE" => :lecture, "SE" => :seminar, "PR" => :practicum,
+    "IN" => :independent_study, "IT" => :internship, "FW" => :fieldwork,
+    "LA" => :lab, "CL" => :clinical_clerkship, "TU" => :tutorial,
+    "CO" => :conference, "ST" => :studio, "OP" => :idk,
+  }
 
   def initialize(raw_group)
     if raw_group.keys != @@keys
@@ -122,31 +153,38 @@ class Group
     @end_date = raw_group[:SECTION_END_DATE]
 
     # TODO: Should these add up? iirc no.
+    # 9999 = no limit
     @capacity = raw_group[:SCTN_CPCTY_QTY]
     @enrolled = raw_group[:SCTN_ENRLT_QTY]
+    # Should be set to 0 if negative or if @can_enroll is false
     @available = raw_group[:AVAIL_SEAT]
     @waitlist = raw_group[:COUNT_ON_WAITLIST]
-    @can_enroll = raw_group[:STP_ENRLT_FLAG] == "Y"
+    @can_enroll = !yn_to_bool(raw_group[:STP_ENRLT_FLAG])
 
     @code = raw_group[:SECT_CODE]
-    # {""=>5060, "FI"=>1308, "TBA"=>5157, "MI"=>127, "MU"=>8, "RE"=>11, "PB"=>227, "OT"=>33}
-    @group_type = raw_group[:FK_SPM_SPCL_MTG_CD].strip
+    # FM|PB|RE|OT|MU|FI|MI are finals
+    @group_type = @@group_types[raw_group[:FK_SPM_SPCL_MTG_CD]] || raise("#{raw_group[:FK_SPM_SPCL_MTG_CD]} is not a group type")
+    # "Meeting type"
+    @instruction_type = @@instruction_types[raw_group[:FK_CDI_INSTR_TYPE]] || raise("#{raw_group[:FK_CDI_INSTR_TYPE]} is not an instruction type")
     # {""=>11649, "AC"=>260, "NC"=>22}
     @before_description = raw_group[:BEFORE_DESC].strip
     # A few courses have nonempty descriptions but they are mostly useless
     @description = raw_group[:LONG_DESC].strip
     @building = raw_group[:BLDG_CODE].strip
     @room = raw_group[:ROOM_CODE].strip
+    # Instructors, split by colons. Each instructor is a name, semicolon, then
+    # their PID. An empty string means "Staff."
     @instructor, @instructor_pid = raw_group[:PERSON_FULL_NAME].split(";").map { |part| part.strip }
 
     # ??
     @section_id = raw_group[:SECTION_NUMBER]
-    # {true=>11313, false=>618}
-    @is_primary_instructor = raw_group[:PRIMARY_INSTR_FLAG] == "Y"
-    # {""=>5060, "FI"=>1308, "TBA"=>5157, "MI"=>127, "MU"=>8, "RE"=>11, "PB"=>227, "OT"=>33}
-    @spam_special_meeting_cd = raw_group[:FK_SPM_SPCL_MTG_CD].strip
+    # {true=>11313, false=>618} (either " " or "Y")
+    @is_primary_instructor = yn_to_bool(raw_group[:PRIMARY_INSTR_FLAG], false)
     # {"AC"=>9933, "NC"=>1716, "CA"=>282}
+    # CA = cancelled
+    # AC = graded? "only for graded section (== AC section)"
     @sst_section_statistic_cd = raw_group[:FK_SST_SCTN_STATCD]
+    @print_flag = raw_group[:PRINT_FLAG]
   end
 
   def to_s
@@ -158,46 +196,33 @@ class Group
   end
 end
 
-def get_frequencies(courses, key)
-  frequencies = {}
+def loop_courses(courses)
   for course in courses
     for group in course.groups
-      value = group.send key
-      if not frequencies.has_key? value
-        frequencies[value] = 0
-      end
-      frequencies[value] += 1
+      yield group
     end
+  end
+end
+
+def get_frequencies(courses, get_property)
+  frequencies = {}
+  # when Symbol: https://stackoverflow.com/a/4422053
+  case get_property
+  when Symbol
+    key = get_property
+    get_property = Proc.new { |group| group.send key }
+  end
+  loop_courses courses do |group|
+    value = get_property.call group
+    if not frequencies.has_key? value
+      frequencies[value] = 0
+    end
+    frequencies[value] += 1
   end
   frequencies
 end
 
-def get_courses(getter)
-  # .read: https://stackoverflow.com/a/5786863
-  # JSON.parse, symbolize_names: true: https://stackoverflow.com/questions/5410682/parsing-a-json-string-in-ruby#comment34766758_5410713
-  raw_courses = getter.get("search-by-all", {
-    :subjcode => "", :crsecode => "", :department => "", :professor => "",
-    :title => "", :levels => "", :days => "", :timestr => "",
-    :opensection => "false", :isbasic => "true", :basicsearchvalue => "",
-    :termcode => "FA21",
-  })
-
-  ## Just making sure the structure is proper
-  # .each: https://code-maven.com/for-loop-in-ruby
-  courses = raw_courses.map do |raw_course|
-    raw_groups = getter.get("search-load-group-data", {
-      :subjcode => raw_course[:SUBJ_CODE], :crsecode => raw_course[:CRSE_CODE],
-      :termcode => "FA21",
-    })
-    Course.new(raw_course, raw_groups)
-  end
-
-  puts courses.length
-  # puts courses[1000]
-
-  puts get_frequencies courses, :group_type
-  puts get_frequencies courses, :before_description
-
+def get_joinable_groups(courses)
   for course in courses
     if course.course.scan(/\d+/)[0].to_i >= 100
       next
@@ -214,6 +239,53 @@ def get_courses(getter)
       puts joinable_groups.join "\n"
     end
   end
+end
+
+def get_courses(getter)
+  term = "FA21"
+
+  subjects = getter.get("search-load-subject", { :termcode => term })
+  departments = getter.get("search-load-department", { :termcode => term })
+
+  # .read: https://stackoverflow.com/a/5786863
+  # JSON.parse, symbolize_names: true: https://stackoverflow.com/questions/5410682/parsing-a-json-string-in-ruby#comment34766758_5410713
+  raw_courses = getter.get("search-by-all", {
+    :subjcode => "", :crsecode => "", :department => "", :professor => "",
+    :title => "", :levels => "", :days => "", :timestr => "",
+    :opensection => "false", :isbasic => "true", :basicsearchvalue => "",
+    :termcode => term,
+  })
+
+  ## Just making sure the structure is proper
+  # .each: https://code-maven.com/for-loop-in-ruby
+  courses = raw_courses.map do |raw_course|
+    raw_groups = getter.get("search-load-group-data", {
+      :subjcode => raw_course[:SUBJ_CODE], :crsecode => raw_course[:CRSE_CODE],
+      :termcode => term,
+    })
+    Course.new(raw_course, raw_groups)
+  end
+
+  section_ids = courses.flat_map { |course| course.groups.map { |group| group.section_id } }
+  puts getter.get("search-get-section-text", {
+    :sectnumlist => section_ids[0, 100].join(":"),
+    :termcode => term,
+  })
+
+  puts courses.length
+  # puts courses[1000]
+
+  puts get_frequencies courses, :instruction_type
+  puts get_frequencies courses, Proc.new { |group| if group.group_type != :default then nil else group.instruction_type end }
+  puts get_frequencies courses, Proc.new { |group| if group.group_type == :default then nil else group.instruction_type end }
+  # loop_courses courses do |group|
+  #   if group.code[0] == "2"
+  #     puts group
+  #     break
+  #   end
+  # end
+
+  # get_joinable_groups courses
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
