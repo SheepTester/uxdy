@@ -30,7 +30,115 @@ class AuthorizedGetter
     # File.write: https://stackoverflow.com/a/19337403
     File.write("./webreg-data/#{file_name}.json", JSON.pretty_generate(json))
     puts "Fetched #{file_name}"
-    return json
+    json
+  end
+end
+
+class CourseUnit
+  def initialize(from, inc, to)
+    @from = from
+    @inc = inc
+    @to = to
+  end
+
+  def to_s
+    "#{@from} to #{@to} by #{@inc}"
+  end
+end
+
+class Course
+  @@keys = [
+    :UNIT_TO, :SUBJ_CODE, :UNIT_INC, :CRSE_TITLE, :UNIT_FROM, :CRSE_CODE,
+  ]
+
+  def initialize(raw_course, raw_groups)
+    if raw_course.keys != @@keys
+      puts raw_course
+      raise "Course keys do not match my expectations."
+    end
+
+    @subject = raw_course[:SUBJ_CODE].strip
+    @course = raw_course[:CRSE_CODE].strip
+    @title = raw_course[:CRSE_TITLE].strip
+    @unit = CourseUnit.new(raw_course[:UNIT_FROM], raw_course[:UNIT_INC], raw_course[:UNIT_TO])
+
+    @groups = raw_groups.map { |raw_group| Group.new raw_group }
+  end
+
+  def to_s
+    "#{@subject} #{@course}: #{@title} (#{@unit} units)" + @groups.map { |group| "\n\n#{group}" }.join
+  end
+end
+
+class GroupTime
+  def initialize(hours, minutes)
+    @hours = hours
+    @minutes = minutes
+  end
+
+  def to_s
+    "%02d:%02d" % [@hours, @minutes]
+  end
+end
+
+class Group
+  @@keys = [
+    :END_MM_TIME, :SCTN_CPCTY_QTY, :LONG_DESC, :SCTN_ENRLT_QTY, :BEGIN_HH_TIME,
+    :SECTION_NUMBER, :SECTION_START_DATE, :STP_ENRLT_FLAG, :SECTION_END_DATE,
+    :COUNT_ON_WAITLIST, :PRIMARY_INSTR_FLAG, :BEFORE_DESC, :ROOM_CODE,
+    :END_HH_TIME, :START_DATE, :DAY_CODE, :BEGIN_MM_TIME, :PERSON_FULL_NAME,
+    :FK_SPM_SPCL_MTG_CD, :PRINT_FLAG, :BLDG_CODE, :FK_SST_SCTN_STATCD,
+    :FK_CDI_INSTR_TYPE, :SECT_CODE, :AVAIL_SEAT,
+  ]
+  @@day_names = [
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+  ]
+
+  def initialize(raw_group)
+    if raw_group.keys != @@keys
+      puts raw_group
+      raise "Group keys do not meet expectations"
+    end
+
+    @start = GroupTime.new(raw_group[:BEGIN_HH_TIME], raw_group[:BEGIN_MM_TIME])
+    @end = GroupTime.new(raw_group[:END_HH_TIME], raw_group[:END_MM_TIME])
+    # .chars: https://stackoverflow.com/a/37109086
+    @days = raw_group[:DAY_CODE].chars.map { |day| day.to_i }
+
+    # TODO: Ensure these are the same for all groups
+    @start_date = raw_group[:SECTION_START_DATE]
+    @end_date = raw_group[:SECTION_END_DATE]
+
+    # TODO: Should these add up? iirc no.
+    @capacity = raw_group[:SCTN_CPCTY_QTY]
+    @enrolled = raw_group[:SCTN_ENRLT_QTY]
+    @available = raw_group[:AVAIL_SEAT]
+    @waitlist = raw_group[:COUNT_ON_WAITLIST]
+    @can_enroll = raw_group[:STP_ENRLT_FLAG] == "Y"
+
+    @code = raw_group[:SECT_CODE]
+    @group_type = raw_group[:FK_SPM_SPCL_MTG_CD].strip
+    # Seems to either be "AC," "NC," or empty
+    @before_description = raw_group[:BEFORE_DESC].strip
+    # A few courses have nonempty descriptions but they are mostly useless
+    @description = raw_group[:LONG_DESC].strip
+    @building = raw_group[:BLDG_CODE].strip
+    @room = raw_group[:ROOM_CODE].strip
+    @instructor, @instructor_pid = raw_group[:PERSON_FULL_NAME].split(";").map { |part| part.strip }
+
+    # ??
+    @section_id = raw_group[:SECTION_NUMBER]
+    @is_primary_instructor = raw_group[:PRIMARY_INSTR_FLAG] == "Y"
+    @spam_special_meeting_cd = raw_group[:FK_SPM_SPCL_MTG_CD].strip
+    @sst_section_statistic_cd = raw_group[:FK_SST_SCTN_STATCD]
+  end
+
+  def to_s
+    [
+      "#{@code} (#{@group_type}): #{@enrolled}/#{@capacity} enrolled (#{@available} available), #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
+      "#{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join} at #{@building} #{@room} by #{@instructor} (#{@instructor_pid})",
+      [@before_description, @description, @section_id, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
+    ].join "\n"
   end
 end
 
@@ -44,40 +152,18 @@ def get_courses(getter)
     :termcode => "FA21",
   })
 
-  course_keys = [
-    :UNIT_TO, :SUBJ_CODE, :UNIT_INC, :CRSE_TITLE, :UNIT_FROM, :CRSE_CODE,
-  ]
-  group_keys = [
-    :END_MM_TIME, :SCTN_CPCTY_QTY, :LONG_DESC, :SCTN_ENRLT_QTY, :BEGIN_HH_TIME,
-    :SECTION_NUMBER, :SECTION_START_DATE, :STP_ENRLT_FLAG, :SECTION_END_DATE,
-    :COUNT_ON_WAITLIST, :PRIMARY_INSTR_FLAG, :BEFORE_DESC, :ROOM_CODE,
-    :END_HH_TIME, :START_DATE, :DAY_CODE, :BEGIN_MM_TIME, :PERSON_FULL_NAME,
-    :FK_SPM_SPCL_MTG_CD, :PRINT_FLAG, :BLDG_CODE, :FK_SST_SCTN_STATCD,
-    :FK_CDI_INSTR_TYPE, :SECT_CODE, :AVAIL_SEAT,
-  ]
-
   ## Just making sure the structure is proper
   # .each: https://code-maven.com/for-loop-in-ruby
-  raw_courses.each do |course|
-    # .keys: https://stackoverflow.com/a/8657774
-    if course.keys != course_keys
-      puts course
-      # http://rubylearning.com/satishtalim/ruby_exceptions.html
-      raise "Course keys do not match my expectations."
-    end
-
-    course_data = getter.get("search-load-group-data", {
-      :subjcode => course[:SUBJ_CODE], :crsecode => course[:CRSE_CODE], :termcode => "FA21",
+  courses = raw_courses.map do |raw_course|
+    raw_groups = getter.get("search-load-group-data", {
+      :subjcode => raw_course[:SUBJ_CODE], :crsecode => raw_course[:CRSE_CODE],
+      :termcode => "FA21",
     })
-    course_data.each do |group|
-      if group.keys != group_keys
-        puts group
-        raise "Group keys do not meet expectations"
-      end
-    end
+    Course.new(raw_course, raw_groups)
   end
 
-  puts raw_courses.length
+  puts courses.length
+  puts courses[1000]
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
