@@ -35,6 +35,8 @@ class AuthorizedGetter
 end
 
 class CourseUnit
+  attr_reader :from, :inc, :to
+
   def initialize(from, inc, to)
     @from = from
     @inc = inc
@@ -47,6 +49,8 @@ class CourseUnit
 end
 
 class Course
+  attr_reader :subject, :course, :title, :unit, :groups
+
   @@keys = [
     :UNIT_TO, :SUBJ_CODE, :UNIT_INC, :CRSE_TITLE, :UNIT_FROM, :CRSE_CODE,
   ]
@@ -66,11 +70,13 @@ class Course
   end
 
   def to_s
-    "#{@subject} #{@course}: #{@title} (#{@unit} units)" + @groups.map { |group| "\n\n#{group}" }.join
+    "#{@subject} #{@course}: #{@title} (#{@unit} units)" # + @groups.map { |group| "\n\n#{group}" }.join
   end
 end
 
 class GroupTime
+  attr_reader :hours, :minutes
+
   def initialize(hours, minutes)
     @hours = hours
     @minutes = minutes
@@ -82,6 +88,12 @@ class GroupTime
 end
 
 class Group
+  attr_reader :start, :end, :days, :start_date, :end_date, :capacity, :enrolled,
+              :available, :waitlist, :can_enroll, :code, :group_type,
+              :before_description, :description, :building, :room, :instructor,
+              :instructor_pid, :section_id, :is_primary_instructor,
+              :spam_special_meeting_cd, :sst_section_statistic_cd
+
   @@keys = [
     :END_MM_TIME, :SCTN_CPCTY_QTY, :LONG_DESC, :SCTN_ENRLT_QTY, :BEGIN_HH_TIME,
     :SECTION_NUMBER, :SECTION_START_DATE, :STP_ENRLT_FLAG, :SECTION_END_DATE,
@@ -117,8 +129,9 @@ class Group
     @can_enroll = raw_group[:STP_ENRLT_FLAG] == "Y"
 
     @code = raw_group[:SECT_CODE]
+    # {""=>5060, "FI"=>1308, "TBA"=>5157, "MI"=>127, "MU"=>8, "RE"=>11, "PB"=>227, "OT"=>33}
     @group_type = raw_group[:FK_SPM_SPCL_MTG_CD].strip
-    # Seems to either be "AC," "NC," or empty
+    # {""=>11649, "AC"=>260, "NC"=>22}
     @before_description = raw_group[:BEFORE_DESC].strip
     # A few courses have nonempty descriptions but they are mostly useless
     @description = raw_group[:LONG_DESC].strip
@@ -128,18 +141,35 @@ class Group
 
     # ??
     @section_id = raw_group[:SECTION_NUMBER]
+    # {true=>11313, false=>618}
     @is_primary_instructor = raw_group[:PRIMARY_INSTR_FLAG] == "Y"
+    # {""=>5060, "FI"=>1308, "TBA"=>5157, "MI"=>127, "MU"=>8, "RE"=>11, "PB"=>227, "OT"=>33}
     @spam_special_meeting_cd = raw_group[:FK_SPM_SPCL_MTG_CD].strip
+    # {"AC"=>9933, "NC"=>1716, "CA"=>282}
     @sst_section_statistic_cd = raw_group[:FK_SST_SCTN_STATCD]
   end
 
   def to_s
     [
       "#{@code} (#{@group_type}): #{@enrolled}/#{@capacity} enrolled (#{@available} available), #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
-      "#{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join} at #{@building} #{@room} by #{@instructor} (#{@instructor_pid})",
-      [@before_description, @description, @section_id, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
+      "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{@building} #{@room} by #{@instructor} (#{@instructor_pid})",
+      "  " + [@before_description, @description, @section_id, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
     ].join "\n"
   end
+end
+
+def get_frequencies(courses, key)
+  frequencies = {}
+  for course in courses
+    for group in course.groups
+      value = group.send key
+      if not frequencies.has_key? value
+        frequencies[value] = 0
+      end
+      frequencies[value] += 1
+    end
+  end
+  frequencies
 end
 
 def get_courses(getter)
@@ -163,7 +193,27 @@ def get_courses(getter)
   end
 
   puts courses.length
-  puts courses[1000]
+  # puts courses[1000]
+
+  puts get_frequencies courses, :group_type
+  puts get_frequencies courses, :before_description
+
+  for course in courses
+    if course.course.scan(/\d+/)[0].to_i >= 100
+      next
+    end
+    joinable_groups = []
+    for group in course.groups
+      if group.can_enroll && group.available > 0
+        joinable_groups << group
+      end
+    end
+    if joinable_groups.length > 0
+      puts "================"
+      puts course
+      puts joinable_groups.join "\n"
+    end
+  end
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
