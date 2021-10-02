@@ -91,7 +91,11 @@ end
 
 Instructor = Struct.new :name, :pid do
   def to_s
-    "#{name} (#{pid})"
+    if pid
+      "#{name} (#{pid})"
+    else
+      name
+    end
   end
 end
 
@@ -165,9 +169,12 @@ class Group
     @room = raw_group[:ROOM_CODE].strip
     # Instructors, split by colons. Each instructor is a name, semicolon, then
     # their PID. An empty string means "Staff."
-    @instructors = raw_group[:PERSON_FULL_NAME].split(":").map { |instructor|
+    @instructors = raw_group[:PERSON_FULL_NAME].strip.split(":").map { |instructor|
       Instructor.new(*instructor.split(";").map { |part| part.strip })
     }
+    if @instructors.length == 0
+      @instructors = [Instructor.new("Staff", nil)]
+    end
 
     # ??
     @section_id = raw_group[:SECTION_NUMBER]
@@ -188,9 +195,15 @@ class Group
   end
 
   def to_s
+    # HACK: Had to move this out into a separate variable because Solargraph was
+    # being pissed:
+    # Request textDocument/documentHighlight failed.
+    # Message: [NoMethodError] undefined method `+' for nil:NilClass
+    # Code: -32603
+    location_instructors = "#{@building} #{@room} by #{@instructors.join(", ")}"
     [
       "#{@code} (#{@group_type}): #{@enrolled}/#{@capacity} enrolled (#{@available} available), #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
-      "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{@building} #{@room} by #{@instructors.join(", ")}",
+      "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{location_instructors}",
       "  " + [@before_description, @description, @section_id, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
     ].join "\n"
   end
