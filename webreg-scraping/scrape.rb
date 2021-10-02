@@ -36,17 +36,9 @@ class AuthorizedGetter
   end
 end
 
-class CourseUnit
-  attr_reader :from, :inc, :to
-
-  def initialize(from, inc, to)
-    @from = from
-    @inc = inc
-    @to = to
-  end
-
+CourseUnit = Struct.new :from, :inc, :to do
   def to_s
-    "#{@from} to #{@to} by #{@inc}"
+    "#{from} to #{to} by #{inc}"
   end
 end
 
@@ -76,16 +68,9 @@ class Course
   end
 end
 
-class GroupTime
-  attr_reader :hours, :minutes
-
-  def initialize(hours, minutes)
-    @hours = hours
-    @minutes = minutes
-  end
-
+GroupTime = Struct.new :hours, :minutes do
   def to_s
-    "%02d:%02d" % [@hours, @minutes]
+    "%02d:%02d" % [hours, minutes]
   end
 end
 
@@ -104,10 +89,16 @@ def yn_to_bool(yn, empty_allowed = nil)
   end
 end
 
+Instructor = Struct.new :name, :pid do
+  def to_s
+    "#{name} (#{pid})"
+  end
+end
+
 class Group
   attr_reader :start, :end, :days, :start_date, :end_date, :capacity, :enrolled,
               :available, :waitlist, :can_enroll, :code, :group_type,
-              :before_description, :description, :building, :room, :instructor,
+              :before_description, :description, :building, :room, :instructors,
               :instructor_pid, :section_id, :is_primary_instructor,
               :sst_section_statistic_cd, :print_flag, :instruction_type
 
@@ -174,7 +165,9 @@ class Group
     @room = raw_group[:ROOM_CODE].strip
     # Instructors, split by colons. Each instructor is a name, semicolon, then
     # their PID. An empty string means "Staff."
-    @instructor, @instructor_pid = raw_group[:PERSON_FULL_NAME].split(";").map { |part| part.strip }
+    @instructors = raw_group[:PERSON_FULL_NAME].split(":").map { |instructor|
+      Instructor.new(*instructor.split(";").map { |part| part.strip })
+    }
 
     # ??
     @section_id = raw_group[:SECTION_NUMBER]
@@ -187,10 +180,17 @@ class Group
     @print_flag = raw_group[:PRINT_FLAG]
   end
 
+  # Webreg seems to group only the sections that are neither finals nor midterms
+  # nor A00 into an array cateAX, where A is some letter.
+  def is_x_class?
+    (@group_type == :default || @group_type == :to_be_announced) &&
+      @code[1..3] != "00"
+  end
+
   def to_s
     [
       "#{@code} (#{@group_type}): #{@enrolled}/#{@capacity} enrolled (#{@available} available), #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
-      "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{@building} #{@room} by #{@instructor} (#{@instructor_pid})",
+      "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{@building} #{@room} by #{@instructors.join(", ")}",
       "  " + [@before_description, @description, @section_id, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
     ].join "\n"
   end
@@ -229,7 +229,7 @@ def get_joinable_groups(courses)
     end
     joinable_groups = []
     for group in course.groups
-      if group.can_enroll && group.available > 0
+      if group.can_enroll && group.available > 0 && group.is_x_class?
         joinable_groups << group
       end
     end
@@ -272,12 +272,11 @@ def get_courses(getter)
     :termcode => term,
   })
 
-  puts courses.length
+  # puts courses.length
   # puts courses[1000]
 
-  puts get_frequencies courses, :instruction_type
-  puts get_frequencies courses, Proc.new { |group| if group.group_type != :default then nil else group.instruction_type end }
-  puts get_frequencies courses, Proc.new { |group| if group.group_type == :default then nil else group.instruction_type end }
+  # puts get_frequencies courses, :instruction_type
+  # puts get_frequencies courses, Proc.new { |group| if group.group_type != :default then nil else group.instruction_type end }
   # loop_courses courses do |group|
   #   if group.code[0] == "2"
   #     puts group
@@ -285,7 +284,7 @@ def get_courses(getter)
   #   end
   # end
 
-  # get_joinable_groups courses
+  get_joinable_groups courses
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
