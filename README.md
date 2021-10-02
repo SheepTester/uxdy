@@ -7,9 +7,6 @@ What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦
 ```sh
 $ npm install --global coffeescript pug-cli sass http-server
 
-# Build to dist/
-$ ./scripts/build.sh
-
 # Deploy to GitHub Pages
 $ ./scripts/deploy.sh
 ```

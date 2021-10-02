@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./scripts/build.sh
+
 coffee --output dist --compile --watch src &
 pug --out dist --watch src &
 sass --watch src:dist &

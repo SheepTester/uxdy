@@ -10,18 +10,38 @@ class AuthorizedGetter
     @uqz = uqz
   end
 
-  def get(path)
-    return JSON.parse(URI.open("https://act.ucsd.edu/webreg2/svc/wradapter/secure/#{path}", {
-             # I don't think UqZBpD3n needs to be a secret but whatever
-             "Cookie" => "jlinksessionidx=#{@session_index}; UqZBpD3n=#{@uqz}",
-           }).read, symbolize_names: true)
+  def get(path, query = {})
+    file_name = if query[:subjcode].length > 0
+        "#{path}_#{query[:subjcode].strip}_#{query[:crsecode].strip}"
+      else
+        path
+      end
+
+    begin
+      return JSON.parse(File.read("./webreg-data/#{file_name}.json"), symbolize_names: true)
+    rescue Errno::ENOENT
+    end
+
+    # URI.encode_www_form: https://stackoverflow.com/a/11251654
+    json = JSON.parse(URI.open("https://act.ucsd.edu/webreg2/svc/wradapter/secure/#{path}?#{URI.encode_www_form(query)}", {
+      # I don't think UqZBpD3n needs to be a secret but whatever
+      "Cookie" => "jlinksessionidx=#{@session_index}; UqZBpD3n=#{@uqz}",
+    }).read, symbolize_names: true)
+    # File.write: https://stackoverflow.com/a/19337403
+    File.write("./webreg-data/#{file_name}.json", JSON.pretty_generate(json))
+    return json
   end
 end
 
 def get_courses(getter)
   # .read: https://stackoverflow.com/a/5786863
   # JSON.parse, symbolize_names: true: https://stackoverflow.com/questions/5410682/parsing-a-json-string-in-ruby#comment34766758_5410713
-  raw_courses = getter.get("search-by-all?subjcode=&crsecode=&department=&professor=&title=&levels=&days=&timestr=&opensection=false&isbasic=true&basicsearchvalue=&termcode=FA21")
+  raw_courses = getter.get("search-by-all", {
+    :subjcode => "", :crsecode => "", :department => "", :professor => "",
+    :title => "", :levels => "", :days => "", :timestr => "",
+    :opensection => "false", :isbasic => "true", :basicsearchvalue => "",
+    :termcode => "FA21",
+  })
 
   ## Just making sure the structure is proper
   # .each: https://code-maven.com/for-loop-in-ruby
