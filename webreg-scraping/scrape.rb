@@ -29,6 +29,7 @@ class AuthorizedGetter
     }).read, symbolize_names: true)
     # File.write: https://stackoverflow.com/a/19337403
     File.write("./webreg-data/#{file_name}.json", JSON.pretty_generate(json))
+    puts "Fetched #{file_name}"
     return json
   end
 end
@@ -43,14 +44,36 @@ def get_courses(getter)
     :termcode => "FA21",
   })
 
+  course_keys = [
+    :UNIT_TO, :SUBJ_CODE, :UNIT_INC, :CRSE_TITLE, :UNIT_FROM, :CRSE_CODE,
+  ]
+  group_keys = [
+    :END_MM_TIME, :SCTN_CPCTY_QTY, :LONG_DESC, :SCTN_ENRLT_QTY, :BEGIN_HH_TIME,
+    :SECTION_NUMBER, :SECTION_START_DATE, :STP_ENRLT_FLAG, :SECTION_END_DATE,
+    :COUNT_ON_WAITLIST, :PRIMARY_INSTR_FLAG, :BEFORE_DESC, :ROOM_CODE,
+    :END_HH_TIME, :START_DATE, :DAY_CODE, :BEGIN_MM_TIME, :PERSON_FULL_NAME,
+    :FK_SPM_SPCL_MTG_CD, :PRINT_FLAG, :BLDG_CODE, :FK_SST_SCTN_STATCD,
+    :FK_CDI_INSTR_TYPE, :SECT_CODE, :AVAIL_SEAT,
+  ]
+
   ## Just making sure the structure is proper
   # .each: https://code-maven.com/for-loop-in-ruby
   raw_courses.each do |course|
     # .keys: https://stackoverflow.com/a/8657774
-    if course.keys != [:UNIT_TO, :SUBJ_CODE, :UNIT_INC, :CRSE_TITLE, :UNIT_FROM, :CRSE_CODE]
+    if course.keys != course_keys
       puts course
       # http://rubylearning.com/satishtalim/ruby_exceptions.html
       raise "Course keys do not match my expectations."
+    end
+
+    course_data = getter.get("search-load-group-data", {
+      :subjcode => course[:SUBJ_CODE], :crsecode => course[:CRSE_CODE], :termcode => "FA21",
+    })
+    course_data.each do |group|
+      if group.keys != group_keys
+        puts group
+        raise "Group keys do not meet expectations"
+      end
     end
   end
 
