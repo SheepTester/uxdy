@@ -53,8 +53,8 @@ latestTime = schedule.reduce (acc, curr) ->
   if acc.end > curr.end then acc else curr
 .end
 dayLength = latestTime - earliestTime
-timeToPosition = (time) ->
-  "#{(time - earliestTime) / dayLength * 100}%"
+timeToPosition = (time, percent = true) ->
+  (time - earliestTime) / dayLength * 100 + if percent then '%' else ''
 
 colourPalette = ['red', 'orange', 'yellow', 'lime', 'cyan', 'blue', 'purple', 'magenta']
 colours = new Map
@@ -128,16 +128,70 @@ currentTime = do ->
 currentTimeMarker = $ '<div>'
   .addClass 'current-time'
 renderCurrentTime = ->
-  { weekday, minutes } = do currentTime
+  {weekday, minutes} = do currentTime
   if (meetingses[weekday].has currentTimeMarker).length is 0
     meetingses[weekday].append currentTimeMarker
-  currentTimeMarker.css 'top', timeToPosition minutes
+  position = timeToPosition minutes, false
+  if position < -10 or position > 110
+    currentTimeMarker.css 'display', 'none'
+  else
+    currentTimeMarker.css 'display', ''
+    currentTimeMarker.css 'top', position + '%'
+    currentTimeMarker.css 'opacity', switch position
+      when position < 0 then (10 + position) / 10
+      when position > 100 then (110 - position) / 10
+      else 1
 
-getTimeUntil = ->
-  { weekday, minutes } = do currentTime
-  nextMeetingIndex = schedule.findIndex ({ day, start }) ->
-    day > weekday or day is weekday and start > minutes
-console.log do getTimeUntil
+MINUTES_PER_DAY = 24 * 60
+MINUTES_PER_WEEK = MINUTES_PER_DAY * 7
+# `duration` in minutes
+displayDuration = (duration) ->
+  switch
+    when duration is 0
+      'no time'
+    when duration < 1
+      (duration * 60).toFixed 3  + 's'
+    when duration < MINUTES_PER_DAY
+      hours = Math.floor duration / 60
+      mins = Math.floor duration % 60
+      [
+        if hours > 0 then "#{hours} hour#{if hours is 1 then '' else 's'}" else ''
+        if hours > 0 and mins > 0 then ' ' else ''
+        if mins > 0 then "#{mins} minute#{if mins is 1 then '' else 's'}" else ''
+      ].join ''
+    else
+      days = Math.floor duration / MINUTES_PER_DAY
+      hours = Math.floor duration / 60 % 60
+      [
+        if days > 0 then "#{days} day#{if days is 1 then '' else 's'}" else ''
+        if days > 0 and hours > 0 then ' ' else ''
+        if hours > 0 then "#{hours} hour#{if hour is 1 then '' else 's'}" else ''
+      ].join ''
+getTimeUntilNext = ->
+  {weekday, minutes} = now = do currentTime
+
+  # Find the next end time starting from the current time. May be the current
+  # meeting, or could be on the next day.
+  nextMeetingIndex = schedule.findIndex ({day, end }) ->
+    day > weekday or day is weekday and end > minutes
+  meeting = if nextMeetingIndex is -1
+    schedule[schedule.length - 1]
+  else
+    schedule[nextMeetingIndex]
+
+  if nextMeetingIndex isnt -1 and weekday is meeting.day and minutes >= meeting.start
+    # Meeting is currently happening
+    meeting: meeting
+    type: 'end'
+    time: meeting.day * MINUTES_PER_DAY + meeting.end
+    now: now
+  else
+    # Meeting is next
+    meeting: meeting
+    type: 'start'
+    time: meeting.day * MINUTES_PER_DAY + meeting.start
+    now: now
+
 $ document
 .ready ->
   $ '#days'
@@ -147,6 +201,16 @@ $ document
     .addClass 'axis'
     .append (renderAxisMarker hour for hour in [earliestTime // 60 .. latestTime // 60])
   )
+
+  lastTitle = null
+  do tick = ->
+    {meeting, type, time, now: {weekday, minutes}} = do getTimeUntilNext
+    title = "#{displayDuration (time - (weekday * MINUTES_PER_DAY + minutes)) %% MINUTES_PER_WEEK} until #{meeting.name} #{type}s · uxdy"
+    if title isnt lastTitle
+      document.title = lastTitle = title
+      $ '#status'
+      .text title
+  setInterval tick, 1000
 
   do paint = ->
     do renderCurrentTime

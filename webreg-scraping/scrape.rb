@@ -204,7 +204,7 @@ class Group
     [
       "#{@code} (#{@group_type}): #{@enrolled}/#{@capacity} enrolled (#{@available} available), #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
       "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{location_instructors}",
-      "  " + [@before_description, @description, @section_id, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
+      "  " + [@section_id, @before_description, @description, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
     ].join "\n"
   end
 end
