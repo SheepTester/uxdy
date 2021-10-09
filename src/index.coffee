@@ -165,7 +165,7 @@ displayDuration = (duration) ->
       [
         if days > 0 then "#{days} day#{if days is 1 then '' else 's'}" else ''
         if days > 0 and hours > 0 then ' ' else ''
-        if hours > 0 then "#{hours} hour#{if hour is 1 then '' else 's'}" else ''
+        if hours > 0 then "#{hours} hour#{if hours is 1 then '' else 's'}" else ''
       ].join ''
 getTimeUntilNext = ->
   {weekday, minutes} = now = do currentTime
@@ -175,7 +175,7 @@ getTimeUntilNext = ->
   nextMeetingIndex = schedule.findIndex ({day, end }) ->
     day > weekday or day is weekday and end > minutes
   meeting = if nextMeetingIndex is -1
-    schedule[schedule.length - 1]
+    schedule[0]
   else
     schedule[nextMeetingIndex]
 
