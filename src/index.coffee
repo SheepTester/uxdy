@@ -310,14 +310,42 @@ $ document
     .append (renderAxisMarker hour for hour in [earliestTime // 60 .. latestTime // 60])
   )
 
+  $ '#notif-perm'
+  .click ->
+    (do Notification.requestPermission)
+    .then ->
+      do
+        $ '#notif-perm'
+        .hide
+    .catch console.error
+  if Notification.permission is 'granted'
+    do
+      $ '#notif-perm'
+      .hide
+
   lastTitle = null
+  lastNotif = null
+  NOTIF_TIME = 5 # minutes before class
   do tick = ->
     {meeting, type, time, now: {weekday, minutes}} = do getTimeUntilNext
-    title = "#{displayDuration (time - (weekday * MINUTES_PER_DAY + minutes)) %% MINUTES_PER_WEEK} until #{meeting.name} #{type}s · uxdy"
+    timeUntil = (time - (weekday * MINUTES_PER_DAY + minutes)) %% MINUTES_PER_WEEK
+    title = "#{displayDuration timeUntil} until #{meeting.name} #{type}s · uxdy"
     if title isnt lastTitle
       document.title = lastTitle = title
       $ '#status'
       .text title
+    if Notification.permission is 'granted'
+      if meeting.zoom? and type is 'start'
+        if timeUntil <= NOTIF_TIME
+          if lastNotif isnt meeting
+            lastNotif = meeting
+            notification = new Notification title,
+              body: 'click to open linkk'
+            notification.addEventListener 'click', ->
+              do window.open(meeting.zoom, '_blank').focus
+        else
+          lastNotif = null
+
   setInterval tick, 1000
 
   # Despacito BPM
@@ -329,5 +357,6 @@ $ document
 
     t = (do Date.now * Math.PI / PERIOD)
     $ '#vibing'
-    .css 'transform', "skewX(#{(Math.cbrt Math.cos t) * 5}deg) scaleY(#{1 - (Math.sin t) ** 20 * 0.1})"
+    # (-1 + sqrt(4x^2 + 1)) / 2x also works
+    .css 'transform', "skewX(#{3 * Math.atan 5 * Math.cos t}deg) scaleY(#{1 - (Math.sin t) ** 20 * 0.1})"
     window.requestAnimationFrame paint
