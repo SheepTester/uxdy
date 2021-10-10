@@ -72,11 +72,17 @@ button
     border-left-style: dotted
   p
     margin: 0
+.disabled
+  opacity: 0.5
 .name
   word-break: break-all
   line-height: 0.8
 .time
   font-size: small
+.zoom
+  position: absolute
+  bottom: 0
+  right: 0
 
 .axis
   grid-row: meetings
@@ -88,6 +94,7 @@ button
   border-top: 1px solid lightgrey
   width: calc(100vw - 40px)
   z-index: -1
+  text-indent: -2ch
 .current-time
   position: absolute
   border-top: 1px solid red

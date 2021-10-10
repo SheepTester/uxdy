@@ -12,6 +12,18 @@ schedule = [
     day: 1
     start: 780
     end: 830
+    # Putting Zoom link in hash so I don't publish it in this repo; don't want
+    # to Zoom bomb Zelmanov :P
+    zoom: window.location.hash.slice 1
+  }
+  {
+    id: 'CSE11'
+    type: 'discussion'
+    name: 'CSE11 C01 @ PCYNH120 (DI)'
+    day: 1
+    start: 900
+    end: 950
+    disabled: true
   }
   {
     id: 'CSE11'
@@ -52,6 +64,7 @@ schedule = [
     day: 3
     start: 780
     end: 830
+    zoom: window.location.hash.slice 1
   }
   {
     id: 'CSE11'
@@ -100,6 +113,7 @@ schedule = [
     day: 5
     start: 780
     end: 830
+    zoom: window.location.hash.slice 1
   }
   {
     id: 'CSE11'
@@ -138,25 +152,39 @@ timeToPosition = (time, percent = true) ->
 
 colourPalette = ['red', 'orange', 'yellow', 'lime', 'cyan', 'blue', 'purple', 'magenta']
 colours = new Map
-renderMeeting = ({id, type, name, start, end}) ->
+renderMeeting = ({id, type, name, start, end, zoom, disabled}) ->
   colour = colours.get id
   if not colour?
     colours.set id, colour = do colourPalette.pop
-  $ '<div>'
-  .addClass ['meeting', type]
-  .append (
-    $ '<p>'
-    .addClass 'name'
-    .text name
-  )
-  .append (
-    $ '<p>'
-    .addClass 'time'
-    .text "#{displayTime start}–#{displayTime end}"
-  )
-  .css 'top', timeToPosition start
-  .css 'bottom', "#{(dayLength - (end - earliestTime)) / dayLength * 100}%"
-  .css 'border-left-color', colour
+  meeting = $ '<div>'
+    .addClass ['meeting', type]
+    .append (
+      $ '<p>'
+      .addClass 'name'
+      .text name
+    )
+    .append (
+      $ '<p>'
+      .addClass 'time'
+      .text "#{displayTime start}–#{displayTime end}"
+    )
+    .css 'top', timeToPosition start
+    .css 'bottom', "#{(dayLength - (end - earliestTime)) / dayLength * 100}%"
+    .css 'border-left-color', colour
+
+  if zoom?
+    meeting.append (
+      $ '<a>'
+      .attr 'href', zoom
+      .attr 'target', '_blank'
+      .addClass 'zoom'
+      .text 'züm'
+    )
+
+  if disabled
+    meeting.addClass 'disabled'
+
+  meeting
 
 meetingses = []
 dayNames = ['sunday', 'nonday', 'tuesday', 'wensday', 'thursday', 'fridee', 'saturday']
@@ -237,19 +265,20 @@ displayDuration = (duration) ->
       "#{hours}h #{mins}m"
     else
       days = Math.floor duration / MINUTES_PER_DAY
-      hours = Math.floor duration / 60 % 60
+      hours = Math.floor duration / 60 % 24
       "#{days}d #{hours}h"
 getTimeUntilNext = ->
   {weekday, minutes} = now = do currentTime
 
+  enabledMeetings = schedule.filter ({ disabled }) -> not disabled
   # Find the next end time starting from the current time. May be the current
   # meeting, or could be on the next day.
-  nextMeetingIndex = schedule.findIndex ({day, end }) ->
+  nextMeetingIndex = enabledMeetings.findIndex ({day, end }) ->
     day > weekday or day is weekday and end > minutes
   meeting = if nextMeetingIndex is -1
-    schedule[0]
+    enabledMeetings[0]
   else
-    schedule[nextMeetingIndex]
+    enabledMeetings[nextMeetingIndex]
 
   if nextMeetingIndex isnt -1 and weekday is meeting.day and minutes >= meeting.start
     # Meeting is currently happening
@@ -292,11 +321,13 @@ $ document
   setInterval tick, 1000
 
   # Despacito BPM
+  # Maybe I should set it to 120 bpm and show the current seconds next to the
+  # sheep
   PERIOD = 60000 / 89
   do paint = ->
     do renderCurrentTime
 
     t = (do Date.now * Math.PI / PERIOD)
     $ '#vibing'
-    .css 'transform', "skewX(#{(Math.cbrt Math.cos t) * 5}deg) scaleY(#{1 - (Math.sin t) ** 20 / 8})"
+    .css 'transform', "skewX(#{(Math.cbrt Math.cos t) * 5}deg) scaleY(#{1 - (Math.sin t) ** 20 * 0.1})"
     window.requestAnimationFrame paint
