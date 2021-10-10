@@ -42,7 +42,8 @@ button
   flex: auto
   display: grid
   gap: 10px
-  grid-template-columns: repeat(7, 1fr)
+  --rows: 7
+  grid-template-columns: repeat(var(--rows), 1fr)
   grid-template-rows: [day-names] auto [meetings] 1fr
 .day
   flex: 1 0 0
@@ -58,6 +59,7 @@ button
 
 .meeting
   position: absolute
+  width: 100%
   border: 1px solid yellow
   color: yellow
   text-shadow: 2px 5px 10px magenta

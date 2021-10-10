@@ -4,40 +4,120 @@ parseTime = (time) ->
   [, hour, minute, amPm] = time.match /(\d+):(\d+)([ap])/
   (if amPm is 'a' then +hour else if hour is '12' then 12 else +hour + 12) * 60 + +minute
 
-rawSchedule =
-  '''
-  CAT1    D07 Chodorow 24  9:30a-10:50a MOS0114  4 12:00p-12:50p MANDEB-146
-  CSE11   C01 Miranda  135 4:00p-4:50p  CENTR119
-  MATH18  B21 Zelmanov 135 1:00p-1:50p  RCLAS    2 12:00p-12:50p YORK3000A
-  MATH20C E06 Jin      135 5:00p-5:50p  CENTR115 4 11:00a-11:50a YORK3000A
-  '''
-schedule = []
-for course in rawSchedule.split /\r?\n/
-  [courseName, sectionCode, teacher, lectDays, lectTime, lectLoc, discDays, discTime, discLoc] = course.split /\ +/
-
-  [start, end] = lectTime.split '-'
-    .map parseTime
-  for day from lectDays
-    schedule.push
-      id: courseName
-      type: 'lecture'
-      name: "#{courseName} #{sectionCode[0]}00 @ #{lectLoc} (LE)"
-      day: +day
-      start: start
-      end: end
-
-  if discTime?
-    [start, end] = discTime.split '-'
-      .map parseTime
-    for day from discDays
-      schedule.push
-        id: courseName
-        type: 'discussion'
-        name: "#{courseName} #{sectionCode} @ #{discLoc} (DI)"
-        day: +day
-        start: start
-        end: end
-schedule.sort (a, b) -> a.day - b.day or a.start - b.start
+schedule = [
+  {
+    id: 'MATH18'
+    type: 'lecture'
+    name: 'MATH18 B00 @ RCLAS (LE)'
+    day: 1
+    start: 780
+    end: 830
+  }
+  {
+    id: 'CSE11'
+    type: 'lecture'
+    name: 'CSE11 C00 @ CENTR119 (LE)'
+    day: 1
+    start: 960
+    end: 1010
+  }
+  {
+    id: 'MATH20C'
+    type: 'lecture'
+    name: 'MATH20C E00 @ CENTR115 (LE)'
+    day: 1
+    start: 1020
+    end: 1070
+  }
+  {
+    id: 'CAT1'
+    type: 'lecture'
+    name: 'CAT1 D00 @ MOS0114 (LE)'
+    day: 2
+    start: 570
+    end: 650
+  }
+  {
+    id: 'MATH18'
+    type: 'discussion'
+    name: 'MATH18 B21 @ YORK3000A (DI)'
+    day: 2
+    start: 720
+    end: 770
+  }
+  {
+    id: 'MATH18'
+    type: 'lecture'
+    name: 'MATH18 B00 @ RCLAS (LE)'
+    day: 3
+    start: 780
+    end: 830
+  }
+  {
+    id: 'CSE11'
+    type: 'lecture'
+    name: 'CSE11 C00 @ CENTR119 (LE)'
+    day: 3
+    start: 960
+    end: 1010
+  }
+  {
+    id: 'MATH20C'
+    type: 'lecture'
+    name: 'MATH20C E00 @ CENTR115 (LE)'
+    day: 3
+    start: 1020
+    end: 1070
+  }
+  {
+    id: 'CAT1'
+    type: 'lecture'
+    name: 'CAT1 D00 @ MOS0114 (LE)'
+    day: 4
+    start: 570
+    end: 650
+  }
+  {
+    id: 'MATH20C'
+    type: 'discussion'
+    name: 'MATH20C E06 @ YORK3000A (DI)'
+    day: 4
+    start: 660
+    end: 710
+  }
+  {
+    id: 'CAT1'
+    type: 'discussion'
+    name: 'CAT1 D07 @ MANDEB-146 (DI)'
+    day: 4
+    start: 720
+    end: 770
+  }
+  {
+    id: 'MATH18'
+    type: 'lecture'
+    name: 'MATH18 B00 @ RCLAS (LE)'
+    day: 5
+    start: 780
+    end: 830
+  }
+  {
+    id: 'CSE11'
+    type: 'lecture'
+    name: 'CSE11 C00 @ CENTR119 (LE)'
+    day: 5
+    start: 960
+    end: 1010
+  }
+  {
+    id: 'MATH20C'
+    type: 'lecture'
+    name: 'MATH20C E00 @ CENTR115 (LE)'
+    day: 5
+    start: 1020
+    end: 1070
+  }
+]
 
 displayTime = (time) ->
   [time // 60, time % 60]
@@ -129,7 +209,7 @@ currentTimeMarker = $ '<div>'
   .addClass 'current-time'
 renderCurrentTime = ->
   {weekday, minutes} = do currentTime
-  if (meetingses[weekday].has currentTimeMarker).length is 0
+  if meetingses[weekday] and (meetingses[weekday].has currentTimeMarker).length is 0
     meetingses[weekday].append currentTimeMarker
   position = timeToPosition minutes, false
   if position < -10 or position > 110
@@ -154,19 +234,11 @@ displayDuration = (duration) ->
     when duration < MINUTES_PER_DAY
       hours = Math.floor duration / 60
       mins = Math.floor duration % 60
-      [
-        if hours > 0 then "#{hours} hour#{if hours is 1 then '' else 's'}" else ''
-        if hours > 0 and mins > 0 then ' ' else ''
-        if mins > 0 then "#{mins} minute#{if mins is 1 then '' else 's'}" else ''
-      ].join ''
+      "#{hours}h #{mins}m"
     else
       days = Math.floor duration / MINUTES_PER_DAY
       hours = Math.floor duration / 60 % 60
-      [
-        if days > 0 then "#{days} day#{if days is 1 then '' else 's'}" else ''
-        if days > 0 and hours > 0 then ' ' else ''
-        if hours > 0 then "#{hours} hour#{if hours is 1 then '' else 's'}" else ''
-      ].join ''
+      "#{days}d #{hours}h"
 getTimeUntilNext = ->
   {weekday, minutes} = now = do currentTime
 
@@ -194,8 +266,15 @@ getTimeUntilNext = ->
 
 $ document
 .ready ->
+  weekdays = [1..5]
+  # Hide the weekends if there's nothing on it
+  if schedule.find (meeting) -> meeting.day is 0 or meeting.day is 6
+    # UCSD seems to do weekends at the end, not the ends of the week
+    weekdays.push 6, 0
+
   $ '#days'
-  .append do (renderDay day for day in [0...7]).flat
+  .append do (renderDay day for day in weekdays).flat
+  .css '--rows', weekdays.length
   .append (
     $ '<div>'
     .addClass 'axis'
