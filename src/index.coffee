@@ -291,6 +291,12 @@ $ document
       .text title
   setInterval tick, 1000
 
+  # Despacito BPM
+  PERIOD = 60000 / 89
   do paint = ->
     do renderCurrentTime
+
+    t = (do Date.now * Math.PI / PERIOD)
+    $ '#vibing'
+    .css 'transform', "skewX(#{(Math.cbrt Math.cos t) * 5}deg) scaleY(#{1 - (Math.sin t) ** 20 / 8})"
     window.requestAnimationFrame paint
