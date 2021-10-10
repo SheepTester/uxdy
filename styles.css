@@ -91,6 +91,10 @@ button {
   margin: 0;
 }
 
+.disabled {
+  opacity: 0.5;
+}
+
 .name {
   word-break: break-all;
   line-height: 0.8;
@@ -100,10 +104,17 @@ button {
   font-size: small;
 }
 
+.zoom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 .axis {
   grid-row: meetings;
   grid-column: 1;
   position: relative;
+  z-index: -1;
 }
 
 .axis-marker {
@@ -111,7 +122,7 @@ button {
   color: lightgrey;
   border-top: 1px solid lightgrey;
   width: calc(100vw - 40px);
-  z-index: -1;
+  text-indent: -2ch;
 }
 
 .current-time {
