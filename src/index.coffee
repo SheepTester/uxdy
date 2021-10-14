@@ -331,7 +331,8 @@ $ document
     timeUntil = (time - (weekday * MINUTES_PER_DAY + minutes)) %% MINUTES_PER_WEEK
     title = "#{displayDuration timeUntil} until #{meeting.name} #{type}s · uxdy"
     if title isnt lastTitle
-      document.title = lastTitle = title
+      document.title = if timeUntil < 5 * 60 then title else 'uxdy,'
+      lastTitle = title
       $ '#status'
       .text title
     if Notification.permission is 'granted'
