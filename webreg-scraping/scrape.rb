@@ -1,3 +1,8 @@
+# HOW TO RUN
+# Get cookies from devtools > Application > Cookies > https://act.ucsd.edu
+# ruby scrape.rb <jlinksessionidx> <UqZBpD3n>
+# stdout has available classes
+
 # Installing Ruby: https://stackoverflow.com/a/37956249
 
 # https://act.ucsd.edu/webreg2/js/webreg/webreg-main.js (I just removed -min) from the URL
@@ -130,6 +135,7 @@ class Group
     "IN" => :independent_study, "IT" => :internship, "FW" => :fieldwork,
     "LA" => :lab, "CL" => :clinical_clerkship, "TU" => :tutorial,
     "CO" => :conference, "ST" => :studio, "OP" => :idk,
+    "OT" => :other_additional_meeting, "SA" => :what,
   }
 
   def initialize(raw_group)
@@ -194,7 +200,7 @@ class Group
       @code[1..3] != "00"
   end
 
-  def to_s
+  def display_available
     # HACK: Had to move this out into a separate variable because Solargraph was
     # being pissed:
     # Request textDocument/documentHighlight failed.
@@ -206,6 +212,10 @@ class Group
       "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{location_instructors}",
       "  " + [@section_id, @before_description, @description, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
     ].join "\n"
+  end
+
+  def to_s
+    self.display_available
   end
 end
 
@@ -235,16 +245,20 @@ def get_frequencies(courses, get_property)
   frequencies
 end
 
-def get_joinable_groups(courses)
+def display_groups(courses, only_joinable)
   for course in courses
-    if course.course.scan(/\d+/)[0].to_i >= 100
+    if only_joinable && course.course.scan(/\d+/)[0].to_i >= 100
       next
     end
     joinable_groups = []
-    for group in course.groups
-      if group.can_enroll && group.available > 0 && group.is_x_class?
-        joinable_groups << group
+    if only_joinable
+      for group in course.groups
+        if group.can_enroll && group.available > 0 && group.is_x_class?
+          joinable_groups << group
+        end
       end
+    else
+      joinable_groups = course.groups
     end
     if joinable_groups.length > 0
       puts "================"
@@ -255,7 +269,7 @@ def get_joinable_groups(courses)
 end
 
 def get_courses(getter)
-  term = "FA21"
+  term = "WI22"
 
   subjects = getter.get("search-load-subject", { :termcode => term })
   departments = getter.get("search-load-department", { :termcode => term })
@@ -297,7 +311,8 @@ def get_courses(getter)
   #   end
   # end
 
-  get_joinable_groups courses
+  # true/false: whether to only show joinable courses
+  display_groups(courses, false)
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
