@@ -357,6 +357,12 @@ def get_courses(getter)
   #     # break
   #   end
   # end
+  for course in courses
+    remote_groups = course.groups.filter_map { |group| group.code if group.building == "RCLAS" }
+    if remote_groups.length > 0
+      puts "#{course.subject} #{course.course}: #{remote_groups.join(", ")}"
+    end
+  end
 
   # === OUTPUT COURSE SUMMARY ===
   # need to pipe into a file
