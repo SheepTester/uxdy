@@ -182,8 +182,8 @@ function searchLoadGroupData (): {
 | `BEGIN_MM_TIME`      | `0`                                | Start minute of meeting.                                         |
 | `END_HH_TIME`        | `18`                               | End hour of meeting.                                             |
 | `END_MM_TIME`        | `20`                               | End minute of meeting.                                           |
-| `DAY_CODE`           | `"13"`                             | A string of digits (1-5)                                         |
-| `SECT_CODE`          | `"A00"`                            | A capital letter or 0 or 1 followed by two digits.               |
+| `DAY_CODE`           | `"13"`                             | A string of digits (1-7) representing the days of the week.      |
+| `SECT_CODE`          | `"A00"`                            | A capital letter (or 0 or 1) followed by two digits.             |
 | `SCTN_ENRLT_QTY`     | `0`                                | The number of people enrolled.                                   |
 | `AVAIL_SEAT`         | `50`                               | Number of seats available.                                       |
 | `SCTN_CPCTY_QTY`     | `50`                               | The maximum number of seats. 9999 for no limit.                  |
@@ -203,6 +203,10 @@ function searchLoadGroupData (): {
 | `FK_CDI_INSTR_TYPE`  | `"LE"`                             | Distinguishes between lectures and discussions.                  |
 | `PRINT_FLAG`         | `" "`                              | If `N`, then something happens, I guess.                         |
 | `FK_SST_SCTN_STATCD` | `"AC"`                             | `CA` means "cancelled." I'm not sure what `AC` or `NC` mean.     |
+
+If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
+(`FK_SPM_SPCL_MTG_CD`) is normal (`" "`) or TBA, then WebReg considers it a
+"cateAX," which presumably forms a list of non-final meetings.
 
 In `PERSON_FULL_NAME`, the name itself (last name, first name then middle
 initial) is 35 characters long, but `PERSON_FULL_NAME` is longer than that. The
