@@ -1,4 +1,4 @@
-# HOW TO RUN
+# === USAGE ===
 # Get cookies from devtools > Application > Cookies > https://act.ucsd.edu
 # ruby scrape.rb <jlinksessionidx> <UqZBpD3n>
 # stdout has available classes
@@ -64,8 +64,28 @@ class Course
     @course = raw_course[:CRSE_CODE].strip
     @title = raw_course[:CRSE_TITLE].strip
     @unit = CourseUnit.new(raw_course[:UNIT_FROM], raw_course[:UNIT_INC], raw_course[:UNIT_TO])
+    if @unit.from > @unit.to
+      raise "unit from > unit to"
+      # elsif (@unit.from == @unit.to) != (@unit.inc == 0)
+      # There is only one exception to this, which is MATH 295: Special Topics
+      # in Mathematics (1.0 to 1.0 by 1.0 units)
+
+      # puts self.to_s
+      # puts "inc's zeroness is inconsistent with from's equality with to"
+      # elsif @unit.from % 1 != 0 || @unit.to % 1 != 0
+      #   puts self.to_s
+      #   puts "unit from/to not integer"
+    end
 
     @groups = raw_groups.map { |raw_group| Group.new raw_group }
+    # for group in @groups
+    #   unless group.start_date == @groups[0].start_date && group.end_date == @groups[0].end_date
+    #     puts self.to_s
+    #     puts @groups[0].to_s
+    #     puts group.to_s
+    #     raise 'Group start/end dates don\'t match'
+    #   end
+    # end
   end
 
   def to_s
@@ -147,7 +167,12 @@ class Group
     @start = GroupTime.new(raw_group[:BEGIN_HH_TIME], raw_group[:BEGIN_MM_TIME])
     @end = GroupTime.new(raw_group[:END_HH_TIME], raw_group[:END_MM_TIME])
     # .chars: https://stackoverflow.com/a/37109086
-    @days = raw_group[:DAY_CODE].chars.map { |day| day.to_i }
+    unless raw_group[:DAY_CODE] == " " || raw_group[:DAY_CODE] =~ /\A[1-7]+\Z/
+      puts raw_group
+      puts raw_group[:DAY_CODE]
+      raise "days has non-1-7s"
+    end
+    @days = raw_group[:DAY_CODE].strip.chars.map { |day| day.to_i }
 
     # TODO: Ensure these are the same for all groups
     @start_date = raw_group[:SECTION_START_DATE]
@@ -163,6 +188,10 @@ class Group
     @can_enroll = !yn_to_bool(raw_group[:STP_ENRLT_FLAG])
 
     @code = raw_group[:SECT_CODE]
+    # JAPN 10B goes down to P00
+    unless @code =~ /\A[A-P01]\d\d\Z/
+      raise "code looks weird '#{@code}'"
+    end
     # FM|PB|RE|OT|MU|FI|MI are finals
     @group_type = @@group_types[raw_group[:FK_SPM_SPCL_MTG_CD]] || raise("#{raw_group[:FK_SPM_SPCL_MTG_CD]} is not a group type")
     # "Meeting type"
@@ -172,10 +201,19 @@ class Group
     # A few courses have nonempty descriptions but they are mostly useless
     @description = raw_group[:LONG_DESC].strip
     @building = raw_group[:BLDG_CODE].strip
+    unless raw_group[:BLDG_CODE].length == 5 || raw_group[:BLDG_CODE] == "TBA"
+      raise "'#{raw_group[:BLDG_CODE]}' not 5 chars"
+    end
     @room = raw_group[:ROOM_CODE].strip
+    unless raw_group[:ROOM_CODE].length == 5 || raw_group[:ROOM_CODE] == "TBA"
+      raise "'#{raw_group[:ROOM_CODE]}' not 5 chars"
+    end
     # Instructors, split by colons. Each instructor is a name, semicolon, then
     # their PID. An empty string means "Staff."
     @instructors = raw_group[:PERSON_FULL_NAME].strip.split(":").map { |instructor|
+      unless instructor == "Staff;" || instructor.split(";")[0].length == 35
+        raise "'#{instructor}' not 35 chars"
+      end
       Instructor.new(*instructor.split(";").map { |part| part.strip })
     }
     if @instructors.length == 0
@@ -186,10 +224,16 @@ class Group
     @section_id = raw_group[:SECTION_NUMBER]
     # {true=>11313, false=>618} (either " " or "Y")
     @is_primary_instructor = yn_to_bool(raw_group[:PRIMARY_INSTR_FLAG], false)
+    unless (raw_group[:PERSON_FULL_NAME] == "Staff; ") != @is_primary_instructor
+      puts self.to_s
+      puts raw_group
+      raise "primary instructor-staff mismatch"
+    end
     # {"AC"=>9933, "NC"=>1716, "CA"=>282}
     # CA = cancelled
     # AC = graded? "only for graded section (== AC section)"
     @sst_section_statistic_cd = raw_group[:FK_SST_SCTN_STATCD]
+    # {" "=>9591, "N"=>75, "Y"=>23, "5"=>2}
     @print_flag = raw_group[:PRINT_FLAG]
   end
 
@@ -208,9 +252,9 @@ class Group
     # Code: -32603
     location_instructors = "#{@building} #{@room} by #{@instructors.join(", ")}"
     [
-      "#{@code} (#{@group_type}): #{@enrolled}/#{@capacity} enrolled (#{@available} available), #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
+      "#{@code} (#{@group_type}): #{@enrolled}/#{if @capacity == 9999 then "∞" else @capacity end} enrolled#{if @available == 9999 then "" else " (#{@available} available)" end}, #{@waitlist} on waitlist (#{if @can_enroll then "Can enroll" else "Can\'t enroll" end})",
       "  #{@start}–#{@end} on #{@days.map { |day| @@day_names[day] }.join ", "} at #{location_instructors}",
-      "  " + [@section_id, @before_description, @description, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd].join(" "),
+      "  " + [@section_id, @before_description, @description, @is_primary_instructor, @spam_special_meeting_cd, @sst_section_statistic_cd, @print_flag].join(" "),
     ].join "\n"
   end
 
@@ -269,6 +313,7 @@ def display_groups(courses, only_joinable)
 end
 
 def get_courses(getter)
+  # === SET TERM HERE ===
   term = "WI22"
 
   subjects = getter.get("search-load-subject", { :termcode => term })
@@ -299,20 +344,24 @@ def get_courses(getter)
     :termcode => term,
   })
 
+  # === LOOK AT COURSES ===
   # puts courses.length
   # puts courses[1000]
 
-  # puts get_frequencies courses, :instruction_type
+  # === INSPECT COURSE FIELDS ===
+  # puts get_frequencies courses, :print_flag
   # puts get_frequencies courses, Proc.new { |group| if group.group_type != :default then nil else group.instruction_type end }
   # loop_courses courses do |group|
-  #   if group.code[0] == "2"
+  #   if group.instructors.length > 1
   #     puts group
-  #     break
+  #     # break
   #   end
   # end
 
+  # === OUTPUT COURSE SUMMARY ===
+  # need to pipe into a file
   # true/false: whether to only show joinable courses
-  display_groups(courses, false)
+  # display_groups(courses, false)
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
