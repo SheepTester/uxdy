@@ -237,10 +237,14 @@ class Group
     @print_flag = raw_group[:PRINT_FLAG]
   end
 
+  def is_exam?
+    @group_type != :default && @group_type != :to_be_announced
+  end
+
   # Webreg seems to group only the sections that are neither finals nor midterms
   # nor A00 into an array cateAX, where A is some letter.
   def is_x_class?
-    (@group_type == :default || @group_type == :to_be_announced) &&
+    !self.is_exam? &&
       @code[1..3] != "00"
   end
 
@@ -296,8 +300,9 @@ def display_groups(courses, only_joinable)
     end
     joinable_groups = []
     if only_joinable
+      only_lectures = course.groups.none? { |group| group.is_x_class? }
       for group in course.groups
-        if group.can_enroll && group.available > 0 && group.is_x_class?
+        if group.can_enroll && group.available > 0 && (if only_lectures then !group.is_exam? else group.is_x_class? end)
           joinable_groups << group
         end
       end
@@ -357,17 +362,17 @@ def get_courses(getter)
   #     # break
   #   end
   # end
-  for course in courses
-    remote_groups = course.groups.filter_map { |group| group.code if group.building == "RCLAS" }
-    if remote_groups.length > 0
-      puts "#{course.subject} #{course.course}: #{remote_groups.join(", ")}"
-    end
-  end
+  # for course in courses
+  #   remote_groups = course.groups.filter_map { |group| group.code if group.building == "RCLAS" }
+  #   if remote_groups.length > 0
+  #     puts "#{course.subject} #{course.course}: #{remote_groups.join(", ")}"
+  #   end
+  # end
 
   # === OUTPUT COURSE SUMMARY ===
   # need to pipe into a file
   # true/false: whether to only show joinable courses
-  # display_groups(courses, false)
+  display_groups(courses, true)
 end
 
 # __FILE == $0: https://www.ruby-lang.org/en/documentation/quickstart/4/
