@@ -37,11 +37,12 @@ async function getPage (path: string): Promise<HTMLDocument> {
   }
   return document
 }
-const courseListLinks = Array.from(
-  (await getPage('/front/courses.html')).querySelectorAll('a'),
-  a => (a as Element).getAttribute('href')?.slice(2)
-).filter((href): href is string => href?.includes('/courses/') ?? false)
-console.log(courseListLinks)
+const courseListLinks = new Set(
+  Array.from((await getPage('/front/courses.html')).querySelectorAll('a'), a =>
+    (a as Element).getAttribute('href')?.slice(2)
+  ).filter((href): href is string => href?.includes('/courses/') ?? false)
+)
+console.log([...courseListLinks])
 
 let i = 0
 for (const path of courseListLinks) {
@@ -54,7 +55,7 @@ for (const path of courseListLinks) {
     const match = rawCourseName
       .trim()
       .match(
-        /^([A-Z]{2,4}|CLASSIC)(?:\/[A-Z]{2,4})? (\d+(?:\/\d+)?)([A-Z]{1,2}(?:-[A-Z]{1,2})*)?\. ([A-Za-z0-9é —,:#“”?’/()&-]+) \((\d+(?:(?:, |-)\d+)*|\d+(?: (?:or|to) |–)\d+)\)$/
+        /^(?:Linguistics(?:\/[A-Z][a-z]*(?: [A-Z][a-z]*)*)? \()?([A-Z]{2,4}|CLASSIC)(?:\/[A-Z]{2,4})*\)? (\d+(?:[/-]\d+)*) ?([A-Z]{1,2}(?:[-–][A-Z]{1,2})*)?(?:\/(?:[A-Z]{2,4}|COM GEN) \d+[A-Z]{0,2})*\. (.+) \((\d+(?:(?:, (?:or )?|-)\d+)*|\d+(?: (?:or|to) |–)\d+|\d+–\d+(?:\/\d+–\d+)*|2\.[05])\)$/
       )
     if (!match) {
       console.error(
@@ -79,17 +80,7 @@ for (const path of courseListLinks) {
       continue
     }
     const [, subject, courseNumber, courseLetter, name, unitsRaw] = match
-    const units = unitsRaw.match(/–| to /)
-      ? []
-      : unitsRaw.split(/, | or /).map(Number)
-    if (unitsRaw.match(/–| to /)) {
-      const [from, to] = unitsRaw.split(/–| to /).map(Number)
-      for (let unit = from; unit <= to; unit++) {
-        units.push(unit)
-      }
-    }
   }
 
   i++
-  if (i > 20) break
 }
