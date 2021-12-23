@@ -44,18 +44,21 @@ const courseListLinks = new Set(
 )
 console.log([...courseListLinks])
 
-let i = 0
 for (const path of courseListLinks) {
   const courseList = await getPage(path)
 
-  for (const courseName of courseList.querySelectorAll('.course-name')) {
+  for (const courseName of courseList.querySelectorAll('p.course-name')) {
     // Replace nbsp with ASCII space
     const rawCourseName = courseName.textContent.replace(/\u00a0/g, ' ')
+    if (rawCourseName === 'Electives. Varies (12)') {
+      // Not really a course. https://catalog.ucsd.edu/courses/MBC.html
+      continue
+    }
     // See README.md for oddities
     const match = rawCourseName
       .trim()
       .match(
-        /^(?:Linguistics(?:\/[A-Z][a-z]*(?: [A-Z][a-z]*)*)? \()?([A-Z]{2,4}|CLASSIC)(?:\/[A-Z]{2,4})*\)? (\d+(?:[/-]\d+)*) ?([A-Z]{1,2}(?:[-–][A-Z]{1,2})*)?(?:\/(?:[A-Z]{2,4}|COM GEN) \d+[A-Z]{0,2})*\. (.+) \((\d+(?:(?:, (?:or )?|-)\d+)*|\d+(?: (?:or|to) |–)\d+|\d+–\d+(?:\/\d+–\d+)*|2\.[05])\)$/
+        /^(?:Linguistics(?:\/[A-Z][a-z]*(?: [A-Z][a-z]*)*)? \()?([A-Z]{2,4}|CLASSIC)(?:\/[A-Z]{2,4})*\)? (\d+(?:[/-]\d+)*) ?([A-Z]{1,2}(?:[-–][A-Z]{1,2})*)?(?:\/(?:[A-Z]{2,4}|COM GEN) \d+[A-Z]{0,2})*[:.] ?(.+) \((\d+(?:(?:, (?:or )?|-)\d+)*|\d+(?: (?:or|to) |–)\d+|\d+–\d+(?:(?:\/|, )\d+–\d+)*|2\.[05]) ?\)$/
       )
     if (!match) {
       console.error(
@@ -81,6 +84,4 @@ for (const path of courseListLinks) {
     }
     const [, subject, courseNumber, courseLetter, name, unitsRaw] = match
   }
-
-  i++
 }

@@ -46,7 +46,10 @@ that came up.
       hyphens instead.
 
     - [LISL 5A-C](https://catalog.ucsd.edu/courses/LING.html#lisl5a) uses commas
-      instead.
+      instead. However, unlike the above two cases, these include letters.
+
+      - [POLI 5 or 5D](https://catalog.ucsd.edu/courses/POLI.html#poli5) uses
+        "or."
 
   - [BGGN 249A-B-C](https://catalog.ucsd.edu/courses/BIOL.html#bggn-249a) lists
     an entire sequence at once. Its units are also listed as (4-4-4). It seems
@@ -103,16 +106,6 @@ that came up.
     symbols in its name. At this point, I don't think it's worth having an
     allowlist of characters for the course title.
 
-- Whitespace:
-
-  - [ANAR 113](https://catalog.ucsd.edu/courses/ANTH.html#anar113) is very
-    subtle: it has a non-breaking space (`&nbsp;`) after the period. Most of the
-    others don't.
-
-  - [CLIN 296](https://catalog.ucsd.edu/courses/CLIN.html#clin296) has a bunch
-    of trialing non-breaking spaces after the units. This is quite rare it
-    seems.
-
 - Units:
 
   - [AAS 190](https://catalog.ucsd.edu/courses/AASM.html#aas190) has its units
@@ -134,6 +127,9 @@ that came up.
   - [ECON 202A-B-C](https://catalog.ucsd.edu/courses/ECON.html#econ202c) lists
     the units for its three quarters as 0–4/0–4/0–4.
 
+    - [MUS 201A-F](https://catalog.ucsd.edu/courses/MUS.html#mus201a) instead
+      uses commas (followed by a space).
+
   - [ECE 197](https://catalog.ucsd.edu/courses/ECE.html#ece197) lists its units
     with both commas and an or: "2, ..., 10, or 12."
 
@@ -144,6 +140,22 @@ that came up.
       other linguistics courses have 2.0 units. As a side note, this one in
       particular at least curiously also wraps its `anchor-parent` element
       twice.
+
+  - [MUS 80](https://catalog.ucsd.edu/courses/MUS.html#mus80) has a space before
+    the closing parenthesis.
+
+  - [MUS 130](https://catalog.ucsd.edu/courses/MUS.html#mus130) has 2–4/0 units,
+    whatever that means. My best guess is "two to four, or zero."
+
+- Miscellaneous whitespace:
+
+  - [ANAR 113](https://catalog.ucsd.edu/courses/ANTH.html#anar113) is very
+    subtle: it has a non-breaking space (`&nbsp;`) after the period. Most of the
+    others don't.
+
+  - [CLIN 296](https://catalog.ucsd.edu/courses/CLIN.html#clin296) has a bunch
+    of trialing non-breaking spaces after the units. This is quite rare it
+    seems.
 
 - [EDS 30](https://catalog.ucsd.edu/courses/EDS.html#eds30), like a lot of the
   other EDS courses, are cross-listed in the form `EDS 30/MATH 95`. I think it's
@@ -156,3 +168,76 @@ that came up.
     cross-listed with COM GEN 194, which has a space in the subject code. I
     think it refers to [COMM
     194](https://catalog.ucsd.edu/courses/COMM.html#comm194).
+
+  - [SCIS (science studies)](https://catalog.ucsd.edu/courses/SCIS.html) has
+    courses separated by commas rather than slashes. However, all of the course
+    names are supposed to apply, apparently, or at least, the subjects on the
+    page seem heterogeneous. Also, the page doesn't have anchors.
+
+- [SIO 114](https://catalog.ucsd.edu/courses/SIO.html#sio114)'s "Prerequisite:"
+  label has the `course-name` class for some reason. I should just check if it's
+  a `<p>` tag.
+
+- [TDAC 103A](https://catalog.ucsd.edu/courses/THEA.html#tdac103a) is missing a
+  space after its period. This is quite rare and seems to only happen on theatre
+  course listings (TDGR 217, TDGR 243, and VIS 145B are the others).
+
+  - [GPCO 468](https://catalog.ucsd.edu/courses/GPS.html#gpco468) has a colon
+    instead of a period. The only other time this happens is with another GPS
+    course.
+
+- [MBC (marine biodiversity and
+  conversion)](https://catalog.ucsd.edu/courses/MBC.html) has a section with the
+  class `course-name` labelled "Electives. Varies (12)." It has a unit count,
+  but it doesn't have an `anchor`, so it's not an actual course. It's probably
+  just a major requirement. I think this should be ignored.
+
+This leaves the following:
+
+- Missing units. I don't really know how to deal with these, though I suppose I
+  don't really need the units.
+
+  - COMM 101A. Media Activism
+  - HIEU 124. The Age of Alexander: Hellenistic History from Alexander the Great to Cleopatra
+  - HILA 119. Central America: Popular Struggle, Political Change, and US Intervention
+  - JAPN 190. Selected Topics in Contemporary Japanese Studies
+  - LIGN 9GS. Sign Languages and Deaf Culture in the U.S. and France
+  - USP 131. Culture, Tourism, and the Urban Economy: Case Studies of Craft Breweries
+  - USP 141A. Life Course Scholars Research and Core Fundamentals
+  - USP 141B. Life Course Scholars Capstone Project
+  - USP 188. Field Research in Migrant Communities—Practicum
+
+- Missing a period (I can fix this easily, but I don't want there to be false
+  positives at this stage).
+
+  - COMM 114M CSI: Communication and the Law (4)
+  - COMM 114T CSI: Science Communication (4)
+  - HIUS 178/278 The Atlantic World, 1400–1800 (4)
+  - SOCI 123 Japanese Culture Inside/Out: A Transnational Perspective (4)
+
+- Lists of course codes. The regex is quite large right now, so I plan on fixing these
+
+  - Linguistics/American Sign Language (LISL) 5A, 5B, 5C. Fundamentals of American Sign Language (5)
+  - Linguistics/French (LIFR) 5B, 5C, 5D. Fundamentals of French (5)
+  - Linguistics/German (LIGM) 5A, 5B, 5C, 5D. Fundamentals of German (5)
+  - Linguistics/Spanish (LISP) 5A, 5B, 5C, 5D. Fundamentals of Spanish (5)
+  - Linguistics/Spanish (LISP) 15, 16, 17. Intermediate Spanish for the Social Sciences (2)
+  - POLI 5 or 5D. Data Analytics for the Social Sciences (4)
+  - POLI 10 or 10D. Introduction to Political Science: American Politics (4)
+  - POLI 11 or 11D. Introduction to Political Science: Comparative Politics (4)
+  - POLI 12 or 12D. Introduction to Political Science: International Relations (4)
+  - POLI 13 or 13D. Power and Justice (4)
+  - POLI 30 or 30D. Political Inquiry (4)
+
+- `/0` in units. I think this means "or zero," but I'll first simplifiy the regex before adding this.
+
+  - MUS 130. Chamber Music Performance (2–4/0)
+  - MUS 131. Advanced Improvisation Performance (4/0)
+
+- I'm not sure if I will need to capture the subject-course code pair from the
+  middle of the list.
+
+  - ANTH 268, COGR 225A, HIGR 238, PHIL 209A, SOCG 255A. Introduction to Science Studies (4)
+  - ANTH 272, COGR 225B, HIGR 239, PHIL 209B, SOCG 255B. Seminar in Science Studies (4)
+  - ANTH 273, COGR 225C, HIGR 240, PHIL 209C, SOCG 255C. Colloquium in Science Studies (4)
+  - ANTH 269, COGR 225D, HIGR 241, PHIL 209D, SOCG 255D. Advanced Approaches to Science Studies (4)
