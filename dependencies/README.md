@@ -52,17 +52,13 @@ that came up.
         "or."
 
   - [BGGN 249A-B-C](https://catalog.ucsd.edu/courses/BIOL.html#bggn-249a) lists
-    an entire sequence at once. Its units are also listed as (4-4-4). It seems
-    all courses with A-B-C have n-n-n units.
-
-  - [BGGN 249A-B-C](https://catalog.ucsd.edu/courses/BIOL.html#bggn-249a) lists
     an entire sequence at once.
 
     - [SE 130A-B](https://catalog.ucsd.edu/courses/SE.html#se130a) uses an en
       dash instead of a hyphen.
 
   - [COMM 114M](https://catalog.ucsd.edu/courses/COMM.html#comm114m) doesn't
-    have a period after the course code. This is quite rare.
+    have a period after the course code. This is not that rare.
 
   - [EDS 128 A-B](https://catalog.ucsd.edu/courses/EDS.html#eds128b) has a space
     between the course code's number and letter.
@@ -108,11 +104,20 @@ that came up.
 
 - Units:
 
+  - [AIP 197](https://catalog.ucsd.edu/courses/AIP.html#aip197) has units
+    separated by commas.
+
+    - [AAS 198](https://catalog.ucsd.edu/courses/AASM.html#aas198) has its units
+      listed using "or" instead of a comma.
+
+    - [ECE 197](https://catalog.ucsd.edu/courses/ECE.html#ece197) lists its
+      units with both commas and an or: "2, ..., 10, or 12."
+
   - [AAS 190](https://catalog.ucsd.edu/courses/AASM.html#aas190) has its units
     listed as a range with an en dash (–).
 
-  - [AAS 198](https://catalog.ucsd.edu/courses/AASM.html#aas198) has its units
-    listed using "or" instead of a comma.
+    - [BILD 98](https://catalog.ucsd.edu/courses/BIOL.html#bild98) has a range
+      of units using "to" instead of an en dash.
 
   - [BGGN 249A-B-C](https://catalog.ucsd.edu/courses/BIOL.html#bggn-249a)'s
     units are also listed as (4-4-4). It seems all courses with A-B-C have n-n-n
@@ -129,9 +134,6 @@ that came up.
 
     - [MUS 201A-F](https://catalog.ucsd.edu/courses/MUS.html#mus201a) instead
       uses commas (followed by a space).
-
-  - [ECE 197](https://catalog.ucsd.edu/courses/ECE.html#ece197) lists its units
-    with both commas and an or: "2, ..., 10, or 12."
 
   - [LISL 1A](https://catalog.ucsd.edu/courses/LING.html#lisl1a) and a lot of
     the other linguistics courses have 2.5 units.
@@ -170,9 +172,9 @@ that came up.
     194](https://catalog.ucsd.edu/courses/COMM.html#comm194).
 
   - [SCIS (science studies)](https://catalog.ucsd.edu/courses/SCIS.html) has
-    courses separated by commas rather than slashes. However, all of the course
-    names are supposed to apply, apparently, or at least, the subjects on the
-    page seem heterogeneous. Also, the page doesn't have anchors.
+    courses separated by commas rather than slashes. All of the courses don't
+    need to apply because they're already listed on their respective pages.
+    Also, the page doesn't have anchors. I think this can be omitted.
 
 - [SIO 114](https://catalog.ucsd.edu/courses/SIO.html#sio114)'s "Prerequisite:"
   label has the `course-name` class for some reason. I should just check if it's
@@ -241,3 +243,48 @@ This leaves the following:
   - ANTH 272, COGR 225B, HIGR 239, PHIL 209B, SOCG 255B. Seminar in Science Studies (4)
   - ANTH 273, COGR 225C, HIGR 240, PHIL 209C, SOCG 255C. Colloquium in Science Studies (4)
   - ANTH 269, COGR 225D, HIGR 241, PHIL 209D, SOCG 255D. Advanced Approaches to Science Studies (4)
+
+Summary:
+
+```
+# Subjects
+CSE
+SE
+BENG/BIMM/CSE/CHEM
+CLASSIC
+Linguistics/American Sign Language (LISL)
+Linguistics/Spanish (LISP)
+
+# Courses
+11
+197DC
+160/260
+21-22-23-24-25-26
+5A, 5B, 5C
+5 or 5D
+249A-B-C
+130A–B
+128 A-B
+
+# Subject-course code pairs
+CSE 11
+BENG 276/CHEM 276/MATH 276/SPPS 276
+HITO 193/POLI 194/COM GEN 194/USP 194
+ANTH 268, COGR 225A, HIGR 238, PHIL 209A, SOCG 255A
+
+# Units
+(4)
+(2, 4, 6, 8, 10, 12)
+(2 or 4)
+(2, 4, 6, 8, 10, or 12)
+(1–4)
+(1 to 4)
+(4-4-4)
+(0–4/0–4/0–4)
+(1–4, 1–4, 1–4, 1–4, 1–4, 1–4)
+(2.5)
+(2.0)
+(1–4 )
+(2–4/0)
+(4/0)
+```
