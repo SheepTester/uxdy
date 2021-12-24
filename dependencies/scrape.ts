@@ -7,6 +7,7 @@ import {
   Element,
   HTMLDocument
 } from 'https://deno.land/x/deno_dom@v0.1.19-alpha/deno-dom-wasm.ts'
+import { stringify } from './util.ts'
 
 const HOST = 'https://catalog.ucsd.edu/'
 
@@ -65,7 +66,7 @@ const subjectCodeRegex = /(?:Linguistics(?:\/[\w ]+)? \()?([A-Z]+)(?:\/[A-Z]+)*\
  *
  * Captures:
  * 2. The course code number.
- * 3. The course code letter.
+ * 3. The course code letter (optional).
  * 4. Other course codes.
  */
 const courseCodeRegex = /(\d+(?:[/-]\d+)*) ?([A-Z]+(?:[-–][A-Z]+)*)?((?:(?:, | or )\d+[A-Z]*)*)/
@@ -79,7 +80,7 @@ const extraCourseRegex = /(?:(?:\/|, )(?:[A-Z]+|COM GEN) \d+[A-Z]*)*/
  * Matches units.
  *
  * Captures:
- * 6. Units.
+ * 6. Units (optional in `courseNameRegex`).
  */
 const unitRegex = /\((\d+(?:\.\d+)?(?:(?:–| to )\d+)?(?:(?:, (?:or )?| or |[/-])\d+(?:–\d+)?)*(?:\/0)?) ?\)/
 /**
@@ -95,8 +96,27 @@ const courseNameRegex = new RegExp(
     .toString()
     .slice(1, -1)}${extraCourseRegex
     .toString()
-    .slice(1, -1)}[:.]? ?(.+)(?: ${unitRegex.toString().slice(1, -1)})?$`
+    .slice(1, -1)}[:.]? ?(.+) ${unitRegex.toString().slice(1, -1)}$`
 )
+/**
+ * `courseNameRegex` but with no units.
+ */
+const courseNameNoUnitsRegex = new RegExp(
+  `^${subjectCodeRegex
+    .toString()
+    .slice(1, -1)} ${courseCodeRegex
+    .toString()
+    .slice(1, -1)}${extraCourseRegex.toString().slice(1, -1)}[:.]? ?(.+)$`
+)
+
+interface Course {
+  subject: string
+  course: string
+  title: string
+  units?: number[]
+}
+
+const courses: Course[] = []
 
 for (const path of courseListLinks) {
   const courseList = await getPage(path)
@@ -109,7 +129,9 @@ for (const path of courseListLinks) {
       continue
     }
     // See README.md for oddities
-    const match = rawCourseName.trim().match(courseNameRegex)
+    const match =
+      rawCourseName.trim().match(courseNameRegex) ??
+      rawCourseName.trim().match(courseNameNoUnitsRegex)
     if (!match) {
       console.error(
         'Course name regex did not match, may be too strict.',
@@ -135,11 +157,81 @@ for (const path of courseListLinks) {
     const [
       ,
       subject,
-      courseNumber,
-      courseLetter,
-      otherCourses,
-      name,
-      unitsRaw
+      courseNumbersRaw,
+      courseLettersRaw = null,
+      otherCoursesRaw,
+      title,
+      unitsRaw = null
     ] = match
+    const courseCodes = []
+    const courseNumbers = courseNumbersRaw.split(/[/-]/)
+    if (courseLettersRaw) {
+      const courseLetters = courseLettersRaw.split(/[-–]/)
+      for (const number of courseNumbers) {
+        for (const letter of courseLetters) {
+          courseCodes.push(`${number}${letter}`)
+        }
+      }
+    } else {
+      courseCodes.push(...courseNumbers)
+    }
+    courseCodes.push(...otherCoursesRaw.split(/, | or /).slice(1))
+
+    const unitsZeroable = unitsRaw?.endsWith('/0')
+    const unitRanges =
+      unitsRaw === null
+        ? null
+        : (unitsZeroable ? unitsRaw.slice(0, -2) : unitsRaw)
+            .split(/, (?:or )?| or |[/-]/)
+            .map(unitRange => {
+              const [start, end] = unitRange.split(/–| to /)
+              if (end) {
+                const units = []
+                for (let unit = +start; unit <= +end; unit++) {
+                  units.push(unit)
+                }
+                return units
+              } else {
+                return [+start]
+              }
+            })
+
+    // Here's a grid of possibilities:
+    // 1. There is only one course.
+    //   - There is only one unit range -> the unit range is for the course.
+    //   - There are multiple unit ranges -> merge the unit ranges for the
+    //      course.
+    // 2. There are multiple courses.
+    //   - There is only one unit range -> the unit range applies to all the
+    //     courses.
+    //   - There are multiple unit ranges -> each course should correspond to
+    //     each unit range. Ensure that the number of each match. If not, panic.
+    if (unitRanges) {
+      if (courseCodes.length > 1 && unitRanges.length > 1) {
+        if (courseCodes.length === unitRanges.length) {
+          for (let i = 0; i < courseCodes.length; i++) {
+            const course = courseCodes[i]
+            const units = unitRanges[i]
+            courses.push({ subject, course, title, units })
+          }
+        } else {
+          throw new Error("Number of course codes and unit ranges don't match.")
+        }
+      } else {
+        const units = unitRanges.flat()
+        for (const course of courseCodes) {
+          courses.push({ subject, course, title, units })
+        }
+      }
+    } else {
+      for (const course of courseCodes) {
+        courses.push({ subject, course, title })
+      }
+    }
   }
 }
+
+await Deno.writeTextFile(
+  new URL('./.output/courses.json', import.meta.url),
+  stringify(courses) + '\n'
+)
