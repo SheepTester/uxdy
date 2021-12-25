@@ -288,3 +288,55 @@ ANTH 268, COGR 225A, HIGR 238, PHIL 209A, SOCG 255A
 (2–4/0)
 (4/0)
 ```
+
+### Description oddities
+
+I'm starting to think the catalog is maintained by editing the HTML directly. My
+assumption here is that every `p.course-name` is followed by exactly one
+`p.course-descriptions`.
+
+- [MGTF 408](https://catalog.ucsd.edu/courses/MGT.html#mgtf408) and some other
+  courses are listed twice on the web page. The second time seldom uses the
+  `course-descriptions` class for its paragraphs.
+
+- [LTWL 140](https://catalog.ucsd.edu/courses/LIT.html#ltwl140) has a typo; its
+  description's class is `course-description` not `course-descriptions`.
+
+  - [HDS 191](https://catalog.ucsd.edu/courses/HDS.html#hds191) uses an atypical
+    `faculty-staff-listing` class for its description.
+
+  - [MATS 299](https://catalog.ucsd.edu/courses/MATS.html#mats299) uses
+    `course-note`.
+
+- [FPM 259B](https://catalog.ucsd.edu/courses/FMPH.html#fpm259b) has a second
+  `course-descriptions` but it's for the anchor.
+
+  - [COMM 101](https://catalog.ucsd.edu/courses/COMM.html#comm101) uses the
+    `course-descriptions` class for headings as well.
+
+- [CSS 100](https://catalog.ucsd.edu/courses/css.html#css100) has a second
+  `course-descriptions` paragraph that just contains a non-breaking space.
+
+- [VIS 23](https://catalog.ucsd.edu/courses/VIS.html#vis23) has a legitimate
+  second description paragraph that just contains a note.
+
+  - [MUS 95](https://catalog.ucsd.edu/courses/MUS.html#mus95) has various
+    paragraphs in the form of a note as well.
+
+- [POLI 132](https://catalog.ucsd.edu/courses/POLI.html#poli132) has a bare
+  description that isn't in a `<p>` tag.
+
+- [PHYS 258](https://catalog.ucsd.edu/courses/PHYS.html#phys259a) is interrupted
+  by an `anchor-parent` in between the name and description.
+
+- [JAPN 190](https://catalog.ucsd.edu/courses/JAPN.html#japn190) straight up
+  just doesn't have a description.
+
+Therefore, I can follow the following rule:
+
+- If the next element sibling is a `<p>` element, then it has the course
+  description.
+
+- If the next next element sibling starts with `Note:` (as with the two cases
+  listed above), then keep taking the next element until you run out of
+  `course-descriptions`.

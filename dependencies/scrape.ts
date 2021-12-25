@@ -121,7 +121,29 @@ const courses: Course[] = []
 for (const path of courseListLinks) {
   const courseList = await getPage(path)
 
-  for (const courseName of courseList.querySelectorAll('p.course-name')) {
+  const weirdClasses = new Set(
+    Array.from(
+      courseList.querySelector('p.course-name')?.parentElement?.children ?? [],
+      elem => (elem.tagName === 'P' ? elem.className : '')
+    ).filter(
+      name =>
+        ![
+          '',
+          'course-disclaimer',
+          'anchor-parent',
+          'course-name',
+          'course-descriptions',
+          'courseFacLink',
+          'alphabreak'
+        ].includes(name)
+    )
+  )
+  if (weirdClasses.size > 0) {
+    console.log(path, [...weirdClasses])
+  }
+
+  for (const courseNameNode of courseList.querySelectorAll('p.course-name')) {
+    const courseName = courseNameNode as Element
     // Replace nbsp with ASCII space
     const rawCourseName = courseName.textContent.replace(/\u00a0/g, ' ')
     if (rawCourseName === 'Electives. Varies (12)') {
@@ -195,6 +217,31 @@ for (const path of courseListLinks) {
                 return [+start]
               }
             })
+
+    if (
+      (courseName.nextElementSibling?.classList.contains(
+        'course-descriptions'
+      ) ||
+        courseName.nextElementSibling?.classList.contains(
+          'course-description'
+        ) ||
+        courseName.nextElementSibling?.classList.contains(
+          'faculty-staff-listing'
+        ) ||
+        courseName.nextElementSibling?.className === '') &&
+      (!courseName.nextElementSibling.nextElementSibling?.classList.contains(
+        'course-descriptions'
+      ) ||
+        courseName.nextElementSibling.nextElementSibling.tagName !== 'P' ||
+        courseName.nextElementSibling.nextElementSibling.textContent.trim() ===
+          '' ||
+        courseName.nextElementSibling.nextElementSibling.querySelector(
+          'a[id][name]'
+        ))
+    ) {
+    } else {
+      console.log(path, rawCourseName, 'is sus')
+    }
 
     // Here's a grid of possibilities:
     // 1. There is only one course.
