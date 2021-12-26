@@ -337,6 +337,13 @@ Therefore, I can follow the following rule:
 - If the next element sibling is a `<p>` element, then it has the course
   description.
 
+  - Otherwise, see if there's a non-empty adjacent text node.
+
 - If the next next element sibling starts with `Note:` (as with the two cases
   listed above), then keep taking the next element until you run out of
   `course-descriptions`.
+
+The only time "prerequisite" is mentioned other than in the form
+`Prerequisites:` is to clarify that one course is not a prerequisite for another
+([ETHN 257A](https://catalog.ucsd.edu/courses/ETHN.html#ethn257a) and [HIUS
+151](https://catalog.ucsd.edu/courses/HIST.html#hius151)).

@@ -117,30 +117,10 @@ interface Course {
 }
 
 const courses: Course[] = []
+const p: Record<string, number> = {}
 
 for (const path of courseListLinks) {
   const courseList = await getPage(path)
-
-  const weirdClasses = new Set(
-    Array.from(
-      courseList.querySelector('p.course-name')?.parentElement?.children ?? [],
-      elem => (elem.tagName === 'P' ? elem.className : '')
-    ).filter(
-      name =>
-        ![
-          '',
-          'course-disclaimer',
-          'anchor-parent',
-          'course-name',
-          'course-descriptions',
-          'courseFacLink',
-          'alphabreak'
-        ].includes(name)
-    )
-  )
-  if (weirdClasses.size > 0) {
-    console.log(path, [...weirdClasses])
-  }
 
   for (const courseNameNode of courseList.querySelectorAll('p.course-name')) {
     const courseName = courseNameNode as Element
@@ -218,29 +198,29 @@ for (const path of courseListLinks) {
               }
             })
 
+    let description =
+      (courseName.nextElementSibling?.tagName === 'P'
+        ? courseName.nextElementSibling.textContent
+        : courseName.nextSibling?.nodeValue?.trim()) ?? ''
     if (
-      (courseName.nextElementSibling?.classList.contains(
-        'course-descriptions'
-      ) ||
-        courseName.nextElementSibling?.classList.contains(
-          'course-description'
-        ) ||
-        courseName.nextElementSibling?.classList.contains(
-          'faculty-staff-listing'
-        ) ||
-        courseName.nextElementSibling?.className === '') &&
-      (!courseName.nextElementSibling.nextElementSibling?.classList.contains(
-        'course-descriptions'
-      ) ||
-        courseName.nextElementSibling.nextElementSibling.tagName !== 'P' ||
-        courseName.nextElementSibling.nextElementSibling.textContent.trim() ===
-          '' ||
-        courseName.nextElementSibling.nextElementSibling.querySelector(
-          'a[id][name]'
-        ))
+      courseName.nextElementSibling?.nextElementSibling?.textContent.startsWith(
+        'Note:'
+      )
     ) {
-    } else {
-      console.log(path, rawCourseName, 'is sus')
+      let current: Element | null =
+        courseName.nextElementSibling.nextElementSibling
+      while (current?.className === 'course-descriptions') {
+        description += `\n\n${current.textContent}`
+        current = current.nextElementSibling
+      }
+    }
+    const prereqIndex = description.indexOf('Prerequisites:')
+    if (prereqIndex !== -1) {
+      const prereqs = description
+        .slice(prereqIndex + 'Prerequisites:'.length)
+        .trim()
+      p[prereqs] ??= 0
+      p[prereqs]++
     }
 
     // Here's a grid of possibilities:
@@ -281,4 +261,11 @@ for (const path of courseListLinks) {
 await Deno.writeTextFile(
   new URL('./.output/courses.json', import.meta.url),
   stringify(courses) + '\n'
+)
+
+console.log(
+  Object.entries(p)
+    .sort((a, b) => b[1] - a[1])
+    .map(([prereqs, times]) => prereqs + (times === 1 ? '' : ` (${times})`))
+    .join('\n')
 )
