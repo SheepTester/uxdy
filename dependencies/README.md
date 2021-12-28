@@ -343,7 +343,67 @@ Therefore, I can follow the following rule:
   listed above), then keep taking the next element until you run out of
   `course-descriptions`.
 
+## Prerequisite parsing
+
 The only time "prerequisite" is mentioned other than in the form
 `Prerequisites:` is to clarify that one course is not a prerequisite for another
 ([ETHN 257A](https://catalog.ucsd.edu/courses/ETHN.html#ethn257a) and [HIUS
 151](https://catalog.ucsd.edu/courses/HIST.html#hius151)).
+
+- Four courses ([LING 256](https://catalog.ucsd.edu/courses/LING.html#lign256),
+  [SIOC 207B](https://catalog.ucsd.edu/courses/SIO.html#sioc207b),
+  [C](https://catalog.ucsd.edu/courses/SIO.html#sioc207c), and
+  [D](https://catalog.ucsd.edu/courses/SIO.html#sioc207d)) have "Recommended
+  Prerequisites:", so I'll have to check for that. Fortunately, it's always
+  listed before the actual prerequisites, so I don't have to look for a period
+  or something.
+
+I think for now, I will just focus on prerequisite (and maybe corequisite)
+courses, excluding major-exclusivities and whatnot. Let's compare various
+prerequisites.
+
+```
+# Stage 1: "and" and "or"
+VIS 161.
+successful completion of USP 141A.
+VIS 83 or VIS 84.
+graduate standing, SIOB 276 or SIO 276 and consent of instructor. Department stamp. Sugihara
+THDA 132 or TDMV 136 or TDMV 142 or TDMV 143 or TDMV 144, or consent of instructor.
+upper-division standing; RELI 110A or 110B; overall GPA of 2.5.
+THPW or TDPW 1 and THPW or TDPW 101.
+CHEM 6C or CHEM 6CH and MATH 20C or MATH 31BH or consent of instructor.
+SIOC 210 or SIO 210 and SIOB 280 or SIO 280 or consent of instructor. Ohman, A. Allen
+(CHEM 6B or 6BH) and (BILD 3 or SIO 50 or SIO 60)
+
+# Stage 1.5: Commas
+graduate standing; SOCI 1, SOCI 2; or consent of instructor.
+THGR 270A, THGR 270B, graduate standing, consent of instructor.
+BILD 3, MATH 10A or MATH 20A, CHEM 6B, or consent of instructor.
+THGR 270A or TDGR 270A, THGR 270B or TDGR 270B, graduate standing, and consent of instructor.
+THPR or TDPR 4, THPR or TDPR 104, THDR or TDDR 101, consent of instructor, and department stamp.
+USP 177, USP 177A, or USP 179.
+
+# Stage 2: Shorthand with common subject/course code
+VIS 30 and 41.
+CHEM 6C and BILD 1 or 3 or consent of instructor.
+THPR or TDPR 1, 2, 3, or 5; permission of instructor; department stamp required.
+audition; department stamp; concurrent enrollment in TDMV 110, 111, 112, 120, 122, 130, or 133.
+twelve units of THDA 101A-B-C or TDMV 111 or consent of instructor.
+THDE or TDDE 1 and THDE or TDDE 101 or THDE or TDDE 121, or THDE or TDDE 131, or consent of instructor.
+undergraduate: PHYS 2A-B or PHYS 4A-B-C, or consent of instructor. Graduate: graduate-level standing or consent of instructor.
+PHYS 2A–C or PHYS 4A–C and MATH 20A–E, or consent of instructor.
+
+# Stage 3: Excluding "Will not receive credit for"
+upper-division standing. Will not receive credit for SOCI 154 and SOCC 154.
+SOCI 60. Will not receive credit for SOCI 108 and SOCA 108.
+SOCI 60; majors only. Will not receive credit for SOCI 104 and SOCA 104.
+
+# Stage 4: Other scary oddities
+senior standing, VIS 135, and two from VIS 100A, VIS 101A, VIS 133A, VIS 136A, VIS 161, VIS 162.
+VIS 142; CSE 11 recommended. Open to visual arts majors and ICAM minors only. Two production-course limitation.
+THGR or TDGR 213A for B, THGR or TDGR 213B for C; admission to the MFA theatre program.
+```
+
+Generally, it seems that `/[A-Z]+ \d+[A-Z]*/` matches all mentioned course
+names. "Or" binds tighter than "and." I think a comma implies "and" unless
+otherwise noted.

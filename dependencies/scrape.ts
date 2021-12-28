@@ -110,14 +110,12 @@ const courseNameNoUnitsRegex = new RegExp(
 )
 
 interface Course {
-  subject: string
-  course: string
+  code: string
   title: string
   units?: number[]
 }
 
 const courses: Course[] = []
-const p: Record<string, number> = {}
 
 for (const path of courseListLinks) {
   const courseList = await getPage(path)
@@ -214,13 +212,17 @@ for (const path of courseListLinks) {
         current = current.nextElementSibling
       }
     }
-    const prereqIndex = description.indexOf('Prerequisites:')
-    if (prereqIndex !== -1) {
+    const prereqMatch = description.match(/(?<!Recommended )Prerequisites:/)
+    if (prereqMatch) {
       const prereqs = description
-        .slice(prereqIndex + 'Prerequisites:'.length)
+        .slice(prereqMatch.index! + prereqMatch[0].length)
         .trim()
-      p[prereqs] ??= 0
-      p[prereqs]++
+      if (
+        description.indexOf('Prerequisites:') !==
+        description.lastIndexOf('Prerequisites:')
+      ) {
+        console.log(HOST + path.slice(1), rawCourseName, description)
+      }
     }
 
     // Here's a grid of possibilities:
@@ -239,7 +241,7 @@ for (const path of courseListLinks) {
           for (let i = 0; i < courseCodes.length; i++) {
             const course = courseCodes[i]
             const units = unitRanges[i]
-            courses.push({ subject, course, title, units })
+            courses.push({ code: `${subject} ${course}`, title, units })
           }
         } else {
           throw new Error("Number of course codes and unit ranges don't match.")
@@ -247,12 +249,12 @@ for (const path of courseListLinks) {
       } else {
         const units = unitRanges.flat()
         for (const course of courseCodes) {
-          courses.push({ subject, course, title, units })
+          courses.push({ code: `${subject} ${course}`, title, units })
         }
       }
     } else {
       for (const course of courseCodes) {
-        courses.push({ subject, course, title })
+        courses.push({ code: `${subject} ${course}`, title })
       }
     }
   }
@@ -261,11 +263,4 @@ for (const path of courseListLinks) {
 await Deno.writeTextFile(
   new URL('./.output/courses.json', import.meta.url),
   stringify(courses) + '\n'
-)
-
-console.log(
-  Object.entries(p)
-    .sort((a, b) => b[1] - a[1])
-    .map(([prereqs, times]) => prereqs + (times === 1 ? '' : ` (${times})`))
-    .join('\n')
 )
