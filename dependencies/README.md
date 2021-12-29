@@ -392,6 +392,7 @@ twelve units of THDA 101A-B-C or TDMV 111 or consent of instructor.
 THDE or TDDE 1 and THDE or TDDE 101 or THDE or TDDE 121, or THDE or TDDE 131, or consent of instructor.
 undergraduate: PHYS 2A-B or PHYS 4A-B-C, or consent of instructor. Graduate: graduate-level standing or consent of instructor.
 PHYS 2A–C or PHYS 4A–C and MATH 20A–E, or consent of instructor.
+PHYS 105A, MATH 20A, 20B, 20C or 31BH, 20D, 20E or 31CH, and 18 or 20F or 31AH.
 
 # Stage 3: Excluding "Will not receive credit for"
 upper-division standing. Will not receive credit for SOCI 154 and SOCC 154.
@@ -402,6 +403,12 @@ SOCI 60; majors only. Will not receive credit for SOCI 104 and SOCA 104.
 senior standing, VIS 135, and two from VIS 100A, VIS 101A, VIS 133A, VIS 136A, VIS 161, VIS 162.
 VIS 142; CSE 11 recommended. Open to visual arts majors and ICAM minors only. Two production-course limitation.
 THGR or TDGR 213A for B, THGR or TDGR 213B for C; admission to the MFA theatre program.
+POLI 5D/POLI 5D/ECON 5 or POLI 30D.
+CHEM 132 or the combination of PHYS 100A and 110A. Corequisites: PHYS 140A.
+
+# Corequisites
+upper-division standing. Must be taken concurrently with PSYC 121 or PSYC 140.
+CHEM 132 or the combination of PHYS 100A and 110A. Corequisites: PHYS 140A.
 ```
 
 Generally, it seems that `/[A-Z]+ \d+[A-Z]*/` matches all mentioned course

@@ -212,17 +212,21 @@ for (const path of courseListLinks) {
         current = current.nextElementSibling
       }
     }
+    description = description.replace(/\u00a0/g, ' ')
     const prereqMatch = description.match(/(?<!Recommended )Prerequisites:/)
     if (prereqMatch) {
       const prereqs = description
         .slice(prereqMatch.index! + prereqMatch[0].length)
         .trim()
-      if (
-        description.indexOf('Prerequisites:') !==
-        description.lastIndexOf('Prerequisites:')
-      ) {
-        console.log(HOST + path.slice(1), rawCourseName, description)
-      }
+      // Tokens:
+      // - commas
+      // - "and" and "or"
+      // - subject codes
+      // - course codes (including ranges)—captures the digit and letter
+      //   ranges separately
+      const tokens = prereqs.matchAll(
+        /,|\b(?:and|or|[A-Z]+|(\d+)([A-Z]*(?:[-–][A-Z])*))\b/g
+      )
     }
 
     // Here's a grid of possibilities:
