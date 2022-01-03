@@ -1,6 +1,7 @@
 # === USAGE ===
 # Get cookies from devtools > Application > Cookies > https://act.ucsd.edu
 # ruby scrape.rb <jlinksessionidx> <UqZBpD3n>
+# Note: There may be multiple `UqZBpD3n` cookies.
 # stdout has available classes
 
 # Installing Ruby: https://stackoverflow.com/a/37956249
@@ -149,6 +150,7 @@ class Group
     "  " => :default, "FI" => :final_exam, "TBA" => :to_be_announced,
     "MI" => :midterm, "MU" => :make_up_session, "RE" => :review_session,
     "PB" => :problem_session, "OT" => :other_additional_meeting,
+    "FM" => :film,
   }
   @@instruction_types = {
     "DI" => :discussion, "LE" => :lecture, "SE" => :seminar, "PR" => :practicum,
@@ -189,7 +191,7 @@ class Group
 
     @code = raw_group[:SECT_CODE]
     # JAPN 10B goes down to P00
-    unless @code =~ /\A[A-P01]\d\d\Z/
+    unless @code =~ /\A[A-P012]\d\d\Z/
       raise "code looks weird '#{@code}'"
     end
     # FM|PB|RE|OT|MU|FI|MI are finals
