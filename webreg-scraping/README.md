@@ -258,3 +258,125 @@ type codes](https://registrar.ucsd.edu/StudentLink/instr_codes.html):
 \* Considered finals (or at least listed separately from normal meetings).
 
 But that table isn't exhaustive, apparently. What's `SA` and `OP`??
+
+### Get user's schedule
+
+```
+GET https://act.ucsd.edu/webreg2/svc/wradapter/secure/get-class
+```
+
+| Query parameter | Example value | Notes                                                         |
+| --------------- | ------------- | ------------------------------------------------------------- |
+| schedname       | My Schedule   | Name of the schedule. `My Schedule` is what loads by default. |
+| final           | ""            |                                                               |
+| sectnum         | ""            |                                                               |
+| termcode        | WI22          | The ID of this quarter.                                       |
+
+Responds with a JSON array of objects:
+
+```ts
+function getClass (): {
+  END_MM_TIME: number
+  LONG_DESC: string
+  TERM_CODE: string
+  SECT_CREDIT_HRS: number
+  BEGIN_HH_TIME: number
+  SECTION_NUMBER: number
+  SUBJ_CODE: string
+  GRADE_OPTN_CD_PLUS: ' ' | '+'
+  WT_POS: string
+  PRIMARY_INSTR_FLAG: 'Y' | ' '
+  ROOM_CODE: string
+  FK_PCH_INTRL_REFID: number
+  CRSE_TITLE: string
+  END_HH_TIME: number
+  GRADE_OPTION: 'L' | 'P' | 'P/NP' | 'S' | 'S/U' | 'H' | ' '
+  START_DATE: string
+  CRSE_CODE: string
+  DAY_CODE: string
+  BEGIN_MM_TIME: number
+  NEED_HEADROW: boolean
+  PERSON_FULL_NAME: string
+  FK_SPM_SPCL_MTG_CD: '  ' | 'FI' | 'TBA' | 'MI' | 'MU' | 'RE' | 'PB' | 'OT'
+  PERSON_ID: string
+  BLDG_CODE: string
+  SECT_CREDIT_HRS_PL: ' ' | '+'
+  SECTION_HEAD: number
+  ENROLL_STATUS: 'EN' | 'WT' | 'PL'
+  FK_CDI_INSTR_TYPE:
+    | 'DI'
+    | 'LE'
+    | 'SE'
+    | 'PR'
+    | 'IN'
+    | 'IT'
+    | 'FW'
+    | 'LA'
+    | 'CL'
+    | 'TU'
+    | 'CO'
+    | 'ST'
+    | 'OP'
+    | 'OT'
+    | 'SA'
+  SECT_CODE: string
+  FK_SEC_SCTN_NUM: number
+}[]
+```
+
+| Field                | Example value                    | Notes                                                                  |
+| -------------------- | -------------------------------- | ---------------------------------------------------------------------- |
+| `SECT_CODE`          | `"A00"`                          | The section code.                                                      |
+| `FK_SPM_SPCL_MTG_CD` | `"FI"`                           | Whether the meeting is an exam.                                        |
+| `FK_CDI_INSTR_TYPE`  | `"LE"`                           | The type of the meeting.                                               |
+| `BEGIN_HH_TIME`      | `11`                             | Meeting start hour.                                                    |
+| `BEGIN_MM_TIME`      | `0`                              | Meeting start minute.                                                  |
+| `END_HH_TIME`        | `12`                             | Meeting end hour.                                                      |
+| `END_MM_TIME`        | `20`                             | Meeting end minute.                                                    |
+| `DAY_CODE`           | `"2"`                            | The day of the week when the meeting meets. A single digit.            |
+| `START_DATE`         | `"2022-01-03"`                   | Exam date, or start of quarter for normal meetings.                    |
+| `SECT_CREDIT_HRS`    | `6`                              | Number of units.                                                       |
+| `SECT_CREDIT_HRS_PL` | `" "`                            | Whether you can change the units of the course.                        |
+| `GRADE_OPTION`       | `"L"`                            | Whether the course is taken for a letter grade.                        |
+| `GRADE_OPTN_CD_PLUS` | `"+"`                            | Whether you can change the grading scale.                              |
+| `ENROLL_STATUS`      | `"EN"`                           | Enrolled, Waitlist, or Planned.                                        |
+| `WT_POS`             | `""`                             | If waitlisted, the waitlist position, unsure if number or string.      |
+| `BLDG_CODE`          | `"CTL "`                         | The building code, padded to 5 chars.                                  |
+| `ROOM_CODE`          | `"101 "`                         | Room number, padded to 5 chars.                                        |
+| `SUBJ_CODE`          | `"CAT "`                         | The subject code padded to 4 characters.                               |
+| `CRSE_CODE`          | `" 2 "`                          | Course code. The number is left-padded to 3 chars; letter right- to 2. |
+| `CRSE_TITLE`         | `"Culture, Art & Technology 2 "` | Course name.                                                           |
+| `PERSON_FULL_NAME`   | `"Bigham, David Joseph "`        | The name of the instructor padded to 35 chars.                         |
+| `PRIMARY_INSTR_FLAG` | `"Y"`                            |                                                                        |
+| `SECTION_HEAD`       | `63264`                          | The ID of the section that this section should be shown under.         |
+| `SECTION_NUMBER`     | `63255`                          | The section ID.                                                        |
+| `NEED_HEADROW`       | `false`                          | Apparently involved in section heads.                                  |
+| `TERM_CODE`          | `"WI22"`                         | The quarter.                                                           |
+| `PERSON_ID`          | `"A12345678"`                    | Your student ID.                                                       |
+| `LONG_DESC`          | `" "`                            | 30 spaces, it seems.                                                   |
+| `FK_PCH_INTRL_REFID` | `2122934`                        |                                                                        |
+| `FK_SEC_SCTN_NUM`    | `63264`                          |                                                                        |
+
+Based on
+[`gradeOptionConv`](https://act.ucsd.edu/webreg2/js/webreg/webreg-main.js),
+`GRADE_OPTION` can be:
+
+| `GRADE_OPTION` | Type                                                |
+| -------------- | --------------------------------------------------- |
+| `L`            | Letter                                              |
+| `P` or `P/NP`  | Pass / No Pass                                      |
+| `S` or `S/U`   | Satisfactory / Unsatisfactory                       |
+| `H`            | Honors Pass / Fail                                  |
+| Else           | Otherwise, the raw value of `GRADE_OPTION` is used. |
+
+If `GRADE_OPTN_CD_PLUS` is `+`, based on the URL parameter `p2` in the URL,
+it'll let you choose between:
+
+| `p2` | Academic level | Grading options                                                                            |
+| ---- | -------------- | ------------------------------------------------------------------------------------------ |
+| `UN` | Undergraduate  | Letter; Pass / No Pass                                                                     |
+| `GR` | Graduate       | Letter; Satisfactory / Unsatisfactory                                                      |
+| `PH` | PHD            | Letter if course is graduate level, else Honors Pass / Fail; Satisfactory / Unsatisfactory |
+
+For `SECTION_HEAD` and `SECTION_NUMBER`, I think it determines whether to show
+the "Subject Course" in its row in the list of sections.

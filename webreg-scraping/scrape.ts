@@ -17,19 +17,11 @@ export type RawSearchByAllResult = {
   CRSE_CODE: string
 }
 
-export type RawSearchLoadGroupDataResult = {
+type CommonRawSectionResult = {
   END_MM_TIME: number
-  SCTN_CPCTY_QTY: number
   LONG_DESC: string
-  SCTN_ENRLT_QTY: number
   BEGIN_HH_TIME: number
-  SECTION_NUMBER: string
-  SECTION_START_DATE: string
-  STP_ENRLT_FLAG: 'Y' | 'N'
-  SECTION_END_DATE: string
-  COUNT_ON_WAITLIST: number
   PRIMARY_INSTR_FLAG: 'Y' | ' '
-  BEFORE_DESC: ' ' | 'AC' | 'NC'
   ROOM_CODE: string
   END_HH_TIME: number
   START_DATE: string
@@ -37,9 +29,7 @@ export type RawSearchLoadGroupDataResult = {
   BEGIN_MM_TIME: number
   PERSON_FULL_NAME: string
   FK_SPM_SPCL_MTG_CD: '  ' | 'FI' | 'TBA' | 'MI' | 'MU' | 'RE' | 'PB' | 'OT'
-  PRINT_FLAG: ' ' | 'N' | 'Y' | '5'
   BLDG_CODE: string
-  FK_SST_SCTN_STATCD: 'AC' | 'NC' | 'CA'
   FK_CDI_INSTR_TYPE:
     | 'DI'
     | 'LE'
@@ -57,7 +47,39 @@ export type RawSearchLoadGroupDataResult = {
     | 'OT'
     | 'SA'
   SECT_CODE: string
+}
+
+export interface RawSearchLoadGroupDataResult extends CommonRawSectionResult {
+  SCTN_CPCTY_QTY: number
+  SCTN_ENRLT_QTY: number
+  SECTION_NUMBER: string
+  SECTION_START_DATE: string
+  STP_ENRLT_FLAG: 'Y' | 'N'
+  SECTION_END_DATE: string
+  COUNT_ON_WAITLIST: number
+  BEFORE_DESC: ' ' | 'AC' | 'NC'
+  PRINT_FLAG: ' ' | 'N' | 'Y' | '5'
+  FK_SST_SCTN_STATCD: 'AC' | 'NC' | 'CA'
   AVAIL_SEAT: number
+}
+
+export interface RawGetClassResult extends CommonRawSectionResult {
+  TERM_CODE: string
+  SECT_CREDIT_HRS: number
+  SECTION_NUMBER: number
+  SUBJ_CODE: string
+  GRADE_OPTN_CD_PLUS: ' ' | '+'
+  WT_POS: string
+  FK_PCH_INTRL_REFID: number
+  CRSE_TITLE: string
+  GRADE_OPTION: 'L' | 'P' | 'P/NP' | 'S' | 'S/U' | 'H' | ' '
+  CRSE_CODE: string
+  NEED_HEADROW: boolean
+  PERSON_ID: string
+  SECT_CREDIT_HRS_PL: ' ' | '+'
+  SECTION_HEAD: number
+  ENROLL_STATUS: 'EN' | 'WT' | 'PL'
+  FK_SEC_SCTN_NUM: number
 }
 
 export class AuthorizedGetter {
@@ -178,12 +200,42 @@ export class AuthorizedGetter {
     })
   }
 
+  /**
+   * Gets all the course and section data from WebReg. Yields a `Course` as
+   * sections are loaded for each course.
+   */
   async * allCourses () {
     const courses = await this.courses()
     for (const course of courses) {
       const groups = await this.sections(course.SUBJ_CODE, course.CRSE_CODE)
       yield new Course(course, groups)
     }
+  }
+
+  /**
+   * Gest the user's schedule.
+   */
+  schedule (
+    scheduleName = 'My Schedule',
+    { final = '', sectnum = '' } = {}
+  ): Promise<RawGetClassResult[]> {
+    return this.get('get-class', {
+      schedname: scheduleName,
+      final,
+      sectnum,
+      termcode: this.#term
+    })
+  }
+
+  /**
+   * Gets the user's schedule with the given name. Defaults to `My Schedule`.
+   * Unlike `schedule`, this method processes the raw schedule sections as
+   * `ScheduleSection`s.
+   */
+  getSchedule (name?: string) {
+    return this.schedule(name).then(sections =>
+      sections.map(section => new ScheduleSection(section))
+    )
   }
 }
 
@@ -197,7 +249,7 @@ export type Instructor = {
   pid: string
 }
 
-export class Group {
+class BaseGroup<Raw extends CommonRawSectionResult> {
   /** The section code, such as "A07." */
   code: string
   /**
@@ -227,20 +279,9 @@ export class Group {
   /** The days of the week on which the meeting meets. */
   days: number[]
 
-  /** The maximum number of seats. May be Infinity for no limit. */
-  capacity: number
-  /** The number of people enrolled. */
-  enrolled: number
-  /** The number of seats available. */
-  available: number
-  /** The number of people on the waitlist. */
-  waitlist: number
-  /** Whether enrolment hasn't been prevented. */
-  canEnrol: boolean
+  raw: Raw
 
-  raw: RawSearchLoadGroupDataResult
-
-  constructor (rawGroup: RawSearchLoadGroupDataResult) {
+  constructor (rawGroup: Raw) {
     this.code = rawGroup.SECT_CODE
     this.location =
       rawGroup.BLDG_CODE === 'TBA' && rawGroup.ROOM_CODE === 'TBA'
@@ -269,12 +310,6 @@ export class Group {
     }
     this.days = rawGroup.DAY_CODE.split('').map(day => +day)
 
-    this.capacity = rawGroup.SCTN_CPCTY_QTY
-    this.enrolled = rawGroup.SCTN_ENRLT_QTY
-    this.available = rawGroup.AVAIL_SEAT
-    this.waitlist = rawGroup.COUNT_ON_WAITLIST
-    this.canEnrol = rawGroup.STP_ENRLT_FLAG === 'Y'
-
     this.raw = rawGroup
   }
 
@@ -295,6 +330,29 @@ export class Group {
    */
   isSelectable () {
     return !this.isExam() && this.code.slice(0, 2) !== '00'
+  }
+}
+
+export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
+  /** The maximum number of seats. May be Infinity for no limit. */
+  capacity: number
+  /** The number of people enrolled. */
+  enrolled: number
+  /** The number of seats available. */
+  available: number
+  /** The number of people on the waitlist. */
+  waitlist: number
+  /** Whether enrolment hasn't been prevented. */
+  canEnrol: boolean
+
+  constructor (rawGroup: RawSearchLoadGroupDataResult) {
+    super(rawGroup)
+
+    this.capacity = rawGroup.SCTN_CPCTY_QTY
+    this.enrolled = rawGroup.SCTN_ENRLT_QTY
+    this.available = rawGroup.AVAIL_SEAT
+    this.waitlist = rawGroup.COUNT_ON_WAITLIST
+    this.canEnrol = rawGroup.STP_ENRLT_FLAG === 'Y'
   }
 }
 
@@ -329,5 +387,49 @@ export class Course {
       step: rawCourse.UNIT_INC
     }
     this.groups = rawGroups.map(group => new Group(group))
+  }
+}
+
+const gradeScaleKey = {
+  L: 'L',
+  P: 'P/NP',
+  'P/NP': 'P/NP',
+  S: 'S/U',
+  'S/U': 'S/U',
+  H: 'H',
+  ' ': null
+} as const
+
+export class ScheduleSection extends BaseGroup<RawGetClassResult> {
+  course: {
+    subject: string
+    course: string
+    title: string
+    unit: number
+    canChangeUnit: boolean
+    gradeScale: typeof gradeScaleKey[keyof typeof gradeScaleKey]
+    canChangeGradeScale: boolean
+  }
+  state:
+    | { type: 'enrolled' }
+    | { type: 'waitlisted'; position: number }
+    | { type: 'planned' }
+
+  constructor (rawClass: RawGetClassResult) {
+    super(rawClass)
+
+    this.course = {
+      subject: rawClass.SUBJ_CODE.trim(),
+      course: rawClass.CRSE_CODE.trim(),
+      title: rawClass.CRSE_TITLE.trim(),
+      unit: rawClass.SECT_CREDIT_HRS,
+      canChangeUnit: rawClass.SECT_CREDIT_HRS_PL === '+',
+      gradeScale: gradeScaleKey[rawClass.GRADE_OPTION],
+      canChangeGradeScale: rawClass.GRADE_OPTN_CD_PLUS === '+'
+    }
+    this.state =
+      rawClass.ENROLL_STATUS === 'WT'
+        ? { type: 'waitlisted', position: +rawClass.WT_POS }
+        : { type: rawClass.ENROLL_STATUS === 'EN' ? 'enrolled' : 'planned' }
   }
 }

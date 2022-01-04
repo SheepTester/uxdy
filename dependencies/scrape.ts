@@ -21,7 +21,7 @@ async function getPage (path: string): Promise<HTMLDocument> {
     }
 
     console.log(`Fetching ${path}`)
-    const response = await fetch(new URL(path, HOST))
+    const response = await fetch(new URL(path, HOST).toString())
     if (response.ok) {
       const html = await response.text()
       await ensureDir(dirname(fromFileUrl(cachePath)))
@@ -53,7 +53,8 @@ courseListLinks.delete('/courses/SCIS.html')
  * Captures:
  * 1. The first subject code.
  */
-const subjectCodeRegex = /(?:Linguistics(?:\/[\w ]+)? \()?([A-Z]+)(?:\/[A-Z]+)*\)?/
+const subjectCodeRegex =
+  /(?:Linguistics(?:\/[\w ]+)? \()?([A-Z]+)(?:\/[A-Z]+)*\)?/
 /**
  * Matches course code. Captures the course number and letter(s) individually.
  * There can be multiple course numbers or letters, separated by slashes,
@@ -69,7 +70,8 @@ const subjectCodeRegex = /(?:Linguistics(?:\/[\w ]+)? \()?([A-Z]+)(?:\/[A-Z]+)*\
  * 3. The course code letter (optional).
  * 4. Other course codes.
  */
-const courseCodeRegex = /(\d+(?:[/-]\d+)*) ?([A-Z]+(?:[-–][A-Z]+)*)?((?:(?:, | or )\d+[A-Z]*)*)/
+const courseCodeRegex =
+  /(\d+(?:[/-]\d+)*) ?([A-Z]+(?:[-–][A-Z]+)*)?((?:(?:, | or )\d+[A-Z]*)*)/
 /**
  * Matches and discards extra courses, separated by slashes or commas. There's a
  * special case for [COM
@@ -82,7 +84,8 @@ const extraCourseRegex = /(?:(?:\/|, )(?:[A-Z]+|COM GEN) \d+[A-Z]*)*/
  * Captures:
  * 6. Units (optional in `courseNameRegex`).
  */
-const unitRegex = /\((\d+(?:\.\d+)?(?:(?:–| to )\d+)?(?:(?:, (?:or )?| or |[/-])\d+(?:–\d+)?)*(?:\/0)?) ?\)/
+const unitRegex =
+  /\((\d+(?:\.\d+)?(?:(?:–| to )\d+)?(?:(?:, (?:or )?| or |[/-])\d+(?:–\d+)?)*(?:\/0)?) ?\)/
 /**
  * Big master regex. Also matches the name (title) of the course.
  *
@@ -90,9 +93,7 @@ const unitRegex = /\((\d+(?:\.\d+)?(?:(?:–| to )\d+)?(?:(?:, (?:or )?| or |[/-
  * 5. Course title.
  */
 const courseNameRegex = new RegExp(
-  `^${subjectCodeRegex
-    .toString()
-    .slice(1, -1)} ${courseCodeRegex
+  `^${subjectCodeRegex.toString().slice(1, -1)} ${courseCodeRegex
     .toString()
     .slice(1, -1)}${extraCourseRegex
     .toString()
@@ -102,9 +103,7 @@ const courseNameRegex = new RegExp(
  * `courseNameRegex` but with no units.
  */
 const courseNameNoUnitsRegex = new RegExp(
-  `^${subjectCodeRegex
-    .toString()
-    .slice(1, -1)} ${courseCodeRegex
+  `^${subjectCodeRegex.toString().slice(1, -1)} ${courseCodeRegex
     .toString()
     .slice(1, -1)}${extraCourseRegex.toString().slice(1, -1)}[:.]? ?(.+)$`
 )
@@ -143,12 +142,7 @@ for (const path of courseListLinks) {
           'Course name contains non-ASCII characters:',
           Array.from(
             nonAscii,
-            char =>
-              'U+' +
-              char
-                .codePointAt(0)
-                ?.toString(16)
-                .padStart(4, '0')
+            char => 'U+' + char.codePointAt(0)?.toString(16).padStart(4, '0')
           )
         )
       }
