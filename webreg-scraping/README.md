@@ -188,11 +188,11 @@ function searchLoadGroupData (): {
 | `AVAIL_SEAT`         | `50`                               | Number of seats available.                                       |
 | `SCTN_CPCTY_QTY`     | `50`                               | The maximum number of seats. 9999 for no limit.                  |
 | `COUNT_ON_WAITLIST`  | `0`                                | The number of people on the waitlist.                            |
-| `STP_ENRLT_FLAG`     | `"N"`                              | Whether to prevent enrolment.                                    |
+| `STP_ENRLT_FLAG`     | `"N"`                              | Whether to prevent enrolment. Either `Y` or `N`.                 |
 | `BLDG_CODE`          | `"PCYNH"`                          | 5 characters, padded, or `"TBA"`.                                |
 | `ROOM_CODE`          | `"120 "`                           | 5 characters, padded, or `"TBA"`.                                |
 | `PERSON_FULL_NAME`   | `"Wartell, Julie Dara ;A00785828"` | A colon-separated (`:`) list of name-PID pairs, or `"Staff; "`.  |
-| `PRIMARY_INSTR_FLAG` | `"Y"`                              | No idea.                                                         |
+| `PRIMARY_INSTR_FLAG` | `"Y"`                              | No idea. Is either `Y` or ` `.                                   |
 | `SECTION_START_DATE` | `"2022-01-03"`                     | YYYY-MM-DD. The first day of the meetings.                       |
 | `SECTION_END_DATE`   | `"2022-03-11"`                     | YYYY-MM-DD. The last day of the meetings.                        |
 | `START_DATE`         | `"2022-01-03"`                     | YYYY-MM-DD. Another first day??                                  |
@@ -201,7 +201,7 @@ function searchLoadGroupData (): {
 | `BEFORE_DESC`        | `" "`                              | Usually it's just a space.                                       |
 | `FK_SPM_SPCL_MTG_CD` | `" "`                              | Distinguishes between normal meetings (`" "`) and exam meetings. |
 | `FK_CDI_INSTR_TYPE`  | `"LE"`                             | Distinguishes between lectures and discussions.                  |
-| `PRINT_FLAG`         | `" "`                              | If `N`, then something happens, I guess.                         |
+| `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N`.                         |
 | `FK_SST_SCTN_STATCD` | `"AC"`                             | `CA` means "cancelled." I'm not sure what `AC` or `NC` mean.     |
 
 If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
