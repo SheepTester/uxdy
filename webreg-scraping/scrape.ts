@@ -1,14 +1,14 @@
-type RawSearchLoadSubjectResult = {
+export type RawSearchLoadSubjectResult = {
   LONG_DESC: string
   SUBJECT_CODE: string
 }
 
-type RawSearchLoadDepartmentResult = {
+export type RawSearchLoadDepartmentResult = {
   DEP_CODE: string
   DEP_DESC: string
 }
 
-type RawSearchByAllResult = {
+export type RawSearchByAllResult = {
   UNIT_TO: number
   SUBJ_CODE: string
   UNIT_INC: number
@@ -17,7 +17,7 @@ type RawSearchByAllResult = {
   CRSE_CODE: string
 }
 
-type RawSearchLoadGroupDataResult = {
+export type RawSearchLoadGroupDataResult = {
   END_MM_TIME: number
   SCTN_CPCTY_QTY: number
   LONG_DESC: string
@@ -60,7 +60,7 @@ type RawSearchLoadGroupDataResult = {
   AVAIL_SEAT: number
 }
 
-class AuthorizedGetter {
+export class AuthorizedGetter {
   #term: string
   #sessionIndex?: string
   #uqz?: string
@@ -176,19 +176,27 @@ class AuthorizedGetter {
       termcode: this.#term
     })
   }
+
+  async * allCourses () {
+    const courses = await this.courses()
+    for (const course of courses) {
+      const groups = await this.sections(course.SUBJ_CODE, course.CRSE_CODE)
+      yield new Course(course, groups)
+    }
+  }
 }
 
-type GroupTime = {
+export type GroupTime = {
   hours: number
   minutes: number
 }
 
-type Instructor = {
+export type Instructor = {
   name: string
   pid: string
 }
 
-class Group {
+export class Group {
   /** The section code, such as "A07." */
   code: string
   /**
@@ -289,13 +297,13 @@ class Group {
   }
 }
 
-type CourseUnit = {
+export type CourseUnit = {
   from: number
   to: number
   step: number
 }
 
-class Course {
+export class Course {
   /** The subject code, such as "CSE." */
   subject: string
   /** The course code, such as "8B." */
