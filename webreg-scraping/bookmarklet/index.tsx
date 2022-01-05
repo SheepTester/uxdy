@@ -45,6 +45,16 @@ function Checkbox ({ checked, onCheck, disabled, children }: CheckboxProps) {
   )
 }
 
+const dayNames = [
+  'Sundays',
+  'Mondays',
+  'Tuesdays',
+  'Wednesdays',
+  'Thursdays',
+  'Fridays',
+  'Saturdays'
+]
+
 type CourseEntryProps = {
   course: Course
   sections: Group[]
@@ -52,7 +62,76 @@ type CourseEntryProps = {
 function CourseEntry ({ course, sections }: CourseEntryProps) {
   const [open, setOpen] = useState(false)
 
-  return <li>{course.title}</li>
+  return (
+    <div class='st-course-wrapper'>
+      <button
+        class={`st-course ${open ? 'st-open' : ''}`}
+        onClick={() => setOpen(open => !open)}
+      >
+        <div class='st-course-code'>
+          {course.subject} {course.course}
+        </div>
+        <div class='st-course-title'>{course.title}</div>
+      </button>
+      {open && (
+        <div class='st-sections'>
+          {sections.map(section => (
+            <div
+              class={`st-section ${
+                section.waitlist > 0 ? 'st-has-waitlist' : ''
+              }`}
+              key={section.code}
+            >
+              <div class='st-section-code'>
+                {section.code}
+                <div class='st-enrolled'>
+                  {section.waitlist > 0 ? (
+                    <>
+                      <strong>{section.waitlist}</strong> waitlisted
+                    </>
+                  ) : (
+                    <>
+                      <strong>{section.enrolled}</strong>
+                      {section.capacity === Infinity
+                        ? ''
+                        : `/${section.capacity}`}{' '}
+                      enrolled
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className='st-info'>
+                <div class='st-time'>
+                  <div>
+                    {section.start.toString()}–{section.end.toString()}
+                  </div>
+                  <div>
+                    on {section.days.map(day => dayNames[day]).join(', ')}
+                  </div>
+                </div>
+                <div className='st-professor'>
+                  {section.instructors.length > 0
+                    ? section.instructors.map(instructor => {
+                        const [lastName, firstName] =
+                          instructor.name.split(', ')
+                        return (
+                          <>
+                            <div>{firstName}</div>
+                            <div>
+                              <strong>{lastName}</strong>
+                            </div>
+                          </>
+                        )
+                      })
+                    : 'Staff'}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 type CourseListProps = {
@@ -74,7 +153,6 @@ function CourseList ({
     for await (const course of getter.allCourses()) {
       courses.push(course)
       setCourses([...courses])
-      if (courses.length > 3) break
     }
   })
 
@@ -112,13 +190,13 @@ function CourseList ({
           }
           return true
         })
-        return (
+        return sections.length > 0 ? (
           <CourseEntry
             key={course.subject + course.course}
             course={course}
             sections={sections}
           />
-        )
+        ) : null
       })}
     </div>
   )
@@ -139,6 +217,16 @@ function App () {
         .flatMap(section => section.times())
     )
   })
+
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = 'http://localhost:8080/webreg-scraping/bookmarklet/styles.css' // TEMP
+    document.head.append(link)
+    return () => {
+      link.remove()
+    }
+  }, [])
 
   return (
     <div>
