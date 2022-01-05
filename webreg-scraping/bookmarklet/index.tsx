@@ -11,7 +11,9 @@ import { AuthorizedGetter, Course, Group, Period } from '../scrape.ts'
 const params = new URL(window.location.href).searchParams
 const term = params.get('p1')
 if (!term) {
-  alert("I can't know what quarter you're on based on the URL.")
+  alert(
+    "I can't know what quarter you're on based on the URL. Have you selected a quarter yet?"
+  )
   throw new Error('Unable to get term from URL.')
 }
 const getter = new AuthorizedGetter(term)

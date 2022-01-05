@@ -8,6 +8,11 @@ LAST_COMMIT=$(git rev-parse HEAD)
 ./scripts/build.sh
 cd dist
 
+# Build bookmarklet
+# TODO: There should be a better way of just not touching the other parts of
+# gh-pages.
+../webreg-scraping/bookmarklet/dist.sh
+
 # Create a repo with the same remote in dist/ with branch gh-pages
 git init
 git remote add origin $REMOTE
