@@ -1,0 +1,87 @@
+/* https://fonts.google.com/share?selection.family=Montserrat:wght@400;700 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.st-course-wrapper {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #182b49;
+  line-height: normal;
+}
+
+.st-course {
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  border-radius: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  background-color: #00629b;
+  position: relative;
+  font-weight: bold;
+  height: 100px;
+  width: 100%;
+  overflow: hidden;
+}
+.st-open {
+  background-color: #00c1d5;
+}
+.st-course-code {
+  font-size: 96px;
+  color: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  left: -10px;
+  bottom: -30px;
+}
+.st-course-title {
+  font-size: 24px;
+  color: white;
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+}
+
+.st-sections {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  color: black;
+  margin-right: 10px;
+  gap: 10px;
+}
+.st-section {
+  background-color: #f3e500;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 10px;
+  gap: 10px;
+  white-space: nowrap;
+}
+.st-has-waitlist {
+  background-color: #ffcd00;
+}
+.st-section-code {
+  font-weight: bold;
+  font-size: 64px;
+  color: rgba(0, 0, 0, 0.1);
+  position: relative;
+  line-height: 50px;
+}
+.st-enrolled {
+  font-weight: normal;
+  font-size: 24px;
+  color: black;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  line-height: 1;
+}
+.st-info {
+  display: flex;
+  align-items: flex-end;
+}
+.st-professor {
+  text-align: right;
+  margin-left: 20px;
+}
