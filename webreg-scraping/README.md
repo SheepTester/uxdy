@@ -188,7 +188,7 @@ function searchLoadGroupData (): {
 | `AVAIL_SEAT`         | `50`                               | Number of seats available.                                       |
 | `SCTN_CPCTY_QTY`     | `50`                               | The maximum number of seats. 9999 for no limit.                  |
 | `COUNT_ON_WAITLIST`  | `0`                                | The number of people on the waitlist.                            |
-| `STP_ENRLT_FLAG`     | `"N"`                              | Whether to prevent enrolment. Either `Y` or `N`.                 |
+| `STP_ENRLT_FLAG`     | `"N"`                              | Whether the class needs to be waitlisted. Either `Y` or `N`.     |
 | `BLDG_CODE`          | `"PCYNH"`                          | 5 characters, padded, or `"TBA"`.                                |
 | `ROOM_CODE`          | `"120 "`                           | 5 characters, padded, or `"TBA"`.                                |
 | `PERSON_FULL_NAME`   | `"Wartell, Julie Dara ;A00785828"` | A colon-separated (`:`) list of name-PID pairs, or `"Staff; "`.  |
@@ -202,7 +202,7 @@ function searchLoadGroupData (): {
 | `FK_SPM_SPCL_MTG_CD` | `" "`                              | Distinguishes between normal meetings (`" "`) and exam meetings. |
 | `FK_CDI_INSTR_TYPE`  | `"LE"`                             | Distinguishes between lectures and discussions.                  |
 | `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N`.                         |
-| `FK_SST_SCTN_STATCD` | `"AC"`                             | `CA` means "cancelled." I'm not sure what `AC` or `NC` mean.     |
+| `FK_SST_SCTN_STATCD` | `"AC"`                             | Determines what is shown in its row.                             |
 
 If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
 (`FK_SPM_SPCL_MTG_CD`) is normal (`" "`) or TBA, then WebReg considers it a
@@ -222,12 +222,15 @@ Here's an example of a class with multiple instructors:
 Alternatively, the name is `Staff` with no padded spaces and a space for the
 PID, so the entire string is `"Staff; "`.
 
-If I recall correctly, `SCTN_ENRLT_QTY`, `AVAIL_SEAT`, `SCTN_CPCTY_QTY`, and
-`COUNT_ON_WAITLIST` do not add up for some reason.
+`SCTN_ENRLT_QTY` and `AVAIL_SEAT` adds up to `SCTN_CPCTY_QTY`. `AVAIL_SEAT` may
+be negative if the course is over capacity. `COUNT_ON_WAITLIST` may be greater
+than 0 even when `AVAIL_SEAT` is greater than 0; in these cases,
+`STP_ENRLT_FLAG` will be `Y`. In the two aforementioned cases, WebReg sets
+`AVAIL_SEAT` to 0.
 
-`SECTION_START_DATE`, `SECTION_END_DATE`, and `START_DATE` form an approximate range. It's also
-not the same across sections for a course, apparently. It can be `0001-01-01`,
-for example.
+`SECTION_START_DATE`, `SECTION_END_DATE`, and `START_DATE` form an approximate
+range. It's also not the same across sections for a course, apparently. It can
+be `0001-01-01`, for example.
 
 For `FK_SPM_SPCL_MTG_CD` and `FK_CDI_INSTR_TYPE`, see [this table of meeting
 type codes](https://registrar.ucsd.edu/StudentLink/instr_codes.html):
@@ -258,6 +261,14 @@ type codes](https://registrar.ucsd.edu/StudentLink/instr_codes.html):
 \* Considered finals (or at least listed separately from normal meetings).
 
 But that table isn't exhaustive, apparently. What's `SA` and `OP`??
+
+`FK_SST_SCTN_STATCD` seems to determine how the section is presented on WebReg.
+
+| Value | Short for | Appearance                                                                                        |
+| ----- | --------- | ------------------------------------------------------------------------------------------------- |
+| `AC`  |           | A normal row with Plan/Enroll buttons. Usually shown for DI/LA unless there are only LE sections. |
+| `NC`  |           | A non-enrollable row, such as lectures and additional meetings (eg ECE 35 discussions).           |
+| `CA`  | Cancelled | The entire row just says "Cancelled."                                                             |
 
 ### Get user's schedule
 

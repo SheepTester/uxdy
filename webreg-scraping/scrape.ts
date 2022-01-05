@@ -320,17 +320,6 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
   isExam () {
     return this.groupType !== '  ' && this.groupType !== 'TBA'
   }
-
-  /**
-   * Whether the meeting is normal (not a final/midterm) and has a section code
-   * that doesn't end in 00. WebReg puts these meetings in a list named
-   * `cateAX`, where A is some letter. I think WebReg uses this to determine
-   * whether it shows the "Enroll" button for the section; for example, it lets
-   * you plan/enroll/waitlist discussion or lab sections, but not lectures.
-   */
-  isSelectable () {
-    return !this.isExam() && this.code.slice(0, 2) !== '00'
-  }
 }
 
 export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
@@ -338,21 +327,29 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
   capacity: number
   /** The number of people enrolled. */
   enrolled: number
-  /** The number of seats available. */
-  available: number
   /** The number of people on the waitlist. */
   waitlist: number
-  /** Whether enrolment hasn't been prevented. */
-  canEnrol: boolean
+  /** Whether the user must waitlist instead of enrolling the class. */
+  full: boolean
+  /**
+   * Whether the section can be planned. The difference between this and `full`
+   * is that some sections, such as lectures or finals, aren't selectable as
+   * plannable/enrollable/waitlistable sections.
+   */
+  plannable: boolean
+  /** Whether the section has been cancelled. */
+  cancelled: boolean
 
   constructor (rawGroup: RawSearchLoadGroupDataResult) {
     super(rawGroup)
 
-    this.capacity = rawGroup.SCTN_CPCTY_QTY
+    this.capacity =
+      rawGroup.SCTN_CPCTY_QTY === 9999 ? Infinity : rawGroup.SCTN_CPCTY_QTY
     this.enrolled = rawGroup.SCTN_ENRLT_QTY
-    this.available = rawGroup.AVAIL_SEAT
     this.waitlist = rawGroup.COUNT_ON_WAITLIST
-    this.canEnrol = rawGroup.STP_ENRLT_FLAG === 'Y'
+    this.full = rawGroup.STP_ENRLT_FLAG === 'Y'
+    this.plannable = rawGroup.FK_SST_SCTN_STATCD === 'AC'
+    this.cancelled = rawGroup.FK_SST_SCTN_STATCD === 'CA'
   }
 }
 
@@ -432,4 +429,13 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
         ? { type: 'waitlisted', position: +rawClass.WT_POS }
         : { type: rawClass.ENROLL_STATUS === 'EN' ? 'enrolled' : 'planned' }
   }
+}
+
+if (import.meta.main) {
+  const getter = new AuthorizedGetter('WI22', Deno.args[0], Deno.args[1], true)
+  const courses = []
+  for await (const course of getter.allCourses()) {
+    courses.push(course)
+  }
+  // idk
 }

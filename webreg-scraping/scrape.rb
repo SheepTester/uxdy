@@ -186,8 +186,19 @@ class Group
     @enrolled = raw_group[:SCTN_ENRLT_QTY]
     # Should be set to 0 if negative or if @can_enroll is false
     @available = raw_group[:AVAIL_SEAT]
+    if @available + @enrolled != @capacity
+      raise "capacity doesn't add up"
+    end
+    # There may be people on the waitlist even when there are spots available.
+    # STP_ENRLT_FLAG is still Y in those cases. WebReg trusts STP_ENRLT_FLAG
+    # more than AVAIL_SEAT and sets the latter to 0 if the former is Y.
     @waitlist = raw_group[:COUNT_ON_WAITLIST]
+    # {false=>2243, true=>9488}
     @can_enroll = !yn_to_bool(raw_group[:STP_ENRLT_FLAG])
+    if @can_enroll && @waitlist > 0
+      # Maybe if I get CSE priority this may be the case, not sure
+      raise "can enrol yet there's a waitlist"
+    end
 
     @code = raw_group[:SECT_CODE]
     # JAPN 10B goes down to P00
@@ -272,7 +283,7 @@ end
 def loop_courses(courses)
   for course in courses
     for group in course.groups
-      yield group
+      yield [group, course]
     end
   end
 end
@@ -356,14 +367,18 @@ def get_courses(getter)
   # puts courses[1000]
 
   # === INSPECT COURSE FIELDS ===
-  # puts get_frequencies courses, :print_flag
+  # puts get_frequencies courses, :can_enroll
   # puts get_frequencies courses, Proc.new { |group| if group.group_type != :default then nil else group.instruction_type end }
-  # loop_courses courses do |group|
-  #   if group.instructors.length > 1
+
+  # # list destructuring https://stackoverflow.com/a/23378522
+  # loop_courses courses do |(group, course)|
+  #   if group.waitlist > 0 && group.can_enroll
+  #     puts course
   #     puts group
   #     # break
   #   end
   # end
+
   # for course in courses
   #   remote_groups = course.groups.filter_map { |group| group.code if group.building == "RCLAS" }
   #   if remote_groups.length > 0
