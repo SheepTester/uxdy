@@ -85,17 +85,17 @@ function CourseEntry ({ course, sections }: CourseEntryProps) {
               <div class='st-section-code'>
                 {section.code}
                 <div class='st-enrolled'>
-                  {section.waitlist > 0 ? (
-                    <>
-                      <strong>{section.waitlist}</strong> waitlisted
-                    </>
-                  ) : (
+                  {section.enrolled < section.capacity ? (
                     <>
                       <strong>{section.enrolled}</strong>
                       {section.capacity === Infinity
                         ? ''
                         : `/${section.capacity}`}{' '}
                       enrolled
+                    </>
+                  ) : (
+                    <>
+                      <strong>{section.waitlist}</strong> waitlisted
                     </>
                   )}
                 </div>
@@ -147,13 +147,16 @@ function CourseList ({
   tenPercentRule
 }: CourseListProps) {
   const [courses, setCourses] = useState<Course[]>([])
+  const [loading, setLoading] = useState(false)
 
   useAsyncEffect(async () => {
+    setLoading(true)
     const courses = []
     for await (const course of getter.allCourses()) {
       courses.push(course)
       setCourses([...courses])
     }
+    setLoading(false)
   })
 
   return (
@@ -166,19 +169,57 @@ function CourseList ({
           }
         }
 
+        const approvedLetters = ['0']
+        if (checkSchedule) {
+          // Get the other normal sections such as lectures and additional meeting
+          // types
+          const otherSections = course.groups.filter(
+            group => !group.isExam() && !group.plannable
+          )
+          const sectionsByLetters: Record<string, Group[]> = {}
+          for (const section of otherSections) {
+            if (/^[A-Z]$/.test(section.code[0])) {
+              sectionsByLetters[section.code[0]] ??= []
+              sectionsByLetters[section.code[0]].push(section)
+            } else if (section.code[0] !== '0') {
+              console.log(section.code, course, section)
+            }
+          }
+          // Make sure that each of the other sections per letter, eg Axx then
+          // Bxx, don't conflict with the schedule
+          for (const [letter, sections] of Object.entries(sectionsByLetters)) {
+            if (
+              sections.every(
+                section =>
+                  !section
+                    .times()
+                    .some(time =>
+                      checkSchedule.some(period => time.intersects(period))
+                    )
+              )
+            ) {
+              approvedLetters.push(letter)
+            }
+          }
+        }
+
         const sections = course.groups.filter(group => {
           // Don't show courses that can't be enrolled
           if (!group.plannable) return false
           // Don't show courses that are full or shouldn't be waitlisted
           if (
             joinableOnly &&
-            group.enrollable &&
+            !group.enrollable &&
             !(tenPercentRule && group.waitlist + 1 <= group.capacity * 0.1)
           ) {
             return false
           }
           // Don't show courses that coincide with the user's existing schedule
           if (checkSchedule) {
+            // Other sections under the letter conflict wtih the schedule
+            if (!approvedLetters.includes(group.code[0])) {
+              return false
+            }
             const times = group.times()
             if (
               checkSchedule.some(period =>
@@ -198,6 +239,7 @@ function CourseList ({
           />
         ) : null
       })}
+      {loading ? <p>Loading...</p> : null}
     </div>
   )
 }
