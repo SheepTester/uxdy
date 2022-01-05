@@ -6,7 +6,7 @@
 
 import { ComponentChildren, render } from 'https://esm.sh/preact@10.6.4'
 import { useEffect, useState } from 'https://esm.sh/preact@10.6.4/hooks'
-import { AuthorizedGetter, Course, Group, ScheduleSection } from '../scrape.ts'
+import { AuthorizedGetter, Course, Group, Period } from '../scrape.ts'
 
 const params = new URL(window.location.href).searchParams
 const term = params.get('p1')
@@ -52,12 +52,12 @@ type CourseEntryProps = {
 function CourseEntry ({ course, sections }: CourseEntryProps) {
   const [open, setOpen] = useState(false)
 
-  return null
+  return <li>{course.title}</li>
 }
 
 type CourseListProps = {
   lowerDivOnly: boolean
-  checkSchedule?: ScheduleSection[] | null
+  checkSchedule?: Period[] | null
   joinableOnly: boolean
   tenPercentRule: boolean
 }
@@ -89,15 +89,27 @@ function CourseList ({
         }
 
         const sections = course.groups.filter(group => {
+          // Don't show courses that can't be enrolled
           if (!group.plannable) return false
+          // Don't show courses that are full or shouldn't be waitlisted
           if (
             joinableOnly &&
-            group.full &&
+            group.enrollable &&
             !(tenPercentRule && group.waitlist + 1 <= group.capacity * 0.1)
           ) {
             return false
           }
-          // TODO: check schedule
+          // Don't show courses that coincide with the user's existing schedule
+          if (checkSchedule) {
+            const times = group.times()
+            if (
+              checkSchedule.some(period =>
+                times.some(time => time.intersects(period))
+              )
+            ) {
+              return false
+            }
+          }
           return true
         })
         return (
@@ -118,10 +130,14 @@ function App () {
   const [full, setFull] = useState(false)
   const [tenPercent, setTenPercent] = useState(false)
 
-  const [schedule, setSchedule] = useState<ScheduleSection[]>()
+  const [schedule, setSchedule] = useState<Period[]>()
   useAsyncEffect(async () => {
     const sections = await getter.getSchedule()
-    setSchedule(sections.filter(section => section.state.type !== 'planned'))
+    setSchedule(
+      sections
+        .filter(section => section.state.type !== 'planned')
+        .flatMap(section => section.times())
+    )
   })
 
   return (

@@ -239,14 +239,113 @@ export class AuthorizedGetter {
   }
 }
 
-export type GroupTime = {
-  hours: number
-  minutes: number
-}
-
 export type Instructor = {
   name: string
   pid: string
+}
+
+/**
+ * A time.
+ */
+export class Time {
+  /** The hour (24-hour). */
+  hour: number
+  /** The minute. */
+  minute: number
+
+  constructor (hour: number, minute: number) {
+    this.hour = hour
+    this.minute = minute
+  }
+
+  /**
+   * Displays the time in a 12-hour format Americans are familiar with.
+   */
+  toString () {
+    return `${((this.hour + 11) % 12) + 1}:${this.minute
+      .toString()
+      .padStart(2, '0')} ${this.hour < 12 ? 'a' : 'p'}m`
+  }
+
+  /**
+   * Returns the minutes since 00:00. This allows `Time` to be used with JS's
+   * comparison operators.
+   */
+  valueOf () {
+    return this.hour * 60 + this.minute
+  }
+}
+
+/**
+ * A time period on a given day.
+ */
+export class Period {
+  /** The day of the week. */
+  day: number
+  /** The start time. */
+  start: Time
+  /** The end time. */
+  end: Time
+
+  constructor (day: number, start: Time, end: Time) {
+    this.day = day
+    this.start = start
+    this.end = end
+  }
+
+  /**
+   * Whether two time periods overlap. A time period starting when another ends
+   * is not considered an intersection.
+   */
+  intersects (other: Period) {
+    return (
+      this.day === other.day && this.start < other.end && other.start < this.end
+    )
+  }
+
+  /**
+   * Displays the time range.
+   */
+  displayTime () {
+    return `${this.start}–${this.end}`
+  }
+
+  static readonly #DAY_NAMES = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ]
+
+  /**
+   * Returns the name of the day the time period is on.
+   */
+  dayName () {
+    return Period.#DAY_NAMES[this.day]
+  }
+
+  /**
+   * Displays the time range with the day name. Probably should just be used for
+   * debug purposes because in most cases you'd rather have more control over
+   * the formatting. Use `displayTime` and `dayName` instead.
+   */
+  toString () {
+    return `${this.displayTime()} on ${this.dayName()}`
+  }
+
+  static readonly #MINUTES_PER_DAY = 24 * 60
+
+  /**
+   * Returns the number of minutes between the beginning of the week and the
+   * start of the time range. This might be useful for sorting time periods
+   * chronologically.
+   */
+  valueOf () {
+    return this.day * Period.#MINUTES_PER_DAY + this.start.valueOf()
+  }
 }
 
 class BaseGroup<Raw extends CommonRawSectionResult> {
@@ -273,9 +372,9 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
   instructionType: RawSearchLoadGroupDataResult['FK_CDI_INSTR_TYPE']
 
   /** The start time of the meeting. */
-  start: GroupTime
+  start: Time
   /** The end time of the meeting. */
-  end: GroupTime
+  end: Time
   /** The days of the week on which the meeting meets. */
   days: number[]
 
@@ -300,14 +399,8 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
     this.groupType = rawGroup.FK_SPM_SPCL_MTG_CD
     this.instructionType = rawGroup.FK_CDI_INSTR_TYPE
 
-    this.start = {
-      hours: rawGroup.BEGIN_HH_TIME,
-      minutes: rawGroup.BEGIN_MM_TIME
-    }
-    this.end = {
-      hours: rawGroup.END_HH_TIME,
-      minutes: rawGroup.END_MM_TIME
-    }
+    this.start = new Time(rawGroup.BEGIN_HH_TIME, rawGroup.BEGIN_MM_TIME)
+    this.end = new Time(rawGroup.END_HH_TIME, rawGroup.END_MM_TIME)
     this.days = rawGroup.DAY_CODE.split('').map(day => +day)
 
     this.raw = rawGroup
@@ -320,6 +413,13 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
   isExam () {
     return this.groupType !== '  ' && this.groupType !== 'TBA'
   }
+
+  /**
+   * Gets the time ranges during which the section meets.
+   */
+  times () {
+    return this.days.map(day => new Period(day, this.start, this.end))
+  }
 }
 
 export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
@@ -329,16 +429,26 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
   enrolled: number
   /** The number of people on the waitlist. */
   waitlist: number
-  /** Whether the user must waitlist instead of enrolling the class. */
-  full: boolean
+  /**
+   * Whether enrolment has been stopped. This isn't the only determiner of
+   * whether a course can be enrolled rather than waitlisted.
+   */
+  stopEnrolment: boolean
+  /** Whether the section has been cancelled. */
+  cancelled: boolean
   /**
    * Whether the section can be planned. The difference between this and `full`
    * is that some sections, such as lectures or finals, aren't selectable as
-   * plannable/enrollable/waitlistable sections.
+   * plannable/enrollable/waitlistable sections. This should reflect whether the
+   * "Plan" and "Enroll"/"Waitlist" buttons are shown in the section's row on
+   * WebReg.
    */
   plannable: boolean
-  /** Whether the section has been cancelled. */
-  cancelled: boolean
+  /**
+   * Whether the section can be enrolled directly. This should reflect whether
+   * the button says "Enroll" or "Waitlist" on WebReg.
+   */
+  enrollable: boolean
 
   constructor (rawGroup: RawSearchLoadGroupDataResult) {
     super(rawGroup)
@@ -347,9 +457,12 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
       rawGroup.SCTN_CPCTY_QTY === 9999 ? Infinity : rawGroup.SCTN_CPCTY_QTY
     this.enrolled = rawGroup.SCTN_ENRLT_QTY
     this.waitlist = rawGroup.COUNT_ON_WAITLIST
-    this.full = rawGroup.STP_ENRLT_FLAG === 'Y'
-    this.plannable = rawGroup.FK_SST_SCTN_STATCD === 'AC'
+    this.stopEnrolment = rawGroup.STP_ENRLT_FLAG === 'Y'
     this.cancelled = rawGroup.FK_SST_SCTN_STATCD === 'CA'
+
+    this.plannable = rawGroup.FK_SST_SCTN_STATCD === 'AC' && !this.isExam()
+    this.enrollable =
+      this.plannable && this.enrolled < this.capacity && !this.stopEnrolment
   }
 }
 

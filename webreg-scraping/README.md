@@ -228,6 +228,33 @@ than 0 even when `AVAIL_SEAT` is greater than 0; in these cases,
 `STP_ENRLT_FLAG` will be `Y`. In the two aforementioned cases, WebReg sets
 `AVAIL_SEAT` to 0.
 
+Note that even when `STP_ENRLT_FLAG` is `N`, `AVAIL_SEAT` may be less than or
+equal to 0, in which case the section must also be waitlisted. See this abridged
+implementation of
+[`isEnrollOrWaitBut`](https://act.ucsd.edu/webreg2/js/webreg/webreg-main.js),
+which is used to determine whether to show the "Enroll" or "Waitlist" button:
+
+<!-- prettier-ignore -->
+```js
+function isEnrollOrWaitBut(sectHead, seat, stopFlag, subjCode, crseCode)
+{
+
+    // availSeat could be "", num, Unlimited
+    var gotSeat = (seat.toString().match(/^[1-9]/) || seat == "<b>") ? true : false;
+    var gotStop = ('Y' == stopFlag) ? true : false;
+
+    if (gotSeat
+    && !gotStop)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+```
+
 `SECTION_START_DATE`, `SECTION_END_DATE`, and `START_DATE` form an approximate
 range. It's also not the same across sections for a course, apparently. It can
 be `0001-01-01`, for example.
@@ -263,6 +290,7 @@ type codes](https://registrar.ucsd.edu/StudentLink/instr_codes.html):
 But that table isn't exhaustive, apparently. What's `SA` and `OP`??
 
 `FK_SST_SCTN_STATCD` seems to determine how the section is presented on WebReg.
+Note that finals etc. may be `AC` but they should also be ignored.
 
 | Value | Short for | Appearance                                                                                        |
 | ----- | --------- | ------------------------------------------------------------------------------------------------- |

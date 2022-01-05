@@ -313,9 +313,8 @@ def display_groups(courses, only_joinable)
     end
     joinable_groups = []
     if only_joinable
-      only_lectures = course.groups.none? { |group| group.is_x_class? }
       for group in course.groups
-        if group.can_enroll && group.available > 0 && (if only_lectures then !group.is_exam? else group.is_x_class? end)
+        if group.can_enroll && group.available > 0 && group.sst_section_statistic_cd == "AC" && !group.is_exam?
           joinable_groups << group
         end
       end
