@@ -1,4 +1,9 @@
-## Scraping
+## Scraping the course catalog
+
+Why not use WebReg? It's because some courses are quarter-dependent (eg CAT 1)
+and won't show up on WebReg for the current quarter. I suppose I could scrape
+all quarters since there are courses on WebReg (eg LIGN 42) that aren't in the
+catalog.
 
 ### Course name oddities
 
@@ -362,55 +367,188 @@ I think for now, I will just focus on prerequisite (and maybe corequisite)
 courses, excluding major-exclusivities and whatnot. Let's compare various
 prerequisites.
 
+### Stage 1: "and" and "or"
+
+Generally, it seems that `/[A-Z]+ \d+[A-Z]*/` matches all mentioned course
+names. "Or" binds tighter than "and." I think a comma implies "and" unless
+otherwise noted.
+
+I'll tokenize prerequisite strings into:
+
+- Commas
+- Conjunctions ("and" and "or")
+- Subject-course code pairs
+
+Examples:
+
+- VIS 161.
+  <!-- VIS 161 -->
+- successful completion of USP 141A.
+  <!-- USP 141A -->
+- VIS 83 or VIS 84.
+  <!-- VIS 83 or VIS 84 -->
+- graduate standing, SIOB 276 or SIO 276 and consent of instructor. Department stamp. Sugihara
+  <!-- , SIOB 276 or SIO 276 and -->
+- THDA 132 or TDMV 136 or TDMV 142 or TDMV 143 or TDMV 144, or consent of instructor.
+  <!-- THDA 132 or TDMV 136 or TDMV 142 or TDMV 143 or TDMV 144 , (and) -->
+- upper-division standing; RELI 110A or 110B; overall GPA of 2.5.
+  <!-- RELI 110A or 110B -->
+- THPW or TDPW 1 and THPW or TDPW 101.
+  <!-- THPW or TDPW 1 and THPW or TDPW 101 -->
+- CHEM 6C or CHEM 6CH and MATH 20C or MATH 31BH or consent of instructor.
+  <!-- CHEM 6C or CHEM 6CH and MATH 20C or MATH 31BH (and) -->
+- SIOC 210 or SIO 210 and SIOB 280 or SIO 280 or consent of instructor. Ohman, A. Allen
+  <!-- SIOC 210 or SIO 210 and SIOB 280 or SIO 280 (and) , -->
+- (CHEM 6B or 6BH) and (BILD 3 or SIO 50 or SIO 60)
+  <!-- CHEM 6B or 6BH and BILD 3 or SIO 50 or SIO 60 -->
+
+This should be relatively trivial. I could have a list of requirements ("and"),
+each with a list of options ("or"). Split by "and" first, then for each, split
+by "or."
+
+1. Split by "and."
+2. For each resulting group, split by "or."
+
+### Stage 1.5: Commas
+
+- graduate standing; SOCI 1, SOCI 2; or consent of instructor.
+  <!-- SOCI 1 , SOCI 2 (and) -->
+- THGR 270A, THGR 270B, graduate standing, consent of instructor.
+  <!-- THGR 270A , THGR 270B , , -->
+- BILD 3, MATH 10A or MATH 20A, CHEM 6B, or consent of instructor.
+  <!-- BILD 3 , MATH 10A or MATH 20A , CHEM 6B , (and) -->
+- THGR 270A or TDGR 270A, THGR 270B or TDGR 270B, graduate standing, and consent of instructor.
+  <!-- THGR 270A or TDGR 270A , THGR 270B or TDGR 270B , , and -->
+- THPR or TDPR 4, THPR or TDPR 104, THDR or TDDR 101, consent of instructor, and department stamp.
+  <!-- THPR or TDPR 4 , THPR or TDPR 104 , THDR or TDDR 101 , , and -->
+- USP 177, USP 177A, or USP 179.
+  <!-- USP 177 , USP 177A , or USP 179 -->
+
+These involve Oxford commas. I might be able to get away with treating commas as
+global, meaning that there can only be one list involving commas in a prereq
+string. Then, if a comma is followed by a conjunction, I can remove the comma
+and replace all the commas before it with the conjunction. Thus, `A , B , or C`
+becomes `A or B or C`. Any unresolved commas become "and." Duplicate
+conjunctions can be merged; hopefully I don't have to deal with "or and."
+
+Note: "or consent of instructor" is not the same as plain "or"; it actually
+means .
+
+For example, [SIO 124](https://catalog.ucsd.edu/courses/SIO.html#sio124)'s
+prerequisites are:
+
+> CHEM 6C and BILD 1 or BILD 3 or consent of instructor.
+
+WebReg presents the prerequisites as:
+
+> **Course Prerequisites:**
+>
+> 1. - CHEM: 6C - General Chemistry III
+> 2. - BILD: 1 - The Cell _or_
+>    - BILD: 3 - Organismic&Evolutionary Biol
+
+In other words, Chem 6C is _not_ a substitute for BILD 1/3.
+
+That doesn't mean that "or" always actually means "and," though; see the last
+example. I may have to tokenize "or consent of instructor" as a distinct token
+from "or" and treat it as "and."
+
+1. For commas followed by a conjunction, remove the comma and replace all prior
+   commas with the conjunction. "or consent of instructor" is considered "and."
+2. Follow the steps in Stage 1.
+
+Theoretically, there could be a "A and B, C and D, or E and F," but I don't
+think I've encountered it yet so I don't have to worry about it yet.
+
+### Stage 2: Shorthand with common subject/course code
+
+- VIS 30 and 41.
+  <!-- VIS 30 and 41 -->
+- CHEM 6C and BILD 1 or 3 or consent of instructor.
+  <!-- CHEM 6C and BILD 1 or 3 (and) -->
+- THPR or TDPR 1, 2, 3, or 5; permission of instructor; department stamp required.
+  <!-- THPR or TDPR 1 , 2 , 3 , or 5 -->
+- audition; department stamp; concurrent enrollment in TDMV 110, 111, 112, 120, 122, 130, or 133.
+  <!-- TDMV 110 , 111 , 112 , 120 , 122 , 130 , or 133 -->
+  - TODO: Deal with "concurrent."
+- twelve units of THDA 101A-B-C or TDMV 111 or consent of instructor.
+  <!-- THDA 101A-B-C or TDMV 111 (and) -->
+- THDE or TDDE 1 and THDE or TDDE 101 or THDE or TDDE 121, or THDE or TDDE 131, or consent of instructor.
+  <!-- THDE or TDDE 1 and THDE or TDDE 101 or THDE or TDDE 121 , or THDE or TDDE 131 , (and) -->
+- undergraduate: PHYS 2A-B or PHYS 4A-B-C, or consent of instructor. Graduate: graduate-level standing or consent of instructor.
+  <!-- PHYS 2A-B or PHYS 4A-B-C , (and) (and) -->
+- PHYS 2A–C or PHYS 4A–C and MATH 20A–E, or consent of instructor.
+  <!-- PHYS 2A–C or PHYS 4A–C and MATH 20A–E , (and) -->
+- PHYS 105A, MATH 20A, 20B, 20C or 31BH, 20D, 20E or 31CH, and 18 or 20F or 31AH.
+  <!-- PHYS 105A , MATH 20A , 20B , 20C or 31BH , 20D , 20E or 31CH , and 18 or 20F or 31AH -->
+
+Instead of tokenizing subject-course code pairs, I should tokenize them
+individually, as well as allowing ranges in course codes.
+
+Conjunctions can be applied to just subject or just course codes. I think if I
+encounter a conjunction that follows a subject code (eg "CSE or") or precedes a
+course code (eg "and 3"), then the conjunction must be for that code
+specifically. Subject codes will probably only have "or."
+
+I think I will group course codes together by taking as many tokens as possible
+until it encounters a subject code. For example, "SUBJ 1 or 2 or 3 or SUB2 ..."
+will be grouped as "SUBJ (1 or 2 or 3) or SUB2 ..." Hmm, maybe commas shouldn't
+be processed, then. I should do the grouping first, then process the commas.
+
+For example:
+
+- PHYS 105A, THDE or MATH 20A, 20C or 31BH, 20D, or USP 179.
+- PHYS 105A , THDE or MATH 20A , 20C or 31BH , 20D , or USP 179 (tokenize)
+- (PHYS) (105A) , (THDE or MATH) (20A , 20C or 31BH , 20D) , or (USP) (179) (group)
+- (PHYS) (105A) or (THDE or MATH) (20A and 20C or 31BH and 20D) or (USP) (179) (comma processing)
+- Distribute subject and course code pairs.
+- All of:
+  1. One of:
+     - PHYS 105A
+     - All of:
+       1. One of: THDE 20A, MATH 20A
+       2. One of: THDE 20C, MATH 20C, THDE 31BH, MATH 31BH
+       3. One of: THDE 20D, MATH 20D
+     - USP 179
+
+1. Tokenize.
+2. Group sequences of subject and course codes, including everything in between,
+   as long as it begins and ends with a code.
+   1. Go from left to right.
+   2. When encountering a subject/course code, keep track of a start and end
+      index.
+   3. Every time a code of the same type is encountered, update the end index.
+   4. When a code of a different type or the end of the tokens is encountered,
+      splice the range of tokens into a group.
+   5. When not in a range, add the tokens (probably conjunctions and commas) to
+      the main group.
+3. For each of the groups, including the main group, parse the commas and
+   conjunctions as specified in Stage 1.5.
+
+After that, there'll be a mess of ands and ors, which I'll have to figure out
+how to dea lwith later.
+
+### Stage 3: Excluding "Will not receive credit for"
+
+- upper-division standing. Will not receive credit for SOCI 154 and SOCC 154.
+- SOCI 60. Will not receive credit for SOCI 108 and SOCA 108.
+- SOCI 60; majors only. Will not receive credit for SOCI 104 and SOCA 104.
+
+I can probably just ignore everything after "Will not receive credit for."
+
 ```
-# Stage 1: "and" and "or"
-VIS 161.
-successful completion of USP 141A.
-VIS 83 or VIS 84.
-graduate standing, SIOB 276 or SIO 276 and consent of instructor. Department stamp. Sugihara
-THDA 132 or TDMV 136 or TDMV 142 or TDMV 143 or TDMV 144, or consent of instructor.
-upper-division standing; RELI 110A or 110B; overall GPA of 2.5.
-THPW or TDPW 1 and THPW or TDPW 101.
-CHEM 6C or CHEM 6CH and MATH 20C or MATH 31BH or consent of instructor.
-SIOC 210 or SIO 210 and SIOB 280 or SIO 280 or consent of instructor. Ohman, A. Allen
-(CHEM 6B or 6BH) and (BILD 3 or SIO 50 or SIO 60)
-
-# Stage 1.5: Commas
-graduate standing; SOCI 1, SOCI 2; or consent of instructor.
-THGR 270A, THGR 270B, graduate standing, consent of instructor.
-BILD 3, MATH 10A or MATH 20A, CHEM 6B, or consent of instructor.
-THGR 270A or TDGR 270A, THGR 270B or TDGR 270B, graduate standing, and consent of instructor.
-THPR or TDPR 4, THPR or TDPR 104, THDR or TDDR 101, consent of instructor, and department stamp.
-USP 177, USP 177A, or USP 179.
-
-# Stage 2: Shorthand with common subject/course code
-VIS 30 and 41.
-CHEM 6C and BILD 1 or 3 or consent of instructor.
-THPR or TDPR 1, 2, 3, or 5; permission of instructor; department stamp required.
-audition; department stamp; concurrent enrollment in TDMV 110, 111, 112, 120, 122, 130, or 133.
-twelve units of THDA 101A-B-C or TDMV 111 or consent of instructor.
-THDE or TDDE 1 and THDE or TDDE 101 or THDE or TDDE 121, or THDE or TDDE 131, or consent of instructor.
-undergraduate: PHYS 2A-B or PHYS 4A-B-C, or consent of instructor. Graduate: graduate-level standing or consent of instructor.
-PHYS 2A–C or PHYS 4A–C and MATH 20A–E, or consent of instructor.
-PHYS 105A, MATH 20A, 20B, 20C or 31BH, 20D, 20E or 31CH, and 18 or 20F or 31AH.
-
-# Stage 3: Excluding "Will not receive credit for"
-upper-division standing. Will not receive credit for SOCI 154 and SOCC 154.
-SOCI 60. Will not receive credit for SOCI 108 and SOCA 108.
-SOCI 60; majors only. Will not receive credit for SOCI 104 and SOCA 104.
-
 # Stage 4: Other scary oddities
 senior standing, VIS 135, and two from VIS 100A, VIS 101A, VIS 133A, VIS 136A, VIS 161, VIS 162.
 VIS 142; CSE 11 recommended. Open to visual arts majors and ICAM minors only. Two production-course limitation.
 THGR or TDGR 213A for B, THGR or TDGR 213B for C; admission to the MFA theatre program.
 POLI 5D/POLI 5D/ECON 5 or POLI 30D.
 CHEM 132 or the combination of PHYS 100A and 110A. Corequisites: PHYS 140A.
-
-# Corequisites
-upper-division standing. Must be taken concurrently with PSYC 121 or PSYC 140.
-CHEM 132 or the combination of PHYS 100A and 110A. Corequisites: PHYS 140A.
 ```
 
-Generally, it seems that `/[A-Z]+ \d+[A-Z]*/` matches all mentioned course
-names. "Or" binds tighter than "and." I think a comma implies "and" unless
-otherwise noted.
+### Corequisites
+
+Split by "concurrent" or "Corequisites"; parse them the same way as for
+prerequisites, but store them separately, I think.
+
+- upper-division standing. Must be taken concurrently with PSYC 121 or PSYC 140.
+- CHEM 132 or the combination of PHYS 100A and 110A. Corequisites: PHYS 140A.
