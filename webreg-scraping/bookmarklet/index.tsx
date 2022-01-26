@@ -265,7 +265,10 @@ function App () {
   useEffect(() => {
     const link = document.createElement('link')
     link.rel = 'stylesheet'
-    link.href = 'http://localhost:8080/webreg-scraping/bookmarklet/styles.css' // TEMP
+    link.href =
+      typeof Deno === 'undefined'
+        ? 'https://sheeptester.github.io/uxdy/bookmarklet/styles.css'
+        : 'http://localhost:8080/webreg-scraping/bookmarklet/styles.css'
     document.head.append(link)
     return () => {
       link.remove()
