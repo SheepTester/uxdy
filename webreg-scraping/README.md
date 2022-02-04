@@ -290,7 +290,9 @@ type codes](https://registrar.ucsd.edu/StudentLink/instr_codes.html):
 
 \* Considered finals (or at least listed separately from normal meetings).
 
-But that table isn't exhaustive, apparently. What's `SA` and `OP`??
+But that table isn't exhaustive, apparently;
+[`convInstType`](https://registrar.ucsd.edu/StudentLink/instr_codes.html) has
+the full list.
 
 `FK_SST_SCTN_STATCD` seems to determine how the section is presented on WebReg.
 Note that finals etc. may be `AC` but they should also be ignored.

@@ -1,4 +1,5 @@
 // Ensures that each course and section has a valid schema
+// deno test --allow-read scrape_test.ts --fail-fast
 
 import { AuthorizedGetter } from './scrape.ts'
 import {
@@ -134,6 +135,10 @@ for await (const course of getter.allCourses()) {
         for (const instructor of PERSON_FULL_NAME.split(':')) {
           const [name, pid] = instructor.split(';')
           assertEquals(name.length, 35)
+          // \b doesn't work because WI22 CSE 291 014 is taught by ThomÉ,
+          // Emmanuel, and \b isn't Unicode-aware. However, SIO 199 005 is
+          // taught by Baumann-Pickering , Simone, which has a space *before*
+          // the comma. Aiya!
           assertStringIncludes(name, ',')
           assertEndPadded(name, 'Prof name: spaces padded only at end')
           assertMatch(pid, /^A\d{8}$/)

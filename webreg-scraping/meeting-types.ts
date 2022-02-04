@@ -29,6 +29,7 @@ export const instructionTypes = {
   SA: 'Study Abroad',
   SI: 'Simultaneous Enrlmnt-Other UC',
   ST: 'Studio',
-  TU: 'Tutorial'
+  TU: 'Tutorial',
+  OT: 'Other Sessions'
 }
 export type InstructionCodes = keyof typeof instructionTypes

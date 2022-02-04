@@ -188,14 +188,27 @@ export class AuthorizedGetter {
   }
 
   /**
+   * Same as `allCourses` except it also yields a number from 0 to 1 with the
+   * estimated progress.
+   */
+  async * allCoursesWithProgress () {
+    const courses = await this.courses()
+    for (const [i, course] of courses.entries()) {
+      const groups = await this.sections(course.SUBJ_CODE, course.CRSE_CODE)
+      yield {
+        course: new Course(course, groups),
+        progress: (i + 1) / courses.length
+      }
+    }
+  }
+
+  /**
    * Gets all the course and section data from WebReg. Yields a `Course` as
    * sections are loaded for each course.
    */
   async * allCourses () {
-    const courses = await this.courses()
-    for (const course of courses) {
-      const groups = await this.sections(course.SUBJ_CODE, course.CRSE_CODE)
-      yield new Course(course, groups)
+    for await (const { course } of this.allCoursesWithProgress()) {
+      yield course
     }
   }
 
@@ -226,9 +239,27 @@ export class AuthorizedGetter {
   }
 }
 
-export type Instructor = {
-  name: string
+/**
+ * An instructor.
+ */
+export class Instructor {
+  /** Includes the middle initial. */
+  firstName: string
+  surname: string
   pid: string
+
+  constructor (name: string, pid: string) {
+    ;[this.surname, this.firstName] = name.split(', ').map(part => part.trim())
+    this.pid = pid
+  }
+
+  get firstLast () {
+    return `${this.firstName} ${this.surname}`
+  }
+
+  get lastFirst () {
+    return `${this.surname}, ${this.firstName}`
+  }
 }
 
 /**
@@ -396,7 +427,7 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
         ? []
         : PERSON_FULL_NAME.split(':').map(instructor => {
             const [name, pid] = instructor.split(';')
-            return { name, pid }
+            return new Instructor(name, pid)
           })
     this.examType =
       FK_SPM_SPCL_MTG_CD === '  ' || FK_SPM_SPCL_MTG_CD === 'TBA'
