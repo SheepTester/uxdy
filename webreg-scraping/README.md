@@ -108,7 +108,7 @@ variable number of units.
 | `CRSE_CODE`  | `"500 "`                 | 5 characters                                             |
 | `CRSE_TITLE` | `"Apprentice Teaching "` | 30 characters                                            |
 | `UNIT_FROM`  | `1.0`                    |                                                          |
-| `UNIT_TO`    | `4.0`                    | Always greater than `UNIT_FROM`                          |
+| `UNIT_TO`    | `4.0`                    | Always greater than or equal to `UNIT_FROM`              |
 | `UNIT_INC`   | `1.0`                    | Always zero if and only if `UNIT_FROM` equals `UNIT_TO`. |
 
 **Exception**: Math 295 has `UNIT_FROM` = `UNIT_TO` = `UNIT_INC` = 1.0, for some
@@ -182,8 +182,8 @@ function searchLoadGroupData (): {
 | `BEGIN_MM_TIME`      | `0`                                | Start minute of meeting.                                         |
 | `END_HH_TIME`        | `18`                               | End hour of meeting.                                             |
 | `END_MM_TIME`        | `20`                               | End minute of meeting.                                           |
-| `DAY_CODE`           | `"13"`                             | A string of digits (1-7) representing the days of the week.      |
-| `SECT_CODE`          | `"A00"`                            | A capital letter (or 0 or 1) followed by two digits.             |
+| `DAY_CODE`           | `"13"`                             | A string of week days (1-7), or `" "` if TBA.                    |
+| `SECT_CODE`          | `"A00"`                            | A capital letter followed by two digits, or a 3-digit number.    |
 | `SCTN_ENRLT_QTY`     | `0`                                | The number of people enrolled.                                   |
 | `AVAIL_SEAT`         | `50`                               | Number of seats available.                                       |
 | `SCTN_CPCTY_QTY`     | `50`                               | The maximum number of seats. 9999 for no limit.                  |
@@ -195,10 +195,10 @@ function searchLoadGroupData (): {
 | `PRIMARY_INSTR_FLAG` | `"Y"`                              | No idea. Is either `Y` or ` `.                                   |
 | `SECTION_START_DATE` | `"2022-01-03"`                     | YYYY-MM-DD. The first day of the meetings.                       |
 | `SECTION_END_DATE`   | `"2022-03-11"`                     | YYYY-MM-DD. The last day of the meetings.                        |
-| `START_DATE`         | `"2022-01-03"`                     | YYYY-MM-DD. Another first day??                                  |
+| `START_DATE`         | `"2022-01-03"`                     | YYYY-MM-DD. Another first day?? `" "` if TBA.                    |
 | `SECTION_NUMBER`     | `"062908"`                         | 6 digits.                                                        |
 | `LONG_DESC`          | `" "`                              | 30 characters. It's generally empty.                             |
-| `BEFORE_DESC`        | `" "`                              | Usually it's just a space.                                       |
+| `BEFORE_DESC`        | `" "`                              | 30 characters. `" "`, usually.                                   |
 | `FK_SPM_SPCL_MTG_CD` | `" "`                              | Distinguishes between normal meetings (`" "`) and exam meetings. |
 | `FK_CDI_INSTR_TYPE`  | `"LE"`                             | Distinguishes between lectures and discussions.                  |
 | `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N`.                         |
@@ -207,6 +207,8 @@ function searchLoadGroupData (): {
 If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
 (`FK_SPM_SPCL_MTG_CD`) is normal (`" "`) or TBA, then WebReg considers it a
 "cateAX," which presumably forms a list of non-final meetings.
+
+For `SECT_CODE`, BGRD 200 has numerical section codes from 001 to 291.
 
 In `PERSON_FULL_NAME`, the name itself (last name, first name then middle
 initial) is 35 characters long, but `PERSON_FULL_NAME` is longer than that. The
@@ -298,6 +300,27 @@ Note that finals etc. may be `AC` but they should also be ignored.
 | `NC`  |           | A non-enrollable row, such as lectures and additional meetings (eg ECE 35 discussions).           |
 | `CA`  | Cancelled | The entire row just says "Cancelled."                                                             |
 
+`BEFORE_DESC` is not a space (`" "`) if and only if the section is cancelled. If
+not a space, then it's either `AC` or `NC`, padded to the right to 30 characters
+by spaces, more often `AC` than `NC`. WebReg has a distinction—it says it
+"[doesn't] show section numbers for cancelled NC sections." I think this is used
+for the X00 sections if all its discussions are cancelled.
+
+<!-- prettier-ignore -->
+```js
+else
+{
+    entry.SECTION_NUMBER = ""; // don't
+    // show
+    // section
+    // numbers
+    // for
+    // cancelled
+    // NC
+    // sections
+}
+```
+
 ### Get user's schedule
 
 ```
@@ -363,38 +386,38 @@ function getClass (): {
 }[]
 ```
 
-| Field                | Example value                    | Notes                                                                  |
-| -------------------- | -------------------------------- | ---------------------------------------------------------------------- |
-| `SECT_CODE`          | `"A00"`                          | The section code.                                                      |
-| `FK_SPM_SPCL_MTG_CD` | `"FI"`                           | Whether the meeting is an exam.                                        |
-| `FK_CDI_INSTR_TYPE`  | `"LE"`                           | The type of the meeting.                                               |
-| `BEGIN_HH_TIME`      | `11`                             | Meeting start hour.                                                    |
-| `BEGIN_MM_TIME`      | `0`                              | Meeting start minute.                                                  |
-| `END_HH_TIME`        | `12`                             | Meeting end hour.                                                      |
-| `END_MM_TIME`        | `20`                             | Meeting end minute.                                                    |
-| `DAY_CODE`           | `"2"`                            | The day of the week when the meeting meets. A single digit.            |
-| `START_DATE`         | `"2022-01-03"`                   | Exam date, or start of quarter for normal meetings.                    |
-| `SECT_CREDIT_HRS`    | `6`                              | Number of units.                                                       |
-| `SECT_CREDIT_HRS_PL` | `" "`                            | Whether you can change the units of the course.                        |
-| `GRADE_OPTION`       | `"L"`                            | Whether the course is taken for a letter grade.                        |
-| `GRADE_OPTN_CD_PLUS` | `"+"`                            | Whether you can change the grading scale.                              |
-| `ENROLL_STATUS`      | `"EN"`                           | Enrolled, Waitlist, or Planned.                                        |
-| `WT_POS`             | `""`                             | If waitlisted, the waitlist position, unsure if number or string.      |
-| `BLDG_CODE`          | `"CTL "`                         | The building code, padded to 5 chars.                                  |
-| `ROOM_CODE`          | `"101 "`                         | Room number, padded to 5 chars.                                        |
-| `SUBJ_CODE`          | `"CAT "`                         | The subject code padded to 4 characters.                               |
-| `CRSE_CODE`          | `" 2 "`                          | Course code. The number is left-padded to 3 chars; letter right- to 2. |
-| `CRSE_TITLE`         | `"Culture, Art & Technology 2 "` | Course name.                                                           |
-| `PERSON_FULL_NAME`   | `"Bigham, David Joseph "`        | The name of the instructor padded to 35 chars.                         |
-| `PRIMARY_INSTR_FLAG` | `"Y"`                            |                                                                        |
-| `SECTION_HEAD`       | `63264`                          | The ID of the section that this section should be shown under.         |
-| `SECTION_NUMBER`     | `63255`                          | The section ID.                                                        |
-| `NEED_HEADROW`       | `false`                          | Apparently involved in section heads.                                  |
-| `TERM_CODE`          | `"WI22"`                         | The quarter.                                                           |
-| `PERSON_ID`          | `"A12345678"`                    | Your student ID.                                                       |
-| `LONG_DESC`          | `" "`                            | 30 spaces, it seems.                                                   |
-| `FK_PCH_INTRL_REFID` | `2122934`                        |                                                                        |
-| `FK_SEC_SCTN_NUM`    | `63264`                          |                                                                        |
+| Field                | Example value                    | Notes                                                               |
+| -------------------- | -------------------------------- | ------------------------------------------------------------------- |
+| `SECT_CODE`          | `"A00"`                          | The section code.                                                   |
+| `FK_SPM_SPCL_MTG_CD` | `"FI"`                           | Whether the meeting is an exam.                                     |
+| `FK_CDI_INSTR_TYPE`  | `"LE"`                           | The type of the meeting.                                            |
+| `BEGIN_HH_TIME`      | `11`                             | Meeting start hour.                                                 |
+| `BEGIN_MM_TIME`      | `0`                              | Meeting start minute.                                               |
+| `END_HH_TIME`        | `12`                             | Meeting end hour.                                                   |
+| `END_MM_TIME`        | `20`                             | Meeting end minute.                                                 |
+| `DAY_CODE`           | `"2"`                            | The day of the week when the meeting meets. A single digit.         |
+| `START_DATE`         | `"2022-01-03"`                   | Exam date, or start of quarter for normal meetings.                 |
+| `SECT_CREDIT_HRS`    | `6`                              | Number of units.                                                    |
+| `SECT_CREDIT_HRS_PL` | `" "`                            | Whether you can change the units of the course.                     |
+| `GRADE_OPTION`       | `"L"`                            | Whether the course is taken for a letter grade.                     |
+| `GRADE_OPTN_CD_PLUS` | `"+"`                            | Whether you can change the grading scale.                           |
+| `ENROLL_STATUS`      | `"EN"`                           | Enrolled, Waitlist, or Planned.                                     |
+| `WT_POS`             | `""`                             | If waitlisted, the waitlist position, unsure if number or string.   |
+| `BLDG_CODE`          | `"CTL "`                         | The building code, padded to 5 chars.                               |
+| `ROOM_CODE`          | `"101 "`                         | Room number, padded to 5 chars.                                     |
+| `SUBJ_CODE`          | `"CAT "`                         | The subject code padded to 4 characters.                            |
+| `CRSE_CODE`          | `" 2 "`                          | Course code. The number left-padded to 3 chars; letter right- to 2. |
+| `CRSE_TITLE`         | `"Culture, Art & Technology 2 "` | Course name.                                                        |
+| `PERSON_FULL_NAME`   | `"Bigham, David Joseph "`        | The name of the instructor padded to 35 chars.                      |
+| `PRIMARY_INSTR_FLAG` | `"Y"`                            |                                                                     |
+| `SECTION_HEAD`       | `63264`                          | The ID of the section that this section should be shown under.      |
+| `SECTION_NUMBER`     | `63255`                          | The section ID.                                                     |
+| `NEED_HEADROW`       | `false`                          | Apparently involved in section heads.                               |
+| `TERM_CODE`          | `"WI22"`                         | The quarter.                                                        |
+| `PERSON_ID`          | `"A12345678"`                    | Your student ID.                                                    |
+| `LONG_DESC`          | `" "`                            | 30 spaces, it seems.                                                |
+| `FK_PCH_INTRL_REFID` | `2122934`                        |                                                                     |
+| `FK_SEC_SCTN_NUM`    | `63264`                          |                                                                     |
 
 Based on
 [`gradeOptionConv`](https://act.ucsd.edu/webreg2/js/webreg/webreg-main.js),

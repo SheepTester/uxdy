@@ -28,7 +28,16 @@ type CommonRawSectionResult = {
   DAY_CODE: string
   BEGIN_MM_TIME: number
   PERSON_FULL_NAME: string
-  FK_SPM_SPCL_MTG_CD: '  ' | 'FI' | 'TBA' | 'MI' | 'MU' | 'RE' | 'PB' | 'OT'
+  FK_SPM_SPCL_MTG_CD:
+    | '  '
+    | 'FI'
+    | 'TBA'
+    | 'MI'
+    | 'MU'
+    | 'RE'
+    | 'PB'
+    | 'OT'
+    | 'FM'
   BLDG_CODE: string
   FK_CDI_INSTR_TYPE:
     | 'DI'
@@ -381,27 +390,42 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
   raw: Raw
 
   constructor (rawGroup: Raw) {
-    this.code = rawGroup.SECT_CODE
+    const {
+      SECT_CODE,
+      BLDG_CODE,
+      ROOM_CODE,
+      PERSON_FULL_NAME,
+      FK_SPM_SPCL_MTG_CD,
+      FK_CDI_INSTR_TYPE,
+      BEGIN_HH_TIME,
+      BEGIN_MM_TIME,
+      END_HH_TIME,
+      END_MM_TIME,
+      DAY_CODE
+    } = rawGroup
+    // Unused: { LONG_DESC, PRIMARY_INSTR_FLAG, START_DATE }
+
+    this.code = SECT_CODE
     this.location =
-      rawGroup.BLDG_CODE === 'TBA' && rawGroup.ROOM_CODE === 'TBA'
+      BLDG_CODE === 'TBA' && ROOM_CODE === 'TBA'
         ? null
         : {
-            building: rawGroup.BLDG_CODE.trim(),
-            room: rawGroup.ROOM_CODE.trim()
+            building: BLDG_CODE.trim(),
+            room: ROOM_CODE.trim()
           }
     this.instructors =
-      rawGroup.PERSON_FULL_NAME === ''
+      PERSON_FULL_NAME === 'Staff; '
         ? []
-        : rawGroup.PERSON_FULL_NAME.split(':').map(instructor => {
+        : PERSON_FULL_NAME.split(':').map(instructor => {
             const [name, pid] = instructor.split(';')
             return { name, pid }
           })
-    this.groupType = rawGroup.FK_SPM_SPCL_MTG_CD
-    this.instructionType = rawGroup.FK_CDI_INSTR_TYPE
+    this.groupType = FK_SPM_SPCL_MTG_CD
+    this.instructionType = FK_CDI_INSTR_TYPE
 
-    this.start = new Time(rawGroup.BEGIN_HH_TIME, rawGroup.BEGIN_MM_TIME)
-    this.end = new Time(rawGroup.END_HH_TIME, rawGroup.END_MM_TIME)
-    this.days = rawGroup.DAY_CODE.split('').map(day => +day)
+    this.start = new Time(BEGIN_HH_TIME, BEGIN_MM_TIME)
+    this.end = new Time(END_HH_TIME, END_MM_TIME)
+    this.days = DAY_CODE.split('').map(day => +day)
 
     this.raw = rawGroup
   }
@@ -419,6 +443,14 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    */
   times () {
     return this.days.map(day => new Period(day, this.start, this.end))
+  }
+
+  /**
+   * Returns the exam type (e.g. final vs midterm) if the meeting is an exam;
+   * otherwise, the normal meeting type (e.g. discussion vs lecture).
+   */
+  get type () {
+    return this.isExam() ? this.groupType : this.instructionType
   }
 }
 
@@ -452,15 +484,29 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
 
   constructor (rawGroup: RawSearchLoadGroupDataResult) {
     super(rawGroup)
+    const {
+      SCTN_CPCTY_QTY,
+      SCTN_ENRLT_QTY,
+      COUNT_ON_WAITLIST,
+      STP_ENRLT_FLAG,
+      FK_SST_SCTN_STATCD
+    } = rawGroup
+    // Unused: {
+    //   AVAIL_SEAT,
+    //   BEFORE_DESC,
+    //   PRINT_FLAG,
+    //   SECTION_END_DATE,
+    //   SECTION_NUMBER,
+    //   SECTION_START_DATE
+    // }
 
-    this.capacity =
-      rawGroup.SCTN_CPCTY_QTY === 9999 ? Infinity : rawGroup.SCTN_CPCTY_QTY
-    this.enrolled = rawGroup.SCTN_ENRLT_QTY
-    this.waitlist = rawGroup.COUNT_ON_WAITLIST
-    this.stopEnrolment = rawGroup.STP_ENRLT_FLAG === 'Y'
-    this.cancelled = rawGroup.FK_SST_SCTN_STATCD === 'CA'
+    this.capacity = SCTN_CPCTY_QTY === 9999 ? Infinity : SCTN_CPCTY_QTY
+    this.enrolled = SCTN_ENRLT_QTY
+    this.waitlist = COUNT_ON_WAITLIST
+    this.stopEnrolment = STP_ENRLT_FLAG === 'Y'
+    this.cancelled = FK_SST_SCTN_STATCD === 'CA'
 
-    this.plannable = rawGroup.FK_SST_SCTN_STATCD === 'AC' && !this.isExam()
+    this.plannable = FK_SST_SCTN_STATCD === 'AC' && !this.isExam()
     this.enrollable =
       this.plannable && this.enrolled < this.capacity && !this.stopEnrolment
   }
@@ -484,6 +530,8 @@ export class Course {
   /** List of meetings, including discussions and finals. */
   groups: Group[]
 
+  raw: RawSearchByAllResult
+
   constructor (
     rawCourse: RawSearchByAllResult,
     rawGroups: RawSearchLoadGroupDataResult[]
@@ -497,6 +545,11 @@ export class Course {
       step: rawCourse.UNIT_INC
     }
     this.groups = rawGroups.map(group => new Group(group))
+    this.raw = rawCourse
+  }
+
+  get code () {
+    return `${this.subject} ${this.course}`
   }
 }
 
@@ -528,27 +581,58 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
   constructor (rawClass: RawGetClassResult) {
     super(rawClass)
 
+    const {
+      SUBJ_CODE,
+      CRSE_CODE,
+      CRSE_TITLE,
+      SECT_CREDIT_HRS,
+      SECT_CREDIT_HRS_PL,
+      GRADE_OPTION,
+      GRADE_OPTN_CD_PLUS,
+      ENROLL_STATUS,
+      WT_POS
+    } = rawClass
+    // Unused: {
+    //   FK_PCH_INTRL_REFID,
+    //   FK_SEC_SCTN_NUM,
+    //   NEED_HEADROW,
+    //   PERSON_ID,
+    //   SECTION_HEAD,
+    //   SECTION_NUMBER,
+    //   TERM_CODE
+    // }
+
     this.course = {
-      subject: rawClass.SUBJ_CODE.trim(),
-      course: rawClass.CRSE_CODE.trim(),
-      title: rawClass.CRSE_TITLE.trim(),
-      unit: rawClass.SECT_CREDIT_HRS,
-      canChangeUnit: rawClass.SECT_CREDIT_HRS_PL === '+',
-      gradeScale: gradeScaleKey[rawClass.GRADE_OPTION],
-      canChangeGradeScale: rawClass.GRADE_OPTN_CD_PLUS === '+'
+      subject: SUBJ_CODE.trim(),
+      course: CRSE_CODE.trim(),
+      title: CRSE_TITLE.trim(),
+      unit: SECT_CREDIT_HRS,
+      canChangeUnit: SECT_CREDIT_HRS_PL === '+',
+      gradeScale: gradeScaleKey[GRADE_OPTION],
+      canChangeGradeScale: GRADE_OPTN_CD_PLUS === '+'
     }
     this.state =
-      rawClass.ENROLL_STATUS === 'WT'
-        ? { type: 'waitlisted', position: +rawClass.WT_POS }
-        : { type: rawClass.ENROLL_STATUS === 'EN' ? 'enrolled' : 'planned' }
+      ENROLL_STATUS === 'WT'
+        ? { type: 'waitlisted', position: +WT_POS }
+        : { type: ENROLL_STATUS === 'EN' ? 'enrolled' : 'planned' }
   }
 }
 
 if (import.meta.main) {
   const getter = new AuthorizedGetter('WI22', Deno.args[0], Deno.args[1], true)
   const courses = []
+  const freq: Record<number, number> = {}
   for await (const course of getter.allCourses()) {
     courses.push(course)
+    for (const group of course.groups) {
+      freq[group.raw.BEFORE_DESC.length] ??= 0
+      freq[group.raw.BEFORE_DESC.length]++
+      if (group.cancelled && group.raw.BEFORE_DESC === ' ') {
+        console.log(course.code, group.code, group.raw.BEFORE_DESC)
+      }
+    }
   }
+  console.log(freq)
+
   // idk
 }
