@@ -6,7 +6,6 @@ import { writeAll } from 'https://deno.land/std@0.125.0/streams/conversion.ts'
 import { exams, instructionTypes } from './meeting-types.ts'
 import { AuthorizedGetter } from './scrape.ts'
 
-const QUARTER = 'SP22'
 const PROGBAR_LENGTH = 50
 
 const encoder = new TextEncoder()
@@ -90,15 +89,20 @@ class CourseHistory {
   }
 }
 
-export async function main (sessionIndex: string, uqz: string, date: string) {
+export async function main (
+  quarter: string,
+  sessionIndex: string,
+  uqz: string,
+  date: string
+) {
   print(`\r[${' '.repeat(PROGBAR_LENGTH)}]`.padEnd(80, ' '))
-  const getter = new AuthorizedGetter(QUARTER, sessionIndex, uqz)
+  const getter = new AuthorizedGetter(quarter, sessionIndex, uqz)
   const courseList = await Deno.open('./webreg-data2/courses.md', {
     write: true,
     create: true
   })
   await courseList.truncate()
-  await writeAll(courseList, encoder.encode(`## Courses (${QUARTER})\n\n`))
+  await writeAll(courseList, encoder.encode(`## Courses (${quarter})\n\n`))
   for await (const { course, progress } of getter.allCoursesWithProgress()) {
     await writeAll(
       courseList,
@@ -208,6 +212,7 @@ if (import.meta.main) {
   const [uqz, sessionIndex] = Deno.args
   const today = new Date()
   await main(
+    'SP22',
     sessionIndex,
     uqz,
     [
