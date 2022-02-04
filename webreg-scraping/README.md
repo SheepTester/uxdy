@@ -102,17 +102,18 @@ be up to 21 units, and some courses have 2.5 units. WebReg uses from/inc/to to
 determine what options to show in the dropdown for courses that can have a
 variable number of units.
 
-| Field        | Example value            | Notes                                                    |
-| ------------ | ------------------------ | -------------------------------------------------------- |
-| `SUBJ_CODE`  | `"AAS "`                 | 4 characters                                             |
-| `CRSE_CODE`  | `"500 "`                 | 5 characters                                             |
-| `CRSE_TITLE` | `"Apprentice Teaching "` | 30 characters                                            |
-| `UNIT_FROM`  | `1.0`                    |                                                          |
-| `UNIT_TO`    | `4.0`                    | Always greater than or equal to `UNIT_FROM`              |
-| `UNIT_INC`   | `1.0`                    | Always zero if and only if `UNIT_FROM` equals `UNIT_TO`. |
+| Field        | Example value            | Notes                                           |
+| ------------ | ------------------------ | ----------------------------------------------- |
+| `SUBJ_CODE`  | `"AAS "`                 | 4 characters                                    |
+| `CRSE_CODE`  | `"500 "`                 | 5 characters                                    |
+| `CRSE_TITLE` | `"Apprentice Teaching "` | 30 characters                                   |
+| `UNIT_FROM`  | `1.0`                    |                                                 |
+| `UNIT_TO`    | `4.0`                    | Always greater than or equal to `UNIT_FROM`     |
+| `UNIT_INC`   | `1.0`                    | Nonzero if `UNIT_FROM` doesn't equal `UNIT_TO`. |
 
-**Exception**: Math 295 has `UNIT_FROM` = `UNIT_TO` = `UNIT_INC` = 1.0, for some
-reason.
+**Note**: WI22 Math 295 has `UNIT_FROM` = `UNIT_TO` = `UNIT_INC` = 1.0, for some
+reason, but in all other cases if `UNIT_FROM` = `UNIT_TO` then `UNIT_INC` is
+zero.
 
 ### List all sections for a course
 
@@ -201,14 +202,14 @@ function searchLoadGroupData (): {
 | `BEFORE_DESC`        | `" "`                              | 30 characters. `" "`, usually.                                   |
 | `FK_SPM_SPCL_MTG_CD` | `" "`                              | Distinguishes between normal meetings (`" "`) and exam meetings. |
 | `FK_CDI_INSTR_TYPE`  | `"LE"`                             | Distinguishes between lectures and discussions.                  |
-| `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N`.                         |
+| `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N` or `5` (equiv to `Y`).   |
 | `FK_SST_SCTN_STATCD` | `"AC"`                             | Determines what is shown in its row.                             |
 
 If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
 (`FK_SPM_SPCL_MTG_CD`) is normal (`" "`) or TBA, then WebReg considers it a
 "cateAX," which presumably forms a list of non-final meetings.
 
-For `SECT_CODE`, BGRD 200 has numerical section codes from 001 to 291.
+For `SECT_CODE`, WI22 BGRD 200 has numerical section codes from 001 to 291.
 
 In `PERSON_FULL_NAME`, the name itself (last name, first name then middle
 initial) is 35 characters long, but `PERSON_FULL_NAME` is longer than that. The
@@ -320,6 +321,8 @@ else
     // sections
 }
 ```
+
+`DAY_CODE` can include 7. WI22 MGT 407 C00 is a lecture on Sunday.
 
 ### Get user's schedule
 

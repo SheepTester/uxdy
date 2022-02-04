@@ -1,3 +1,5 @@
+import { ExamCodes, InstructionCodes } from './meeting-types.ts'
+
 export type RawSearchLoadSubjectResult = {
   LONG_DESC: string
   SUBJECT_CODE: string
@@ -28,33 +30,9 @@ type CommonRawSectionResult = {
   DAY_CODE: string
   BEGIN_MM_TIME: number
   PERSON_FULL_NAME: string
-  FK_SPM_SPCL_MTG_CD:
-    | '  '
-    | 'FI'
-    | 'TBA'
-    | 'MI'
-    | 'MU'
-    | 'RE'
-    | 'PB'
-    | 'OT'
-    | 'FM'
+  FK_SPM_SPCL_MTG_CD: '  ' | 'TBA' | ExamCodes
   BLDG_CODE: string
-  FK_CDI_INSTR_TYPE:
-    | 'DI'
-    | 'LE'
-    | 'SE'
-    | 'PR'
-    | 'IN'
-    | 'IT'
-    | 'FW'
-    | 'LA'
-    | 'CL'
-    | 'TU'
-    | 'CO'
-    | 'ST'
-    | 'OP'
-    | 'OT'
-    | 'SA'
+  FK_CDI_INSTR_TYPE: InstructionCodes
   SECT_CODE: string
 }
 
@@ -369,16 +347,16 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    */
   instructors: Instructor[]
   /**
-   * Distinguishes between normal and exam (midterm or final) meetings. Refer to
-   * [this table](https://registrar.ucsd.edu/StudentLink/instr_codes.html) for a
-   * key.
+   * Distinguishes between midterms and finals. `null` if not an exam (i.e. a
+   * normal, regular meeting). Refer to [this
+   * table](https://registrar.ucsd.edu/StudentLink/instr_codes.html) for a key.
    */
-  groupType: RawSearchLoadGroupDataResult['FK_SPM_SPCL_MTG_CD']
+  examType: ExamCodes | null
   /**
    * Distinguishes between lectures and discussions. Refer to [this
    * table](https://registrar.ucsd.edu/StudentLink/instr_codes.html) for a key.
    */
-  instructionType: RawSearchLoadGroupDataResult['FK_CDI_INSTR_TYPE']
+  instructionType: InstructionCodes
 
   /** The start time of the meeting. */
   start: Time
@@ -420,7 +398,10 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
             const [name, pid] = instructor.split(';')
             return { name, pid }
           })
-    this.groupType = FK_SPM_SPCL_MTG_CD
+    this.examType =
+      FK_SPM_SPCL_MTG_CD === '  ' || FK_SPM_SPCL_MTG_CD === 'TBA'
+        ? null
+        : FK_SPM_SPCL_MTG_CD
     this.instructionType = FK_CDI_INSTR_TYPE
 
     this.start = new Time(BEGIN_HH_TIME, BEGIN_MM_TIME)
@@ -435,7 +416,7 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    * than regularly, such as a midterm or final.
    */
   isExam () {
-    return this.groupType !== '  ' && this.groupType !== 'TBA'
+    return this.examType !== null
   }
 
   /**
@@ -449,8 +430,8 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    * Returns the exam type (e.g. final vs midterm) if the meeting is an exam;
    * otherwise, the normal meeting type (e.g. discussion vs lecture).
    */
-  get type () {
-    return this.isExam() ? this.groupType : this.instructionType
+  get type (): ExamCodes | InstructionCodes {
+    return this.examType || this.instructionType
   }
 }
 
@@ -627,9 +608,20 @@ if (import.meta.main) {
     for (const group of course.groups) {
       freq[group.raw.BEFORE_DESC.length] ??= 0
       freq[group.raw.BEFORE_DESC.length]++
-      if (group.cancelled && group.raw.BEFORE_DESC === ' ') {
-        console.log(course.code, group.code, group.raw.BEFORE_DESC)
+      if (!' YN'.includes(group.raw.PRINT_FLAG)) {
+        console.log(course.code, group.code, group.raw.PRINT_FLAG)
       }
+      if (group.instructionType === 'OP' || group.instructionType === 'SA') {
+        console.log(course.code, group.code, group.instructionType)
+      }
+      // if (group.examType === 'TBA' && !group.cancelled) {
+      //   console.log(
+      //     course.code,
+      //     group.code,
+      //     'TBA group type',
+      //     group.instructionType
+      //   )
+      // }
     }
   }
   console.log(freq)

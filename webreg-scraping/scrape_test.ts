@@ -8,6 +8,7 @@ import {
   assertMatch,
   assertStringIncludes
 } from 'https://deno.land/std@0.125.0/testing/asserts.ts'
+import { exams, instructionTypes } from './meeting-types.ts'
 
 /**
  * Asserts that the given value is a number and within the specified range
@@ -59,12 +60,12 @@ for await (const course of getter.allCourses()) {
     assertEquals(CRSE_TITLE.length, 30)
     assertEndPadded(CRSE_TITLE, 'Course title: spaces padded only at end')
 
+    assert(UNIT_FROM >= 0)
     assert(UNIT_TO >= UNIT_FROM)
-    // Middle === means "iff"
-    assert(
-      (UNIT_INC === 0) === (UNIT_FROM === UNIT_TO),
-      'UNIT_INC zero if and only if UNIT_FROM equals UNIT_TO'
-    )
+    // WI22 Math 295 has FROM = TO, but its INC = 1.0
+    if (UNIT_FROM !== UNIT_TO) {
+      assert(UNIT_INC > 0)
+    }
   })
 
   for (const group of course.groups) {
@@ -103,7 +104,8 @@ for await (const course of getter.allCourses()) {
       assertInRange(END_MM_TIME, 0, 60)
 
       if (DAY_CODE !== ' ') {
-        assertMatch(DAY_CODE, /^[1-6]+$/)
+        // WI22 MGT 407 C00 is a lecture on Sunday
+        assertMatch(DAY_CODE, /^[1-7]+$/)
         assertEquals(
           new Set(DAY_CODE).size,
           DAY_CODE.length,
@@ -111,6 +113,7 @@ for await (const course of getter.allCourses()) {
         )
       }
 
+      // WI22 BGRD 200 has numerical section codes from 001 to 291
       assertMatch(SECT_CODE, /^[A-Z\d]\d{2}$/)
 
       assertEquals(SCTN_ENRLT_QTY + AVAIL_SEAT, SCTN_CPCTY_QTY)
@@ -156,30 +159,12 @@ for await (const course of getter.allCourses()) {
       assertArrayIncludes(['Y', ' '], [PRIMARY_INSTR_FLAG])
       assertArrayIncludes(['', 'AC', 'NC'], [BEFORE_DESC.trim()])
       assertArrayIncludes(
-        ['  ', 'FI', 'TBA', 'MI', 'MU', 'RE', 'PB', 'OT', 'FM'],
+        ['  ', 'TBA', ...Object.keys(exams)],
         [FK_SPM_SPCL_MTG_CD]
       )
-      assertArrayIncludes(
-        [
-          'DI',
-          'LE',
-          'SE',
-          'PR',
-          'IN',
-          'IT',
-          'FW',
-          'LA',
-          'CL',
-          'TU',
-          'CO',
-          'ST',
-          'OP',
-          'OT',
-          'SA'
-        ],
-        [FK_CDI_INSTR_TYPE]
-      )
-      assertArrayIncludes([' ', 'N', 'Y'], [PRINT_FLAG])
+      assertArrayIncludes(Object.keys(instructionTypes), [FK_CDI_INSTR_TYPE])
+      // WI22 CSE 11 A00 and EDS 259 C/D00 have PRINT_FLAG=5
+      assertArrayIncludes([' ', 'N', 'Y', '5'], [PRINT_FLAG])
       assertArrayIncludes(['AC', 'NC', 'CA'], [FK_SST_SCTN_STATCD])
     })
   }
