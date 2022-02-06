@@ -95,11 +95,22 @@ class CourseHistory {
 export async function main (
   quarter: string,
   date: string,
-  sessionIndex?: string,
-  uqz?: string
+  source:
+    | {
+        type: 'fetch'
+        sessionIndex: string
+        uqz: string
+      }
+    | {
+        type: 'cache'
+        path: string
+      }
 ) {
   print(`\r[${' '.repeat(PROGBAR_LENGTH)}]`.padEnd(80, ' '))
-  const getter = new AuthorizedGetter(quarter, sessionIndex, uqz)
+  const getter =
+    source.type === 'fetch'
+      ? new AuthorizedGetter(quarter, source.sessionIndex, source.uqz)
+      : new AuthorizedGetter(quarter, undefined, undefined, source.path)
   const courseList = await Deno.open('./webreg-data2/courses.md', {
     write: true,
     create: true
@@ -247,7 +258,6 @@ if (import.meta.main) {
       (today.getMonth() + 1).toString().padStart(2, '0'),
       today.getDate().toString().padStart(2, '0')
     ].join(''),
-    sessionIndex,
-    uqz
+    { type: 'fetch', sessionIndex, uqz }
   )
 }
