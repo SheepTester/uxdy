@@ -47,7 +47,7 @@ class CourseHistory {
                 return [
                   enrolled,
                   capacity === Infinity ? '' : `/${capacity}`,
-                  waitlist > 0 ? ` (WL: ${waitlist})` : ''
+                  waitlist > 0 ? ` WL${waitlist}` : ''
                 ].join('')
               } else {
                 return 'N/A'
