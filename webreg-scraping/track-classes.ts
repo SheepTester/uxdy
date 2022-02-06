@@ -27,9 +27,11 @@ type HistoryEntry = {
 
 class CourseHistory {
   entries: HistoryEntry[]
+  pastCodes: string[]
 
-  constructor (entries: HistoryEntry[] = []) {
+  constructor (entries: HistoryEntry[] = [], pastCodes: string[] = []) {
     this.entries = entries
+    this.pastCodes = pastCodes
   }
 
   toFile (sectionCodes = Object.keys(this.entries[0].sectionEnrollments)) {
@@ -84,7 +86,8 @@ class CourseHistory {
             ]
           })
         )
-      }))
+      })),
+      sectionCodes
     )
   }
 }
@@ -175,30 +178,49 @@ export async function main (
           ? new CourseHistory()
           : Promise.reject(error)
       )
-    if (history.entries[history.entries.length - 1]?.date !== date) {
+    // Only add a new entry if there was a change
+    const sectionEnrollments = course.groups
+      .filter(group => group.plannable)
+      .map(
+        group =>
+          [
+            group.code,
+            {
+              enrolled: group.enrolled,
+              capacity: group.capacity,
+              waitlist: group.waitlist
+            }
+          ] as const
+      )
+    const lastEntry =
+      history.entries[history.entries.length - 1]?.sectionEnrollments
+    // Only add an entry if there was a change
+    if (
+      !lastEntry ||
+      sectionEnrollments.some(([code, enrollment]) =>
+        (['enrolled', 'capacity', 'waitlist'] as const).some(
+          prop => lastEntry[code]?.[prop] !== enrollment[prop]
+        )
+      )
+    ) {
       history.entries.push({
         date,
-        sectionEnrollments: Object.fromEntries(
-          course.groups
-            .filter(group => group.plannable)
-            .map(group => [
-              group.code,
-              {
-                enrolled: group.enrolled,
-                capacity: group.capacity,
-                waitlist: group.waitlist
-              }
-            ])
-        )
+        sectionEnrollments: Object.fromEntries(sectionEnrollments)
       })
     }
     await Deno.writeTextFile(
       filePath,
       history.toFile(
-        course.groups
-          .filter(group => group.plannable)
-          .sort((a, b) => a.code.localeCompare(b.code))
-          .map(group => group.code)
+        [
+          ...new Set([
+            // Preserve section codes that are no longer used (e.g. cancelled,
+            // such as SP22 ANAR 115 A00)
+            ...history.pastCodes,
+            ...course.groups
+              .filter(group => group.plannable)
+              .map(group => group.code)
+          ])
+        ].sort()
       )
     )
 
@@ -215,6 +237,9 @@ if (import.meta.main) {
   // The UqZBpD3n cookie doesn't seem to expire as often, so I put it first
   const [uqz, sessionIndex] = Deno.args
   const today = new Date()
+  if (!confirm(`Is today ${today}? WSL's time might be off.`)) {
+    Deno.exit()
+  }
   await main(
     'SP22',
     [
