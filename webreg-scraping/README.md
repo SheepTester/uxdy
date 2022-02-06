@@ -205,6 +205,16 @@ function searchLoadGroupData (): {
 | `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N` or `5` (equiv to `Y`).   |
 | `FK_SST_SCTN_STATCD` | `"AC"`                             | Determines what is shown in its row.                             |
 
+`BEGIN_HH_TIME`, `BEGIN_MM_TIME`, `END_HH_TIME`, and `END_MM_TIME` are all `0`
+(12 am) if the time is TBA.
+
+The building and room numbers are TBA together (i.e. it's not possible for just
+the room number to be RBA). The group time and days are also TBA together (i.e.
+it's not possible for just the times to be TBA). The building and room number
+are only known if the time and days of the meeting are already known. For
+example, it's possible for the time of a section to be known, while the room is
+still TBA (this tends to be the case for finals sections).
+
 If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
 (`FK_SPM_SPCL_MTG_CD`) is normal (`" "`) or TBA, then WebReg considers it a
 "cateAX," which presumably forms a list of non-final meetings.
@@ -213,8 +223,9 @@ For `SECT_CODE`, WI22 BGRD 200 has numerical section codes from 001 to 291.
 
 In `PERSON_FULL_NAME`, the name itself (last name, first name then middle
 initial) is 35 characters long, but `PERSON_FULL_NAME` is longer than that. The
-padded name is followed by a semicolon (`;`) then the PID, starting with an A.
-Here's an example of a class with multiple instructors:
+padded name is followed by a semicolon (`;`) then the PID, starting with an A
+(or S, in the case of Michael Raymond Landry, instructor of SP22 SIO 299 079
+with PID S46778142). Here's an example of a class with multiple instructors:
 
 ```json
 {

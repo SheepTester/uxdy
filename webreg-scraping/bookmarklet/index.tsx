@@ -103,24 +103,26 @@ function CourseEntry ({ course, sections }: CourseEntryProps) {
                 </div>
               </div>
               <div className='st-info'>
-                <div class='st-time'>
-                  <div>
-                    {section.start.toString()}–{section.end.toString()}
+                {section.time ? (
+                  <div class='st-time'>
+                    <div>
+                      {section.time.start.toString()}–
+                      {section.time.end.toString()}
+                    </div>
+                    <div>
+                      on{' '}
+                      {section.time.days.map(day => dayNames[day]).join(', ')}
+                    </div>
                   </div>
-                  <div>
-                    on {section.days.map(day => dayNames[day]).join(', ')}
-                  </div>
-                </div>
+                ) : null}
                 <div className='st-professor'>
                   {section.instructors.length > 0
-                    ? section.instructors.map(instructor => {
-                        const [lastName, firstName] =
-                          instructor.name.split(', ')
+                    ? section.instructors.map(({ firstName, surname }) => {
                         return (
                           <>
                             <div>{firstName}</div>
                             <div>
-                              <strong>{lastName}</strong>
+                              <strong>{surname}</strong>
                             </div>
                           </>
                         )
@@ -195,7 +197,7 @@ function CourseList ({
                 section =>
                   !section
                     .times()
-                    .some(time =>
+                    ?.some(time =>
                       checkSchedule.some(period => time.intersects(period))
                     )
               )
@@ -218,12 +220,14 @@ function CourseList ({
           }
           // Don't show courses that coincide with the user's existing schedule
           if (checkSchedule) {
-            // Other sections under the letter conflict wtih the schedule
+            // Other sections under the letter conflict with the schedule
             if (!approvedLetters.includes(group.code[0])) {
               return false
             }
             const times = group.times()
+            // I think I'll make it filter out TBA sections as well
             if (
+              !times ||
               checkSchedule.some(period =>
                 times.some(time => time.intersects(period))
               )
@@ -258,7 +262,7 @@ function App () {
     setSchedule(
       sections
         .filter(section => section.state.type !== 'planned')
-        .flatMap(section => section.times())
+        .flatMap(section => section.times() ?? [])
     )
   })
 

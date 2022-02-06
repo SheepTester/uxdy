@@ -91,9 +91,9 @@ class CourseHistory {
 
 export async function main (
   quarter: string,
-  sessionIndex: string,
-  uqz: string,
-  date: string
+  date: string,
+  sessionIndex?: string,
+  uqz?: string
 ) {
   print(`\r[${' '.repeat(PROGBAR_LENGTH)}]`.padEnd(80, ' '))
   const getter = new AuthorizedGetter(quarter, sessionIndex, uqz)
@@ -140,13 +140,17 @@ export async function main (
                 group.examType === null
                   ? instructionTypes[group.instructionType]
                   : exams[group.examType]
-              }) at ${group.start}–${group.end} on ${group
-                .times()
-                .map(period => period.dayName())
-                .join(', ')} ${
-                group.location
-                  ? `at ${group.location.building} ${group.location.room}`
-                  : '(location TBA)'
+              }) ${
+                group.time
+                  ? `at ${group.time.start}–${group.time.end} on ${group
+                      .times()!
+                      .map(period => period.dayName())
+                      .join(', ')} ${
+                      group.time.location
+                        ? `at ${group.time.location.building} ${group.time.location.room}`
+                        : '(location TBA)'
+                    }`
+                  : '(time and location TBA)'
               } by ${
                 group.instructors.length > 0
                   ? group.instructors.map(
@@ -213,12 +217,12 @@ if (import.meta.main) {
   const today = new Date()
   await main(
     'SP22',
-    sessionIndex,
-    uqz,
     [
       today.getFullYear().toString().slice(2),
       (today.getMonth() + 1).toString().padStart(2, '0'),
       today.getDate().toString().padStart(2, '0')
-    ].join('')
+    ].join(''),
+    sessionIndex,
+    uqz
   )
 }

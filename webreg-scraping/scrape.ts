@@ -1,3 +1,6 @@
+// deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx>
+
+import { join as joinPath } from 'https://deno.land/std@0.125.0/path/mod.ts'
 import { ExamCodes, InstructionCodes } from './meeting-types.ts'
 
 export type RawSearchLoadSubjectResult = {
@@ -73,18 +76,18 @@ export class AuthorizedGetter {
   #term: string
   #sessionIndex?: string
   #uqz?: string
-  #cache: boolean
+  #cachePath: string | null
 
   constructor (
     term: string,
     sessionIndex?: string,
     uqz?: string,
-    cache = false
+    cachePath: string | null = null
   ) {
     this.#term = term
     this.#sessionIndex = sessionIndex
     this.#uqz = uqz
-    this.#cache = cache
+    this.#cachePath = cachePath
   }
 
   async get (path: string, query: Record<string, string>) {
@@ -93,8 +96,10 @@ export class AuthorizedGetter {
         ? `${path}_${query.subjcode.trim()}_${query.crsecode.trim()}`
         : path
 
-    if (this.#cache) {
-      const json = await Deno.readTextFile(`./webreg-data/${fileName}.json`)
+    if (this.#cachePath !== null) {
+      const json = await Deno.readTextFile(
+        joinPath(this.#cachePath, `${fileName}.json`)
+      )
         .then(JSON.parse)
         .catch((error: unknown) =>
           error instanceof Deno.errors.NotFound ? null : Promise.reject(error)
@@ -104,7 +109,7 @@ export class AuthorizedGetter {
       }
     }
 
-    const json = fetch(
+    const json = await fetch(
       `https://act.ucsd.edu/webreg2/svc/wradapter/secure/${path}?${new URLSearchParams(
         query
       )}`,
@@ -118,9 +123,9 @@ export class AuthorizedGetter {
         ? response.json()
         : Promise.reject(`HTTP ${response.status} error from ${response.url}`)
     )
-    if (this.#cache) {
+    if (this.#cachePath !== null) {
       await Deno.writeTextFile(
-        `./webreg-data/${fileName}.json`,
+        joinPath(this.#cachePath, `${fileName}.json`),
         JSON.stringify(json, null, '\t') + '\n'
       )
     }
@@ -370,9 +375,26 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
   /** The section code, such as "A07." */
   code: string
   /**
-   * The location of the meeting, or null if TBA.
+   * The start and end time and days of the week of the meeting, or null if
+   * TBA.
+   *
+   * Also contains the building and room number because if the time is TBA, so is the room number.
    */
-  location: { building: string; room: string } | null
+  time: {
+    start: Time
+    end: Time
+
+    /** The days of the week on which the meeting meets. */
+    days: number[]
+
+    /**
+     * The location of the meeting, or null if TBA.
+     */
+    location: {
+      building: string
+      room: string
+    } | null
+  } | null
   /**
    * List of instructors. If empty, then the section is taught by "Staff."
    */
@@ -388,13 +410,6 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    * table](https://registrar.ucsd.edu/StudentLink/instr_codes.html) for a key.
    */
   instructionType: InstructionCodes
-
-  /** The start time of the meeting. */
-  start: Time
-  /** The end time of the meeting. */
-  end: Time
-  /** The days of the week on which the meeting meets. */
-  days: number[]
 
   raw: Raw
 
@@ -415,13 +430,22 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
     // Unused: { LONG_DESC, PRIMARY_INSTR_FLAG, START_DATE }
 
     this.code = SECT_CODE
-    this.location =
-      BLDG_CODE === 'TBA' && ROOM_CODE === 'TBA'
+    this.time =
+      DAY_CODE === ' '
         ? null
         : {
-            building: BLDG_CODE.trim(),
-            room: ROOM_CODE.trim()
+            start: new Time(BEGIN_HH_TIME, BEGIN_MM_TIME),
+            end: new Time(END_HH_TIME, END_MM_TIME),
+            days: DAY_CODE.split('').map(day => +day),
+            location:
+              BLDG_CODE === 'TBA' && ROOM_CODE === 'TBA'
+                ? null
+                : {
+                    building: BLDG_CODE.trim(),
+                    room: ROOM_CODE.trim()
+                  }
           }
+
     this.instructors =
       PERSON_FULL_NAME === 'Staff; '
         ? []
@@ -435,10 +459,6 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
         : FK_SPM_SPCL_MTG_CD
     this.instructionType = FK_CDI_INSTR_TYPE
 
-    this.start = new Time(BEGIN_HH_TIME, BEGIN_MM_TIME)
-    this.end = new Time(END_HH_TIME, END_MM_TIME)
-    this.days = DAY_CODE.split('').map(day => +day)
-
     this.raw = rawGroup
   }
 
@@ -446,15 +466,19 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    * Whether the meeting is special and only happens on scheduled days rather
    * than regularly, such as a midterm or final.
    */
-  isExam () {
+  isExam (): boolean {
     return this.examType !== null
   }
 
   /**
-   * Gets the time ranges during which the section meets.
+   * Gets the time ranges during which the section meets. Returns null if TBA.
    */
-  times () {
-    return this.days.map(day => new Period(day, this.start, this.end))
+  times (): Period[] | null {
+    const time = this.time
+    if (!time) {
+      return null
+    }
+    return time.days.map(day => new Period(day, time.start, time.end))
   }
 
   /**
@@ -631,7 +655,12 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
 }
 
 if (import.meta.main) {
-  const getter = new AuthorizedGetter('WI22', Deno.args[0], Deno.args[1], true)
+  const getter = new AuthorizedGetter(
+    'SP22',
+    Deno.args[1],
+    Deno.args[0],
+    'cache-sp22'
+  )
   const courses = []
   const freq: Record<number, number> = {}
   for await (const course of getter.allCourses()) {

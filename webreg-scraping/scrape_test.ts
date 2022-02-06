@@ -34,6 +34,22 @@ function assertInRange (
 }
 
 /**
+ * Asserts that the values are either all true or all false; i.e. they can't be
+ * mixed.
+ *
+ * This is for checking if certain group properties are all TBA together (e.g.
+ * the room number can't be known while the building is still TBA).
+ */
+function assertHomogeneous (
+  maybes: boolean[]
+): asserts maybes is true[] | false[] {
+  assert(
+    maybes.every(boolean => boolean) || maybes.every(boolean => !boolean),
+    `Cannot mix true/false in [${maybes.join(', ')}]`
+  )
+}
+
+/**
  * Assert that the value only has spaces at the end.
  */
 function assertEndPadded (value: string, message?: string) {
@@ -45,7 +61,7 @@ function assertEndPadded (value: string, message?: string) {
 assertEndPadded('')
 assertEndPadded('hi  ')
 
-const getter = new AuthorizedGetter('WI22', Deno.args[0], Deno.args[1], true)
+const getter = new AuthorizedGetter('CACHE', undefined, undefined, 'cache-sp22')
 for await (const course of getter.allCourses()) {
   Deno.test(`${course.code}: ${course.title}`, () => {
     const { SUBJ_CODE, CRSE_CODE, CRSE_TITLE, UNIT_FROM, UNIT_TO, UNIT_INC } =
@@ -103,7 +119,6 @@ for await (const course of getter.allCourses()) {
       assertInRange(BEGIN_MM_TIME, 0, 60)
       assertInRange(END_HH_TIME, 0, 24)
       assertInRange(END_MM_TIME, 0, 60)
-
       if (DAY_CODE !== ' ') {
         // WI22 MGT 407 C00 is a lecture on Sunday
         assertMatch(DAY_CODE, /^[1-7]+$/)
@@ -112,6 +127,17 @@ for await (const course of getter.allCourses()) {
           DAY_CODE.length,
           'No duplicate days'
         )
+      }
+      // The days and times are all TBA together
+      assertHomogeneous([
+        BEGIN_HH_TIME === 0 && BEGIN_MM_TIME === 0,
+        END_HH_TIME === 0 && END_MM_TIME === 0,
+        DAY_CODE === ' '
+      ])
+      // If the time is TBA, so should the location (but not the other way
+      // around)
+      if (DAY_CODE === ' ') {
+        assertEquals(BLDG_CODE, 'TBA')
       }
 
       // WI22 BGRD 200 has numerical section codes from 001 to 291
@@ -130,6 +156,8 @@ for await (const course of getter.allCourses()) {
         assertEquals(ROOM_CODE.length, 5)
         assertEndPadded(ROOM_CODE, 'Room: spaces padded only at end')
       }
+      // The building and room number are all TBA together
+      assertHomogeneous([BLDG_CODE === 'TBA', ROOM_CODE === 'TBA'])
 
       if (PERSON_FULL_NAME !== 'Staff; ') {
         for (const instructor of PERSON_FULL_NAME.split(':')) {
@@ -141,7 +169,8 @@ for await (const course of getter.allCourses()) {
           // the comma. Aiya!
           assertStringIncludes(name, ',')
           assertEndPadded(name, 'Prof name: spaces padded only at end')
-          assertMatch(pid, /^A\d{8}$/)
+          // SP22 SIO 299 079 Michael Raymond Landry has PID S46778142
+          assertMatch(pid, /^[AS]\d{8}$/)
         }
       }
 
