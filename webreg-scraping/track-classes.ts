@@ -5,13 +5,7 @@ import { ensureDir } from 'https://deno.land/std@0.125.0/fs/ensure_dir.ts'
 import { writeAll } from 'https://deno.land/std@0.125.0/streams/conversion.ts'
 import { exams, instructionTypes } from './meeting-types.ts'
 import { AuthorizedGetter } from './scrape.ts'
-
-const PROGBAR_LENGTH = 50
-
-const encoder = new TextEncoder()
-async function print (content: string) {
-  await writeAll(Deno.stdout, encoder.encode(content))
-}
+import { displayProgress } from './util/display-progress.ts'
 
 await ensureDir('./webreg-data2/courses/')
 
@@ -92,6 +86,7 @@ class CourseHistory {
   }
 }
 
+const encoder = new TextEncoder()
 export async function main (
   quarter: string,
   date: string,
@@ -106,7 +101,7 @@ export async function main (
         path: string
       }
 ) {
-  print(`\r[${' '.repeat(PROGBAR_LENGTH)}]`.padEnd(80, ' '))
+  await displayProgress(0)
   const getter =
     source.type === 'fetch'
       ? new AuthorizedGetter(quarter, source.sessionIndex, source.uqz)
@@ -235,11 +230,7 @@ export async function main (
       )
     )
 
-    print(
-      `\r[${'='.repeat(Math.floor(progress * PROGBAR_LENGTH))}${' '.repeat(
-        PROGBAR_LENGTH - Math.floor(progress * PROGBAR_LENGTH)
-      )}] ${course.code}`.padEnd(80, ' ')
-    )
+    await displayProgress(progress, { label: course.code })
   }
   console.log()
 }

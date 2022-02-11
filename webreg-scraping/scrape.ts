@@ -584,6 +584,9 @@ export class Course {
     this.raw = rawCourse
   }
 
+  /**
+   * Display `<SUBJ> <CRSE>`, e.g. `CSE 11`.
+   */
   get code () {
     return `${this.subject} ${this.course}`
   }
