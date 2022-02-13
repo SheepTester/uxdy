@@ -87,6 +87,18 @@ class CourseHistory {
 }
 
 const encoder = new TextEncoder()
+async function writeToFile (path: string | URL) {
+  const file = await Deno.open(path, {
+    write: true,
+    create: true
+  })
+  await file.truncate()
+  return {
+    write: (text: string) => writeAll(file, encoder.encode(text)),
+    close: () => file.close()
+  }
+}
+
 export async function main (
   quarter: string,
   date: string,
@@ -106,24 +118,19 @@ export async function main (
     source.type === 'fetch'
       ? new AuthorizedGetter(quarter, source.sessionIndex, source.uqz)
       : new AuthorizedGetter(quarter, undefined, undefined, source.path)
-  const courseList = await Deno.open('./webreg-data2/courses.md', {
-    write: true,
-    create: true
-  })
-  await courseList.truncate()
-  await writeAll(courseList, encoder.encode(`## Courses (${quarter})\n\n`))
+  const courseList = await writeToFile('./webreg-data2/courses.md')
+  await courseList.write(`## Courses (${quarter})\n\n`)
+  const remoteList = await writeToFile('./webreg-data2/remote.md')
+  await remoteList.write(`## Remote sections\n`)
   for await (const { course, progress } of getter.allCoursesWithProgress()) {
-    await writeAll(
-      courseList,
-      encoder.encode(
-        `- [**${course.code}**: ${course.title}](./courses/${course.subject}${
-          course.course
-        }.md) (${
-          course.unit.from === course.unit.to
-            ? `${course.unit.to} units`
-            : `${course.unit.from}–${course.unit.to} units, by ${course.unit.step}`
-        })\n`
-      )
+    await courseList.write(
+      `- [**${course.code}**: ${course.title}](./courses/${course.subject}${
+        course.course
+      }.md) (${
+        course.unit.from === course.unit.to
+          ? `${course.unit.to} units`
+          : `${course.unit.from}–${course.unit.to} units, by ${course.unit.step}`
+      })\n`
     )
 
     await Deno.writeTextFile(
@@ -230,8 +237,23 @@ export async function main (
       )
     )
 
+    const remote = course.groups.filter(
+      group => group.plannable && group.time?.location?.building === 'RCLAS'
+    )
+    if (remote.length > 0) {
+      await remoteList.write(
+        `\n[**${course.code}**](./courses/${course.subject}${
+          course.course
+        }.md): ${course.title}\n${remote
+          .map(group => `- ${group.code}\n`)
+          .join('')}`
+      )
+    }
+
     await displayProgress(progress, { label: course.code })
   }
+  courseList.close()
+  remoteList.close()
   console.log()
 }
 
@@ -239,7 +261,11 @@ if (import.meta.main) {
   // The UqZBpD3n cookie doesn't seem to expire as often, so I put it first
   const [uqz, sessionIndex] = Deno.args
   const today = new Date()
-  if (!confirm(`Is today ${today}? WSL's time might be off.`)) {
+  if (
+    !confirm(
+      `Is today ${today}? WSL's time might be off. (sudo ntpdate -sb time.nist.gov)`
+    )
+  ) {
     Deno.exit()
   }
   await main(
