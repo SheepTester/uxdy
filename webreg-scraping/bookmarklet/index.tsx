@@ -6,7 +6,7 @@
 
 import { ComponentChildren, render } from 'https://esm.sh/preact@10.6.4'
 import { useEffect, useState } from 'https://esm.sh/preact@10.6.4/hooks'
-import { AuthorizedGetter, Course, Group, Period } from '../scrape.ts'
+import { Course, Group, Period, Scraper } from '../scrape.ts'
 
 const params = new URL(window.location.href).searchParams
 const term = params.get('p1')
@@ -16,7 +16,7 @@ if (!term) {
   )
   throw new Error('Unable to get term from URL.')
 }
-const getter = new AuthorizedGetter(term)
+const getter = new Scraper(term)
 
 // TypeScript hack: `useEffect` doesn't accept an async function.
 function useAsyncEffect (callback: () => Promise<void>) {

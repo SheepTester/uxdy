@@ -1,7 +1,7 @@
 // Ensures that each course and section has a valid schema
 // deno test --allow-read scrape_test.ts --fail-fast
 
-import { AuthorizedGetter } from './scrape.ts'
+import { Scraper } from './scrape.ts'
 import {
   assert,
   assertArrayIncludes,
@@ -61,7 +61,7 @@ function assertEndPadded (value: string, message?: string) {
 assertEndPadded('')
 assertEndPadded('hi  ')
 
-const getter = new AuthorizedGetter('CACHE', undefined, undefined, 'cache-sp22')
+const getter = new Scraper('CACHE', { cachePath: 'cache-sp22' })
 for await (const course of getter.allCourses()) {
   Deno.test(`${course.code}: ${course.title}`, () => {
     const { SUBJ_CODE, CRSE_CODE, CRSE_TITLE, UNIT_FROM, UNIT_TO, UNIT_INC } =

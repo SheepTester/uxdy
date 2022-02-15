@@ -4,7 +4,7 @@
 import { ensureDir } from 'https://deno.land/std@0.125.0/fs/ensure_dir.ts'
 import { writeAll } from 'https://deno.land/std@0.125.0/streams/conversion.ts'
 import { exams, instructionTypes } from './meeting-types.ts'
-import { AuthorizedGetter } from './scrape.ts'
+import { Scraper } from './scrape.ts'
 import { displayProgress } from './util/display-progress.ts'
 
 await ensureDir('./webreg-data2/courses/')
@@ -105,19 +105,16 @@ export async function main (
   source:
     | {
         type: 'fetch'
-        sessionIndex: string
-        uqz: string
+        jlinksessionidx: string
+        UqZBpD3n: string
       }
     | {
         type: 'cache'
-        path: string
+        cachePath: string
       }
 ) {
   await displayProgress(0)
-  const getter =
-    source.type === 'fetch'
-      ? new AuthorizedGetter(quarter, source.sessionIndex, source.uqz)
-      : new AuthorizedGetter(quarter, undefined, undefined, source.path)
+  const getter = new Scraper(quarter, source)
   const courseList = await writeToFile('./webreg-data2/courses.md')
   await courseList.write(`## Courses (${quarter})\n\n`)
   const remoteList = await writeToFile('./webreg-data2/remote.md')
@@ -259,7 +256,7 @@ export async function main (
 
 if (import.meta.main) {
   // The UqZBpD3n cookie doesn't seem to expire as often, so I put it first
-  const [uqz, sessionIndex] = Deno.args
+  const [UqZBpD3n, jlinksessionidx] = Deno.args
   const today = new Date()
   if (
     !confirm(
@@ -275,6 +272,6 @@ if (import.meta.main) {
       (today.getMonth() + 1).toString().padStart(2, '0'),
       today.getDate().toString().padStart(2, '0')
     ].join(''),
-    { type: 'fetch', sessionIndex, uqz }
+    { type: 'fetch', jlinksessionidx, UqZBpD3n }
   )
 }

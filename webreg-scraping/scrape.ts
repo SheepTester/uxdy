@@ -72,7 +72,17 @@ export interface RawGetClassResult extends CommonRawSectionResult {
   FK_SEC_SCTN_NUM: number
 }
 
-export class AuthorizedGetter {
+type ScraperOptions = {
+  /** The `jlinksessionidx` cookie */
+  jlinksessionidx?: string
+  /** The `UqZBpD3n` cookie */
+  UqZBpD3n?: string
+  /** The path to cache WebReg response data in */
+  cachePath?: string | null
+}
+
+/** Scrapes courses and sections from WebReg. */
+export class Scraper {
   #term: string
   #sessionIndex?: string
   #uqz?: string
@@ -80,13 +90,11 @@ export class AuthorizedGetter {
 
   constructor (
     term: string,
-    sessionIndex?: string,
-    uqz?: string,
-    cachePath: string | null = null
+    { jlinksessionidx, UqZBpD3n, cachePath = null }: ScraperOptions = {}
   ) {
     this.#term = term
-    this.#sessionIndex = sessionIndex
-    this.#uqz = uqz
+    this.#sessionIndex = jlinksessionidx
+    this.#uqz = UqZBpD3n
     this.#cachePath = cachePath
   }
 
@@ -671,12 +679,11 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
 }
 
 if (import.meta.main) {
-  const getter = new AuthorizedGetter(
-    'SP22',
-    Deno.args[1],
-    Deno.args[0],
-    'cache-sp22'
-  )
+  const getter = new Scraper('SP22', {
+    jlinksessionidx: Deno.args[1],
+    UqZBpD3n: Deno.args[0],
+    cachePath: 'cache-sp22'
+  })
   const courses = []
   const freq: Record<number, number> = {}
   for await (const course of getter.allCourses()) {

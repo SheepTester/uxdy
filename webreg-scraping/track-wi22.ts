@@ -41,7 +41,7 @@ const commits = await run(['git', 'log', '--format=%H %s']).then(lines =>
 
 for (const { hash, date } of commits.reverse()) {
   await run(['git', 'checkout', hash])
-  await main(QUARTER, date.join(''), { type: 'cache', path: DIRECTORY })
+  await main(QUARTER, date.join(''), { type: 'cache', cachePath: DIRECTORY })
   await run(['git', 'add', '.'], OUT_DIR)
   // await run(
   //   [
