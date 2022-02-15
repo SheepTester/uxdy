@@ -219,7 +219,21 @@ If `SECT_CODE`'s final 2 digits are not `00` and the meeting type
 (`FK_SPM_SPCL_MTG_CD`) is normal (`" "`) or TBA, then WebReg considers it a
 "cateAX," which presumably forms a list of non-final meetings.
 
-For `SECT_CODE`, WI22 BGRD 200 has numerical section codes from 001 to 291.
+There are two types of `SECT_CODE`:
+
+- `A00`: a letter followed by two digits. The letter groups sections together;
+  for example, if you enroll in A01, then you also should attend A00 and A50.
+
+- `001`: a three digit number. Each section is individual; there is no "000"
+  common lecture section. Some writing classes such as Synthesis and WCWP 10B
+  are seminar based and thus use this system of section codes.
+
+  For `SECT_CODE`, WI22 BGRD 200 has numerical section codes from 001 to 291.
+
+  Note that courses are not obligated to use this system; some courses only have
+  lectures with no other meetings, but they still use a letter-based system,
+  probably because there are under 26 sections, so there are enough letters for
+  each lecture.
 
 In `PERSON_FULL_NAME`, the name itself (last name, first name then middle
 initial) is 35 characters long, but `PERSON_FULL_NAME` is longer than that. The

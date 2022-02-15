@@ -173,6 +173,8 @@ function CourseList ({
           }
         }
 
+        // Numerical section codes are individual rather than belonging to some
+        // "000"
         const approvedLetters = ['0']
         if (checkSchedule) {
           // Get the other normal sections such as lectures and additional meeting

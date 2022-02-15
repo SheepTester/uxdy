@@ -374,6 +374,7 @@ export class Period {
 class BaseGroup<Raw extends CommonRawSectionResult> {
   /** The section code, such as "A07." */
   code: string
+
   /**
    * The start and end time and days of the week of the meeting, or null if
    * TBA.
@@ -395,16 +396,19 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
       room: string
     } | null
   } | null
+
   /**
    * List of instructors. If empty, then the section is taught by "Staff."
    */
   instructors: Instructor[]
+
   /**
    * Distinguishes between midterms and finals. `null` if not an exam (i.e. a
    * normal, regular meeting). Refer to [this
    * table](https://registrar.ucsd.edu/StudentLink/instr_codes.html) for a key.
    */
   examType: ExamCodes | null
+
   /**
    * Distinguishes between lectures and discussions. Refer to [this
    * table](https://registrar.ucsd.edu/StudentLink/instr_codes.html) for a key.
@@ -468,6 +472,15 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
    */
   isExam (): boolean {
     return this.examType !== null
+  }
+
+  /**
+   * Returns the letter of the section code (e.g. the `A` in `A00`), or null if
+   * the section is a three-digit number. You can use this to determine whether
+   * the section code is numerical.
+   */
+  codeLetter (): string | null {
+    return this.code.match(/^[A-Z]/)?.[0] ?? null
   }
 
   /**
