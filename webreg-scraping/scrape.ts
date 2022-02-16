@@ -188,6 +188,10 @@ export class Scraper {
 
   /**
    * Lists all sections for a course.
+   *
+   * @param subject and
+   * @param course should be padded strings, such as from
+   * `RawSearchByAllResult`'s `SUBJ_CODE` and `CRSE_CODE` properties.
    */
   sections (
     subject: string,
@@ -198,6 +202,34 @@ export class Scraper {
       crsecode: course.padEnd(5, ' '),
       termcode: this.#term
     })
+  }
+
+  /**
+   * Gets a `Course` object.
+   *
+   * @param subject The subject code; can be trimmed.
+   * @param course The course code; can be trimmed.
+   * @param rawCourses A list of raw courses from `courses()`. If omitted, it'll
+   * call the `courses()` method for you.
+   */
+  async getCourse (
+    subject: string,
+    course: string,
+    rawCourses?: RawSearchByAllResult[]
+  ): Promise<Course> {
+    rawCourses ??= await this.courses()
+    const rawCourse = rawCourses.find(
+      rawCourse =>
+        rawCourse.SUBJ_CODE.trim() === subject &&
+        rawCourse.CRSE_CODE.trim() === course
+    )
+    if (!rawCourse) {
+      throw new ReferenceError(`Could not find course ${subject} ${course}.`)
+    }
+    return new Course(
+      rawCourse,
+      await this.sections(rawCourse.SUBJ_CODE, rawCourse.CRSE_CODE)
+    )
   }
 
   /**
@@ -610,6 +642,54 @@ export class Course {
    */
   get code () {
     return `${this.subject} ${this.course}`
+  }
+
+  /**
+   * Returns a mapping of plannable section codes to the section and their other
+   * meetings.
+   *
+   * The list of other meetings is guaranteed to be the same array object if
+   * multiple section codes share the same sections. In other words,
+   * A01.otherMeetings === A02.otherMeetings.
+   */
+  getOptions () {
+    /**
+     * Mapping of plannable section codes to the section and a reference to the
+     * array of other meetings, also in `otherMeetings`.
+     */
+    const plannables: Record<
+      string,
+      { section: Group; otherMeetings: Group[] }
+    > = {}
+    /**
+     * Mapping of a letter (e.g. the A in A01) to a list of other,
+     * non-plannable, non-exam meetings associated with the letter.
+     */
+    const otherMeetings: Record<string, Group[]> = {}
+    for (const meeting of this.groups) {
+      if (meeting.isExam()) {
+        continue
+      }
+      const letter = meeting.codeLetter()
+      if (letter === null) {
+        // Numerical section codes are individual
+        if (meeting.plannable) {
+          plannables[meeting.code] = { section: meeting, otherMeetings: [] }
+        }
+      } else {
+        otherMeetings[letter] ??= []
+        if (meeting.plannable) {
+          plannables[meeting.code] = {
+            section: meeting,
+            otherMeetings: otherMeetings[letter]
+          }
+        } else {
+          // Not plannable, so add to other meetings
+          otherMeetings[letter].push(meeting)
+        }
+      }
+    }
+    return plannables
   }
 }
 
