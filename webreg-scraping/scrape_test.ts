@@ -200,6 +200,12 @@ for await (const course of getter.allCourses()) {
       // WI22 CSE 11 A00 and EDS 259 C/D00 have PRINT_FLAG=5
       assertArrayIncludes([' ', 'N', 'Y', '5'], [PRINT_FLAG])
       assertArrayIncludes(['AC', 'NC', 'CA'], [FK_SST_SCTN_STATCD])
+
+      // There are no exams that are plannable. Either:
+      // - There are non plannable exams.
+      // - There are non plannable non exams (eg lectures).
+      // - There are plannable non exams (eg discussions).
+      assert(!(group.plannable && group.isExam()))
     })
   }
 }

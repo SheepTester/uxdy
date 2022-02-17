@@ -1,26 +1,52 @@
 // deno bundle sched-gen/index.ts | sed 's/import.meta.main/true/g' - > sched-gen/index.js
 
 import { InstructionCodes } from '../meeting-types.ts'
-import { PlannableOption, Scraper } from '../scrape.ts'
+import { Group, LetterGroup, Scraper } from '../scrape.ts'
 
-function * permute<T> (
-  optionsList: T[][],
-  permutationOk?: (permutation: T[]) => boolean
-): Generator<T[], void> {
-  if (optionsList.length === 0) {
+/**
+ * @param scheduleSoFar Used to check for schedule conflicts. Doesn't actually
+ * represent the schedule since it may have ignored sections omitted.
+ * @yields sections guaranteed not to have any conflicts.
+ */
+function * permuteSchedule (
+  [course, ...courses]: {
+    letters: LetterGroup[]
+    ignore: InstructionCodes[]
+  }[],
+  scheduleSoFar: Group[] = []
+): Generator<Group[], void> {
+  if (course === undefined) {
     yield []
     return
   }
-  const [options, ...rest] = optionsList
-  for (const option of options) {
-    if (permutationOk && !permutationOk([option])) {
+  for (const letter of course.letters) {
+    // If any of the other meetings conflicts with the schedule so far, then
+    // none of the plannable sections are compatible either, and we can skip
+    // early
+    const otherMeetings = letter.otherMeetings.filter(
+      section => !course.ignore.includes(section.instructionType)
+    )
+    if (
+      letter.otherMeetings.some(meeting => meeting.intersects(scheduleSoFar))
+    ) {
       continue
     }
-    for (const others of permute(
-      rest,
-      permutationOk && (permutation => permutationOk([option, ...permutation]))
-    )) {
-      yield [option, ...others]
+    // TODO: Check exam times
+
+    for (const plannable of letter.plannables) {
+      const considerConflicts = !course.ignore.includes(
+        plannable.instructionType
+      )
+      if (considerConflicts && plannable.intersects(scheduleSoFar)) {
+        continue
+      }
+      for (const schedule of permuteSchedule(courses, [
+        ...scheduleSoFar,
+        ...otherMeetings,
+        ...(considerConflicts ? [plannable] : [])
+      ])) {
+        yield [plannable, ...schedule]
+      }
     }
   }
 }
@@ -86,24 +112,65 @@ async function generateSchedules (
           }
     const [subjectCode, courseCode] = normCourse.code.split(' ')
     const course = await scraper.getCourse(subjectCode, courseCode, rawCourses)
-    const options = Object.values(course.getOptions()).filter(
-      ({ section, otherMeetings }) =>
-        [section, ...otherMeetings].some(meeting =>
-          normCourse.includesSection.includes(meeting.code)
-        )
-    )
-    courseOptions.push(options)
+    const options = course.letters().filter(letterGroup => {
+      if (normCourse.includesSection.length > 0) {
+        // Ensure desired sections only
+        if (
+          letterGroup.otherMeetings.some(meeting =>
+            normCourse.includesSection.includes(meeting.code)
+          )
+        ) {
+          // Other meetings has at least one of the desired sections, so all of
+          // the plannables pass.
+        } else {
+          // The other meetings don't have the desired section, so filter the
+          // plannables to those with the code
+          letterGroup.plannables = letterGroup.plannables.filter(section =>
+            normCourse.includesSection.includes(section.code)
+          )
+          if (letterGroup.plannables.length === 0) {
+            return false
+          }
+        }
+      }
+      if (remote !== undefined) {
+        if (
+          letterGroup.otherMeetings.every(
+            section =>
+              normCourse.ignoreSection.includes(section.instructionType) ||
+              (section.time?.location?.building === 'RCLAS') === remote
+          )
+        ) {
+          // Filter plannables
+          letterGroup.plannables = letterGroup.plannables.filter(
+            section =>
+              normCourse.ignoreSection.includes(section.instructionType) ||
+              (section.time?.location?.building === 'RCLAS') === remote
+          )
+          if (letterGroup.plannables.length === 0) {
+            return false
+          }
+        } else {
+          // There's a meeting that doesn't fit the remote preference. Shibai
+          return false
+        }
+      }
+      return true
+    })
+    courseOptions.push({
+      options,
+      total: options
+        .map(option => option.plannables.length)
+        .reduce((a, b) => a + b, 0),
+      ignore: normCourse.ignoreSection
+    })
   }
   // Fewer options first
-  courseOptions.sort((a, b) => a.length - b.length)
-
-  const isConflictFree = (schedule: PlannableOption[]) => {
-    // We can assume sections from the same course don't overlap. Also, I'm
-    // assuming that all but the last section has been checked
-    return false
-  }
-  for (const schedule of permute(courseOptions, isConflictFree)) {
-    //
+  courseOptions.sort((a, b) => a.total - b.total)
+  for (const schedule of permuteSchedule(
+    courseOptions.map(({ options, ignore }) => ({ letters: options, ignore }))
+  )) {
+    console.log(schedule)
   }
 }
 
@@ -116,7 +183,7 @@ if (import.meta.main) {
       { code: 'CSE 30', ignoreSection: 'DI' },
       { code: 'MATH 20D', ignoreSection: 'DI' },
       { code: 'CSE 21', ignoreSection: ['DI', 'LE'] }
-    ],
-    { remote: false }
+    ]
+    //{ remote: false }
   )
 }

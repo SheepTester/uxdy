@@ -535,6 +535,33 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
   }
 
   /**
+   * Determines whether this meeting conflicts with other meetings or times.
+   *
+   * TBA times are not considered a conflict.
+   */
+  intersects (
+    targetTimes: BaseGroup<any> | (BaseGroup<any> | Period)[] | Period | null
+  ) {
+    const meetingTimes = this.times()
+    if (meetingTimes === null || targetTimes === null) {
+      // TBA times are not considered a conflict
+      return false
+    }
+    // Normalize input to an array of Periods
+    const times = (
+      Array.isArray(targetTimes) ? targetTimes : [targetTimes]
+    ).flatMap(meetingOrPeriod =>
+      meetingOrPeriod instanceof Period
+        ? [meetingOrPeriod]
+        : meetingOrPeriod.times() ?? []
+    )
+    // Return whether any of `meetingTimes` intersects with any of `times`
+    return meetingTimes.some(meetingTime =>
+      times.some(time => meetingTime.intersects(time))
+    )
+  }
+
+  /**
    * Returns the exam type (e.g. final vs midterm) if the meeting is an exam;
    * otherwise, the normal meeting type (e.g. discussion vs lecture).
    */
@@ -601,9 +628,13 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
   }
 }
 
-export type PlannableOption = {
-  section: Group
+export type LetterGroup = {
+  /** Plannable sections */
+  plannables: Group[]
+  /** Other meetings */
   otherMeetings: Group[]
+  /** Mapping of the exam type to the exam meeting */
+  exams: Partial<Record<ExamCodes, Group>>
 }
 
 export type CourseUnit = {
@@ -650,48 +681,36 @@ export class Course {
   }
 
   /**
-   * Returns a mapping of plannable section codes to the section and their other
-   * meetings.
-   *
-   * The list of other meetings is guaranteed to be the same array object if
-   * multiple section codes share the same sections. In other words,
-   * A01.otherMeetings === A02.otherMeetings.
+   * A list of sections grouped by letter (e.g. the A in A01), separated by
+   * plannable sections (of which you would only choose one) and all the other
+   * meetings associated with the letter.
    */
-  getOptions (): Record<string, PlannableOption> {
+  letters (): LetterGroup[] {
     /**
-     * Mapping of plannable section codes to the section and a reference to the
-     * array of other meetings, also in `otherMeetings`.
+     * Mapping of a letter (e.g. the A in A01) to a list of sections associated
+     * with the letter.
      */
-    const plannables: Record<string, PlannableOption> = {}
-    /**
-     * Mapping of a letter (e.g. the A in A01) to a list of other,
-     * non-plannable, non-exam meetings associated with the letter.
-     */
-    const otherMeetings: Record<string, Group[]> = {}
+    const letterGroups: Record<string, LetterGroup> = {}
     for (const meeting of this.groups) {
       if (meeting.isExam()) {
         continue
       }
-      const letter = meeting.codeLetter()
-      if (letter === null) {
-        // Numerical section codes are individual
-        if (meeting.plannable) {
-          plannables[meeting.code] = { section: meeting, otherMeetings: [] }
-        }
+      // Numerical section codes are individual
+      const letter = meeting.codeLetter() ?? meeting.code
+      letterGroups[letter] ??= {
+        plannables: [],
+        otherMeetings: [],
+        exams: {}
+      }
+      if (meeting.examType !== null) {
+        letterGroups[letter].exams[meeting.examType] = meeting
+      } else if (meeting.plannable) {
+        letterGroups[letter].plannables.push(meeting)
       } else {
-        otherMeetings[letter] ??= []
-        if (meeting.plannable) {
-          plannables[meeting.code] = {
-            section: meeting,
-            otherMeetings: otherMeetings[letter]
-          }
-        } else {
-          // Not plannable, so add to other meetings
-          otherMeetings[letter].push(meeting)
-        }
+        letterGroups[letter].otherMeetings.push(meeting)
       }
     }
-    return plannables
+    return Object.values(letterGroups)
   }
 }
 
