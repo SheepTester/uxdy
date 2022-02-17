@@ -1,16 +1,25 @@
 // deno bundle sched-gen/index.ts | sed 's/import.meta.main/true/g' - > sched-gen/index.js
 
 import { InstructionCodes } from '../meeting-types.ts'
-import { Scraper } from '../scrape.ts'
+import { PlannableOption, Scraper } from '../scrape.ts'
 
-function * permute<T> (optionsList: T[][]): Generator<T[], void> {
+function * permute<T> (
+  optionsList: T[][],
+  permutationOk?: (permutation: T[]) => boolean
+): Generator<T[], void> {
   if (optionsList.length === 0) {
     yield []
     return
   }
   const [options, ...rest] = optionsList
   for (const option of options) {
-    for (const others of permute(rest)) {
+    if (permutationOk && !permutationOk([option])) {
+      continue
+    }
+    for (const others of permute(
+      rest,
+      permutationOk && (permutation => permutationOk([option, ...permutation]))
+    )) {
       yield [option, ...others]
     }
   }
@@ -88,7 +97,12 @@ async function generateSchedules (
   // Fewer options first
   courseOptions.sort((a, b) => a.length - b.length)
 
-  for (const schedule of permute(courseOptions)) {
+  const isConflictFree = (schedule: PlannableOption[]) => {
+    // We can assume sections from the same course don't overlap. Also, I'm
+    // assuming that all but the last section has been checked
+    return false
+  }
+  for (const schedule of permute(courseOptions, isConflictFree)) {
     //
   }
 }

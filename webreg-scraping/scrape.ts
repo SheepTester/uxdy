@@ -601,6 +601,11 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
   }
 }
 
+export type PlannableOption = {
+  section: Group
+  otherMeetings: Group[]
+}
+
 export type CourseUnit = {
   from: number
   to: number
@@ -652,15 +657,12 @@ export class Course {
    * multiple section codes share the same sections. In other words,
    * A01.otherMeetings === A02.otherMeetings.
    */
-  getOptions () {
+  getOptions (): Record<string, PlannableOption> {
     /**
      * Mapping of plannable section codes to the section and a reference to the
      * array of other meetings, also in `otherMeetings`.
      */
-    const plannables: Record<
-      string,
-      { section: Group; otherMeetings: Group[] }
-    > = {}
+    const plannables: Record<string, PlannableOption> = {}
     /**
      * Mapping of a letter (e.g. the A in A01) to a list of other,
      * non-plannable, non-exam meetings associated with the letter.
