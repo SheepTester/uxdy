@@ -7,8 +7,11 @@ What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦
 ```sh
 $ npm install --global coffeescript pug-cli sass http-server
 
+# Build
+$ ./scripts/build.sh
+
 # Deploy to GitHub Pages
-$ ./scripts/deploy.sh
+$ ./scripts/deploy.sh dist/
 ```
 
 This will auto-build the files in `src/` whenever you edit them, but you need to
@@ -38,3 +41,15 @@ simpler and fixed than high school.
 
 Eventually, I can open this up to other people by having a way to import classes
 from WebReg (by pasting some JS in the console, probably).
+
+# Other projects
+
+## [Enrollable classes bookmarklet](./webreg-scraping/bookmarklet/)
+
+```sh
+# In webreg-scraping/
+# Build
+$ ./bookmarklet/build.sh
+# Deploy
+$ ../scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
+```
