@@ -28,7 +28,9 @@ for await (const course of scraper.allCourses()) {
 
       await print(group.instructionType)
       await print(group.time.location.building.padEnd(5, ' '))
-      await print(group.time.location.room.padEnd(5, ' '))
+      // Remove hyphens from Mandeville basement room numbers because they're
+      // inconsistent
+      await print(group.time.location.room.replace(/^B-/, 'B').padEnd(5, ' '))
       await print(group.time.days.join('').padEnd(5, ' '))
       await print(group.time.start.hour.toString().padStart(2, '0'))
       await print(group.time.start.minute.toString().padStart(2, '0'))

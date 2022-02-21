@@ -62,6 +62,18 @@ export type Building = {
   rooms: Record<string, RoomMeeting[]>
 }
 
+export function compareRoomNums (a: string, b: string): number {
+  const aBasement = a.startsWith('B')
+  const bBasement = b.startsWith('B')
+  if (aBasement !== bBasement) {
+    // Sort basement before other levels
+    return aBasement ? -1 : 1
+  } else {
+    // Reverse ordering for basement levels so that B2xx comes before B1xx
+    return aBasement ? b.localeCompare(a) : a.localeCompare(b)
+  }
+}
+
 export function coursesToClassrooms (courses: Course[]): Building[] {
   const buildings: Record<string, Building> = {}
   for (const { subject, course: courseCode, meetings } of courses) {
@@ -72,11 +84,5 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
       buildings[building].rooms[room].push({ course, type, days, start, end })
     }
   }
-  return Object.values(buildings).map(({ name, rooms }) => ({
-    name,
-    // Sort room keys
-    rooms: Object.fromEntries(
-      Object.entries(rooms).sort((a, b) => a[0].localeCompare(b[0]))
-    )
-  }))
+  return Object.values(buildings)
 }

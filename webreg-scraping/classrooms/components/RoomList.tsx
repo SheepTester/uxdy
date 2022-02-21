@@ -4,7 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { colleges } from '../building-locations.ts'
-import { Building } from '../from-file.ts'
+import { Building, compareRoomNums } from '../from-file.ts'
 
 type RoomListProps = {
   building: Building
@@ -23,11 +23,15 @@ export function RoomList ({ building, onClose }: RoomListProps) {
         </button>
       </h2>
       <div class='rooms'>
-        {Object.keys(building.rooms).map(room => (
-          <button class='room'>
-            {building.name} {room}
-          </button>
-        ))}
+        {Object.keys(building.rooms)
+          // Can't sort the rooms object because JS sorts numerical properties
+          // differently
+          .sort(compareRoomNums)
+          .map(room => (
+            <button class='room'>
+              {building.name} {room}
+            </button>
+          ))}
       </div>
     </div>
   )
