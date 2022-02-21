@@ -32,6 +32,21 @@ button:not(:disabled) {
 .building:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
 }
+.room-count {
+  background-color: white;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  border-radius: 50px;
+  padding: 2px 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.in-use {
+  color: black;
+}
 
 .room-list {
   position: fixed;
@@ -72,7 +87,17 @@ button:not(:disabled) {
   margin-top: 10px;
   padding: 5px 10px;
   border-radius: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.2s;
+}
+.room:hover:not(:active) {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.active {
+  border-color: #0cb912;
+}
+.active-meeting {
+  color: #09880d;
 }
 
 .schedule {
