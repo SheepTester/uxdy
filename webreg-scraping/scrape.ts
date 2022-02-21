@@ -690,8 +690,8 @@ if (import.meta.main) {
     for (const group of course.groups) {
       freq[group.raw.DAY_CODE.length] ??= 0
       freq[group.raw.DAY_CODE.length]++
-      if (group.raw.DAY_CODE.length >= 4) {
-        console.log(`${course.code} ${group.code} ${group.raw.DAY_CODE}`)
+      if (!group.isExam() && group.time?.location?.building === '') {
+        // console.log(`${course.code} ${group.code} ${group.time.location.room}`)
       }
       if (!group.isExam() && group.time?.location?.building !== 'RCLAS') {
         count++

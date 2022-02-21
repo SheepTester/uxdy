@@ -1,4 +1,4 @@
-// deno run --allow-read classrooms/to-file.ts > classrooms/classrooms.txt
+// deno run --allow-read classrooms/to-file.ts > classrooms/dist/classrooms.txt
 
 import { writeAll } from 'https://deno.land/std@0.126.0/streams/conversion.ts'
 import { Scraper } from '../scrape.ts'
@@ -16,7 +16,9 @@ for await (const course of scraper.allCourses()) {
     if (
       !group.isExam() &&
       group.time?.location &&
-      group.time.location.building !== 'RCLAS'
+      group.time.location.building !== 'RCLAS' &&
+      // Unsure what an empty building/room number means
+      group.time.location.building !== ''
     ) {
       if (!coursePrinted) {
         await print(course.subject.padEnd(4, ' '))

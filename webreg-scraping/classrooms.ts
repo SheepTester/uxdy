@@ -1,10 +1,10 @@
 // deno run --allow-read classrooms.ts
 
-import { AuthorizedGetter } from './scrape.ts'
+import { Scraper } from './scrape.ts'
 import { displayProgress } from './util/display-progress.ts'
 
 export async function main (quarter: string, cachePath: string) {
-  const getter = new AuthorizedGetter(quarter, undefined, undefined, cachePath)
+  const getter = new Scraper(quarter, { cachePath })
   const buildings: Record<string, Record<string, number>> = {}
   await displayProgress(0)
   for await (const { course, progress } of getter.allCoursesWithProgress()) {

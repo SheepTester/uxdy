@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  padding: 10px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.buildings {
+  margin: 50px;
+  position: relative;
+}
+.building {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-image: linear-gradient(120deg, #00629b, #182b49);
+  color: #ffcd00;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+.college-revelle {
+  background-image: linear-gradient(120deg, #2045c5, #273b80);
+  color: white;
+}
+.college-muir {
+  background-image: linear-gradient(120deg, #24a53b, #095540);
+  color: white;
+}
+.college-marshall {
+  background-image: linear-gradient(120deg, #e90a19, #b01e28);
+  color: white;
+}
+.college-warren {
+  background-image: linear-gradient(120deg, #c3165b, #802449);
+  color: white;
+}
+.college-erc {
+  background-image: linear-gradient(120deg, #20a2f1, #5a8ab5);
+  color: white;
+}
+.college-sixth {
+  background-image: linear-gradient(120deg, #11b0bf, #068a96);
+  color: white;
+}
+.college-seventh {
+  background-image: linear-gradient(120deg, #e9b418, #d09228);
+  color: white;
+}
+.college-pepperCanyon {
+  background-image: linear-gradient(120deg, #068a96, #08484e);
+  color: white;
+}
+.building-name {
+  margin: 0;
+  font-weight: normal;
+  font-size: inherit;
+}

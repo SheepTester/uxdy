@@ -5,6 +5,13 @@
 
 import { render } from 'https://esm.sh/preact@10.6.6'
 import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
+import {
+  maxLat,
+  maxLong,
+  minLat,
+  minLong,
+  SCALE
+} from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
 
@@ -20,7 +27,13 @@ function App () {
   }, [])
 
   return buildings ? (
-    <div className='buildings'>
+    <div
+      className='buildings'
+      style={{
+        height: `${(maxLat - minLat) * SCALE}px`,
+        width: `${(maxLong - minLong) * SCALE}px`
+      }}
+    >
       {buildings.map(building => (
         <BuildingComponent building={building} key={building.name} />
       ))}
