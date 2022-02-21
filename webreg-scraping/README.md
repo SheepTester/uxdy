@@ -199,7 +199,7 @@ function searchLoadGroupData (): {
 | `START_DATE`         | `"2022-01-03"`                     | YYYY-MM-DD. Another first day?? `" "` if TBA.                    |
 | `SECTION_NUMBER`     | `"062908"`                         | 6 digits.                                                        |
 | `LONG_DESC`          | `" "`                              | 30 characters. It's generally empty.                             |
-| `BEFORE_DESC`        | `" "`                              | 30 characters. `" "`, usually.                                   |
+| `BEFORE_DESC`        | `" "`                              | 30 characters, or 1-char `" "`, usually.                         |
 | `FK_SPM_SPCL_MTG_CD` | `" "`                              | Distinguishes between normal meetings (`" "`) and exam meetings. |
 | `FK_CDI_INSTR_TYPE`  | `"LE"`                             | Distinguishes between lectures and discussions.                  |
 | `PRINT_FLAG`         | `" "`                              | Usually ` `, but can also be `Y` or `N` or `5` (equiv to `Y`).   |
@@ -349,7 +349,9 @@ else
 }
 ```
 
-`DAY_CODE` can include 7. WI22 MGT 407 C00 is a lecture on Sunday.
+`DAY_CODE` can include 7. WI22 MGT 407 C00 is a lecture on Sunday. Even though
+it's padded, it can be four or five characters long (WI22 AESE 278D A00 on
+WThFSa, and WI22 TDAC 123 A00 on MTuWThF).
 
 ### Get user's schedule
 

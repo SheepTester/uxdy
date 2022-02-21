@@ -6,7 +6,8 @@
 
 import { ComponentChildren, render } from 'https://esm.sh/preact@10.6.4'
 import { useEffect, useState } from 'https://esm.sh/preact@10.6.4/hooks'
-import { Course, Group, Period, Scraper } from '../scrape.ts'
+import { Course, Group, Scraper } from '../scrape.ts'
+import { Period } from '../util/time.ts'
 
 const params = new URL(window.location.href).searchParams
 const term = params.get('p1')

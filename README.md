@@ -46,10 +46,25 @@ from WebReg (by pasting some JS in the console, probably).
 
 ## [Enrollable classes bookmarklet](./webreg-scraping/bookmarklet/)
 
+[Live](https://sheeptester.github.io/hello-world/bookmarklet.html?../uxdy/bookmarklet/open-classes)
+
 ```sh
 # In webreg-scraping/
 # Build
 $ ./bookmarklet/build.sh
 # Deploy
 $ ../scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
+```
+
+## [Classrooms](./webreg-scraping/classrooms/)
+
+```sh
+# In webreg-scraping/
+# Build
+$ deno run --allow-read classrooms/to-file.ts > classrooms/dist/classrooms.txt
+$ ./classrooms/build.sh
+# Develop
+$ ./classrooms/dev.sh
+# Deploy
+$ ../scripts/deploy.sh webreg-scraping/classrooms/dist/ classrooms
 ```

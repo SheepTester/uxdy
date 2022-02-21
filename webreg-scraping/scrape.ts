@@ -2,6 +2,7 @@
 
 import { join as joinPath } from 'https://deno.land/std@0.125.0/path/mod.ts'
 import { ExamCodes, InstructionCodes } from './meeting-types.ts'
+import { Period, Time } from './util/time.ts'
 
 export type RawSearchLoadSubjectResult = {
   LONG_DESC: string
@@ -304,110 +305,6 @@ export class Instructor {
 
   get lastFirst () {
     return `${this.surname}, ${this.firstName}`
-  }
-}
-
-/**
- * A time.
- */
-export class Time {
-  /** The hour (24-hour). */
-  hour: number
-  /** The minute. */
-  minute: number
-
-  constructor (hour: number, minute: number) {
-    this.hour = hour
-    this.minute = minute
-  }
-
-  /**
-   * Displays the time in a 12-hour format Americans are familiar with.
-   */
-  toString () {
-    return `${((this.hour + 11) % 12) + 1}:${this.minute
-      .toString()
-      .padStart(2, '0')} ${this.hour < 12 ? 'a' : 'p'}m`
-  }
-
-  /**
-   * Returns the minutes since 00:00. This allows `Time` to be used with JS's
-   * comparison operators.
-   */
-  valueOf () {
-    return this.hour * 60 + this.minute
-  }
-}
-
-/**
- * A time period on a given day.
- */
-export class Period {
-  /** The day of the week. */
-  day: number
-  /** The start time. */
-  start: Time
-  /** The end time. */
-  end: Time
-
-  constructor (day: number, start: Time, end: Time) {
-    this.day = day
-    this.start = start
-    this.end = end
-  }
-
-  /**
-   * Whether two time periods overlap. A time period starting when another ends
-   * is not considered an intersection.
-   */
-  intersects (other: Period) {
-    return (
-      this.day === other.day && this.start < other.end && other.start < this.end
-    )
-  }
-
-  /**
-   * Displays the time range.
-   */
-  displayTime () {
-    return `${this.start}–${this.end}`
-  }
-
-  static readonly #DAY_NAMES = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ]
-
-  /**
-   * Returns the name of the day the time period is on.
-   */
-  dayName () {
-    return Period.#DAY_NAMES[this.day]
-  }
-
-  /**
-   * Displays the time range with the day name. Probably should just be used for
-   * debug purposes because in most cases you'd rather have more control over
-   * the formatting. Use `displayTime` and `dayName` instead.
-   */
-  toString () {
-    return `${this.displayTime()} on ${this.dayName()}`
-  }
-
-  static readonly #MINUTES_PER_DAY = 24 * 60
-
-  /**
-   * Returns the number of minutes between the beginning of the week and the
-   * start of the time range. This might be useful for sorting time periods
-   * chronologically.
-   */
-  valueOf () {
-    return this.day * Period.#MINUTES_PER_DAY + this.start.valueOf()
   }
 }
 
@@ -780,35 +677,28 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
 }
 
 if (import.meta.main) {
-  const getter = new Scraper('SP22', {
+  const getter = new Scraper('WI22', {
     jlinksessionidx: Deno.args[1],
     UqZBpD3n: Deno.args[0],
-    cachePath: 'cache-sp22'
+    cachePath: 'cache-wi22'
   })
   const courses = []
   const freq: Record<number, number> = {}
+  let count = 0
   for await (const course of getter.allCourses()) {
     courses.push(course)
     for (const group of course.groups) {
-      freq[group.raw.BEFORE_DESC.length] ??= 0
-      freq[group.raw.BEFORE_DESC.length]++
-      if (!' YN'.includes(group.raw.PRINT_FLAG)) {
-        console.log(course.code, group.code, group.raw.PRINT_FLAG)
+      freq[group.raw.DAY_CODE.length] ??= 0
+      freq[group.raw.DAY_CODE.length]++
+      if (group.raw.DAY_CODE.length >= 4) {
+        console.log(`${course.code} ${group.code} ${group.raw.DAY_CODE}`)
       }
-      if (group.instructionType === 'OP' || group.instructionType === 'SA') {
-        console.log(course.code, group.code, group.instructionType)
+      if (!group.isExam() && group.time?.location?.building !== 'RCLAS') {
+        count++
       }
-      // if (group.examType === 'TBA' && !group.cancelled) {
-      //   console.log(
-      //     course.code,
-      //     group.code,
-      //     'TBA group type',
-      //     group.instructionType
-      //   )
-      // }
     }
   }
-  console.log(freq)
+  console.log(freq, count)
 
   // idk
 }
