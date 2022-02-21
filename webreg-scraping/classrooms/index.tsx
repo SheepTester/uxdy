@@ -15,10 +15,12 @@ import {
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { RoomList } from './components/RoomList.tsx'
 import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
+import { now as getNow } from './now.ts'
 
 function App () {
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
+  const [now, setNow] = useState(getNow())
 
   useEffect(() => {
     fetch('./classrooms.txt')
@@ -40,13 +42,18 @@ function App () {
         {buildings.map(building => (
           <BuildingComponent
             key={building.name}
+            now={now}
             building={building}
             onSelect={setViewing}
           />
         ))}
       </div>
       {viewing && (
-        <RoomList building={viewing} onClose={() => setViewing(null)} />
+        <RoomList
+          now={now}
+          building={viewing}
+          onClose={() => setViewing(null)}
+        />
       )}
     </>
   ) : (

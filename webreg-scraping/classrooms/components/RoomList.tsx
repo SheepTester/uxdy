@@ -5,12 +5,14 @@
 
 import { colleges } from '../building-locations.ts'
 import { Building, compareRoomNums } from '../from-file.ts'
+import { Now, used } from '../now.ts'
 
 type RoomListProps = {
+  now: Now
   building: Building
   onClose: () => void
 }
-export function RoomList ({ building, onClose }: RoomListProps) {
+export function RoomList ({ now, building, onClose }: RoomListProps) {
   return (
     <div class='room-list'>
       <h2 class='building-name'>
@@ -23,15 +25,26 @@ export function RoomList ({ building, onClose }: RoomListProps) {
         </button>
       </h2>
       <div class='rooms'>
-        {Object.keys(building.rooms)
+        {Object.entries(building.rooms)
           // Can't sort the rooms object because JS sorts numerical properties
           // differently
-          .sort(compareRoomNums)
-          .map(room => (
-            <button class='room'>
-              {building.name} {room}
-            </button>
-          ))}
+          .sort(([a], [b]) => compareRoomNums(a, b))
+          .map(([room, meetings]) => {
+            const activeMeeting = meetings.find(used(now))
+            return (
+              <button class={`room ${activeMeeting ? 'active' : ''}`}>
+                {building.name} {room}
+                {activeMeeting && (
+                  <>
+                    :{' '}
+                    <span className='active-meeting'>
+                      {activeMeeting.course} ({activeMeeting.type})
+                    </span>
+                  </>
+                )}
+              </button>
+            )
+          })}
       </div>
     </div>
   )

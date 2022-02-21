@@ -16,13 +16,15 @@ import {
   SCALE
 } from '../building-locations.ts'
 import { Building } from '../from-file.ts'
+import { Now, used } from '../now.ts'
 
 type BuildingProps = {
+  now: Now
   building: Building
   onSelect: (building: Building) => void
 }
 
-export function Building ({ building, onSelect }: BuildingProps) {
+export function Building ({ now, building, onSelect }: BuildingProps) {
   if (!locations[building.name]) {
     return <p>No location data for {building.name}</p>
   }
@@ -52,6 +54,16 @@ export function Building ({ building, onSelect }: BuildingProps) {
       onClick={() => onSelect(building)}
     >
       {building.name}
+      <span class='room-count'>
+        <span class='in-use'>
+          {
+            Object.values(building.rooms).filter(meetings =>
+              meetings.some(used(now))
+            ).length
+          }
+        </span>
+        /{Object.values(building.rooms).length}
+      </span>
     </button>
   )
 }
