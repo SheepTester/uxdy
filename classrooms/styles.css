@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  padding: 10px;
+  font-family: 'Oswald', sans-serif;
+}
+button {
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+}
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+.buildings {
+  margin: 50px;
+  position: relative;
+}
+.building {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-image: linear-gradient(120deg, #00629b, #182b49);
+  color: #ffcd00;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  transition: box-shadow 0.2s;
+}
+.building:active {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.room-list {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+}
+.building-name {
+  margin: 0;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+}
+.building-gradient {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 17px;
+  background-image: linear-gradient(120deg, #00629b, #182b49);
+}
+.close {
+  color: red;
+  font-size: 48px;
+  line-height: 0;
+  height: 32px;
+  width: 32px;
+  margin-left: auto;
+  align-self: flex-start;
+}
+.room {
+  margin-right: 10px;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.schedule {
+  display: flex;
+}
+.day {
+  flex: 1 0 0;
+}
+
+.college-revelle {
+  background-image: linear-gradient(120deg, #2045c5, #273b80);
+  color: white;
+}
+.college-muir {
+  background-image: linear-gradient(120deg, #24a53b, #095540);
+  color: white;
+}
+.college-marshall {
+  background-image: linear-gradient(120deg, #e90a19, #b01e28);
+  color: white;
+}
+.college-warren {
+  background-image: linear-gradient(120deg, #c3165b, #802449);
+  color: white;
+}
+.college-erc {
+  background-image: linear-gradient(120deg, #20a2f1, #5a8ab5);
+  color: white;
+}
+.college-sixth {
+  background-image: linear-gradient(120deg, #11b0bf, #068a96);
+  color: white;
+}
+.college-seventh {
+  background-image: linear-gradient(120deg, #e9b418, #d09228);
+  color: white;
+}
+.college-pepperCanyon {
+  background-image: linear-gradient(120deg, #068a96, #08484e);
+  color: white;
+}
