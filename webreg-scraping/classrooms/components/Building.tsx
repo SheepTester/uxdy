@@ -15,16 +15,17 @@ import { Building } from '../from-file.ts'
 
 type BuildingProps = {
   building: Building
+  onSelect: (building: Building) => void
 }
 
-export function Building ({ building }: BuildingProps) {
+export function Building ({ building, onSelect }: BuildingProps) {
   if (!locations[building.name]) {
-    throw new Error(`No location data for ${building.name}`)
+    return <p>No location data for {building.name}</p>
   }
   const [latitude, longitude] = locations[building.name]
   const college = colleges[building.name]
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     const current = ref.current
     if (building.name === 'CENTR' && current) {
@@ -39,15 +40,16 @@ export function Building ({ building }: BuildingProps) {
   }, [ref.current])
 
   return (
-    <div
-      className={`building college-${college}`}
+    <button
+      class={`building college-${college}`}
       style={{
         top: `${(maxLat - latitude) * SCALE}px`,
         left: `${(longitude - minLong) * SCALE}px`
       }}
       ref={ref}
+      onClick={() => onSelect(building)}
     >
-      <h2 className='building-name'>{building.name}</h2>
-    </div>
+      {building.name}
+    </button>
   )
 }

@@ -13,10 +13,12 @@ import {
   SCALE
 } from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
+import { RoomList } from './components/RoomList.tsx'
 import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
 
 function App () {
   const [buildings, setBuildings] = useState<Building[] | null>(null)
+  const [viewing, setViewing] = useState<Building | null>(null)
 
   useEffect(() => {
     fetch('./classrooms.txt')
@@ -27,17 +29,26 @@ function App () {
   }, [])
 
   return buildings ? (
-    <div
-      className='buildings'
-      style={{
-        height: `${(maxLat - minLat) * SCALE}px`,
-        width: `${(maxLong - minLong) * SCALE}px`
-      }}
-    >
-      {buildings.map(building => (
-        <BuildingComponent building={building} key={building.name} />
-      ))}
-    </div>
+    <>
+      <div
+        class='buildings'
+        style={{
+          height: `${(maxLat - minLat) * SCALE}px`,
+          width: `${(maxLong - minLong) * SCALE}px`
+        }}
+      >
+        {buildings.map(building => (
+          <BuildingComponent
+            key={building.name}
+            building={building}
+            onSelect={setViewing}
+          />
+        ))}
+      </div>
+      {viewing && (
+        <RoomList building={viewing} onClose={() => setViewing(null)} />
+      )}
+    </>
   ) : (
     <p>Loading...</p>
   )

@@ -26,7 +26,7 @@ for await (const course of scraper.allCourses()) {
         coursePrinted = true
       }
 
-      await print(group.code)
+      await print(group.instructionType)
       await print(group.time.location.building.padEnd(5, ' '))
       await print(group.time.location.room.padEnd(5, ' '))
       await print(group.time.days.join('').padEnd(5, ' '))
