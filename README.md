@@ -58,6 +58,8 @@ $ ../scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
 
 ## [Classrooms](./webreg-scraping/classrooms/)
 
+[Live](https://sheeptester.github.io/uxdy/classrooms/)
+
 ```sh
 # In webreg-scraping/
 # Build

@@ -72,5 +72,11 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
       buildings[building].rooms[room].push({ course, type, days, start, end })
     }
   }
-  return Object.values(buildings)
+  return Object.values(buildings).map(({ name, rooms }) => ({
+    name,
+    // Sort room keys
+    rooms: Object.fromEntries(
+      Object.entries(rooms).sort((a, b) => a[0].localeCompare(b[0]))
+    )
+  }))
 }

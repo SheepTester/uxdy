@@ -3,7 +3,11 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useEffect, useRef } from 'https://esm.sh/preact@10.6.6/hooks'
+import {
+  useCallback,
+  useEffect,
+  useRef
+} from 'https://esm.sh/preact@10.6.6/hooks'
 import {
   colleges,
   locations,
@@ -25,19 +29,17 @@ export function Building ({ building, onSelect }: BuildingProps) {
   const [latitude, longitude] = locations[building.name]
   const college = colleges[building.name]
 
-  const ref = useRef<HTMLButtonElement>(null)
-  useEffect(() => {
-    const current = ref.current
-    if (building.name === 'CENTR' && current) {
+  const ref = useCallback((button: HTMLButtonElement | null) => {
+    if (building.name === 'CENTR' && button) {
       window.requestAnimationFrame(() => {
-        const { left, top, width, height } = current.getBoundingClientRect()
+        const { left, top, width, height } = button.getBoundingClientRect()
         window.scrollBy(
           left + (-window.innerWidth + width) / 2,
           top + (-window.innerHeight + height) / 2
         )
       })
     }
-  }, [ref.current])
+  }, [])
 
   return (
     <button

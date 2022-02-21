@@ -3,13 +3,12 @@
 # USAGE: ./scripts/deploy.sh <SRC_DIR> [DEST_DIR]
 # Relative to directory of repo
 
-shopt -s extglob
 
 REMOTE=$(git remote get-url origin)
 # https://stackoverflow.com/a/949391
 LAST_COMMIT=$(git rev-parse HEAD)
 # Directories to keep (instead of overwriting)
-KEEP=bookmarklet
+KEEP="bookmarklet classrooms"
 
 # Go to directory of this script https://stackoverflow.com/a/24112741
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
