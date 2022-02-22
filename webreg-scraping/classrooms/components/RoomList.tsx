@@ -53,7 +53,7 @@ export function RoomList ({ now, building, onClose }: RoomListProps) {
                   <div className='room-name'>
                     {building.name} {room}
                   </div>
-                  <div className='meeting'>
+                  <div className='current-meeting'>
                     {activeMeeting
                       ? `${activeMeeting.course} (${activeMeeting.type})`
                       : 'Not in use'}

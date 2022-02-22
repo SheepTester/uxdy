@@ -2,6 +2,8 @@ body {
   margin: 0;
   padding: 10px;
   font-family: 'Oswald', sans-serif;
+  background-color: #f1f4f5;
+  color: rgba(0, 0, 0, 0.9);
 }
 button {
   -webkit-appearance: none;
@@ -57,7 +59,8 @@ button:not(:disabled) {
   max-width: 800px;
   border-radius: 20px;
   background-color: white;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 .building-name {
   margin: 0;
@@ -93,7 +96,7 @@ button:not(:disabled) {
 }
 .rooms {
   margin: 20px;
-  margin-top: 2px;
+  margin-top: -10px;
 }
 .room {
   margin-right: 10px;
@@ -108,19 +111,62 @@ button:not(:disabled) {
 .room:hover:not(:active) {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.meeting {
+.current-meeting {
   color: rgba(0, 0, 0, 0.7);
   font-size: 0.8em;
 }
-.active .meeting {
+.active .current-meeting {
   color: #09880d;
 }
 
-.schedule {
+.day-names,
+.meetings-wrapper {
   display: flex;
+  gap: 10px;
+  padding: 0 10px;
 }
 .day {
   flex: 1 0 0;
+  position: relative;
+}
+.day-name {
+  text-align: center;
+}
+.meetings-wrapper {
+  height: 50vh;
+  overflow-y: auto;
+}
+.meetings-wrapper::-webkit-scrollbar {
+  display: none;
+}
+.meetings {
+  margin: 10px 0;
+}
+.meeting {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #e1efff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+}
+.meeting-time {
+  font-size: 0.5em;
+}
+.gradient {
+  width: 100%;
+  height: 10px;
+  position: relative;
+  z-index: 1;
+}
+.gradient-top {
+  background-image: linear-gradient(white, transparent);
+  margin-bottom: -10px;
+}
+.gradient-bottom {
+  background-image: linear-gradient(transparent, white);
+  margin-top: -10px;
 }
 
 .college-revelle {
