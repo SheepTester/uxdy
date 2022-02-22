@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
 import { Time } from '../util/time.ts'
 import { RoomMeeting } from './from-file.ts'
 
@@ -6,7 +7,7 @@ export type Now = {
   time: Time
 }
 
-export function now (): Now {
+function getNow (): Now {
   const now = new Date()
   return {
     day: now.getDay(),
@@ -20,4 +21,24 @@ export function used ({ day, time }: Now): (meeting: RoomMeeting) => boolean {
       meeting.days.includes(day) && meeting.start <= time && time < meeting.end
     )
   }
+}
+
+export function useNow (): Now {
+  const [now, setNow] = useState(() => getNow())
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setNow(now => {
+        const newNow = getNow()
+        // Return old object if time hasn't changed to avoid rerender
+        return now.day === newNow.day &&
+          now.time.valueOf() === newNow.time.valueOf()
+          ? now
+          : newNow
+      })
+    }, 1000)
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
+  return now
 }

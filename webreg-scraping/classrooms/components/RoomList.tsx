@@ -3,9 +3,13 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
+import { useState } from 'https://esm.sh/preact@10.6.6/hooks'
 import { colleges } from '../building-locations.ts'
 import { Building, compareRoomNums } from '../from-file.ts'
 import { Now, used } from '../now.ts'
+import { BackIcon } from './BackIcon.tsx'
+import { CloseIcon } from './CloseIcon.tsx'
+import { Schedule } from './Schedule.tsx'
 
 type RoomListProps = {
   now: Now
@@ -13,39 +17,52 @@ type RoomListProps = {
   onClose: () => void
 }
 export function RoomList ({ now, building, onClose }: RoomListProps) {
+  const [selected, setSelected] = useState<string | null>(null)
+
   return (
     <div class='room-list'>
       <h2 class='building-name'>
+        {selected && (
+          <button class='back' onClick={() => setSelected(null)}>
+            <BackIcon />
+          </button>
+        )}
         <div
           class={`building-gradient college-${colleges[building.name]}`}
         ></div>
-        {building.name}
+        {building.name} {selected}
         <button class='close' onClick={onClose}>
-          ×
+          <CloseIcon />
         </button>
       </h2>
-      <div class='rooms'>
-        {Object.entries(building.rooms)
-          // Can't sort the rooms object because JS sorts numerical properties
-          // differently
-          .sort(([a], [b]) => compareRoomNums(a, b))
-          .map(([room, meetings]) => {
-            const activeMeeting = meetings.find(used(now))
-            return (
-              <button class={`room ${activeMeeting ? 'active' : ''}`}>
-                {building.name} {room}
-                {activeMeeting && (
-                  <>
-                    :{' '}
-                    <span className='active-meeting'>
-                      {activeMeeting.course} ({activeMeeting.type})
-                    </span>
-                  </>
-                )}
-              </button>
-            )
-          })}
-      </div>
+      {selected ? (
+        <Schedule now={now} meetings={building.rooms[selected]} />
+      ) : (
+        <div class='rooms'>
+          {Object.entries(building.rooms)
+            // Can't pre-sort the rooms object entries because JS sorts numerical
+            // properties differently
+            .sort(([a], [b]) => compareRoomNums(a, b))
+            .map(([room, meetings]) => {
+              const activeMeeting = meetings.find(used(now))
+              return (
+                <button
+                  class={`room ${activeMeeting ? 'active' : ''}`}
+                  onClick={() => setSelected(room)}
+                >
+                  <div className='room-name'>
+                    {building.name} {room}
+                  </div>
+                  <div className='meeting'>
+                    {activeMeeting
+                      ? `${activeMeeting.course} (${activeMeeting.type})`
+                      : 'Not in use'}
+                  </div>
+                </button>
+              )
+            })}
+        </div>
+      )}
     </div>
   )
 }

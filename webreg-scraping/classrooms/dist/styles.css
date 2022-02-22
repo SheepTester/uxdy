@@ -54,10 +54,10 @@ button:not(:disabled) {
   left: 20px;
   right: 20px;
   margin: 0 auto;
+  max-width: 800px;
   border-radius: 20px;
   background-color: white;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  padding: 20px;
 }
 .building-name {
   margin: 0;
@@ -65,38 +65,54 @@ button:not(:disabled) {
   display: flex;
   align-items: center;
   font-size: 24px;
+  padding: 8px;
 }
 .building-gradient {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
+  margin: 12px;
   border-radius: 50%;
-  margin-right: 17px;
+  margin-right: 20px;
   background-image: linear-gradient(120deg, #00629b, #182b49);
 }
+.close,
+.back {
+  font-size: 0;
+  padding: 12px;
+}
 .close {
-  color: red;
-  font-size: 48px;
-  line-height: 0;
-  height: 32px;
-  width: 32px;
   margin-left: auto;
-  align-self: flex-start;
+}
+.close-icon {
+  fill: #ff004e;
+  width: 24px;
+}
+.back-icon {
+  fill: currentColor;
+  width: 24px;
+}
+.rooms {
+  margin: 20px;
+  margin-top: 2px;
 }
 .room {
   margin-right: 10px;
   margin-top: 10px;
-  padding: 5px 10px;
-  border-radius: 20px;
-  border: 3px solid rgba(0, 0, 0, 0.5);
+  width: 14ch;
+  text-align: left;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s;
 }
 .room:hover:not(:active) {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.active {
-  border-color: #0cb912;
+.meeting {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.8em;
 }
-.active-meeting {
+.active .meeting {
   color: #09880d;
 }
 

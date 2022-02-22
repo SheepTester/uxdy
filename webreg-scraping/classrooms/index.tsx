@@ -15,12 +15,12 @@ import {
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { RoomList } from './components/RoomList.tsx'
 import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
-import { now as getNow } from './now.ts'
+import { useNow } from './now.ts'
 
 function App () {
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
-  const [now, setNow] = useState(getNow())
+  const now = useNow()
 
   useEffect(() => {
     fetch('./classrooms.txt')
@@ -50,6 +50,8 @@ function App () {
       </div>
       {viewing && (
         <RoomList
+          // Force state to reset on prop change https://stackoverflow.com/a/53313430
+          key={viewing.name}
           now={now}
           building={viewing}
           onClose={() => setViewing(null)}
