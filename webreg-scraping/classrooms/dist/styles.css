@@ -151,6 +151,10 @@ button:not(:disabled) {
   right: 0;
   box-sizing: border-box;
 }
+.current {
+  background-color: #5783ff;
+  color: rgba(255, 255, 255, 0.9);
+}
 .meeting-time {
   font-size: 0.5em;
 }
@@ -167,6 +171,13 @@ button:not(:disabled) {
 .gradient-bottom {
   background-image: linear-gradient(transparent, white);
   margin-top: -10px;
+}
+.now {
+  border-top: 1px solid #ff004e;
+  box-shadow: 0 0 5px #ff004e;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 .college-revelle {

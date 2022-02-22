@@ -30,8 +30,7 @@ export function useNow (): Now {
       setNow(now => {
         const newNow = getNow()
         // Return old object if time hasn't changed to avoid rerender
-        return now.day === newNow.day &&
-          now.time.valueOf() === newNow.time.valueOf()
+        return now.day === newNow.day && +now.time === +newNow.time
           ? now
           : newNow
       })

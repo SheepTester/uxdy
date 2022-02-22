@@ -98,6 +98,6 @@ export class Period {
    * chronologically.
    */
   valueOf () {
-    return this.day * Period.#MINUTES_PER_DAY + this.start.valueOf()
+    return this.day * Period.#MINUTES_PER_DAY + +this.start
   }
 }

@@ -15,16 +15,16 @@ type BuildingProps = {
   now: Now
   meetings: RoomMeeting[]
 }
-export function Schedule ({ meetings }: BuildingProps) {
+export function Schedule ({ now, meetings }: BuildingProps) {
   const hasWeekend = meetings.some(
     meeting => meeting.days.includes(6) || meeting.days.includes(7)
   )
   const earliest = meetings.reduce(
-    (acc, curr) => Math.min(acc, curr.start.valueOf()),
+    (acc, curr) => Math.min(acc, +curr.start),
     Infinity
   )
   const latest = meetings.reduce(
-    (acc, curr) => Math.max(acc, curr.end.valueOf()),
+    (acc, curr) => Math.max(acc, +curr.end),
     -Infinity
   )
 
@@ -49,12 +49,16 @@ export function Schedule ({ meetings }: BuildingProps) {
               .filter(meeting => meeting.days.includes(day))
               .map(meeting => (
                 <div
-                  class='meeting'
+                  class={`meeting ${
+                    now.day === day &&
+                    meeting.start <= now.time &&
+                    now.time < meeting.end
+                      ? 'current'
+                      : ''
+                  }`}
                   style={{
-                    top: `${(meeting.start.valueOf() - earliest) / SCALE}px`,
-                    height: `${
-                      (meeting.end.valueOf() - meeting.start.valueOf()) / SCALE
-                    }px`
+                    top: `${(+meeting.start - earliest) / SCALE}px`,
+                    height: `${(+meeting.end - +meeting.start) / SCALE}px`
                   }}
                 >
                   <div class='meeting-name'>
@@ -65,6 +69,14 @@ export function Schedule ({ meetings }: BuildingProps) {
                   </div>
                 </div>
               ))}
+            {now.day === day && earliest <= +now.time && +now.time < latest && (
+              <div
+                class='now'
+                style={{
+                  top: `${(+now.time - earliest) / SCALE}px`
+                }}
+              ></div>
+            )}
           </div>
         ))}
       </div>
