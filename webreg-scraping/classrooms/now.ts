@@ -8,7 +8,7 @@ export type Now = {
 }
 
 function getNow (): Now {
-  const now = new Date(2022, 1, 22, 12, 55) // new Date()
+  const now = new Date()
   return {
     day: now.getDay(),
     time: new Time(now.getHours(), now.getMinutes())
