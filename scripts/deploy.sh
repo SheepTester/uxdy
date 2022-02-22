@@ -56,4 +56,4 @@ rm -rf ./temp/
 
 echo
 echo "Soon to be deployed to https://sheeptester.github.io/uxdy/"
-echo "See progress at https://github.com/SheepTester/uxdy/actions"
+echo "See progress at https://github.com/SheepTester/uxdy/commits/gh-pages"

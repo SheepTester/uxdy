@@ -3,8 +3,8 @@
   --text: rgba(255, 255, 255, 0.9);
   --secondary: rgba(255, 255, 255, 0.5);
   --line: rgba(255, 255, 255, 0.1);
-  --shadow: rgba(0, 0, 0, 0.1);
-  --shadow-press: rgba(0, 0, 0, 0.3);
+  --shadow: rgba(0, 0, 0, 0.2);
+  --shadow-press: rgba(0, 0, 0, 0.6);
   --modal: #324153;
   --red: #ff4e84;
   --active: #41cf46;
