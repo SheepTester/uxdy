@@ -118,6 +118,9 @@ button:not(:disabled) {
 .active .current-meeting {
   color: #09880d;
 }
+.soon .current-meeting {
+  color: #966f01;
+}
 
 .day-names,
 .meetings-wrapper {

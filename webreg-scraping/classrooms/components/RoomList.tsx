@@ -44,10 +44,13 @@ export function RoomList ({ now, building, onClose }: RoomListProps) {
             // properties differently
             .sort(([a], [b]) => compareRoomNums(a, b))
             .map(([room, meetings]) => {
-              const activeMeeting = meetings.find(used(now))
+              const activeMeeting = meetings.find(used(now, 10))
+              const soon = activeMeeting && now.time < activeMeeting.start
               return (
                 <button
-                  class={`room ${activeMeeting ? 'active' : ''}`}
+                  class={`room ${
+                    activeMeeting ? (soon ? 'soon' : 'active') : ''
+                  }`}
                   onClick={() => setSelected(room)}
                 >
                   <div className='room-name'>
@@ -55,7 +58,9 @@ export function RoomList ({ now, building, onClose }: RoomListProps) {
                   </div>
                   <div className='current-meeting'>
                     {activeMeeting
-                      ? `${activeMeeting.course} (${activeMeeting.type})`
+                      ? soon
+                        ? `${activeMeeting.course} soon`
+                        : `${activeMeeting.course} (${activeMeeting.type})`
                       : 'Not in use'}
                   </div>
                 </button>
