@@ -13,6 +13,7 @@
   --meeting: #405063;
   --meeting-active: #516379;
   --meeting-active-text: var(--text);
+  --highlight: rgba(255, 255, 255, 0.5);
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
@@ -31,6 +32,7 @@
     --meeting: #e1efff;
     --meeting-active: #5783ff;
     --meeting-active-text: rgba(255, 255, 255, 0.9);
+    --highlight: rgba(0, 142, 255, 0.5);
     color-scheme: light;
   }
 }
@@ -88,6 +90,9 @@ button:not(:disabled) {
 .building:active {
   box-shadow: 0 0 0 var(--shadow-press);
 }
+.building.selected {
+  box-shadow: 0 0 0 3px var(--highlight);
+}
 .room-count {
   background-color: var(--modal);
   color: var(--secondary);
@@ -112,12 +117,12 @@ button:not(:disabled) {
   transition: height 0.2s;
   height: 56px;
 }
-.has-rooms {
-  height: 40vh;
+.panel.has-rooms {
+  height: 60vh;
 }
-@media (max-height: 625px) {
-  .has-rooms {
-    height: 250px;
+@media (max-height: 500px) {
+  .panel.has-rooms {
+    height: 300px;
   }
 }
 .panel-contents {
@@ -125,21 +130,36 @@ button:not(:disabled) {
 }
 .info-panel {
   display: flex;
+  flex-direction: row;
   align-items: center;
   padding: 0 20px;
 }
 .title {
   font-weight: normal;
   margin: 0;
-  font-size: 24px;
-}
-@media (max-width: 500px) {
-  .title {
-    font-size: 16px;
-  }
+  font-size: 18px;
+  margin-right: 20px;
 }
 .subtitle {
   color: var(--secondary);
+}
+.instructions {
+  margin: 0;
+  font-size: 14px;
+  color: var(--secondary);
+}
+@media (max-width: 550px) {
+  .panel {
+    height: 64px;
+  }
+  .title {
+    font-size: 16px;
+  }
+  .info-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
 }
 
 .room-list {
@@ -338,4 +358,9 @@ button:not(:disabled) {
 .college-pepperCanyon {
   background-image: linear-gradient(120deg, #068a96, #08484e);
   color: white;
+}
+.college-med,
+.college-health {
+  background-image: linear-gradient(120deg, #f0f5f6, #d6e8f0);
+  color: #ff004e;
 }
