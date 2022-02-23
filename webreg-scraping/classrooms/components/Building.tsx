@@ -13,7 +13,9 @@ import {
   locations,
   maxLat,
   minLong,
-  SCALE
+  PADDING,
+  X_SCALE,
+  Y_SCALE
 } from '../building-locations.ts'
 import { Building } from '../from-file.ts'
 import { Now, used } from '../now.ts'
@@ -53,8 +55,8 @@ export function Building ({
     <button
       class={`building college-${college}`}
       style={{
-        top: `${(maxLat - latitude) * SCALE}px`,
-        left: `${(longitude - minLong) * SCALE}px`
+        top: `${(maxLat - latitude) * Y_SCALE + PADDING}px`,
+        left: `${(longitude - minLong) * X_SCALE + PADDING}px`
       }}
       ref={ref}
       onClick={() => onSelect(building)}

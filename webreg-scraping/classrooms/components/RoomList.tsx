@@ -35,9 +35,7 @@ export function RoomList ({
         >
           <BackIcon />
         </button>
-        <div
-          class={`building-gradient college-${colleges[building.name]}`}
-        ></div>
+        <div class={`building-gradient college-${colleges[building.name]}`} />
         {building.name} {selected}
         <button class='close' onClick={onClose}>
           <CloseIcon />

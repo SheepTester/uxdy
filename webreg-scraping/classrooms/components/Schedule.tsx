@@ -75,7 +75,7 @@ export function Schedule ({ now, meetings }: BuildingProps) {
                 style={{
                   top: `${(+now.time - earliest) / SCALE}px`
                 }}
-              ></div>
+              />
             )}
           </div>
         ))}

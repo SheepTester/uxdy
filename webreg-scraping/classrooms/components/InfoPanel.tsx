@@ -10,7 +10,7 @@ export function InfoPanel ({ class: className = '' }: InfoPanelProps) {
   return (
     <div class={`info-panel ${className}`}>
       <h1 class='title'>
-        UCSD classroom schedule <span class='subtitle'>for Winter 2022</span>
+        UCSD classroom schedules <span class='subtitle'>for Winter 2022</span>
       </h1>
     </div>
   )

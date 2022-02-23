@@ -139,7 +139,9 @@ export const colleges = {
   ...locationToCollegeMapping(sio, 'sio')
 }
 
-export const SCALE = 100000
+export const Y_SCALE = 120000 // px per degree of latitude
+export const X_SCALE = 100000 // px per degree of longitude
+export const PADDING = 50 // px
 const coords = Object.values(locations)
 function getExtremeCoord (index: 0 | 1, max: boolean) {
   return coords.reduce(

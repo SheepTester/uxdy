@@ -5,6 +5,15 @@
 
 import { render } from 'https://esm.sh/preact@10.6.6'
 import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
+import {
+  maxLat,
+  minLat,
+  maxLong,
+  minLong,
+  PADDING,
+  X_SCALE,
+  Y_SCALE
+} from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
 import { RoomList } from './components/RoomList.tsx'
@@ -29,6 +38,13 @@ function App () {
   return buildings ? (
     <>
       <div class='buildings' ref={scrollWrapper ? undefined : setScrollWrapper}>
+        <div
+          class='scroll-area'
+          style={{
+            height: `${(maxLat - minLat) * Y_SCALE + PADDING * 2}px`,
+            width: `${(maxLong - minLong) * X_SCALE + PADDING * 2}px`
+          }}
+        />
         {scrollWrapper &&
           buildings.map(building => (
             <BuildingComponent
@@ -40,10 +56,11 @@ function App () {
             />
           ))}
       </div>
-      <div class={`panel ${viewing ? '' : 'has-info'}`}>
+      <div class={`panel ${viewing ? 'has-rooms' : 'has-info'}`}>
         {viewing ? (
           <RoomList
-            // Force state to reset on prop change https://stackoverflow.com/a/53313430
+            // Force state to reset on prop change
+            // https://stackoverflow.com/a/53313430
             key={viewing.name}
             now={now}
             building={viewing}
