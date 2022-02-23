@@ -15,12 +15,18 @@ type RoomListProps = {
   now: Now
   building: Building
   onClose: () => void
+  class?: string
 }
-export function RoomList ({ now, building, onClose }: RoomListProps) {
+export function RoomList ({
+  now,
+  building,
+  onClose,
+  class: className = ''
+}: RoomListProps) {
   const [selected, setSelected] = useState<string | null>(null)
 
   return (
-    <div class='room-list'>
+    <div class={`room-list ${className}`}>
       <h2 class='building-name'>
         {selected && (
           <button class='back' onClick={() => setSelected(null)}>

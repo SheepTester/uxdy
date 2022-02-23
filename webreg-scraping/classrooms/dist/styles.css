@@ -33,12 +33,16 @@
   }
 }
 
+html {
+  height: 100%;
+}
 body {
   margin: 0;
-  padding: 10px;
+  height: 100%;
   font-family: 'Oswald', sans-serif;
   background-color: var(--background);
   color: var(--text);
+  overflow: hidden;
 }
 button {
   -webkit-appearance: none;
@@ -51,9 +55,17 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .buildings {
-  margin: 50px;
+  flex: auto;
   position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .building {
   position: absolute;
@@ -85,17 +97,38 @@ button:not(:disabled) {
   color: var(--text);
 }
 
-.room-list {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  margin: 0 auto;
-  max-width: 800px;
-  border-radius: 20px;
+.panel {
+  flex: none;
   background-color: var(--modal);
-  box-shadow: 0 3px 10px var(--shadow);
-  overflow: hidden;
+  overflow: auto;
+}
+.info-panel {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 20px;
+}
+.title {
+  font-weight: normal;
+  margin: 0;
+  font-size: 24px;
+}
+.subtitle {
+  color: var(--secondary);
+}
+
+.room-list {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.building-name,
+.rooms,
+.schedule {
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
 }
 .building-name {
   margin: 0;
@@ -130,7 +163,8 @@ button:not(:disabled) {
   width: 24px;
 }
 .rooms {
-  margin: 20px;
+  padding: 20px;
+  padding-top: 0;
   margin-top: -10px;
 }
 .room {
@@ -160,6 +194,12 @@ button:not(:disabled) {
   color: var(--soon);
 }
 
+.schedule {
+  flex: auto;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+}
 .day-names,
 .meetings-wrapper {
   display: flex;
@@ -174,8 +214,10 @@ button:not(:disabled) {
   text-align: center;
 }
 .meetings-wrapper {
-  height: 50vh;
+  flex: auto;
+  height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .meetings-wrapper::-webkit-scrollbar {
   display: none;

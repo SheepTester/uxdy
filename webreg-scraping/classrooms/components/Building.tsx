@@ -22,9 +22,15 @@ type BuildingProps = {
   now: Now
   building: Building
   onSelect: (building: Building) => void
+  scrollWrapper: Element
 }
 
-export function Building ({ now, building, onSelect }: BuildingProps) {
+export function Building ({
+  now,
+  building,
+  onSelect,
+  scrollWrapper
+}: BuildingProps) {
   if (!locations[building.name]) {
     return <p>No location data for {building.name}</p>
   }
@@ -35,7 +41,7 @@ export function Building ({ now, building, onSelect }: BuildingProps) {
     if (building.name === 'CENTR' && button) {
       window.requestAnimationFrame(() => {
         const { left, top, width, height } = button.getBoundingClientRect()
-        window.scrollBy(
+        scrollWrapper.scrollBy(
           left + (-window.innerWidth + width) / 2,
           top + (-window.innerHeight + height) / 2
         )
