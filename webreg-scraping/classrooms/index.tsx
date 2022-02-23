@@ -53,6 +53,7 @@ function App () {
               building={building}
               onSelect={setViewing}
               scrollWrapper={scrollWrapper}
+              selected={building === viewing}
             />
           ))}
       </div>

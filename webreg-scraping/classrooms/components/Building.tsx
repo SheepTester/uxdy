@@ -25,13 +25,15 @@ type BuildingProps = {
   building: Building
   onSelect: (building: Building) => void
   scrollWrapper: Element
+  selected: boolean
 }
 
 export function Building ({
   now,
   building,
   onSelect,
-  scrollWrapper
+  scrollWrapper,
+  selected
 }: BuildingProps) {
   if (!locations[building.name]) {
     return <p>No location data for {building.name}</p>
@@ -53,7 +55,7 @@ export function Building ({
 
   return (
     <button
-      class={`building college-${college}`}
+      class={`building college-${college} ${selected ? 'selected' : ''}`}
       style={{
         top: `${(maxLat - latitude) * Y_SCALE + PADDING}px`,
         left: `${(longitude - minLong) * X_SCALE + PADDING}px`
