@@ -3,8 +3,9 @@
   --text: rgba(255, 255, 255, 0.9);
   --secondary: rgba(255, 255, 255, 0.5);
   --line: rgba(255, 255, 255, 0.1);
-  --shadow: rgba(0, 0, 0, 0.1);
-  --shadow-press: rgba(0, 0, 0, 0.3);
+  --button-hover: rgba(255, 255, 255, 0.05);
+  --shadow: rgba(0, 0, 0, 0.2);
+  --shadow-press: rgba(0, 0, 0, 0.6);
   --modal: #324153;
   --red: #ff4e84;
   --active: #41cf46;
@@ -20,6 +21,7 @@
     --text: rgba(0, 0, 0, 0.9);
     --secondary: rgba(0, 0, 0, 0.5);
     --line: rgba(0, 0, 0, 0.1);
+    --button-hover: rgba(0, 0, 0, 0.03);
     --shadow: rgba(0, 0, 0, 0.1);
     --shadow-press: rgba(0, 0, 0, 0.3);
     --modal: white;
@@ -33,12 +35,16 @@
   }
 }
 
+html {
+  height: 100%;
+}
 body {
   margin: 0;
-  padding: 10px;
+  height: 100%;
   font-family: 'Oswald', sans-serif;
   background-color: var(--background);
   color: var(--text);
+  overflow: hidden;
 }
 button {
   -webkit-appearance: none;
@@ -51,9 +57,22 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .buildings {
-  margin: 50px;
+  flex: auto;
   position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-area {
+  background-image: url('./map.webp');
+  background-size: 3800px;
+  background-position: -290px -530px;
 }
 .building {
   position: absolute;
@@ -85,17 +104,56 @@ button:not(:disabled) {
   color: var(--text);
 }
 
-.room-list {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  margin: 0 auto;
-  max-width: 800px;
-  border-radius: 20px;
+.panel {
+  flex: none;
+  display: flex;
   background-color: var(--modal);
-  box-shadow: 0 3px 10px var(--shadow);
-  overflow: hidden;
+  overflow: auto;
+  transition: height 0.2s;
+  height: 56px;
+}
+.has-rooms {
+  height: 40vh;
+}
+@media (max-height: 625px) {
+  .has-rooms {
+    height: 250px;
+  }
+}
+.panel-contents {
+  flex: auto;
+}
+.info-panel {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+.title {
+  font-weight: normal;
+  margin: 0;
+  font-size: 24px;
+}
+@media (max-width: 500px) {
+  .title {
+    font-size: 16px;
+  }
+}
+.subtitle {
+  color: var(--secondary);
+}
+
+.room-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.building-name,
+.rooms,
+.schedule {
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
 }
 .building-name {
   margin: 0;
@@ -117,6 +175,11 @@ button:not(:disabled) {
 .back {
   font-size: 0;
   padding: 12px;
+  border-radius: 50%;
+}
+.close:hover,
+.back:hover {
+  background-color: var(--button-hover);
 }
 .close {
   margin-left: auto;
@@ -125,18 +188,25 @@ button:not(:disabled) {
   fill: var(--red);
   width: 24px;
 }
+.back {
+  transition: opacity 0.2s, margin-left 0.2s;
+}
+.back:disabled {
+  opacity: 0;
+  margin-left: -48px;
+}
 .back-icon {
   fill: currentColor;
   width: 24px;
 }
 .rooms {
-  margin: 20px;
-  margin-top: -10px;
+  padding: 20px;
+  padding-top: 0;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(14ch, 1fr));
 }
 .room {
-  margin-right: 10px;
-  margin-top: 10px;
-  width: 14ch;
   text-align: left;
   padding: 10px 15px;
   border-radius: 10px;
@@ -160,6 +230,12 @@ button:not(:disabled) {
   color: var(--soon);
 }
 
+.schedule {
+  flex: auto;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+}
 .day-names,
 .meetings-wrapper {
   display: flex;
@@ -174,8 +250,10 @@ button:not(:disabled) {
   text-align: center;
 }
 .meetings-wrapper {
-  height: 50vh;
+  flex: auto;
+  height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .meetings-wrapper::-webkit-scrollbar {
   display: none;
@@ -198,6 +276,14 @@ button:not(:disabled) {
 }
 .meeting-time {
   font-size: 0.5em;
+}
+@media (max-width: 660px) {
+  .meeting-name {
+    font-size: 0.55em;
+  }
+  .meeting-time {
+    font-size: 0.4em;
+  }
 }
 .gradient {
   width: 100%;
