@@ -40,18 +40,20 @@ function App () {
             />
           ))}
       </div>
-      {viewing ? (
-        <RoomList
-          // Force state to reset on prop change https://stackoverflow.com/a/53313430
-          key={viewing.name}
-          now={now}
-          building={viewing}
-          onClose={() => setViewing(null)}
-          class='panel'
-        />
-      ) : (
-        <InfoPanel class='panel' />
-      )}
+      <div class={`panel ${viewing ? '' : 'has-info'}`}>
+        {viewing ? (
+          <RoomList
+            // Force state to reset on prop change https://stackoverflow.com/a/53313430
+            key={viewing.name}
+            now={now}
+            building={viewing}
+            onClose={() => setViewing(null)}
+            class='panel-contents'
+          />
+        ) : (
+          <InfoPanel class='panel-contents' />
+        )}
+      </div>
     </>
   ) : (
     <p>Loading...</p>

@@ -3,6 +3,7 @@
   --text: rgba(255, 255, 255, 0.9);
   --secondary: rgba(255, 255, 255, 0.5);
   --line: rgba(255, 255, 255, 0.1);
+  --button-hover: rgba(255, 255, 255, 0.05);
   --shadow: rgba(0, 0, 0, 0.2);
   --shadow-press: rgba(0, 0, 0, 0.6);
   --modal: #324153;
@@ -20,6 +21,7 @@
     --text: rgba(0, 0, 0, 0.9);
     --secondary: rgba(0, 0, 0, 0.5);
     --line: rgba(0, 0, 0, 0.1);
+    --button-hover: rgba(0, 0, 0, 0.03);
     --shadow: rgba(0, 0, 0, 0.1);
     --shadow-press: rgba(0, 0, 0, 0.3);
     --modal: white;
@@ -99,13 +101,21 @@ button:not(:disabled) {
 
 .panel {
   flex: none;
+  display: flex;
   background-color: var(--modal);
   overflow: auto;
+  transition: height 0.2s;
+  height: 40vh;
+}
+.has-info {
+  height: 56px;
+}
+.panel-contents {
+  flex: auto;
 }
 .info-panel {
   display: flex;
   align-items: center;
-  height: 56px;
   padding: 0 20px;
 }
 .title {
@@ -118,7 +128,6 @@ button:not(:disabled) {
 }
 
 .room-list {
-  height: 40vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -150,6 +159,11 @@ button:not(:disabled) {
 .back {
   font-size: 0;
   padding: 12px;
+  border-radius: 50%;
+}
+.close:hover,
+.back:hover {
+  background-color: var(--button-hover);
 }
 .close {
   margin-left: auto;
@@ -157,6 +171,13 @@ button:not(:disabled) {
 .close-icon {
   fill: var(--red);
   width: 24px;
+}
+.back {
+  transition: opacity 0.2s, margin-left 0.2s;
+}
+.back:disabled {
+  opacity: 0;
+  margin-left: -48px;
 }
 .back-icon {
   fill: currentColor;

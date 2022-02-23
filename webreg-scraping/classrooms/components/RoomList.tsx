@@ -28,11 +28,13 @@ export function RoomList ({
   return (
     <div class={`room-list ${className}`}>
       <h2 class='building-name'>
-        {selected && (
-          <button class='back' onClick={() => setSelected(null)}>
-            <BackIcon />
-          </button>
-        )}
+        <button
+          class='back'
+          onClick={() => setSelected(null)}
+          disabled={!selected}
+        >
+          <BackIcon />
+        </button>
         <div
           class={`building-gradient college-${colleges[building.name]}`}
         ></div>
