@@ -144,12 +144,14 @@ type CourseListProps = {
   checkSchedule?: Period[] | null
   joinableOnly: boolean
   tenPercentRule: boolean
+  remote: boolean
 }
 function CourseList ({
   lowerDivOnly,
   checkSchedule,
   joinableOnly,
-  tenPercentRule
+  tenPercentRule,
+  remote
 }: CourseListProps) {
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState(false)
@@ -221,6 +223,13 @@ function CourseList ({
           ) {
             return false
           }
+          // Don't show sections that aren't remote (note: other meetings, like
+          // finals and lectures might be in person. Whatever)
+          if (remote) {
+            if (group.time?.location?.building !== 'RCLAS') {
+              return false
+            }
+          }
           // Don't show courses that coincide with the user's existing schedule
           if (checkSchedule) {
             // Other sections under the letter conflict with the schedule
@@ -258,6 +267,7 @@ function App () {
   const [conflicts, setConflicts] = useState(false)
   const [full, setFull] = useState(false)
   const [tenPercent, setTenPercent] = useState(false)
+  const [remote, setRemote] = useState(false)
 
   const [schedule, setSchedule] = useState<Period[]>()
   useAsyncEffect(async () => {
@@ -298,6 +308,9 @@ function App () {
         <Checkbox checked={tenPercent} onCheck={setTenPercent}>
           Only include full sections following the 10% waitlist rule
         </Checkbox>
+        <Checkbox checked={remote} onCheck={setRemote}>
+          Limit to remote classes (RCLAS)
+        </Checkbox>
       </fieldset>
       {schedule && (
         <CourseList
@@ -305,6 +318,7 @@ function App () {
           checkSchedule={conflicts ? null : schedule}
           joinableOnly={tenPercent || !full}
           tenPercentRule={tenPercent}
+          remote={remote}
         />
       )}
     </div>

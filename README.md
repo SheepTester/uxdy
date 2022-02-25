@@ -49,11 +49,28 @@ from WebReg (by pasting some JS in the console, probably).
 [Live](https://sheeptester.github.io/hello-world/bookmarklet.html?../uxdy/bookmarklet/open-classes)
 
 ```sh
-# In webreg-scraping/
+# In the base directory
 # Build
-$ ./bookmarklet/build.sh
+$ ./webreg-scraping/bookmarklet/build.sh
 # Deploy
 $ ../scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
+```
+
+For development,
+
+```sh
+$ http-server -c-1 -s --cors
+# Also run
+$ nodemon --watch ./webreg-scraping/bookmarklet/ --ext ts,tsx --exec ./webreg-scraping/bookmarklet/build.sh
+```
+
+Then, to run the bookmarklet, reload the page (if the bookmarklet had already
+run) and run this in the console.
+
+```js
+import(
+  'http://localhost:8080/webreg-scraping/bookmarklet/dist/bookmarklet.min.js'
+)
 ```
 
 ## [Classrooms](./webreg-scraping/classrooms/)
