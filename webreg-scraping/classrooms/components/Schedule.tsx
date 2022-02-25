@@ -3,6 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
+import { useState } from 'https://esm.sh/preact@10.6.6/hooks'
 import { RoomMeeting } from '../from-file.ts'
 import { Now } from '../now.ts'
 
@@ -16,6 +17,8 @@ type BuildingProps = {
   meetings: RoomMeeting[]
 }
 export function Schedule ({ now, meetings }: BuildingProps) {
+  const [day, setDay] = useState<number | null>(null)
+
   const hasWeekend = meetings.some(
     meeting => meeting.days.includes(6) || meeting.days.includes(7)
   )
@@ -31,15 +34,19 @@ export function Schedule ({ now, meetings }: BuildingProps) {
   return (
     <div class='schedule'>
       <div class='day-names'>
-        {(hasWeekend ? DAYS : WEEKDAYS).map(day => (
-          <div class='day day-name' key={day}>
-            {DAY_NAMES[day]}
-          </div>
+        {(hasWeekend ? DAYS : WEEKDAYS).map(weekDay => (
+          <button
+            class={`day day-name ${weekDay === day ? 'selected-day' : ''}`}
+            key={weekDay}
+            onClick={() => setDay(day => (weekDay === day ? null : weekDay))}
+          >
+            {DAY_NAMES[weekDay]}
+          </button>
         ))}
       </div>
       <div class='gradient gradient-top'></div>
-      <div class='meetings-wrapper'>
-        {(hasWeekend ? DAYS : WEEKDAYS).map(day => (
+      <div class={`meetings-wrapper ${day === null ? 'full-week' : ''}`}>
+        {(day !== null ? [day] : hasWeekend ? DAYS : WEEKDAYS).map(day => (
           <div
             class='day meetings'
             key={day}
@@ -81,6 +88,7 @@ export function Schedule ({ now, meetings }: BuildingProps) {
         ))}
       </div>
       <div class='gradient gradient-bottom'></div>
+      <p class='disclaimer'>Note: some classes book rooms but don't meet.</p>
     </div>
   )
 }

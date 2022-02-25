@@ -53,7 +53,7 @@ from WebReg (by pasting some JS in the console, probably).
 # Build
 $ ./webreg-scraping/bookmarklet/build.sh
 # Deploy
-$ ../scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
+$ ./scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
 ```
 
 For development,
