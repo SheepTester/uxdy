@@ -269,6 +269,12 @@ button:not(:disabled) {
 .day-name {
   text-align: center;
 }
+.selected-day {
+  background-color: var(--text);
+  color: var(--modal);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px var(--shadow);
+}
 .meetings-wrapper {
   flex: auto;
   height: 0;
@@ -298,10 +304,10 @@ button:not(:disabled) {
   font-size: 0.5em;
 }
 @media (max-width: 660px) {
-  .meeting-name {
+  .full-week .meeting-name {
     font-size: 0.55em;
   }
-  .meeting-time {
+  .full-week .meeting-time {
     font-size: 0.4em;
   }
 }
@@ -325,6 +331,12 @@ button:not(:disabled) {
   position: absolute;
   left: 0;
   right: 0;
+}
+.disclaimer {
+  margin: 10px;
+  color: var(--secondary);
+  margin-top: 0;
+  font-size: 12px;
 }
 
 .college-revelle {
