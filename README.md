@@ -10,7 +10,7 @@ $ npm install --global coffeescript pug-cli sass http-server
 # Build
 $ ./scripts/build.sh
 
-# Deploy to GitHub Pages
+# Deploy built version to GitHub Pages
 $ ./scripts/deploy.sh dist/
 ```
 
@@ -52,7 +52,7 @@ from WebReg (by pasting some JS in the console, probably).
 # In the base directory
 # Build
 $ ./webreg-scraping/bookmarklet/build.sh
-# Deploy
+# Deploy built version
 $ ./scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
 ```
 
@@ -84,6 +84,6 @@ $ deno run --allow-read classrooms/to-file.ts > classrooms/dist/classrooms.txt
 $ ./classrooms/build.sh
 # Develop
 $ ./classrooms/dev.sh
-# Deploy
+# Deploy built version
 $ ../scripts/deploy.sh webreg-scraping/classrooms/dist/ classrooms
 ```

@@ -119,6 +119,7 @@ export async function main (
   await courseList.write(`## Courses (${quarter})\n\n`)
   const remoteList = await writeToFile('./webreg-data2/remote.md')
   await remoteList.write(`## Remote sections\n`)
+  const enrollables: Record<number, string> = {}
   for await (const { course, progress } of getter.allCoursesWithProgress()) {
     await courseList.write(
       `- [**${course.code}**: ${course.title}](./courses/${course.subject}${
@@ -247,10 +248,29 @@ export async function main (
       )
     }
 
+    const enrollable = course.groups.filter(
+      group => group.plannable && group.enrollable
+    )
+    if (enrollable.length > 0) {
+      // Determine whether the course is lower division (i.e. 0xx)
+      const division = Math.floor(parseInt(course.course) / 100)
+      enrollables[division] ??= `\n## ${division}xx courses\n\n`
+      enrollables[
+        division
+      ] += `- [**${course.code}**](./courses/${course.subject}${course.course}.md) ([numbers](./courses/${course.subject}${course.course}.tsv)): ${course.title}\n`
+    }
+
     await displayProgress(progress, { label: course.code })
   }
   courseList.close()
   remoteList.close()
+  Deno.writeTextFile(
+    './webreg-data2/enrollable.md',
+    `# Non-full sections\n${Object.entries(enrollables)
+      .sort(([a], [b]) => +a - +b)
+      .map(([, text]) => text)
+      .join('')}`
+  )
   console.log()
 }
 
@@ -258,13 +278,6 @@ if (import.meta.main) {
   // The UqZBpD3n cookie doesn't seem to expire as often, so I put it first
   const [UqZBpD3n, jlinksessionidx] = Deno.args
   const today = new Date()
-  if (
-    !confirm(
-      `Is today ${today}? WSL's time might be off. (sudo ntpdate -sb time.nist.gov)`
-    )
-  ) {
-    Deno.exit()
-  }
   await main(
     'SP22',
     [

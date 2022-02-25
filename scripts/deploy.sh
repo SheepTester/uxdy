@@ -34,6 +34,8 @@ if [ -z "$2" ]; then
   for keep in $KEEP; do
     git checkout origin/gh-pages $keep
   done
+
+  URL="https://sheeptester.github.io/uxdy/$2/"
 else
   # Check out existing files in gh-pages
   git checkout origin/gh-pages
@@ -42,12 +44,14 @@ else
   # Copy into folder
   mkdir $2
   cp -ar ../../$1/. $2
+
+  URL="https://sheeptester.github.io/uxdy/"
 fi
 
 # Commit everything and push
 git checkout -b gh-pages
 git add .
-git commit -m "Building for $LAST_COMMIT"
+git commit -m "Building for $LAST_COMMIT\n$URL"
 git push origin gh-pages
 
 # Clean up the repo
@@ -55,5 +59,5 @@ cd ..
 rm -rf ./temp/
 
 echo
-echo "Soon to be deployed to https://sheeptester.github.io/uxdy/"
+echo "Soon to be deployed to $URL"
 echo "See progress at https://github.com/SheepTester/uxdy/commits/gh-pages"

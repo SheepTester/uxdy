@@ -491,7 +491,8 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
   plannable: boolean
   /**
    * Whether the section can be enrolled directly. This should reflect whether
-   * the button says "Enroll" or "Waitlist" on WebReg.
+   * the button says "Enroll" (true) or "Waitlist" (false) on WebReg. False if
+   * `plannable` is false.
    */
   enrollable: boolean
 
