@@ -21,6 +21,7 @@ import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
 import { useNow } from './now.ts'
 
 function App () {
+  const [quarter, setQuarter] = useState('wi22')
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
   const now = useNow()
@@ -28,12 +29,12 @@ function App () {
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
-    fetch('./classrooms.txt')
+    fetch(`./classrooms-${quarter}.txt`)
       .then(r => r.text())
       .then(coursesFromFile)
       .then(coursesToClassrooms)
       .then(setBuildings)
-  }, [])
+  }, [quarter])
 
   return buildings ? (
     <>
@@ -69,7 +70,11 @@ function App () {
             class='panel-contents'
           />
         ) : (
-          <InfoPanel class='panel-contents' />
+          <InfoPanel
+            quarter={quarter}
+            onQuarter={setQuarter}
+            class='panel-contents'
+          />
         )}
       </div>
     </>

@@ -14,6 +14,7 @@
   --meeting-active: #516379;
   --meeting-active-text: var(--text);
   --highlight: rgba(255, 255, 255, 0.5);
+  --dropdown: url('./material-arrow-drop-down-white.svg');
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
@@ -33,6 +34,7 @@
     --meeting-active: #5783ff;
     --meeting-active-text: rgba(255, 255, 255, 0.9);
     --highlight: rgba(0, 142, 255, 0.5);
+    --dropdown: url('./material-arrow-drop-down-black.svg');
     color-scheme: light;
   }
 }
@@ -48,14 +50,16 @@ body {
   color: var(--text);
   overflow: hidden;
 }
-button {
+button,
+select {
   -webkit-appearance: none;
   background: none;
   border: none;
   color: inherit;
   font: inherit;
 }
-button:not(:disabled) {
+button:not(:disabled),
+select:not(:disabled) {
   cursor: pointer;
 }
 
@@ -143,6 +147,19 @@ button:not(:disabled) {
 .subtitle {
   color: var(--secondary);
 }
+.quarter {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding-right: 34px;
+  background-image: var(--dropdown);
+  background-position: right 5px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+}
+.quarter option {
+  background-color: var(--background);
+}
 .instructions {
   margin: 0;
   font-size: 14px;
@@ -150,7 +167,7 @@ button:not(:disabled) {
 }
 @media (max-width: 550px) {
   .panel {
-    height: 64px;
+    height: 80px;
   }
   .title {
     font-size: 16px;
@@ -159,6 +176,7 @@ button:not(:disabled) {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    padding: 0 15px;
   }
 }
 

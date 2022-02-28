@@ -80,7 +80,8 @@ import(
 ```sh
 # In webreg-scraping/
 # Build
-$ deno run --allow-read classrooms/to-file.ts > classrooms/dist/classrooms.txt
+$ deno run --allow-read classrooms/to-file.ts ./cache-wi22/ > classrooms/dist/classrooms-wi22.txt
+$ deno run --allow-read classrooms/to-file.ts ./cache-sp22/ > classrooms/dist/classrooms-sp22.txt
 $ ./classrooms/build.sh
 # Develop
 $ ./classrooms/dev.sh

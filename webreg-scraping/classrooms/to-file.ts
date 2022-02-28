@@ -1,4 +1,4 @@
-// deno run --allow-read classrooms/to-file.ts > classrooms/dist/classrooms.txt
+// deno run --allow-read classrooms/to-file.ts WI22
 
 import { writeAll } from 'https://deno.land/std@0.126.0/streams/conversion.ts'
 import { Scraper } from '../scrape.ts'
@@ -8,7 +8,14 @@ async function print (content: string) {
   await writeAll(Deno.stdout, encoder.encode(content))
 }
 
-const scraper = new Scraper('WI22', { cachePath: 'cache-wi22' })
+if (!Deno.args[0]) {
+  console.error(
+    'Please specify where to get the cached course data from. Thanks'
+  )
+  Deno.exit(1)
+}
+
+const scraper = new Scraper("shouldn't matter", { cachePath: Deno.args[0] })
 
 for await (const course of scraper.allCourses()) {
   let coursePrinted = false
