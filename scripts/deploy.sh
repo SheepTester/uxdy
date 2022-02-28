@@ -22,6 +22,7 @@ git init
 git remote add origin $REMOTE
 git fetch origin --depth=1
 
+# If a second argument was NOT given
 # https://stackoverflow.com/a/6482403
 if [ -z "$2" ]; then
   # Copy into temp repo
@@ -35,7 +36,7 @@ if [ -z "$2" ]; then
     git checkout origin/gh-pages $keep
   done
 
-  URL="https://sheeptester.github.io/uxdy/$2/"
+  URL="https://sheeptester.github.io/uxdy/"
 else
   # Check out existing files in gh-pages
   git checkout origin/gh-pages
@@ -45,13 +46,15 @@ else
   mkdir $2
   cp -ar ../../$1/. $2
 
-  URL="https://sheeptester.github.io/uxdy/"
+  URL="https://sheeptester.github.io/uxdy/$2/"
 fi
 
 # Commit everything and push
 git checkout -b gh-pages
 git add .
-git commit -m "Building for $LAST_COMMIT\n$URL"
+git commit -m "Building for $LAST_COMMIT
+
+$URL"
 git push origin gh-pages
 
 # Clean up the repo
