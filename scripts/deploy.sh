@@ -37,6 +37,7 @@ if [ -z "$2" ]; then
   done
 
   URL="https://sheeptester.github.io/uxdy/"
+  TAG="uxdy"
 else
   # Check out existing files in gh-pages
   git checkout origin/gh-pages
@@ -47,12 +48,13 @@ else
   cp -ar ../../$1/. $2
 
   URL="https://sheeptester.github.io/uxdy/$2/"
+  TAG="$2"
 fi
 
 # Commit everything and push
 git checkout -b gh-pages
 git add .
-git commit -m "Building for $LAST_COMMIT
+git commit -m "$TAG: Deploy $LAST_COMMIT
 
 $URL"
 git push origin gh-pages

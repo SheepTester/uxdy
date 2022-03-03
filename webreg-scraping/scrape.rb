@@ -26,7 +26,7 @@ class AuthorizedGetter
       end
 
     begin
-      return JSON.parse(File.read("./webreg-data/#{file_name}.json"), symbolize_names: true)
+      return JSON.parse(File.read("./cache-wi22/#{file_name}.json"), symbolize_names: true)
     rescue Errno::ENOENT
     end
 
@@ -35,8 +35,11 @@ class AuthorizedGetter
       # I don't think UqZBpD3n needs to be a secret but whatever
       "Cookie" => "jlinksessionidx=#{@session_index}; UqZBpD3n=#{@uqz}",
     }).read, symbolize_names: true)
+    if json.length > 0 && json[0][:VERIFY] == "FAIL"
+      raise "[0].VERIFY: FAIL #{file_name}"
+    end
     # File.write: https://stackoverflow.com/a/19337403
-    File.write("./webreg-data/#{file_name}.json", JSON.pretty_generate(json))
+    File.write("./cache-wi22/#{file_name}.json", JSON.pretty_generate(json))
     puts "Fetched #{file_name}"
     json
   end

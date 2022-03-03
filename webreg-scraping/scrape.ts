@@ -132,6 +132,11 @@ export class Scraper {
         ? response.json()
         : Promise.reject(`HTTP ${response.status} error from ${response.url}`)
     )
+    if (json?.[0]?.VERIFY === 'FAIL') {
+      throw new Error(
+        'WebReg returned VERIFY: FAIL. Was the quarter selected on WebReg?'
+      )
+    }
     if (this.#cachePath !== null) {
       await Deno.writeTextFile(
         joinPath(this.#cachePath, `${fileName}.json`),
@@ -678,10 +683,10 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
 }
 
 if (import.meta.main) {
-  const getter = new Scraper('WI22', {
+  const getter = new Scraper('SP22', {
     jlinksessionidx: Deno.args[1],
     UqZBpD3n: Deno.args[0],
-    cachePath: 'cache-wi22'
+    cachePath: 'cache-sp22'
   })
   const courses = []
   const freq: Record<number, number> = {}
