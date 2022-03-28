@@ -62,6 +62,8 @@ assertEndPadded('')
 assertEndPadded('hi  ')
 
 const getter = new Scraper('CACHE', { cachePath: 'cache-sp22' })
+// Presumably the start date of the quarter
+let quarterStartDate: string
 for await (const course of getter.allCourses()) {
   Deno.test(`${course.code}: ${course.title}`, () => {
     const { SUBJ_CODE, CRSE_CODE, CRSE_TITLE, UNIT_FROM, UNIT_TO, UNIT_INC } =
@@ -86,6 +88,11 @@ for await (const course of getter.allCourses()) {
   })
 
   for (const group of course.groups) {
+    if (!group.isExam()) {
+      // Get the start date of the quarter (eg 2022-01-03 for WI22)
+      quarterStartDate = group.raw.START_DATE
+    }
+
     Deno.test(`${course.code}: ${group.code} (${group.type})`, () => {
       const {
         BEGIN_HH_TIME,
@@ -206,6 +213,15 @@ for await (const course of getter.allCourses()) {
       // - There are non plannable non exams (eg lectures).
       // - There are plannable non exams (eg discussions).
       assert(!(group.plannable && group.isExam()))
+
+      // All the sections should have the same start/end date
+      assertEquals(SECTION_START_DATE, course.groups[0].raw.SECTION_START_DATE)
+      assertEquals(SECTION_END_DATE, course.groups[0].raw.SECTION_END_DATE)
+      // Normal meetings' start date should be the same as SECTION_START_DATE
+      // ' ' means TBA date (but SECTION_START/END_DATE won't be TBA)
+      if (!group.isExam() && START_DATE !== ' ') {
+        assertEquals(START_DATE, SECTION_START_DATE)
+      }
     })
   }
 }

@@ -1,5 +1,7 @@
 export type Location = [latitude: number, longitude: number]
 
+// https://registrar.ucsd.edu/StudentLink/bldg_codes.html
+
 const revelle: Record<string, Location> = {
   BONN: [32.876084946774036, -117.24038814500676],
   GH: [32.87374584111353, -117.24092662366324],
@@ -17,6 +19,7 @@ const muir: Record<string, Location> = {
   APM: [32.87900949086575, -117.24105009713044],
   BIO: [32.878428690703146, -117.24103674033825], // Muir Biology
   HSS: [32.87834508545459, -117.24168835799722],
+  LEDDN: [32.87876783002103, -117.24168242455174],
   MANDE: [32.877812337766414, -117.23998508397895],
   MCGIL: [32.87900601797463, -117.24205773606351],
   MNDLR: [32.87928595670899, -117.24214505416418]
@@ -44,6 +47,7 @@ const erc: Record<string, Location> = {
 const seventh: Record<string, Location> = {
   OTRSN: [32.88665760836001, -117.24102406579628],
   SEVE3: [32.88825009555447, -117.24173440393453],
+  SEVE4: [32.88807303667593, -117.2417902045747], // I think?
   WFH: [32.886967814911024, -117.24173638805067] // Wells Fargo Hall
 }
 const warren: Record<string, Location> = {
@@ -90,9 +94,11 @@ const playhouse: Record<string, Location> = {
 const sio: Record<string, Location> = {
   ECKRT: [32.8672217685922, -117.25258463073409], // Eckart
   HUBBS: [32.86744021132684, -117.25344551951103],
+  HYDRO: [32.86889985285985, -117.25226455555327], // Hydraulics Laboratory
   IGPP: [32.86830699100889, -117.25287278628777],
   NIERN: [32.86846701354387, -117.25120611888595], // Nierenberg Hall
   OAR: [32.86949599612524, -117.25063208743448], // Oceano and Atmo Research
+  RITTR: [32.86529347606621, -117.25357019529167], // Ritter Hall
   SPIES: [32.86909245015263, -117.25095900205372], // Spiess Hall
   SUMNR: [32.86488587494083, -117.2529119246211], // Sumner Auditorium
   VAUGN: [32.86531011859729, -117.25300219413253] // Vaughan Hall
