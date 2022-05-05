@@ -1,7 +1,7 @@
 import { Time } from '../util/time.ts'
 
 export type Meeting = {
-  type: string
+  capacity: number | null
   days: number[]
   start: Time
   end: Time
@@ -31,10 +31,12 @@ export function coursesFromFile (file: string): Course[] {
         meetings: Array.from(
           course
             .slice(9)
-            .matchAll(/(.{2})(.{5})(.{5})([1-7 ]{5})(\d\d)(\d\d)(\d\d)(\d\d)/g),
+            .matchAll(
+              /(\d{4})(.{5})(.{5})([1-7 ]{5})(\d\d)(\d\d)(\d\d)(\d\d)/g
+            ),
           ([
             ,
-            type,
+            capacity,
             building,
             room,
             days,
@@ -43,7 +45,7 @@ export function coursesFromFile (file: string): Course[] {
             endHour,
             endMinute
           ]) => ({
-            type,
+            capacity: capacity === '9999' ? null : +capacity,
             building: building.trim(),
             room: room.trim(),
             days: days.trim().split('').map(Number),
@@ -78,10 +80,16 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
   const buildings: Record<string, Building> = {}
   for (const { subject, course: courseCode, meetings } of courses) {
     const course = `${subject} ${courseCode}`
-    for (const { building, room, type, days, start, end } of meetings) {
+    for (const { building, room, capacity, days, start, end } of meetings) {
       buildings[building] ??= { name: building, rooms: {} }
       buildings[building].rooms[room] ??= []
-      buildings[building].rooms[room].push({ course, type, days, start, end })
+      buildings[building].rooms[room].push({
+        course,
+        capacity,
+        days,
+        start,
+        end
+      })
     }
   }
   return Object.values(buildings)

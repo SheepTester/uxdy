@@ -66,7 +66,11 @@ export function RoomList ({
                     {activeMeeting
                       ? soon
                         ? `${activeMeeting.course} soon`
-                        : `${activeMeeting.course} (${activeMeeting.type})`
+                        : `${activeMeeting.course}${
+                            activeMeeting.capacity !== null
+                              ? ` (${activeMeeting.capacity})`
+                              : ''
+                          }`
                       : 'Not in use'}
                   </div>
                 </button>

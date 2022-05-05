@@ -79,12 +79,17 @@ import(
 
 ```sh
 # In webreg-scraping/
+# To create cache
+$ rm cache-sp22/*.json # or mkdir cache-sp22
+$ deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx> SP22
 # Build
 $ deno run --allow-read classrooms/to-file.ts ./cache-wi22/ > classrooms/dist/classrooms-wi22.txt
 $ deno run --allow-read classrooms/to-file.ts ./cache-sp22/ > classrooms/dist/classrooms-sp22.txt
 $ ./classrooms/build.sh
 # Develop
 $ ./classrooms/dev.sh
-# Deploy built version
+# Deploy built version (can run right after dev.sh)
 $ ../scripts/deploy.sh webreg-scraping/classrooms/dist/ classrooms
 ```
+
+Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 16, x: -3 to 3, y: -3 to 3)

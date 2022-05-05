@@ -1,4 +1,4 @@
-// deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx>
+// deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx> <quarter>
 
 import { join as joinPath } from 'https://deno.land/std@0.125.0/path/mod.ts'
 import { ExamCodes, InstructionCodes } from './meeting-types.ts'
@@ -683,10 +683,11 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
 }
 
 if (import.meta.main) {
-  const getter = new Scraper('SP22', {
-    jlinksessionidx: Deno.args[1],
-    UqZBpD3n: Deno.args[0],
-    cachePath: 'cache-sp22'
+  const [UqZBpD3n, jlinksessionidx, quarter] = Deno.args
+  const getter = new Scraper(quarter, {
+    jlinksessionidx,
+    UqZBpD3n,
+    cachePath: 'cache-' + quarter.toLowerCase()
   })
   const courses = []
   const freq: Record<number, number> = {}

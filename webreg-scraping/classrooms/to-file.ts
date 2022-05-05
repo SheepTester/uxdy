@@ -33,7 +33,11 @@ for await (const course of scraper.allCourses()) {
         coursePrinted = true
       }
 
-      await print(group.instructionType)
+      await print(
+        group.capacity === Infinity
+          ? '9999'
+          : group.capacity.toString().padStart(4, '0')
+      )
       await print(group.time.location.building.padEnd(5, ' '))
       // Remove hyphens from Mandeville basement room numbers because they're
       // inconsistent

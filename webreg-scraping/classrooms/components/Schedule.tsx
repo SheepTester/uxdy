@@ -69,7 +69,8 @@ export function Schedule ({ now, meetings }: BuildingProps) {
                   }}
                 >
                   <div class='meeting-name'>
-                    {meeting.course} ({meeting.type})
+                    {meeting.course}
+                    {meeting.capacity !== null && ` (${meeting.capacity})`}
                   </div>
                   <div class='meeting-time'>
                     {meeting.start.toString()}–{meeting.end.toString()}
