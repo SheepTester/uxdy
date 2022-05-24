@@ -15,6 +15,7 @@
   --meeting-active-text: var(--text);
   --highlight: rgba(255, 255, 255, 0.5);
   --dropdown: url('./material-arrow-drop-down-white.svg');
+  --link: #9acfff;
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
@@ -35,6 +36,7 @@
     --meeting-active-text: rgba(255, 255, 255, 0.9);
     --highlight: rgba(0, 142, 255, 0.5);
     --dropdown: url('./material-arrow-drop-down-black.svg');
+    --link: #2597ff;
     color-scheme: light;
   }
 }
@@ -165,7 +167,14 @@ select:not(:disabled) {
   font-size: 14px;
   color: var(--secondary);
 }
-@media (max-width: 550px) {
+.link {
+  color: var(--link);
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+@media (max-width: 630px) {
   .panel {
     height: 80px;
   }
