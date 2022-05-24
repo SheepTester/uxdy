@@ -29,10 +29,19 @@ export function InfoPanel ({
             <option value='s122'>Summer I 2022</option>
             <option value='s222'>Summer II 2022</option>
             <option value='s322'>Special 2022</option>
+            <option value='fa22'>Fall 2022</option>
           </select>
         </span>
       </h1>
-      <p class='instructions'>Select a building to view its rooms.</p>
+      <p class='instructions'>
+        Select a building to view its rooms.{' '}
+        <a
+          href='https://github.com/SheepTester/uxdy/tree/main/webreg-scraping/classrooms'
+          class='link'
+        >
+          Github
+        </a>
+      </p>
     </div>
   )
 }

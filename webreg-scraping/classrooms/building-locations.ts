@@ -2,6 +2,9 @@ export type Location = [latitude: number, longitude: number]
 
 // https://registrar.ucsd.edu/StudentLink/bldg_codes.html
 
+// Go onto Google Maps, right click on approximate center of building, click on
+// coordinates to copy
+
 const revelle: Record<string, Location> = {
   BONN: [32.876084946774036, -117.24038814500676],
   GH: [32.87374584111353, -117.24092662366324],
@@ -41,6 +44,7 @@ const marshall: Record<string, Location> = {
 const erc: Record<string, Location> = {
   ASANT: [32.88423744331073, -117.24213984468823],
   ERCA: [32.886087113975414, -117.24205254723678], // ERC Admin
+  GREAT: [32.883944240936444, -117.24193249617227],
   RBC: [32.88427044449085, -117.2408680383893], // Robinson Auditorium
   SSB: [32.88391338508008, -117.24045720071513]
 }
@@ -60,6 +64,7 @@ const warren: Record<string, Location> = {
   WSAC: [32.88246082957613, -117.23329893891902]
 }
 const pepperCanyon: Record<string, Location> = {
+  DIB: [32.87937650181871, -117.23229157766367], // Design & Innovation
   PCYNH: [32.878341870703316, -117.23391147692307],
   SME: [32.879887628129154, -117.23275634017203],
   VAF: [32.879139240878324, -117.23396876625009] // Visual Arts Facility
