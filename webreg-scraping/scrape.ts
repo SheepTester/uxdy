@@ -475,7 +475,13 @@ class BaseGroup<Raw extends CommonRawSectionResult> {
 export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
   /** The maximum number of seats. May be Infinity for no limit. */
   capacity: number
-  /** The number of people enrolled. */
+  /**
+   * The number of people enrolled.
+   *
+   * NOTE: WebReg may say that there are still available seats (enrolled <
+   * capacity) even though you can't enrol (there are people on the waitlist).
+   * If `stopEnrolment` is true, then WebReg sets the available seats to 0.
+   */
   enrolled: number
   /** The number of people on the waitlist. */
   waitlist: number
