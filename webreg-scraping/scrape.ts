@@ -690,22 +690,29 @@ if (import.meta.main) {
     cachePath: 'cache-' + quarter.toLowerCase()
   })
   const courses = []
-  const freq: Record<number, number> = {}
-  let count = 0
+  // const freq: Record<number, number> = {}
+  // let count = 0
   for await (const course of getter.allCourses()) {
     courses.push(course)
     for (const group of course.groups) {
-      freq[group.raw.DAY_CODE.length] ??= 0
-      freq[group.raw.DAY_CODE.length]++
-      if (!group.isExam() && group.time?.location?.building === '') {
-        // console.log(`${course.code} ${group.code} ${group.time.location.room}`)
-      }
-      if (!group.isExam() && group.time?.location?.building !== 'RCLAS') {
-        count++
+      // freq[group.raw.DAY_CODE.length] ??= 0
+      // freq[group.raw.DAY_CODE.length]++
+      // if (!group.isExam() && group.time?.location?.building === '') {
+      //   // console.log(`${course.code} ${group.code} ${group.time.location.room}`)
+      // }
+      if (
+        !group.isExam() &&
+        group.plannable &&
+        group.time?.location?.building === 'RCLAS'
+      ) {
+        // count++
+        console.log(
+          `${course.code} ${group.code} ${group.enrolled}/${
+            group.capacity
+          } WL ${group.waitlist} ${group.enrollable ? '✔️' : '❌'}`
+        )
       }
     }
   }
-  console.log(freq, count)
-
-  // idk
+  // console.log(freq, count)
 }

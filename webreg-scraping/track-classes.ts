@@ -279,7 +279,7 @@ if (import.meta.main) {
   const [UqZBpD3n, jlinksessionidx] = Deno.args
   const today = new Date()
   await main(
-    'SP22',
+    'S322',
     [
       today.getFullYear().toString().slice(2),
       (today.getMonth() + 1).toString().padStart(2, '0'),
