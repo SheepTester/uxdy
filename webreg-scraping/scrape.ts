@@ -590,6 +590,17 @@ export class Course {
   }
 
   /**
+   * Gets the hundreds digit of the course number. Returns 0 for lower-division
+   * courses, 1 for upper-division courses, and so on.
+   *
+   * See the [course catalog](https://catalog.ucsd.edu/front/courses.html) for
+   * what the hundreds digit means.
+   */
+  get hundred (): number {
+    return Math.floor(parseInt(this.course) / 100)
+  }
+
+  /**
    * A list of sections grouped by letter (e.g. the A in A01), separated by
    * plannable sections (of which you would only choose one) and all the other
    * meetings associated with the letter.
@@ -697,9 +708,22 @@ if (import.meta.main) {
   })
   const courses = []
   // const freq: Record<number, number> = {}
+  const examples: Record<number, string> = {}
   // let count = 0
   for await (const course of getter.allCourses()) {
     courses.push(course)
+    if (course.hundred <= 1) {
+      for (
+        let unit = course.unit.from;
+        unit <= course.unit.to;
+        unit += course.unit.step
+      ) {
+        examples[unit] = course.code
+        if (course.unit.step <= 0) {
+          break
+        }
+      }
+    }
     for (const group of course.groups) {
       // freq[group.raw.DAY_CODE.length] ??= 0
       // freq[group.raw.DAY_CODE.length]++
@@ -712,13 +736,13 @@ if (import.meta.main) {
         group.time?.location?.building === 'RCLAS'
       ) {
         // count++
-        console.log(
-          `${course.code} ${group.code} ${group.enrolled}/${
-            group.capacity
-          } WL ${group.waitlist} ${group.enrollable ? '✔️' : '❌'}`
-        )
+        // console.log(
+        //   `${course.code} ${group.code} ${group.enrolled}/${
+        //     group.capacity
+        //   } WL ${group.waitlist} ${group.enrollable ? '✔️' : '❌'}`
+        // )
       }
     }
   }
-  // console.log(freq, count)
+  console.log(examples)
 }
