@@ -21,7 +21,7 @@ import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
 import { useNow } from './now.ts'
 
 function App () {
-  const [quarter, setQuarter] = useState('s122')
+  const [quarter, setQuarter] = useState('s222')
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
   const now = useNow()
