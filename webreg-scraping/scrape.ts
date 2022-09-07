@@ -712,24 +712,30 @@ if (import.meta.main) {
   // let count = 0
   for await (const course of getter.allCourses()) {
     courses.push(course)
-    if (course.hundred <= 1) {
-      for (
-        let unit = course.unit.from;
-        unit <= course.unit.to;
-        unit += course.unit.step
-      ) {
-        examples[unit] = course.code
-        if (course.unit.step <= 0) {
-          break
-        }
-      }
-    }
+    // if (course.hundred <= 1) {
+    //   for (
+    //     let unit = course.unit.from;
+    //     unit <= course.unit.to;
+    //     unit += course.unit.step
+    //   ) {
+    //     examples[unit] = course.code
+    //     if (course.unit.step <= 0) {
+    //       break
+    //     }
+    //   }
+    // }
     for (const group of course.groups) {
       // freq[group.raw.DAY_CODE.length] ??= 0
       // freq[group.raw.DAY_CODE.length]++
       // if (!group.isExam() && group.time?.location?.building === '') {
       //   // console.log(`${course.code} ${group.code} ${group.time.location.room}`)
       // }
+      // Get list of lectures that meet on Friday
+      if (group.time?.days.includes(5) && !group.isExam()) {
+        console.log(
+          `${course.code} ${group.code} ${group.type} on ${group.time.days}`
+        )
+      }
       if (
         !group.isExam() &&
         group.plannable &&
