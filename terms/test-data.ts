@@ -1,4 +1,5 @@
 import { Day } from './day.ts'
+import { Season } from './index.ts'
 
 /**
  * Lists days in the following order: fall, winter, spring, summer I, summer II.
@@ -12,7 +13,8 @@ type RawTerms = {
 }
 
 type Term = {
-  name: string
+  year: number
+  season: Season
   /**
    * When the term begins instruction. This is distinct from the administrative
    * date when the quarter starts, which tends to be a few days earlier and is
@@ -41,13 +43,12 @@ function toDay (sheetsDay: number): Day {
   return SHEETS_EPOCH.add(sheetsDay - 1)
 }
 
-const SEASONS = ['FA', 'WI', 'SP', 'S1', 'S2']
+const SEASONS = ['FA', 'WI', 'SP', 'S1', 'S2'] as const
 
 function transform (year: number, days: RawTerms): Term[] {
   return SEASONS.slice(0, days.start.length).map((season, i) => ({
-    name:
-      season +
-      ((season === 'FA' ? year - 1 : year) % 100).toString().padStart(2, '0'),
+    year: season === 'FA' ? year - 1 : year,
+    season,
     start: toDay(days.start[i]),
     // classesEnd: toDay(days.classesEnd[i]),
     end: toDay(days.end[i])
@@ -61,6 +62,7 @@ function transform (year: number, days: RawTerms): Term[] {
  */
 export const data: Term[] = [
   // https://blink.ucsd.edu/instructors/resources/academic/calendars/index.html
+  // TODO: these were by quarters not time oops
   ...transform(2029, {
     start: [47024, 47095, 47103],
     classesEnd: [47126, 47193, 47201],

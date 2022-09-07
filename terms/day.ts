@@ -46,6 +46,10 @@ export class Day {
     return this.add(-this.day)
   }
 
+  get valid (): boolean {
+    return !Number.isNaN(this.#date.getTime())
+  }
+
   /**
    * Return a new `Day` that is `days` days after this date.
    */
@@ -66,11 +70,13 @@ export class Day {
    * Returns the ISO 8601 representation of the date: YYYY-MM-DD.
    */
   toString (): string {
-    return [
-      this.year.toString().padStart(4, '0'),
-      this.month.toString().padStart(2, '0'),
-      this.date.toString().padStart(2, '0')
-    ].join('-')
+    return this.valid
+      ? [
+          this.year.toString().padStart(4, '0'),
+          this.month.toString().padStart(2, '0'),
+          this.date.toString().padStart(2, '0')
+        ].join('-')
+      : 'Invalid date'
   }
 
   /**
@@ -101,7 +107,7 @@ export class Day {
   static parse (str: string): Day | null {
     const [year, month, date] = str.split('-').map(Number)
     const parsed = Day.from(year, month - 1, date)
-    return Number.isNaN(parsed.id) ? null : parsed
+    return parsed.valid ? parsed : null
   }
 
   static fromId (dayId: number): Day {
