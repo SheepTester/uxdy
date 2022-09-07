@@ -19,13 +19,13 @@ type Term = {
    * irrelevant for students.
    */
   start: Day
-  /**
-   * When the term ends instruction. This is the day before finals, usually, but
-   * it appears in recent summer quarters, which have finals on Friday and
-   * Saturday, classes still meet on Friday, overlapping with finals. I'm not
-   * sure if this is an error on their part, though.
-   */
-  classesEnd: Day
+  // /**
+  //  * When the term ends instruction. This is the day before finals, usually, but
+  //  * it appears in recent summer quarters, which have finals on Friday and
+  //  * Saturday, classes still meet on Friday, overlapping with finals. I'm not
+  //  * sure if this is an error on their part, though.
+  //  */
+  // classesEnd: Day
   /**
    * When the term ends, which is the last day of finals.
    */
@@ -49,7 +49,7 @@ function transform (year: number, days: RawTerms): Term[] {
       season +
       ((season === 'FA' ? year - 1 : year) % 100).toString().padStart(2, '0'),
     start: toDay(days.start[i]),
-    classesEnd: toDay(days.classesEnd[i]),
+    // classesEnd: toDay(days.classesEnd[i]),
     end: toDay(days.end[i])
   }))
 }
@@ -60,6 +60,38 @@ function transform (year: number, days: RawTerms): Term[] {
  * winter, spring, and summer quarters.
  */
 export const data: Term[] = [
+  // https://blink.ucsd.edu/instructors/resources/academic/calendars/index.html
+  ...transform(2029, {
+    start: [47024, 47095, 47103],
+    classesEnd: [47126, 47193, 47201],
+    end: [47210, 47277, 47284]
+  }),
+  ...transform(2028, {
+    start: [46653, 46724, 46732],
+    classesEnd: [46762, 46829, 46837],
+    end: [46846, 46913, 46920]
+  }),
+  ...transform(2027, {
+    start: [46289, 46360, 46368],
+    classesEnd: [46391, 46458, 46466],
+    end: [46475, 46542, 46549]
+  }),
+  ...transform(2026, {
+    start: [45925, 45996, 46004],
+    classesEnd: [46027, 46094, 46102],
+    end: [46111, 46178, 46185]
+  }),
+  ...transform(2025, {
+    start: [45561, 45632, 45640],
+    classesEnd: [45663, 45730, 45738],
+    end: [45747, 45814, 45821]
+  }),
+  ...transform(2024, {
+    start: [45197, 45268, 45276],
+    classesEnd: [45299, 45366, 45374],
+    end: [45383, 45450, 45457]
+  }),
+  // https://blink.ucsd.edu/instructors/courses/enrollment/calendars/index.html
   ...transform(2023, {
     start: [44826, 44935, 45019, 45110, 45145],
     classesEnd: [44897, 45002, 45086, 45142, 45177],
