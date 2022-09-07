@@ -81,6 +81,10 @@ export class Day {
     return this.id
   }
 
+  [Symbol.for('Deno.customInspect')] (): string {
+    return this.toString()
+  }
+
   static get EPOCH (): Day {
     return new Day(new Date(0))
   }
