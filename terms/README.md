@@ -48,3 +48,4 @@ Exceptions:
 - In 2006, fall quarter was one week earlier, moving a week of summer break into winter break. I'm not sure why.
 - In 2014 and 2020, fall quarter was delayed by a year, moving a week of winter break into summer. I'm not sure why.
 - It seems that in S121, S122, and S222, instruction ends on the same day finals start, which suggest that classes may overlap with finals. This might be an error.
+- Winter 2028 starts on Jan 10, rather than Jan 3, lengthening winter break by a week.

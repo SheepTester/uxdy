@@ -12,7 +12,11 @@ type RawTerms = {
   end: number[]
 }
 
-type Term = {
+type RawTerms2 = {
+  [season in Season]?: [number, number, number]
+}
+
+export type Term = {
   year: number
   season: Season
   /**
@@ -55,6 +59,25 @@ function transform (year: number, days: RawTerms): Term[] {
   }))
 }
 
+function transform2 (year: number, seasonDays: RawTerms2): Term[] {
+  return SEASONS.flatMap(season => {
+    const days = seasonDays[season]
+    if (days) {
+      const [start, , end] = days
+      return [
+        {
+          year: season === 'FA' ? year - 1 : year,
+          season,
+          start: toDay(start),
+          end: toDay(end)
+        }
+      ]
+    } else {
+      return []
+    }
+  })
+}
+
 /**
  * Maps the year of the winter quarter of the school year (i.e. the end year) to
  * the dates of the fall quarter of the previous solar year and the year's
@@ -62,36 +85,35 @@ function transform (year: number, days: RawTerms): Term[] {
  */
 export const data: Term[] = [
   // https://blink.ucsd.edu/instructors/resources/academic/calendars/index.html
-  // TODO: these were by quarters not time oops
-  ...transform(2029, {
-    start: [47024, 47095, 47103],
-    classesEnd: [47126, 47193, 47201],
-    end: [47210, 47277, 47284]
+  ...transform2(2029, {
+    FA: [47024, 47095, 47103],
+    WI: [47126, 47193, 47201],
+    SP: [47210, 47277, 47284]
   }),
-  ...transform(2028, {
-    start: [46653, 46724, 46732],
-    classesEnd: [46762, 46829, 46837],
-    end: [46846, 46913, 46920]
+  ...transform2(2028, {
+    FA: [46653, 46724, 46732],
+    WI: [46762, 46829, 46837],
+    SP: [46846, 46913, 46920]
   }),
-  ...transform(2027, {
-    start: [46289, 46360, 46368],
-    classesEnd: [46391, 46458, 46466],
-    end: [46475, 46542, 46549]
+  ...transform2(2027, {
+    FA: [46289, 46360, 46368],
+    WI: [46391, 46458, 46466],
+    SP: [46475, 46542, 46549]
   }),
-  ...transform(2026, {
-    start: [45925, 45996, 46004],
-    classesEnd: [46027, 46094, 46102],
-    end: [46111, 46178, 46185]
+  ...transform2(2026, {
+    FA: [45925, 45996, 46004],
+    WI: [46027, 46094, 46102],
+    SP: [46111, 46178, 46185]
   }),
-  ...transform(2025, {
-    start: [45561, 45632, 45640],
-    classesEnd: [45663, 45730, 45738],
-    end: [45747, 45814, 45821]
+  ...transform2(2025, {
+    FA: [45561, 45632, 45640],
+    WI: [45663, 45730, 45738],
+    SP: [45747, 45814, 45821]
   }),
-  ...transform(2024, {
-    start: [45197, 45268, 45276],
-    classesEnd: [45299, 45366, 45374],
-    end: [45383, 45450, 45457]
+  ...transform2(2024, {
+    FA: [45197, 45268, 45276],
+    WI: [45299, 45366, 45374],
+    SP: [45383, 45450, 45457]
   }),
   // https://blink.ucsd.edu/instructors/courses/enrollment/calendars/index.html
   ...transform(2023, {
