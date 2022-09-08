@@ -2,7 +2,7 @@ import { Day } from './day.ts'
 
 export type Season = 'FA' | 'WI' | 'SP' | 'S1' | 'S2'
 
-export type Term = {
+export type TermDays = {
   start: Day
   finals: Day
   end: Day
@@ -41,11 +41,38 @@ function winterStart (year: number): Day {
   return Day.from(year, 1, 9 - jan1.day)
 }
 
-export function getTerm (year: number, season: Season): Term {
+export function getTermDays (year: number, season: Season): TermDays {
   const start = winterStart(year).add(offset[season])
   return {
     start,
     finals: start.add(length[season] - finalsOffset[season]),
     end: start.add(length[season])
   }
+}
+
+type DayTerm = {
+  year: number
+  season: Season
+  /** If false, then the year/season refers to the following quarter. */
+  current: boolean
+}
+
+/**
+ * Determines the quarter that the day is in, or the next term if the day is
+ * during a break.
+ */
+export function getTerm (day: Day): DayTerm {
+  const daysSinceWinter = +day - +winterStart(day.year)
+  let season: Season | null = null
+  let current = false
+  for (const term of ['WI', 'SP', 'S1', 'S2', 'FA'] as const) {
+    if (daysSinceWinter <= offset[term] + length[term]) {
+      season = term
+      current = daysSinceWinter >= offset[term]
+      break
+    }
+  }
+  const year = season === null ? day.year + 1 : day.year
+  season ??= 'WI'
+  return { year, season, current }
 }

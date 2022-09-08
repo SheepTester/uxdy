@@ -101,12 +101,12 @@ export class Day {
 
   static today (): Day {
     const today = new Date()
-    return Day.from(today.getFullYear(), today.getMonth(), today.getDate())
+    return Day.from(today.getFullYear(), today.getMonth() + 1, today.getDate())
   }
 
   static parse (str: string): Day | null {
     const [year, month, date] = str.split('-').map(Number)
-    const parsed = Day.from(year, month - 1, date)
+    const parsed = Day.from(year, month, date)
     return parsed.valid ? parsed : null
   }
 
