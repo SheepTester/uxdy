@@ -50,18 +50,20 @@ export function getTermDays (year: number, season: Season): TermDays {
   }
 }
 
-type DayTerm = {
+export type CurrentTerm = {
   year: number
   season: Season
   /** If false, then the year/season refers to the following quarter. */
   current: boolean
+  /** Whether finals are ongoing. */
+  finals: boolean
 }
 
 /**
  * Determines the quarter that the day is in, or the next term if the day is
  * during a break.
  */
-export function getTerm (day: Day): DayTerm {
+export function getTerm (day: Day): CurrentTerm {
   const daysSinceWinter = +day - +winterStart(day.year)
   let season: Season | null = null
   let current = false
@@ -74,5 +76,12 @@ export function getTerm (day: Day): DayTerm {
   }
   const year = season === null ? day.year + 1 : day.year
   season ??= 'WI'
-  return { year, season, current }
+  const finals =
+    current &&
+    daysSinceWinter >= offset[season] + length[season] - finalsOffset[season]
+  return { year, season, current, finals }
+}
+
+export function termCode (year: number, season: Season): string {
+  return season + (year % 100).toString().padStart(2, '0')
 }
