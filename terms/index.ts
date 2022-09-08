@@ -4,6 +4,7 @@ export type Season = 'FA' | 'WI' | 'SP' | 'S1' | 'S2'
 
 export type Term = {
   start: Day
+  finals: Day
   end: Day
 }
 
@@ -25,6 +26,15 @@ const length: Record<Season, number> = {
   S2: 33
 }
 
+/** When finals start, in days from the end of the quarter. */
+const finalsOffset: Record<Season, number> = {
+  FA: 7,
+  WI: 7,
+  SP: 6, // Spring ends on a Friday, unlike FA/WI
+  S1: 1,
+  S2: 1
+}
+
 /** Returns the day when winter quarter starts in the given year. */
 function winterStart (year: number): Day {
   const jan1 = Day.from(year, 1, 1)
@@ -35,6 +45,7 @@ export function getTerm (year: number, season: Season): Term {
   const start = winterStart(year).add(offset[season])
   return {
     start,
+    finals: start.add(length[season] - finalsOffset[season]),
     end: start.add(length[season])
   }
 }
