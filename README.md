@@ -88,7 +88,7 @@ $ deno run --allow-read classrooms/to-file.ts ./cache-sp22/ > classrooms/dist/cl
 $ ./classrooms/build.sh
 # Develop
 $ ./classrooms/dev.sh
-# Deploy built version (can run right after dev.sh)
+# Deploy built version (run build.sh first to minify)
 $ ../scripts/deploy.sh webreg-scraping/classrooms/dist/ classrooms
 ```
 

@@ -4,8 +4,8 @@
 /// <reference lib="deno.ns" />
 
 type InfoPanelProps = {
-  quarter: string
-  onQuarter: (quarter: string) => void
+  quarter: string | null
+  onQuarter: (quarter: string | null) => void
   class?: string
 }
 export function InfoPanel ({
@@ -21,9 +21,16 @@ export function InfoPanel ({
           for{' '}
           <select
             class='quarter'
-            value={quarter}
-            onChange={e => onQuarter(e.currentTarget.value)}
+            value={quarter ?? 'current'}
+            onChange={e =>
+              onQuarter(
+                e.currentTarget.value === 'current'
+                  ? null
+                  : e.currentTarget.value
+              )
+            }
           >
+            <option value='current'>Current quarter</option>
             <option value='wi22'>Winter 2022</option>
             <option value='sp22'>Spring 2022</option>
             <option value='s122'>Summer I 2022</option>

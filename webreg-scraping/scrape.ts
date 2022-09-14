@@ -480,7 +480,10 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
    *
    * NOTE: WebReg may say that there are still available seats (enrolled <
    * capacity) even though you can't enrol (there are people on the waitlist).
-   * If `stopEnrolment` is true, then WebReg sets the available seats to 0.
+   * This is because WebReg only pulls students off the waitlist once a day, so
+   * before then, there will be empty seats from students who dropped or an
+   * extended capacity. If `stopEnrolment` is true, then WebReg sets the
+   * available seats to 0.
    */
   enrolled: number
   /** The number of people on the waitlist. */

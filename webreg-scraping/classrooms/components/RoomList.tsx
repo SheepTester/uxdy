@@ -12,7 +12,7 @@ import { CloseIcon } from './CloseIcon.tsx'
 import { Schedule } from './Schedule.tsx'
 
 type RoomListProps = {
-  now: Now
+  now?: Now | null
   building: Building
   onClose: () => void
   class?: string
@@ -50,7 +50,7 @@ export function RoomList ({
             // properties differently
             .sort(([a], [b]) => compareRoomNums(a, b))
             .map(([room, meetings]) => {
-              const activeMeeting = meetings.find(used(now, 10))
+              const activeMeeting = now && meetings.find(used(now, 10))
               const soon = activeMeeting && now.time < activeMeeting.start
               return (
                 <button
@@ -62,17 +62,19 @@ export function RoomList ({
                   <div className='room-name'>
                     {building.name} {room}
                   </div>
-                  <div className='current-meeting'>
-                    {activeMeeting
-                      ? soon
-                        ? `${activeMeeting.course} soon`
-                        : `${activeMeeting.course}${
-                            activeMeeting.capacity !== null
-                              ? ` (${activeMeeting.capacity})`
-                              : ''
-                          }`
-                      : 'Not in use'}
-                  </div>
+                  {now && (
+                    <div className='current-meeting'>
+                      {activeMeeting
+                        ? soon
+                          ? `${activeMeeting.course} soon`
+                          : `${activeMeeting.course}${
+                              activeMeeting.capacity !== null
+                                ? ` (${activeMeeting.capacity})`
+                                : ''
+                            }`
+                        : 'Not in use'}
+                    </div>
+                  )}
                 </button>
               )
             })}

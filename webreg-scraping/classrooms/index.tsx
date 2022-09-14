@@ -5,6 +5,8 @@
 
 import { render } from 'https://esm.sh/preact@10.6.6'
 import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
+import { Day } from '../../terms/day.ts'
+import { getTerm, termCode } from '../../terms/index.ts'
 import {
   maxLat,
   minLat,
@@ -20,8 +22,13 @@ import { RoomList } from './components/RoomList.tsx'
 import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
 import { useNow } from './now.ts'
 
+function currentQuarter () {
+  const { year, season } = getTerm(Day.today())
+  return termCode(year, season).toLowerCase()
+}
+
 function App () {
-  const [quarter, setQuarter] = useState('s222')
+  const [quarter, setQuarter] = useState<string | null>(() => null)
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
   const now = useNow()
@@ -29,7 +36,7 @@ function App () {
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
-    fetch(`./classrooms-${quarter}.txt`)
+    fetch(`./classrooms-${quarter ?? currentQuarter()}.txt`)
       .then(r => r.text())
       .then(coursesFromFile)
       .then(coursesToClassrooms)
@@ -50,7 +57,7 @@ function App () {
           buildings.map(building => (
             <BuildingComponent
               key={building.name}
-              now={now}
+              now={quarter ? now : null}
               building={building}
               onSelect={setViewing}
               scrollWrapper={scrollWrapper}
@@ -64,7 +71,7 @@ function App () {
             // Force state to reset on prop change
             // https://stackoverflow.com/a/53313430
             key={viewing.name}
-            now={now}
+            now={quarter ? now : null}
             building={viewing}
             onClose={() => setViewing(null)}
             class='panel-contents'

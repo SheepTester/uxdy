@@ -21,7 +21,7 @@ import { Building } from '../from-file.ts'
 import { Now, used } from '../now.ts'
 
 type BuildingProps = {
-  now: Now
+  now?: Now | null
   building: Building
   onSelect: (building: Building) => void
   scrollWrapper: Element
@@ -65,14 +65,19 @@ export function Building ({
     >
       {building.name}
       <span class='room-count'>
-        <span class='in-use'>
-          {
-            Object.values(building.rooms).filter(meetings =>
-              meetings.some(used(now))
-            ).length
-          }
-        </span>
-        /{Object.values(building.rooms).length}
+        {now && (
+          <>
+            <span class='in-use'>
+              {
+                Object.values(building.rooms).filter(meetings =>
+                  meetings.some(used(now))
+                ).length
+              }
+            </span>
+            /
+          </>
+        )}
+        {Object.values(building.rooms).length}
       </span>
     </button>
   )

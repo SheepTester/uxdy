@@ -13,7 +13,7 @@ const DAY_NAMES = ['', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 const SCALE = 1 // px per min
 
 type BuildingProps = {
-  now: Now
+  now?: Now | null
   meetings: RoomMeeting[]
 }
 export function Schedule ({ now, meetings }: BuildingProps) {
@@ -57,7 +57,7 @@ export function Schedule ({ now, meetings }: BuildingProps) {
               .map(meeting => (
                 <div
                   class={`meeting ${
-                    now.day === day &&
+                    now?.day === day &&
                     meeting.start <= now.time &&
                     now.time < meeting.end
                       ? 'current'
@@ -77,7 +77,7 @@ export function Schedule ({ now, meetings }: BuildingProps) {
                   </div>
                 </div>
               ))}
-            {now.day === day && earliest <= +now.time && +now.time < latest && (
+            {now?.day === day && earliest <= +now.time && +now.time < latest && (
               <div
                 class='now'
                 style={{

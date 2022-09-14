@@ -93,17 +93,9 @@ if (import.meta.main) {
     )
   )
   for (let year = 2005; year <= 2028; year++) {
+    const { end: springEnd } = getTermDays(year, 'SP')
     const { start: fallStart, end: fallEnd } = getTermDays(year, 'FA')
     const { start: winterStart } = getTermDays(year + 1, 'WI')
-    const { end: springEnd } = getTermDays(year + 1, 'SP')
-    console.log(
-      [
-        year,
-        fallStart.date,
-        fallEnd.date,
-        winterStart.date,
-        springEnd.date
-      ].join('\t')
-    )
+    console.log([+fallStart - +springEnd, +winterStart - +fallEnd].join('\t'))
   }
 }
