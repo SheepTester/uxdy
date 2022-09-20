@@ -57,7 +57,7 @@ function App () {
           buildings.map(building => (
             <BuildingComponent
               key={building.name}
-              now={quarter ? now : null}
+              now={quarter ? null : now}
               building={building}
               onSelect={setViewing}
               scrollWrapper={scrollWrapper}
@@ -71,7 +71,7 @@ function App () {
             // Force state to reset on prop change
             // https://stackoverflow.com/a/53313430
             key={viewing.name}
-            now={quarter ? now : null}
+            now={quarter ? null : now}
             building={viewing}
             onClose={() => setViewing(null)}
             class='panel-contents'
