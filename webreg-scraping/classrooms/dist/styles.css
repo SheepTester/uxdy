@@ -79,6 +79,7 @@ select:not(:disabled) {
 }
 .scroll-area {
   background-image: url('./map.webp');
+  background-repeat: no-repeat;
 }
 .building {
   position: absolute;

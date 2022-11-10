@@ -5,12 +5,11 @@
 
 import { useCallback } from 'https://esm.sh/preact@10.6.6/hooks'
 import {
-  CENTER,
   colleges,
   latLongToPixel,
   locations,
-  max,
-  min,
+  northeast,
+  southwest,
   PADDING
 } from '../building-locations.ts'
 import { Building } from '../from-file.ts'
@@ -37,7 +36,7 @@ export function Building ({
   const college = colleges[building.name]
 
   const ref = useCallback((button: HTMLButtonElement | null) => {
-    if (building.name === CENTER && button) {
+    if (building.name === 'CENTR' && button) {
       window.requestAnimationFrame(() => {
         const { left, top, width, height } = button.getBoundingClientRect()
         scrollWrapper.scrollBy(
@@ -54,8 +53,8 @@ export function Building ({
     <button
       class={`building college-${college} ${selected ? 'selected' : ''}`}
       style={{
-        left: `${x - min.x + PADDING}px`,
-        top: `${y - max.y + PADDING}px`
+        left: `${x - southwest.x + PADDING}px`,
+        top: `${y - northeast.y + PADDING}px`
       }}
       ref={ref}
       onClick={() => onSelect(building)}

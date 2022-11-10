@@ -157,13 +157,15 @@ export const colleges = {
   ...locationToCollegeMapping(sio, 'sio')
 }
 
+// Tile bounds used to generate the map image
+const TILE_LEFT = -3
+const TILE_RIGHT = 3
+const TILE_TOP = -3
 /** maps.ucsd.edu zoom level used for the map image. */
 export const ZOOM = 16
-/** Number of tiles across in the map image */
-export const MAP_TILE_WIDTH = 7
 /** Size of each map tile */
-export const TILE_SIZE = 256
-/** Zoom into the map on the website */
+const TILE_SIZE = 256
+/** Zoom into the map on this web page */
 export const MAP_ZOOM = 2
 const SCALE = 2 ** (7 + ZOOM) * MAP_ZOOM
 export function latLongToPixel ([latitude, longitude]: Location): {
@@ -186,15 +188,27 @@ function getExtremeCoord (index: 0 | 1, max: boolean) {
     max ? -Infinity : Infinity
   )
 }
-export const min = latLongToPixel([
+export const southwest = latLongToPixel([
   getExtremeCoord(0, false),
   getExtremeCoord(1, false)
 ])
-export const max = latLongToPixel([
+export const northeast = latLongToPixel([
   getExtremeCoord(0, true),
   getExtremeCoord(1, true)
 ])
-
-export const CENTER = 'CENTR'
-locations[CENTER]
 export const PADDING = 50 // px
+
+const MAP_TILE_SIZE = 2 ** (25 - ZOOM)
+/** Center of map. */
+const center = latLongToPixel([32.877341347399, -117.23531663418])
+export const mapPosition = {
+  x:
+    Math.floor(center.x / MAP_TILE_SIZE + TILE_LEFT) *
+      MAP_TILE_SIZE *
+      MAP_ZOOM -
+    (southwest.x - PADDING),
+  y:
+    Math.floor(center.y / MAP_TILE_SIZE + TILE_TOP) * MAP_TILE_SIZE * MAP_ZOOM -
+    (northeast.y - PADDING),
+  width: (TILE_RIGHT - TILE_LEFT + 1) * TILE_SIZE * MAP_ZOOM
+}
