@@ -8,13 +8,10 @@ import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
 import { Day } from '../../terms/day.ts'
 import { getTerm, termCode } from '../../terms/index.ts'
 import {
-  MAP_TILE_WIDTH,
-  MAP_ZOOM,
   northeast,
   southwest,
-  offset,
   PADDING,
-  TILE_SIZE
+  mapPosition
 } from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
@@ -51,8 +48,8 @@ function App () {
           style={{
             width: `${northeast.x - southwest.x + PADDING * 2}px`,
             height: `${southwest.y - northeast.y + PADDING * 2}px`,
-            backgroundSize: `${MAP_TILE_WIDTH * TILE_SIZE * MAP_ZOOM}px`,
-            backgroundPosition: `${offset.x}px ${offset.y}px`
+            backgroundSize: `${mapPosition.width}px`,
+            backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`
           }}
         />
         {scrollWrapper &&
