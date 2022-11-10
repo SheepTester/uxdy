@@ -39,17 +39,20 @@ const marshall: Record<string, Location> = {
   PETER: [32.879984046654364, -117.2402525268966],
   SEQUO: [32.88203974495475, -117.24103633144476],
   SOLIS: [32.880935740253626, -117.23964750230745],
+  SSRB: [32.88075657728253, -117.240142743495], // Social Sciences Research Bldg
   TM102: [32.88134401507817, -117.23933111579409] // Marshall portable 102
 }
 const erc: Record<string, Location> = {
   ASANT: [32.88423744331073, -117.24213984468823],
   ERCA: [32.886087113975414, -117.24205254723678], // ERC Admin
   GREAT: [32.883944240936444, -117.24193249617227],
+  LASB: [32.88557327735999, -117.2413567320843], // Latin American Studies Bldg
   RBC: [32.88427044449085, -117.2408680383893], // Robinson Auditorium
   SSB: [32.88391338508008, -117.24045720071513]
 }
 const seventh: Record<string, Location> = {
   OTRSN: [32.88665760836001, -117.24102406579628],
+  SEVW2: [32.8880285561251, -117.24255222849888],
   SEVE3: [32.88825009555447, -117.24173440393453],
   SEVE4: [32.88807303667593, -117.2417902045747], // I think?
   WFH: [32.886967814911024, -117.24173638805067] // Wells Fargo Hall
@@ -58,6 +61,7 @@ const warren: Record<string, Location> = {
   EBU1: [32.88168612813114, -117.2352758424052], // Jacob's
   EBU2: [32.88116494369773, -117.23334050065942], // MAE
   EBU3B: [32.8817383470234, -117.23358830529953], // CSE
+  FAH: [32.883557123107536, -117.23496426482438],
   PFBH: [32.88173836638747, -117.2343791731388], // Powell-Focht Bioeng Hall
   WARR: [32.88114818094256, -117.23504265009306],
   WLH: [32.88059104682919, -117.23436049332548],
@@ -83,10 +87,13 @@ const med: Record<string, Location> = {
   BRF2: [32.874320265698685, -117.2350725903077], // Biomed Research Facility II
   BSB: [32.87583620115867, -117.23610217780087], // Biomed Sciences Bldg
   CMME: [32.876369320524, -117.23767828382417], // Cell and Molec Med East
+  CNCB: [32.87569310599253, -117.23819914713752], // Ctr for Neural Circ & Behav
+  KECK: [32.87504438926279, -117.23617314958287], // W. M. Keck Building
   LFFB: [32.87668499513593, -117.23686452737942], // Leichtag Biomed Research
   MET: [32.875220419083554, -117.23478623990438], // Med Edu and Telemedicine
   MTF: [32.87559622253949, -117.23543639784786], // Medical Teaching Facility
-  PSB: [32.874209066736114, -117.23571795183558] // Pharmaceutical Sci Bldg
+  PSB: [32.874209066736114, -117.23571795183558], // Pharmaceutical Sci Bldg
+  SCRB: [32.8758549279704, -117.23394815633426] // Stein Clinical Research Bldg
 }
 const health: Record<string, Location> = {
   MCC: [32.87832294065095, -117.22294309501584] // Moores Cancer Center
@@ -150,9 +157,28 @@ export const colleges = {
   ...locationToCollegeMapping(sio, 'sio')
 }
 
-export const Y_SCALE = 120000 // px per degree of latitude
-export const X_SCALE = 100000 // px per degree of longitude
-export const PADDING = 50 // px
+/** maps.ucsd.edu zoom level used for the map image. */
+export const ZOOM = 16
+/** Number of tiles across in the map image */
+export const MAP_TILE_WIDTH = 7
+/** Size of each map tile */
+export const TILE_SIZE = 256
+/** Zoom into the map on the website */
+export const MAP_ZOOM = 2
+const SCALE = 2 ** (7 + ZOOM) * MAP_ZOOM
+export function latLongToPixel ([latitude, longitude]: Location): {
+  x: number
+  y: number
+} {
+  return {
+    x: SCALE * (longitude / 180 + 1),
+    y:
+      -SCALE *
+      (Math.log(Math.tan(Math.PI / 4 + (latitude * Math.PI) / 360)) / Math.PI +
+        1)
+  }
+}
+
 const coords = Object.values(locations)
 function getExtremeCoord (index: 0 | 1, max: boolean) {
   return coords.reduce(
@@ -160,7 +186,15 @@ function getExtremeCoord (index: 0 | 1, max: boolean) {
     max ? -Infinity : Infinity
   )
 }
-export const minLat = getExtremeCoord(0, false)
-export const maxLat = getExtremeCoord(0, true)
-export const minLong = getExtremeCoord(1, false)
-export const maxLong = getExtremeCoord(1, true)
+export const min = latLongToPixel([
+  getExtremeCoord(0, false),
+  getExtremeCoord(1, false)
+])
+export const max = latLongToPixel([
+  getExtremeCoord(0, true),
+  getExtremeCoord(1, true)
+])
+
+export const CENTER = 'CENTR'
+locations[CENTER]
+export const PADDING = 50 // px

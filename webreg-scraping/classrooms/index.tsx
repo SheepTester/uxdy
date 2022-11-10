@@ -8,13 +8,12 @@ import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
 import { Day } from '../../terms/day.ts'
 import { getTerm, termCode } from '../../terms/index.ts'
 import {
-  maxLat,
-  minLat,
-  maxLong,
-  minLong,
+  MAP_TILE_WIDTH,
+  MAP_ZOOM,
+  max,
+  min,
   PADDING,
-  X_SCALE,
-  Y_SCALE
+  TILE_SIZE
 } from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
@@ -49,8 +48,10 @@ function App () {
         <div
           class='scroll-area'
           style={{
-            height: `${(maxLat - minLat) * Y_SCALE + PADDING * 2}px`,
-            width: `${(maxLong - minLong) * X_SCALE + PADDING * 2}px`
+            width: `${max.x - min.x + PADDING * 2}px`,
+            height: `${min.y - max.y + PADDING * 2}px`,
+            backgroundSize: `${MAP_TILE_WIDTH * TILE_SIZE * MAP_ZOOM}px`,
+            backgroundPosition: `${-100}px ${-240}px`
           }}
         />
         {scrollWrapper &&

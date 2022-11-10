@@ -3,19 +3,15 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
+import { useCallback } from 'https://esm.sh/preact@10.6.6/hooks'
 import {
-  useCallback,
-  useEffect,
-  useRef
-} from 'https://esm.sh/preact@10.6.6/hooks'
-import {
+  CENTER,
   colleges,
+  latLongToPixel,
   locations,
-  maxLat,
-  minLong,
-  PADDING,
-  X_SCALE,
-  Y_SCALE
+  max,
+  min,
+  PADDING
 } from '../building-locations.ts'
 import { Building } from '../from-file.ts'
 import { Now, used } from '../now.ts'
@@ -38,11 +34,10 @@ export function Building ({
   if (!locations[building.name]) {
     return <p>No location data for {building.name}</p>
   }
-  const [latitude, longitude] = locations[building.name]
   const college = colleges[building.name]
 
   const ref = useCallback((button: HTMLButtonElement | null) => {
-    if (building.name === 'CENTR' && button) {
+    if (building.name === CENTER && button) {
       window.requestAnimationFrame(() => {
         const { left, top, width, height } = button.getBoundingClientRect()
         scrollWrapper.scrollBy(
@@ -53,12 +48,14 @@ export function Building ({
     }
   }, [])
 
+  const { x, y } = latLongToPixel(locations[building.name])
+
   return (
     <button
       class={`building college-${college} ${selected ? 'selected' : ''}`}
       style={{
-        top: `${(maxLat - latitude) * Y_SCALE + PADDING}px`,
-        left: `${(longitude - minLong) * X_SCALE + PADDING}px`
+        left: `${x - min.x + PADDING}px`,
+        top: `${y - max.y + PADDING}px`
       }}
       ref={ref}
       onClick={() => onSelect(building)}

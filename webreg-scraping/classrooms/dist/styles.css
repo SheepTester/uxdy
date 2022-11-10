@@ -79,8 +79,6 @@ select:not(:disabled) {
 }
 .scroll-area {
   background-image: url('./map.webp');
-  background-size: 3800px;
-  background-position: -290px -530px;
 }
 .building {
   position: absolute;
