@@ -83,17 +83,47 @@ let maxPage: number | null = null
 let page = 1
 while (maxPage === null || page <= maxPage) {
   const document = await fetchHtml(getUrl(TERM, subjects, page))
-  const form = document.getElementById('socDisplayCVO') ?? unwrap()
+  const form =
+    document.getElementById('socDisplayCVO') ??
+    unwrap(new Error('Missing results wrapper'))
   if (maxPage === null) {
     const [, maxPageStr] =
       form.children[6]
         .querySelector('td[align="right"]')
-        ?.textContent.match(/\(\d+ of (\d+)\)/) ?? unwrap()
+        ?.textContent.match(/\(\d+\sof\s(\d+)\)/) ??
+      unwrap(new Error('Missing total page count'))
     maxPage = +maxPageStr
   }
-  console.log(
-    Array.from(form.querySelector('.tbrdr')?.children ?? [], a => a.tagName)
-  )
+
+  const rows =
+    form.querySelector('.tbrdr')?.children[1].children ??
+    unwrap(new Error('Missing results table'))
+  let subject = ''
+  for (const row of rows) {
+    // Heading with subject code
+    const subjectHeading = row.querySelector('h2')
+    if (subjectHeading) {
+      const match = subjectHeading.textContent.match(/\(([A-Z]+)\s*\)/)
+      if (match) {
+        subject = match[1]
+      }
+      continue
+    }
+
+    // Row with course title and units
+    if (row.querySelector('.crsheader') && row.children.length === 4) {
+      const code = +row.children[1].textContent
+      const unitMatch =
+        row.children[2].textContent.match(/\(\s*(\d+)\s+Units\)/) ??
+        unwrap(
+          new SyntaxError('Missing "(N units)"\n' + row.children[2].textContent)
+        )
+      const units = +unitMatch[1]
+      console.log(subject, code, units)
+      // TODO: unit ranges
+      continue
+    }
+  }
 
   page++
   break
