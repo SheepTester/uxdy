@@ -1,5 +1,8 @@
 import { writeAll } from 'https://deno.land/std@0.177.0/streams/write_all.ts'
-import { DOMParser } from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts'
+import {
+  DOMParser,
+  Element
+} from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts'
 
 // S for Saturday, SP23 BIPN 100
 // Sun for Sunday, SP23 MGT 404
@@ -204,7 +207,7 @@ export async function * getCourseIterator (
         // ( 2.5 Units) [SP23 LIAB 1C]
         const unitMatch =
           row.children[2].textContent.match(
-            /\(\s*(\d+|2\.5)(?:\s*[/-](\d+)(?:\s+by\s+(\d+|0\.5))?)?\s+Units\)/
+            /\(\s*(\d+)(\.5)?(?:\s*[/-](\d+)(?:\s+by\s+(\d+)(\.5)?)?)?\s+Units\)/
           ) ??
           unwrap(
             new SyntaxError(
@@ -212,14 +215,11 @@ export async function * getCourseIterator (
                 row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
             )
           )
-        const from = unitMatch[1] === '2.5' ? 2.5 : parseNatural(unitMatch[1])
-        const to = unitMatch[2] ? parseNatural(unitMatch[2]) : null
-        const inc =
-          unitMatch[3] === '0.5'
-            ? 0.5
-            : unitMatch[3]
-            ? parseNatural(unitMatch[3])
-            : null
+        const from = parseNatural(unitMatch[1]) + (unitMatch[2] ? 0.5 : 0)
+        const to = unitMatch[3] ? parseNatural(unitMatch[3]) : null
+        const inc = unitMatch[4]
+          ? parseNatural(unitMatch[4]) + (unitMatch[5] ? 0.5 : 0)
+          : null
         yield {
           page,
           pages: maxPage,
@@ -241,6 +241,7 @@ export async function * getCourseIterator (
       // A section (meeting)
       if (row.className === 'sectxt' || row.className === 'nonenrtxt') {
         const tds = Array.from(row.children, td => td.textContent.trim())
+        let instructor: Element | null = row.children[9]
         if (row.className === 'nonenrtxt') {
           if (tds.length === 2) {
             // SP23 BGGN 500 uses a .nonenrtxt for a note, so skip it
@@ -251,9 +252,11 @@ export async function * getCourseIterator (
           // white rather than lavender and doesn't repeat the instructor name.
           tds.unshift('')
           tds.splice(9, 0, 'Staff')
+          instructor = row.children[8]
         } else if (tds.length === 10) {
           // Replace the colspan TBA with four TBA cells
           tds.splice(6, 0, 'TBA', 'TBA', 'TBA')
+          instructor = row.children[6]
         }
         const [
           ,
@@ -322,13 +325,10 @@ export async function * getCourseIterator (
                   }
                 : null,
             location: building !== 'TBA' ? { building, room } : null,
-            instructors: Array.from(
-              row.children[9].querySelectorAll('a'),
-              td => {
-                const [last, first] = td.textContent.trim().split(', ')
-                return [first, last]
-              }
-            )
+            instructors: Array.from(instructor.querySelectorAll('a'), td => {
+              const [last, first] = td.textContent.trim().split(', ')
+              return [first, last]
+            })
           }
         }
       }

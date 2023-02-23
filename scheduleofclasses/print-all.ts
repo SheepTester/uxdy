@@ -1,4 +1,4 @@
-// deno run --allow-net scheduleofclasses/print-all.ts
+// deno run --allow-net scheduleofclasses/print-all.ts (start page)
 
 import {
   blue,
@@ -24,8 +24,9 @@ function displayTime (minutes: number): string {
     .padStart(2, '0')}:${(minutes % 60).toString().padStart(2, '0')}`
 }
 
+const start = Deno.args.length === 1 ? +Deno.args[0] : undefined
 console.log(bold(TERM))
-for await (const { item } of getCourseIterator(TERM)) {
+for await (const { item } of getCourseIterator(TERM, start)) {
   if ('subject' in item) {
     const units =
       item.units.from === item.units.to
