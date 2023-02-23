@@ -1,16 +1,6 @@
 import { assert } from 'https://deno.land/std@0.178.0/testing/asserts.ts'
 import { Course as ScrapedCourse } from './scrape.ts'
 
-const term = 'SP23'
-
-const scrapedCourses: ScrapedCourse[] = JSON.parse(
-  await Deno.readTextFile(`./scheduleofclasses/terms/${term}.json`),
-  (key, value) =>
-    key === 'section' && value.endsWith('T00:00:00.000Z')
-      ? new Date(value)
-      : value
-)
-
 export type Meeting = {
   type: string
   /** Null if TBA. */
@@ -57,62 +47,79 @@ export type Course = {
   groups: Group[]
 }
 
-export const courses: Record<string, Course> = {}
-for (const course of scrapedCourses) {
-  const groups: Record<string, Group> = {}
-  let lastGroup: Group | null = null
-  for (const section of course.sections) {
-    const meeting: Meeting = {
-      type: section.type,
-      time: section.time,
-      location: section.location
-    }
+export function groupSections (
+  scrapedCourses: ScrapedCourse[]
+): Record<string, Course> {
+  const courses: Record<string, Course> = {}
+  for (const course of scrapedCourses) {
+    const groups: Record<string, Group> = {}
+    let lastGroup: Group | null = null
+    for (const section of course.sections) {
+      const meeting: Meeting = {
+        type: section.type,
+        time: section.time,
+        location: section.location
+      }
 
-    if (section.section instanceof Date) {
-      if (!lastGroup) {
-        // For some reason, SP23 LTWL 194A's A00 section doesn't show on
-        // ScheduleOfClasses, only WebReg.
+      if (section.section instanceof Date) {
+        if (!lastGroup) {
+          // For some reason, SP23 LTWL 194A's A00 section doesn't show on
+          // ScheduleOfClasses, only WebReg.
+          continue
+        }
+        lastGroup.exams.push({
+          ...meeting,
+          date: section.section
+        })
         continue
       }
-      lastGroup.exams.push({
-        ...meeting,
-        date: section.section
-      })
-      continue
-    }
 
-    const isLetter = /^[A-Z]/.test(section.section)
-    const letter = isLetter ? section.section[0] : section.section
-    if (isLetter && !groups[letter]) {
-      // A00 should be first
-      assert(section.section.endsWith('00'))
-    }
-    groups[letter] ??= {
-      code: section.section,
-      sections: [],
-      meetings: [],
-      exams: [],
-      instructors: section.instructors
-    }
-    lastGroup = groups[letter]
-
-    if (section.selectable) {
-      groups[letter].sections.push({
-        ...meeting,
+      const isLetter = /^[A-Z]/.test(section.section)
+      const letter = isLetter ? section.section[0] : section.section
+      if (isLetter && !groups[letter]) {
+        // A00 should be first
+        assert(section.section.endsWith('00'))
+      }
+      groups[letter] ??= {
         code: section.section,
-        capacity: section.selectable.capacity
-      })
-    } else {
-      groups[letter].meetings.push(meeting)
+        sections: [],
+        meetings: [],
+        exams: [],
+        instructors: section.instructors
+      }
+      lastGroup = groups[letter]
+
+      if (section.selectable) {
+        groups[letter].sections.push({
+          ...meeting,
+          code: section.section,
+          capacity: section.selectable.capacity
+        })
+      } else {
+        groups[letter].meetings.push(meeting)
+      }
+    }
+
+    const code = `${course.subject} ${course.number}`
+    courses[code] = {
+      code,
+      title: course.title,
+      groups: Object.values(groups)
     }
   }
-
-  const code = `${course.subject} ${course.number}`
-  courses[code] = {
-    code,
-    title: course.title,
-    groups: Object.values(groups)
-  }
+  return courses
 }
 
-console.log(courses['CAT 125'])
+if (import.meta.url) {
+  const term = 'SP23'
+
+  const scrapedCourses: ScrapedCourse[] = JSON.parse(
+    await Deno.readTextFile(`./scheduleofclasses/terms/${term}.json`),
+    (key, value) =>
+      key === 'section' && value.endsWith('T00:00:00.000Z')
+        ? new Date(value)
+        : value
+  )
+  const courses = groupSections(scrapedCourses)
+  console.log(courses['CAT 125'])
+}
