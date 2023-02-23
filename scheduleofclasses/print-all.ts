@@ -10,7 +10,7 @@ import {
   red,
   yellow
 } from 'https://deno.land/std@0.177.0/fmt/colors.ts'
-import { DAYS, getCourseIterator } from './index.ts'
+import { DAYS, getCourseIterator } from './scrape.ts'
 
 const TERM = 'SP23'
 

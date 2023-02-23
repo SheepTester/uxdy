@@ -353,7 +353,7 @@ export async function getCourses (term: string): Promise<Course[]> {
 if (import.meta.main) {
   if (Deno.args.length !== 1) {
     console.error(
-      'Usage: deno run --allow-net scheduleofclasses/index.ts [term code] (start page) > courses.json'
+      'Usage: deno run --allow-net scheduleofclasses/scrape.ts [term code] (start page) > courses.json'
     )
     Deno.exit(64)
   }
