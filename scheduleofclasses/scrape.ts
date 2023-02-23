@@ -70,7 +70,7 @@ export type Section = {
    * Only defined if the section is selectable in WebReg (eg a discussion time
    * as opposed to its lecture)
    */
-  selectable?: {
+  selectable: {
     /**
      * A 6-digit number.
      */
@@ -85,21 +85,23 @@ export type Section = {
   /** eg LE, DI, LA */
   type: string
   /**
-   * Date if it's an exam (eg a final) that occurs on one day. Otherwise, it's a
-   * section code like A00 or 001.
+   * UTC Date if it's an exam (eg a final) that occurs on one day. Otherwise,
+   * it's a section code like A00 or 001.
    */
   section: string | Date
-  /** Undefined if TBA. */
-  time?: {
-    /** Array of numbers 0-6 representing days of the week. 0 is Sunday. */
+  /** Null if TBA. */
+  time: {
+    /**
+     * Sorted array of numbers 0-6 representing days of the week. 0 is Sunday.
+     */
     days: number[]
     /** In minutes since the start of the day. */
     start: number
     /** In minutes since the start of the day. */
     end: number
   } | null
-  /** Undefined if TBA. */
-  location?: {
+  /** Null if TBA. */
+  location: {
     building: string
     room: string
   } | null
