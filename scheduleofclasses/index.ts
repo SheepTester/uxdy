@@ -1,6 +1,8 @@
 import { DOMParser } from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts'
 
-export const DAYS = ['', 'M', 'Tu', 'W', 'Th', 'F']
+// S for Saturday, SP23 BIPN 100
+// Sun for Sunday, SP23 MGT 404
+export const DAYS = ['Sun', 'M', 'Tu', 'W', 'Th', 'F', 'S']
 
 function unwrap (expected?: Error): never {
   throw expected ?? new RangeError('Expected non-nullish value')
@@ -85,7 +87,7 @@ type Section = {
   section: string | Date
   /** Undefined if TBA. */
   time?: {
-    /** Array of numbers 1-7 representing days of the week. */
+    /** Array of numbers 0-6 representing days of the week. 0 is Sunday. */
     days: number[]
     /** In minutes since the start of the day. */
     start: number
@@ -111,6 +113,12 @@ type Course = {
   subject: string
   number: string
   title: string
+  /**
+   * A range of selectable units from `from` to `to` (inclusive) in increments
+   * of `inc`.
+   *
+   * NOTE: `inc` may be 0.5.
+   */
   units: { from: number; to: number; inc: number }
   sections: Section[]
 }
@@ -184,9 +192,11 @@ export async function * getCourseIterator (
         // ( 2 Units)
         // ( 2 /4 by 2 Units)
         // ( 1 -4 Units)
+        // ( 1 /5 by 0.5 Units) [SP23 BIOM 231]
+        // ( 2.5 Units) [SP23 LIAB 1C]
         const unitMatch =
           row.children[2].textContent.match(
-            /\(\s*(\d+)(?:\s*[/-](\d+)(?:\s+by\s+(\d+))?)?\s+Units\)/
+            /\(\s*(\d+|2\.5)(?:\s*[/-](\d+)(?:\s+by\s+(\d+|0\.5))?)?\s+Units\)/
           ) ??
           unwrap(
             new SyntaxError(
@@ -194,9 +204,14 @@ export async function * getCourseIterator (
                 row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
             )
           )
-        const from = parseNatural(unitMatch[1])
+        const from = unitMatch[1] === '2.5' ? 2.5 : parseNatural(unitMatch[1])
         const to = unitMatch[2] ? parseNatural(unitMatch[2]) : null
-        const inc = unitMatch[3] ? parseNatural(unitMatch[3]) : null
+        const inc =
+          unitMatch[3] === '0.5'
+            ? 0.5
+            : unitMatch[3]
+            ? parseNatural(unitMatch[3])
+            : null
         yield {
           subject,
           number,
@@ -213,6 +228,10 @@ export async function * getCourseIterator (
       if (row.className === 'sectxt' || row.className === 'nonenrtxt') {
         const tds = Array.from(row.children, td => td.textContent.trim())
         if (row.className === 'nonenrtxt') {
+          if (tds.length === 2) {
+            // SP23 BGGN 500 uses a .nonenrtxt for a note, so skip it
+            continue
+          }
           // .nonenrtxt is used mostly for exams, but it's also used for
           // sections with multiple lectures (eg SP23 BENG 100). It appears as
           // white rather than lavender and doesn't repeat the instructor name.
@@ -241,7 +260,7 @@ export async function * getCourseIterator (
           // sections)
           continue
         }
-        if (!/^(?:(?:[MWF]|Tu|Th)+|TBA)$/.test(days)) {
+        if (!/^(?:(?:Sun|T[uh]|[MWFS])+|TBA)$/.test(days)) {
           throw new SyntaxError(`Unexpected days format "${days}"`)
         }
         if (lastNumber === null) {
@@ -278,7 +297,7 @@ export async function * getCourseIterator (
           time:
             days !== 'TBA'
               ? {
-                  days: Array.from(days.matchAll(/[MWF]|Tu|Th/g), match =>
+                  days: Array.from(days.matchAll(/Sun|T[uh]|[MWFS]/g), match =>
                     DAYS.indexOf(match[0])
                   ).sort((a, b) => a - b),
                   ...parseTimeRange(time)

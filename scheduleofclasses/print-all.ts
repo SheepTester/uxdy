@@ -30,7 +30,7 @@ for await (const item of getCourseIterator(TERM)) {
     const units =
       item.units.from === item.units.to
         ? item.units.from
-        : item.units.inc > 1
+        : item.units.inc !== 1
         ? `${item.units.from}-${item.units.to} by ${item.units.inc}`
         : `${item.units.from}-${item.units.to}`
     console.log()
