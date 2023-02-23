@@ -1,11 +1,49 @@
 import { DOMParser } from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts'
 
-const TERM = 'SP23'
-
-const DAYS = ['', 'M', 'Tu', 'W', 'Th', 'F']
+export const DAYS = ['', 'M', 'Tu', 'W', 'Th', 'F']
 
 function unwrap (expected?: Error): never {
   throw expected ?? new RangeError('Expected non-nullish value')
+}
+
+/**
+ * Tries to parse the given string as a natural number (a non-negative integer).
+ * Throws an error if the string isn't a natural number.
+ */
+function parseNatural (string: string): number {
+  if (!/[0-9]+/.test(string)) {
+    throw new RangeError(`"${string}" is not a natural number`)
+  }
+  return +string
+}
+/**
+ * Parses a US-style date (eg 06/15/2023) as a UTC JS Date object. Used for
+ * parsing exam dates.
+ */
+function parseDate (usDate: string): Date {
+  const [month, date, year] = usDate.split('/').map(parseNatural)
+  const dateObj = new Date(Date.UTC(year, month - 1, date))
+  if (Number.isNaN(dateObj.getTime())) {
+    throw new RangeError(`"${usDate}" is not a valid US date.`)
+  }
+  return dateObj
+}
+/**
+ * Parses a time of the form "11:50a" or "9:59p," returning the number of
+ * minutes since midnight. Used by `parseTimeRange`.
+ */
+function parseTime (time: string): number {
+  const [hour, minute] = time.slice(0, -1).split(':').map(parseNatural)
+  const am = time[time.length - 1] === 'a'
+  return (hour === 12 ? (am ? 0 : 12) : am ? hour : hour + 12) * 60 + minute
+}
+/**
+ * Parses a time range of the form "7:00p-9:59p." The times are represented in
+ * minutes since midnight.
+ */
+function parseTimeRange (timeRange: string): { start: number; end: number } {
+  const [start, end] = timeRange.split('-')
+  return { start: parseTime(start), end: parseTime(end) }
 }
 
 const parser = new DOMParser()
@@ -81,158 +119,178 @@ type SubjectList = {
   code: string
   value: string
 }[]
-const subjects = await fetch(
-  'https://act.ucsd.edu/scheduleOfClasses/subject-list.json?selectedTerm=' +
-    TERM
-)
-  .then(r => r.json())
-  .then((json: SubjectList) => json.map(({ code }) => code))
 
-let subject = ''
-const courses: Course[] = []
-let course: Course | null = null
-let maxPage: number | null = null
-let page = 1
-while (maxPage === null || page <= maxPage) {
-  const document = await fetchHtml(getUrl(TERM, subjects, page))
-  const form =
-    document.getElementById('socDisplayCVO') ??
-    unwrap(new Error('Missing results wrapper'))
-  if (maxPage === null) {
-    const [, maxPageStr] =
-      form.children[6]
-        .querySelector('td[align="right"]')
-        ?.textContent.match(/\(\d+\sof\s(\d+)\)/) ??
-      unwrap(new Error('Missing total page count'))
-    maxPage = +maxPageStr
-  }
+export async function * getCourseIterator (
+  term: string
+): AsyncGenerator<Omit<Course, 'sections'> | Section> {
+  const subjects = await fetch(
+    'https://act.ucsd.edu/scheduleOfClasses/subject-list.json?selectedTerm=' +
+      term
+  )
+    .then(r => r.json())
+    .then((json: SubjectList) => json.map(({ code }) => code))
 
-  const rows =
-    form.querySelector('.tbrdr')?.children[1].children ??
-    unwrap(new Error('Missing results table'))
-  for (const row of rows) {
-    // Heading with subject code
-    const subjectHeading = row.querySelector('h2')
-    if (subjectHeading) {
-      const match = subjectHeading.textContent.match(/\(([A-Z]+)\s*\)/)
-      if (match && match[1] !== subject) {
-        subject = match[1]
-        course = null
-      }
-      continue
+  let subject: string | null = null
+  let lastNumber: string | null = null
+  let maxPage: number | null = null
+  let page = 1
+  while (maxPage === null || page <= maxPage) {
+    const document = await fetchHtml(getUrl(term, subjects, page))
+    const form =
+      document.getElementById('socDisplayCVO') ??
+      unwrap(new Error('Missing results wrapper'))
+    if (maxPage === null) {
+      const [, maxPageStr] =
+        form.children[6]
+          .querySelector('td[align="right"]')
+          ?.textContent.match(/\(\d+\sof\s(\d+)\)/) ??
+        unwrap(new Error('Missing total page count'))
+      maxPage = parseNatural(maxPageStr)
     }
 
-    // Row with course title and units
-    if (row.querySelector('.crsheader') && row.children.length === 4) {
-      const number = row.children[1].textContent
-      // ( 2 Units)
-      // ( 2 /4 by 2 Units)
-      // ( 1 -4 Units)
-      const unitMatch =
-        row.children[2].textContent.match(
-          /\(\s*(\d+)(?:\s*[/-](\d+)(?:\s+by\s+(\d+))?)?\s+Units\)/
-        ) ??
-        unwrap(
-          new SyntaxError(
-            'Missing "(N units)"\n' +
-              row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
+    const rows =
+      form.querySelector('.tbrdr')?.children[1].children ??
+      unwrap(new Error('Missing results table'))
+    for (const row of rows) {
+      // Heading with subject code
+      const subjectHeading = row.querySelector('h2')
+      if (subjectHeading) {
+        const match = subjectHeading.textContent.match(/\(([A-Z]+)\s*\)/)
+        if (match && match[1] !== subject) {
+          subject = match[1]
+          lastNumber = null
+        }
+        continue
+      }
+
+      // Row with course title and units
+      if (row.querySelector('.crsheader') && row.children.length === 4) {
+        if (!subject) {
+          throw new Error('No subject')
+        }
+        const number = row.children[1].textContent
+        if (number === lastNumber) {
+          continue
+        }
+        // ( 2 Units)
+        // ( 2 /4 by 2 Units)
+        // ( 1 -4 Units)
+        const unitMatch =
+          row.children[2].textContent.match(
+            /\(\s*(\d+)(?:\s*[/-](\d+)(?:\s+by\s+(\d+))?)?\s+Units\)/
+          ) ??
+          unwrap(
+            new SyntaxError(
+              'Missing "(N units)"\n' +
+                row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
+            )
           )
-        )
-      if (!course || number !== course.number) {
-        course = {
+        const from = parseNatural(unitMatch[1])
+        const to = unitMatch[2] ? parseNatural(unitMatch[2]) : null
+        const inc = unitMatch[3] ? parseNatural(unitMatch[3]) : null
+        yield {
           subject,
           number,
           title:
             row.querySelector('td[colspan="5"] .boldtxt')?.textContent.trim() ??
             unwrap(new Error(`No course title for ${subject} ${number}`)),
-          units: {
-            from: +unitMatch[1],
-            to: unitMatch[2] ? +unitMatch[2] : +unitMatch[1],
-            inc: unitMatch[3] ? +unitMatch[3] : 1
-          },
-          sections: []
+          units: { from, to: to ?? from, inc: inc ?? 1 }
         }
-        courses.push(course)
+        lastNumber = number
+        continue
       }
-      continue
-    }
 
-    // A section (meeting)
-    if (row.className === 'sectxt' || row.className === 'nonenrtxt') {
-      const isExam = row.className === 'nonenrtxt'
-      const tds = Array.from(row.children, td => td.textContent.trim())
-      if (isExam) {
-        tds.unshift('')
-      } else if (tds.length === 10) {
-        // Replace the colspan TBA with four TBA cells
-        tds.splice(6, 0, 'TBA', 'TBA', 'TBA')
-      }
-      const [
-        ,
-        ,
-        sectionId,
-        meetingType,
-        sectionCodeOrDate,
-        days,
-        time,
-        building,
-        room,
-        instructor,
-        seatsAvailable,
-        seatsLimit
-      ] = tds
-      if (!/^(?:(?:[MWF]|Tu|Th)+|TBA)$/.test(days)) {
-        throw new SyntaxError(`Unexpected days format "${days}"`)
-      }
-      const nameParts = instructor.split(', ')
-      if (
-        instructor !== '' &&
-        instructor !== 'Staff' &&
-        nameParts.length !== 2
-      ) {
-        throw new Error(`More than one instructor "${instructor}"`)
-      }
-      if (!course) {
-        throw new Error('Section does not belong to a course')
-      }
-      course.sections.push({
-        selectable:
-          sectionId !== ''
-            ? {
-                id: +sectionId,
-                available: seatsAvailable.includes('FULL')
-                  ? -(
-                      seatsAvailable.match(/\((\d+)\)/)?.[1] ??
-                      unwrap(
-                        new SyntaxError(
-                          `Cannot get waitlist count from ${seatsAvailable}`
+      // A section (meeting)
+      if (row.className === 'sectxt' || row.className === 'nonenrtxt') {
+        const isExam = row.className === 'nonenrtxt'
+        const tds = Array.from(row.children, td => td.textContent.trim())
+        if (isExam) {
+          tds.unshift('')
+        } else if (tds.length === 10) {
+          // Replace the colspan TBA with four TBA cells
+          tds.splice(6, 0, 'TBA', 'TBA', 'TBA')
+        }
+        const [
+          ,
+          ,
+          sectionId,
+          meetingType,
+          sectionCodeOrDate,
+          days,
+          time,
+          building,
+          room,
+          instructor,
+          seatsAvailable,
+          seatsLimit
+        ] = tds
+        if (days === 'Cancelled') {
+          // Ignore cancelled sections (NOTE: this may produce courses with no
+          // sections)
+          continue
+        }
+        if (!/^(?:(?:[MWF]|Tu|Th)+|TBA)$/.test(days)) {
+          throw new SyntaxError(`Unexpected days format "${days}"`)
+        }
+        const nameParts = instructor.split(', ')
+        if (
+          instructor !== '' &&
+          instructor !== 'Staff' &&
+          nameParts.length !== 2
+        ) {
+          throw new Error(`More than one instructor "${instructor}"`)
+        }
+        if (lastNumber === null) {
+          throw new Error('Section does not belong to a course')
+        }
+        yield {
+          selectable:
+            sectionId !== ''
+              ? {
+                  id: parseNatural(sectionId),
+                  available: seatsAvailable.includes('FULL')
+                    ? -(
+                        seatsAvailable.match(/\((\d+)\)/)?.[1] ??
+                        unwrap(
+                          new SyntaxError(
+                            `Cannot get waitlist count from ${seatsAvailable}`
+                          )
                         )
                       )
-                    )
-                  : +seatsAvailable,
-                capacity: +seatsLimit
-              }
-            : null,
-        type: meetingType,
-        section: isExam ? new Date(sectionCodeOrDate) : sectionCodeOrDate,
-        time:
-          days !== 'TBA'
-            ? {
-                days: Array.from(days.matchAll(/[MWF]|Tu|Th/g), match =>
-                  DAYS.indexOf(match[0])
-                ).sort((a, b) => a - b),
-                start: 0,
-                end: 0
-              }
-            : null,
-        location: building !== 'TBA' ? { building, room } : null,
-        instructor: nameParts.length === 2 ? [nameParts[1], nameParts[0]] : null
-      })
+                    : parseNatural(seatsAvailable),
+                  capacity: parseNatural(seatsLimit)
+                }
+              : null,
+          type: meetingType,
+          section: isExam ? parseDate(sectionCodeOrDate) : sectionCodeOrDate,
+          time:
+            days !== 'TBA'
+              ? {
+                  days: Array.from(days.matchAll(/[MWF]|Tu|Th/g), match =>
+                    DAYS.indexOf(match[0])
+                  ).sort((a, b) => a - b),
+                  ...parseTimeRange(time)
+                }
+              : null,
+          location: building !== 'TBA' ? { building, room } : null,
+          instructor:
+            nameParts.length === 2 ? [nameParts[1], nameParts[0]] : null
+        }
+      }
     }
-  }
 
-  page++
-  break
+    page++
+  }
 }
 
-console.log(courses)
+export async function getCourses (term: string): Promise<Course[]> {
+  const courses: Course[] = []
+  for await (const item of getCourseIterator(term)) {
+    if ('subject' in item) {
+      courses.push({ ...item, sections: [] })
+    } else {
+      courses[courses.length - 1].sections.push(item)
+    }
+  }
+  return courses
+}
