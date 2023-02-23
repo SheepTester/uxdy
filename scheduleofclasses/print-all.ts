@@ -25,7 +25,7 @@ function displayTime (minutes: number): string {
 }
 
 console.log(bold(TERM))
-for await (const item of getCourseIterator(TERM)) {
+for await (const { item } of getCourseIterator(TERM)) {
   if ('subject' in item) {
     const units =
       item.units.from === item.units.to

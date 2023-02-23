@@ -1,3 +1,4 @@
+import { writeAll } from 'https://deno.land/std@0.177.0/streams/write_all.ts'
 import { DOMParser } from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts'
 
 // S for Saturday, SP23 BIPN 100
@@ -61,7 +62,7 @@ const fetchHtml = (url: string) =>
     )
 
 /** Represents a scheduled meeting time for a course. */
-type Section = {
+export type Section = {
   /**
    * Only defined if the section is selectable in WebReg (eg a discussion time
    * as opposed to its lecture)
@@ -109,7 +110,7 @@ type Section = {
   instructors: [firstName: string, lastName: string][]
 }
 
-type Course = {
+export type Course = {
   subject: string
   number: string
   title: string
@@ -137,9 +138,16 @@ type SubjectList = {
   value: string
 }[]
 
+export type ResultRow = {
+  /** 1-indexed */
+  page: number
+  pages: number
+  item: Omit<Course, 'sections'> | Section
+}
 export async function * getCourseIterator (
-  term: string
-): AsyncGenerator<Omit<Course, 'sections'> | Section> {
+  term: string,
+  startPage: number = 1
+): AsyncGenerator<ResultRow> {
   const subjects = await fetch(
     'https://act.ucsd.edu/scheduleOfClasses/subject-list.json?selectedTerm=' +
       term
@@ -150,7 +158,7 @@ export async function * getCourseIterator (
   let subject: string | null = null
   let lastNumber: string | null = null
   let maxPage: number | null = null
-  let page = 1
+  let page = startPage
   while (maxPage === null || page <= maxPage) {
     const document = await fetchHtml(getUrl(term, subjects, page))
     const form =
@@ -213,12 +221,18 @@ export async function * getCourseIterator (
             ? parseNatural(unitMatch[3])
             : null
         yield {
-          subject,
-          number,
-          title:
-            row.querySelector('td[colspan="5"] .boldtxt')?.textContent.trim() ??
-            unwrap(new Error(`No course title for ${subject} ${number}`)),
-          units: { from, to: to ?? from, inc: inc ?? 1 }
+          page,
+          pages: maxPage,
+          item: {
+            subject,
+            number,
+            title:
+              row
+                .querySelector('td[colspan="5"] .boldtxt')
+                ?.textContent.trim() ??
+              unwrap(new Error(`No course title for ${subject} ${number}`)),
+            units: { from, to: to ?? from, inc: inc ?? 1 }
+          }
         }
         lastNumber = number
         continue
@@ -267,47 +281,55 @@ export async function * getCourseIterator (
           throw new Error('Section does not belong to a course')
         }
         yield {
-          selectable:
-            sectionId !== ''
-              ? {
-                  id: parseNatural(sectionId),
-                  available:
-                    seatsAvailable === 'Unlim'
-                      ? Infinity
-                      : seatsAvailable.includes('FULL')
-                      ? -(
-                          seatsAvailable.match(/\((\d+)\)/)?.[1] ??
-                          unwrap(
-                            new SyntaxError(
-                              `Cannot get waitlist count from ${seatsAvailable}`
+          page,
+          pages: maxPage,
+          item: {
+            selectable:
+              sectionId !== ''
+                ? {
+                    id: parseNatural(sectionId),
+                    available:
+                      seatsAvailable === 'Unlim'
+                        ? Infinity
+                        : seatsAvailable.includes('FULL')
+                        ? -(
+                            seatsAvailable.match(/\((\d+)\)/)?.[1] ??
+                            unwrap(
+                              new SyntaxError(
+                                `Cannot get waitlist count from ${seatsAvailable}`
+                              )
                             )
                           )
-                        )
-                      : parseNatural(seatsAvailable),
-                  capacity:
-                    seatsAvailable === 'Unlim'
-                      ? Infinity
-                      : parseNatural(seatsLimit)
-                }
-              : null,
-          type: meetingType,
-          section: sectionCodeOrDate.includes('/')
-            ? parseDate(sectionCodeOrDate)
-            : sectionCodeOrDate,
-          time:
-            days !== 'TBA'
-              ? {
-                  days: Array.from(days.matchAll(/Sun|T[uh]|[MWFS]/g), match =>
-                    DAYS.indexOf(match[0])
-                  ).sort((a, b) => a - b),
-                  ...parseTimeRange(time)
-                }
-              : null,
-          location: building !== 'TBA' ? { building, room } : null,
-          instructors: Array.from(row.children[9].querySelectorAll('a'), td => {
-            const [last, first] = td.textContent.trim().split(', ')
-            return [first, last]
-          })
+                        : parseNatural(seatsAvailable),
+                    capacity:
+                      seatsAvailable === 'Unlim'
+                        ? Infinity
+                        : parseNatural(seatsLimit)
+                  }
+                : null,
+            type: meetingType,
+            section: sectionCodeOrDate.includes('/')
+              ? parseDate(sectionCodeOrDate)
+              : sectionCodeOrDate,
+            time:
+              days !== 'TBA'
+                ? {
+                    days: Array.from(
+                      days.matchAll(/Sun|T[uh]|[MWFS]/g),
+                      match => DAYS.indexOf(match[0])
+                    ).sort((a, b) => a - b),
+                    ...parseTimeRange(time)
+                  }
+                : null,
+            location: building !== 'TBA' ? { building, room } : null,
+            instructors: Array.from(
+              row.children[9].querySelectorAll('a'),
+              td => {
+                const [last, first] = td.textContent.trim().split(', ')
+                return [first, last]
+              }
+            )
+          }
         }
       }
     }
@@ -318,7 +340,7 @@ export async function * getCourseIterator (
 
 export async function getCourses (term: string): Promise<Course[]> {
   const courses: Course[] = []
-  for await (const item of getCourseIterator(term)) {
+  for await (const { item } of getCourseIterator(term)) {
     if ('subject' in item) {
       courses.push({ ...item, sections: [] })
     } else {
@@ -326,4 +348,48 @@ export async function getCourses (term: string): Promise<Course[]> {
     }
   }
   return courses
+}
+
+if (import.meta.main) {
+  if (Deno.args.length !== 1) {
+    console.error(
+      'Usage: deno run --allow-net scheduleofclasses/index.ts [term code] (start page) > courses.json'
+    )
+    Deno.exit(64)
+  }
+
+  const encoder = new TextEncoder()
+  /** Prints to stderr */
+  async function print (content: string): Promise<void> {
+    await writeAll(Deno.stderr, encoder.encode(content))
+  }
+
+  const [term, start = '1'] = Deno.args
+  let first = start === '1'
+  let course: Course | null = null
+  for await (const { page, pages, item } of getCourseIterator(term, +start)) {
+    if ('subject' in item) {
+      if (course) {
+        console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
+        first = false
+      }
+      course = { ...item, sections: [] }
+      print(
+        `\r${item.subject} ${item.number}`.padEnd(60, ' ') +
+          `${page}/${pages}`.padStart(20, ' ')
+      )
+    } else if (course) {
+      course.sections.push(item)
+      print(
+        `\r${course.subject} ${course.number}: ${item.type} ${
+          item.section instanceof Date ? 'exam' : item.section
+        }`.padEnd(60, ' ') + `${page}/${pages}`.padStart(20, ' ')
+      )
+    } else {
+      console.error('?? Received section before course')
+    }
+  }
+  console.log(']')
+  print('\r'.padEnd(80, ' '))
+  print('\r')
 }
