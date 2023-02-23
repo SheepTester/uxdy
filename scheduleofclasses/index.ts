@@ -69,7 +69,10 @@ type Section = {
      * A 6-digit number.
      */
     id: number
-    /** If full, a negative number representing the length of the waitlist. */
+    /**
+     * If full, a negative number representing the length of the waitlist.
+     * If there is no limit, both `available` and `capacity` will be Infinity.
+     */
     available: number
     capacity: number
   } | null
@@ -94,8 +97,14 @@ type Section = {
     building: string
     room: string
   } | null
-  /** Undefined if staff. */
-  instructor?: [firstName: string, lastName: string] | null
+  /**
+   * Empty if taught by Staff.
+   *
+   * Note that for exams and courses with multiple lecture times,
+   * ScheduleOfClasses doesn't repeat the instructor, so this array will also be
+   * empty.
+   */
+  instructors: [firstName: string, lastName: string][]
 }
 
 type Course = {
@@ -202,10 +211,13 @@ export async function * getCourseIterator (
 
       // A section (meeting)
       if (row.className === 'sectxt' || row.className === 'nonenrtxt') {
-        const isExam = row.className === 'nonenrtxt'
         const tds = Array.from(row.children, td => td.textContent.trim())
-        if (isExam) {
+        if (row.className === 'nonenrtxt') {
+          // .nonenrtxt is used mostly for exams, but it's also used for
+          // sections with multiple lectures (eg SP23 BENG 100). It appears as
+          // white rather than lavender and doesn't repeat the instructor name.
           tds.unshift('')
+          tds.splice(9, 0, 'Staff')
         } else if (tds.length === 10) {
           // Replace the colspan TBA with four TBA cells
           tds.splice(6, 0, 'TBA', 'TBA', 'TBA')
@@ -220,7 +232,7 @@ export async function * getCourseIterator (
           time,
           building,
           room,
-          instructor,
+          _instructor,
           seatsAvailable,
           seatsLimit
         ] = tds
@@ -232,14 +244,6 @@ export async function * getCourseIterator (
         if (!/^(?:(?:[MWF]|Tu|Th)+|TBA)$/.test(days)) {
           throw new SyntaxError(`Unexpected days format "${days}"`)
         }
-        const nameParts = instructor.split(', ')
-        if (
-          instructor !== '' &&
-          instructor !== 'Staff' &&
-          nameParts.length !== 2
-        ) {
-          throw new Error(`More than one instructor "${instructor}"`)
-        }
         if (lastNumber === null) {
           throw new Error('Section does not belong to a course')
         }
@@ -248,21 +252,29 @@ export async function * getCourseIterator (
             sectionId !== ''
               ? {
                   id: parseNatural(sectionId),
-                  available: seatsAvailable.includes('FULL')
-                    ? -(
-                        seatsAvailable.match(/\((\d+)\)/)?.[1] ??
-                        unwrap(
-                          new SyntaxError(
-                            `Cannot get waitlist count from ${seatsAvailable}`
+                  available:
+                    seatsAvailable === 'Unlim'
+                      ? Infinity
+                      : seatsAvailable.includes('FULL')
+                      ? -(
+                          seatsAvailable.match(/\((\d+)\)/)?.[1] ??
+                          unwrap(
+                            new SyntaxError(
+                              `Cannot get waitlist count from ${seatsAvailable}`
+                            )
                           )
                         )
-                      )
-                    : parseNatural(seatsAvailable),
-                  capacity: parseNatural(seatsLimit)
+                      : parseNatural(seatsAvailable),
+                  capacity:
+                    seatsAvailable === 'Unlim'
+                      ? Infinity
+                      : parseNatural(seatsLimit)
                 }
               : null,
           type: meetingType,
-          section: isExam ? parseDate(sectionCodeOrDate) : sectionCodeOrDate,
+          section: sectionCodeOrDate.includes('/')
+            ? parseDate(sectionCodeOrDate)
+            : sectionCodeOrDate,
           time:
             days !== 'TBA'
               ? {
@@ -273,8 +285,10 @@ export async function * getCourseIterator (
                 }
               : null,
           location: building !== 'TBA' ? { building, room } : null,
-          instructor:
-            nameParts.length === 2 ? [nameParts[1], nameParts[0]] : null
+          instructors: Array.from(row.children[9].querySelectorAll('a'), td => {
+            const [last, first] = td.textContent.trim().split(', ')
+            return [first, last]
+          })
         }
       }
     }
