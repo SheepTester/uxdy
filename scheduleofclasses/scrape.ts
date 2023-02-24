@@ -416,3 +416,11 @@ if (import.meta.main) {
   print('\r'.padEnd(80, ' '))
   print('\r')
 }
+
+export async function readCourses (path: string | URL): Promise<Course[]> {
+  return JSON.parse(await Deno.readTextFile(path), (key, value) =>
+    key === 'section' && value.endsWith('T00:00:00.000Z')
+      ? new Date(value)
+      : value
+  )
+}

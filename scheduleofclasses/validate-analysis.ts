@@ -1,17 +1,13 @@
 // deno run --allow-read scheduleofclasses/validate-analysis.ts
 
 import { red } from 'https://deno.land/std@0.177.0/fmt/colors.ts'
-import { Course as ScrapedCourse } from './scrape.ts'
+import { readCourses } from './scrape.ts'
 
 const term = 'SP23'
 
-const courses: ScrapedCourse[] = JSON.parse(
-  await Deno.readTextFile(`./scheduleofclasses/terms/${term}.json`),
-  (key, value) =>
-    key === 'section' && value.endsWith('T00:00:00.000Z')
-      ? new Date(value)
-      : value
-)
+const courses = await readCourses(`./scheduleofclasses/terms/${term}.json`)
+
+const buildings: Record<string, number> = {}
 
 // NOTES
 // - SP23 BIPN 164: two instructors teach the lecture, but only one teaches the
@@ -31,11 +27,16 @@ for (const course of courses) {
       ref[letter] ??= instructors
       if (ref[letter] !== instructors) {
         console.log(
-          `${red('DIFF')}: ${course.subject} ${course.number} ${
+          `${red('diff instructors')}: ${course.subject} ${course.number} ${
             section.section
           } is taught by ${instructors}, not ${ref[letter]}.`
         )
       }
     }
+    if (section.location?.building) {
+      buildings[section.location.building] ??= 0
+      buildings[section.location.building]++
+    }
   }
 }
+// console.log(buildings)

@@ -38,6 +38,7 @@ export function InfoPanel ({
             <option value='s322'>Special 2022</option>
             <option value='fa22'>Fall 2022</option>
             <option value='wi23'>Winter 2023</option>
+            <option value='sp23'>Spring 2023</option>
           </select>
         </span>
       </h1>

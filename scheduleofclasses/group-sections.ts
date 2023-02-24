@@ -1,5 +1,5 @@
 import { assert } from 'https://deno.land/std@0.178.0/testing/asserts.ts'
-import { Course as ScrapedCourse } from './scrape.ts'
+import { Course as ScrapedCourse, readCourses } from './scrape.ts'
 
 export type Meeting = {
   type: string
@@ -110,15 +110,11 @@ export function groupSections (
   return courses
 }
 
-if (import.meta.url) {
+if (import.meta.main) {
   const term = 'SP23'
 
-  const scrapedCourses: ScrapedCourse[] = JSON.parse(
-    await Deno.readTextFile(`./scheduleofclasses/terms/${term}.json`),
-    (key, value) =>
-      key === 'section' && value.endsWith('T00:00:00.000Z')
-        ? new Date(value)
-        : value
+  const scrapedCourses: ScrapedCourse[] = await readCourses(
+    `./scheduleofclasses/terms/${term}.json`
   )
   const courses = groupSections(scrapedCourses)
   console.log(courses['CAT 125'])
