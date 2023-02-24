@@ -1,3 +1,5 @@
+// deno run --allow-net scheduleofclasses/scrape.ts SP23 > scheduleofclasses/terms/SP23.json
+
 import { writeAll } from 'https://deno.land/std@0.177.0/streams/write_all.ts'
 import {
   DOMParser,
@@ -56,7 +58,9 @@ const parser = new DOMParser()
 const fetchHtml = (url: string) =>
   fetch(url)
     .then(r =>
-      r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status} error`))
+      r.ok
+        ? r.text()
+        : Promise.reject(new Error(`HTTP ${r.status} error: ${url}`))
     )
     .then(
       html =>
@@ -149,6 +153,8 @@ export type ResultRow = {
   pages: number
   item: Omit<Course, 'sections'> | Section
 }
+/** Maximum requests to be made at once. */
+const MAX_CONC_REQS = 10
 export async function * getCourseIterator (
   term: string,
   startPage: number = 1
@@ -160,23 +166,40 @@ export async function * getCourseIterator (
     .then(r => r.json())
     .then((json: SubjectList) => json.map(({ code }) => code))
 
+  const fetchPage = async (page: number) => {
+    const document = await fetchHtml(getUrl(term, subjects, page))
+    return {
+      page,
+      form:
+        document.getElementById('socDisplayCVO') ??
+        unwrap(new Error('Missing results wrapper'))
+    }
+  }
+  const responseQueue = [fetchPage(startPage)]
+  const pageCount = parseNatural(
+    (await responseQueue[0]).form.children[6]
+      .querySelector('td[align="right"]')
+      ?.textContent.match(/\(\d+\sof\s(\d+)\)/)?.[1] ??
+      unwrap(new Error('Missing total page count'))
+  )
+  let fetchedPage = startPage
+  const fetchNext = () => {
+    fetchedPage++
+    if (fetchedPage > pageCount) {
+      return
+    }
+    const promise = fetchPage(fetchedPage)
+    responseQueue.push(promise)
+    promise.then(fetchNext)
+  }
+  for (let i = 0; i < MAX_CONC_REQS; i++) {
+    fetchNext()
+  }
+
   let subject: string | null = null
   let lastNumber: string | null = null
-  let maxPage: number | null = null
-  let page = startPage
-  while (maxPage === null || page <= maxPage) {
-    const document = await fetchHtml(getUrl(term, subjects, page))
-    const form =
-      document.getElementById('socDisplayCVO') ??
-      unwrap(new Error('Missing results wrapper'))
-    if (maxPage === null) {
-      const [, maxPageStr] =
-        form.children[6]
-          .querySelector('td[align="right"]')
-          ?.textContent.match(/\(\d+\sof\s(\d+)\)/) ??
-        unwrap(new Error('Missing total page count'))
-      maxPage = parseNatural(maxPageStr)
-    }
+  while (responseQueue.length > 0) {
+    const { page, form } = await responseQueue.shift()!
 
     const rows =
       form.querySelector('.tbrdr')?.children[1].children ??
@@ -224,7 +247,7 @@ export async function * getCourseIterator (
           : null
         yield {
           page,
-          pages: maxPage,
+          pages: pageCount,
           item: {
             subject,
             number,
@@ -287,7 +310,7 @@ export async function * getCourseIterator (
         }
         yield {
           page,
-          pages: maxPage,
+          pages: pageCount,
           item: {
             selectable:
               sectionId !== ''
@@ -335,8 +358,6 @@ export async function * getCourseIterator (
         }
       }
     }
-
-    page++
   }
 }
 
@@ -353,7 +374,7 @@ export async function getCourses (term: string): Promise<Course[]> {
 }
 
 if (import.meta.main) {
-  if (Deno.args.length !== 1) {
+  if (Deno.args.length < 1 || Deno.args.length > 2) {
     console.error(
       'Usage: deno run --allow-net scheduleofclasses/scrape.ts [term code] (start page) > courses.json'
     )
