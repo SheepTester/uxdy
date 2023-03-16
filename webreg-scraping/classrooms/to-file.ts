@@ -3,8 +3,7 @@
 import { writeAll } from 'https://deno.land/std@0.126.0/streams/conversion.ts'
 import {
   groupSections,
-  Meeting,
-  Section
+  Meeting
 } from '../../scheduleofclasses/group-sections.ts'
 import { readCourses } from '../../scheduleofclasses/scrape.ts'
 
@@ -18,54 +17,76 @@ if (!Deno.args[0]) {
   Deno.exit(1)
 }
 
-const printTime = (minutes: number) =>
-  Math.floor(minutes / 60)
-    .toString()
-    .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
+const printTime = (minutes?: number) =>
+  print(
+    minutes === undefined
+      ? 'TBA '
+      : Math.floor(minutes / 60)
+          .toString()
+          .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
+  )
+async function printMeeting (meeting: Meeting, days = true): Promise<void> {
+  await print(meeting.type)
+  await print((meeting.location?.building ?? 'TBA').padEnd(5, ' '))
+  // Remove hyphens from Mandeville basement room numbers because they're
+  // inconsistent
+  await print(
+    (meeting.location?.room.replace(/^B-/, 'B') ?? 'TBA').padEnd(5, ' ')
+  )
+  if (days) {
+    await print((meeting.time?.days.join('') ?? 'TBA').padEnd(5, ' '))
+  }
+  await printTime(meeting.time?.start)
+  await printTime(meeting.time?.end)
+}
+await print('V2\n')
 for await (const course of Object.values(
   groupSections(
     await readCourses(`../scheduleofclasses/terms/${Deno.args[0]}.json`)
   )
 )) {
-  let coursePrinted = false
+  const [subject, number] = course.code.split(' ')
+  await print(subject.padEnd(4, ' '))
+  await print(number.padEnd(5, ' '))
+  await print(course.title)
+  await print('\n')
   for (const group of course.groups) {
-    const groupCapacity = group.sections.reduce(
-      (cum, curr) => cum + curr.capacity,
-      0
+    await print('\t')
+    await print(
+      String((+(group.meetings.length > 0) << 1) | +(group.exams.length > 0))
     )
-    const meetings: (Section | Meeting)[] = [
-      ...group.sections,
-      ...group.meetings
-    ]
-    for (const meeting of meetings) {
-      if (
-        meeting.time &&
-        meeting.location &&
-        meeting.location.building !== 'RCLAS'
-      ) {
-        if (!coursePrinted) {
-          const [subject, number] = course.code.split(' ')
-          await print(subject.padEnd(4, ' '))
-          await print(number.padEnd(5, ' '))
-          coursePrinted = true
-        }
-
-        const capacity =
-          'capacity' in meeting ? meeting.capacity : groupCapacity
-        await print(
-          capacity === Infinity ? '9999' : capacity.toString().padStart(4, '0')
-        )
-        await print(meeting.location.building.padEnd(5, ' '))
-        // Remove hyphens from Mandeville basement room numbers because they're
-        // inconsistent
-        await print(meeting.location.room.replace(/^B-/, 'B').padEnd(5, ' '))
-        await print(meeting.time.days.join('').padEnd(5, ' '))
-        await print(printTime(meeting.time.start))
-        await print(printTime(meeting.time.end))
-      }
-    }
-  }
-  if (coursePrinted) {
+    await print(group.code)
+    await print(group.instructors.map(names => names.join(',')).join('\t'))
     await print('\n')
+    await print('\t')
+    for (const meeting of group.sections) {
+      await print(meeting.code)
+      await print(
+        meeting.capacity === Infinity
+          ? '9999'
+          : meeting.capacity.toString().padStart(4, '0')
+      )
+      await printMeeting(meeting)
+    }
+    await print('\n')
+    if (group.meetings.length > 0) {
+      await print('\t')
+      for (const meeting of group.meetings) {
+        await printMeeting(meeting)
+      }
+      await print('\n')
+    }
+    if (group.exams.length > 0) {
+      await print('\t')
+      for (const meeting of group.exams) {
+        await printMeeting(meeting, false)
+        await print(meeting.date.getUTCFullYear().toString().padStart(4, '0'))
+        await print(
+          (meeting.date.getUTCMonth() + 1).toString().padStart(2, '0')
+        )
+        await print(meeting.date.getUTCDate().toString().padStart(2, '0'))
+      }
+      await print('\n')
+    }
   }
 }

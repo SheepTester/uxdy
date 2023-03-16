@@ -275,6 +275,7 @@ export async function * getCourseIterator (
           // .nonenrtxt is used mostly for exams, but it's also used for
           // sections with multiple lectures (eg SP23 BENG 100). It appears as
           // white rather than lavender and doesn't repeat the instructor name.
+          // The location may be different too.
           tds.unshift('')
           tds.splice(9, 0, 'Staff')
           instructor = row.children[8]
@@ -421,6 +422,8 @@ export async function readCourses (path: string | URL): Promise<Course[]> {
   return JSON.parse(await Deno.readTextFile(path), (key, value) =>
     key === 'section' && value.endsWith('T00:00:00.000Z')
       ? new Date(value)
+      : key === 'capacity' && value === null
+      ? Infinity
       : value
   )
 }

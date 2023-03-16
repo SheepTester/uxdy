@@ -1,19 +1,20 @@
 import { assert } from 'https://deno.land/std@0.178.0/testing/asserts.ts'
 import { Course as ScrapedCourse, readCourses } from './scrape.ts'
 
+export type MeetingTime = {
+  /**
+   * Sorted array of numbers 0-6 representing days of the week. 0 is Sunday.
+   */
+  days: number[]
+  /** In minutes since the start of the day. */
+  start: number
+  /** In minutes since the start of the day. */
+  end: number
+}
 export type Meeting = {
   type: string
   /** Null if TBA. */
-  time: {
-    /**
-     * Sorted array of numbers 0-6 representing days of the week. 0 is Sunday.
-     */
-    days: number[]
-    /** In minutes since the start of the day. */
-    start: number
-    /** In minutes since the start of the day. */
-    end: number
-  } | null
+  time: MeetingTime | null
   /** Null if TBA. */
   location: {
     building: string
