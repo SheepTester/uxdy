@@ -1,13 +1,13 @@
-/** @jsxImportSource https://esm.sh/preact@10.6.4 */
+/** @jsxImportSource preact */
 /// <reference no-default-lib="true"/>
 /// <reference lib="dom" />
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 
-import { ComponentChildren, render } from 'https://esm.sh/preact@10.6.4'
-import { useEffect, useState } from 'https://esm.sh/preact@10.6.4/hooks'
+import { ComponentChildren, render } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
 import { Course, Group, Scraper } from '../scrape.ts'
-import { Period } from '../util/time.ts'
+import { Period } from '../../util/time.ts'
 
 const params = new URL(window.location.href).searchParams
 const term = params.get('p1')

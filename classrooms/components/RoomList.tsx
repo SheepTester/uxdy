@@ -1,10 +1,9 @@
-/** @jsxImportSource https://esm.sh/preact@10.6.6 */
+/** @jsxImportSource preact */
 /// <reference no-default-lib="true"/>
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useState } from 'https://esm.sh/preact@10.6.6/hooks'
-import { meetingTypes } from '../../meeting-types.ts'
+import { useState } from 'preact/hooks'
 import { colleges } from '../building-locations.ts'
 import { Building, compareRoomNums } from '../from-file.ts'
 import { Now, used } from '../now.ts'

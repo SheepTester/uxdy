@@ -49,9 +49,9 @@ from WebReg (by pasting some JS in the console, probably).
 [Live](https://sheeptester.github.io/hello-world/bookmarklet.html?../uxdy/bookmarklet/open-classes)
 
 ```sh
-# In the base directory
+# In the repo root directory
 # Build
-$ ./webreg-scraping/bookmarklet/build.sh
+$ deno task bookmarklet:build
 # Deploy built version
 $ ./scripts/deploy.sh webreg-scraping/bookmarklet/dist/ bookmarklet
 ```
@@ -78,18 +78,15 @@ import(
 [Live](https://sheeptester.github.io/uxdy/classrooms/)
 
 ```sh
-# In webreg-scraping/
-# To create cache
-$ rm cache-sp22/*.json # or mkdir cache-sp22
-$ deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx> SP22
+# In the repo root directory
 # Build
-$ deno run --allow-read classrooms/to-file.ts ./cache-wi22/ > classrooms/dist/classrooms-wi22.txt
-$ deno run --allow-read classrooms/to-file.ts ./cache-sp22/ > classrooms/dist/classrooms-sp22.txt
-$ ./classrooms/build.sh
+$ deno run --allow-net scheduleofclasses/scrape.ts WI23 > scheduleofclasses/terms/WI23.json
+$ deno run --allow-read classrooms/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
+$ deno task classrooms:build
 # Develop
-$ ./classrooms/dev.sh
-# Deploy built version (run build.sh first to minify)
-$ ../scripts/deploy.sh webreg-scraping/classrooms/dist/ classrooms
+$ deno task classrooms:watch
+# Deploy built version (run classrooms:build first to minify)
+$ ./scripts/deploy.sh ./classrooms/dist/ classrooms
 ```
 
 Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 16, x: -3 to 3, y: -3 to 3)

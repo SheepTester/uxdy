@@ -1,6 +1,6 @@
 // deno run --allow-read scheduleofclasses/validate-analysis.ts
 
-import { red } from 'https://deno.land/std@0.177.0/fmt/colors.ts'
+import { red } from 'std/fmt/colors.ts'
 import { readCourses } from './scrape.ts'
 
 const term = 'SP23'

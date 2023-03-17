@@ -1,11 +1,8 @@
 // deno run --allow-read classrooms/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
 
-import { writeAll } from 'https://deno.land/std@0.126.0/streams/conversion.ts'
-import {
-  groupSections,
-  Meeting
-} from '../../scheduleofclasses/group-sections.ts'
-import { readCourses } from '../../scheduleofclasses/scrape.ts'
+import { writeAll } from 'std/streams/write_all.ts'
+import { groupSections, Meeting } from '../scheduleofclasses/group-sections.ts'
+import { readCourses } from '../scheduleofclasses/scrape.ts'
 
 const encoder = new TextEncoder()
 async function print (content: string) {

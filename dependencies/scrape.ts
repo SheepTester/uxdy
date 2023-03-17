@@ -1,12 +1,8 @@
 // deno run --allow-all dependencies/scrape.ts
 
-import { ensureDir } from 'https://deno.land/std@0.119.0/fs/ensure_dir.ts'
-import { dirname, fromFileUrl } from 'https://deno.land/std@0.119.0/path/mod.ts'
-import {
-  DOMParser,
-  Element,
-  HTMLDocument
-} from 'https://deno.land/x/deno_dom@v0.1.19-alpha/deno-dom-wasm.ts'
+import { ensureDir } from 'std/fs/ensure_dir.ts'
+import { dirname, fromFileUrl } from 'std/path/mod.ts'
+import { DOMParser, Element, HTMLDocument } from 'deno_dom/deno-dom-wasm.ts'
 import { stringify } from './util.ts'
 
 const HOST = 'https://catalog.ucsd.edu/'

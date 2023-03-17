@@ -1,12 +1,12 @@
-/** @jsxImportSource https://esm.sh/preact@10.6.6 */
+/** @jsxImportSource preact */
 /// <reference no-default-lib="true"/>
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { render } from 'https://esm.sh/preact@10.6.6'
-import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
-import { Day } from '../../terms/day.ts'
-import { getTerm, termCode } from '../../terms/index.ts'
+import { render } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
+import { Day } from '../terms/day.ts'
+import { getTerm, termCode } from '../terms/index.ts'
 import {
   northeast,
   southwest,

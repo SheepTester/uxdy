@@ -1,10 +1,10 @@
 import {
-  Course,
-  Exam,
   Meeting,
+  Exam,
   MeetingTime,
+  Course,
   Section
-} from '../../scheduleofclasses/group-sections.ts'
+} from '../scheduleofclasses/group-sections.ts'
 import { Time } from '../util/time.ts'
 
 class StringTaker {

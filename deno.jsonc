@@ -1,0 +1,13 @@
+{
+  "imports": {
+    "deno_dom/": "https://deno.land/x/deno_dom@v0.1.36-alpha/",
+    "preact": "https://esm.sh/preact@10.13.1",
+    "preact/": "https://esm.sh/preact@10.13.1/",
+    "std/": "https://deno.land/std@0.180.0/"
+  },
+  "tasks": {
+    "bookmarklet:build": "deno bundle webreg-scraping/bookmarklet/index.tsx | terser --module > webreg-scraping/bookmarklet/dist/bookmarklet.min.js",
+    "classrooms:build": "deno bundle classrooms/index.tsx | terser --module > classrooms/dist/index.min.js",
+    "classrooms:watch": "http-server dist/ -c-1 -s & deno bundle --watch classrooms/index.tsx classrooms/dist/index.min.js"
+  }
+}

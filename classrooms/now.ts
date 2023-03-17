@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'https://esm.sh/preact@10.6.6/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { Time } from '../util/time.ts'
 import { RoomMeeting } from './from-file.ts'
 

@@ -1,7 +1,7 @@
 // deno run --allow-read classrooms.ts
 
 import { Scraper } from './scrape.ts'
-import { displayProgress } from './util/display-progress.ts'
+import { displayProgress } from '../util/display-progress.ts'
 
 export async function main (quarter: string, cachePath: string) {
   const getter = new Scraper(quarter, { cachePath })

@@ -1,4 +1,4 @@
-import { assertEquals } from 'https://deno.land/std@0.154.0/testing/asserts.ts'
+import { assertEquals } from 'std/testing/asserts.ts'
 import { Day } from './day.ts'
 import { getTerm, getTermDays } from './index.ts'
 import { data } from './test-data.ts'

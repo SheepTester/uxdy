@@ -1,8 +1,8 @@
 // deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx> <quarter>
 
-import { join as joinPath } from 'https://deno.land/std@0.125.0/path/mod.ts'
+import { join as joinPath } from 'std/path/mod.ts'
 import { ExamCodes, InstructionCodes } from './meeting-types.ts'
-import { Period, Time } from './util/time.ts'
+import { Period, Time } from '../util/time.ts'
 
 export type RawSearchLoadSubjectResult = {
   LONG_DESC: string

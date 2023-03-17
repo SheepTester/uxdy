@@ -1,4 +1,4 @@
-/** @jsxImportSource https://esm.sh/preact@10.6.6 */
+/** @jsxImportSource preact */
 
 /** The Material Design Arrow Back icon. */
 export function BackIcon () {

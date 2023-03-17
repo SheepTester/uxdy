@@ -1,10 +1,7 @@
 // deno run --allow-net scheduleofclasses/scrape.ts SP23 > scheduleofclasses/terms/SP23.json
 
-import { writeAll } from 'https://deno.land/std@0.177.0/streams/write_all.ts'
-import {
-  DOMParser,
-  Element
-} from 'https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts'
+import { writeAll } from 'std/streams/write_all.ts'
+import { DOMParser, Element } from 'deno_dom/deno-dom-wasm.ts'
 
 // S for Saturday, SP23 BIPN 100
 // Sun for Sunday, SP23 MGT 404

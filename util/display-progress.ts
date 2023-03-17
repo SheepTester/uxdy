@@ -1,4 +1,4 @@
-import { writeAll } from 'https://deno.land/std@0.125.0/streams/conversion.ts'
+import { writeAll } from 'std/streams/conversion.ts'
 
 const LINE_LENGTH = 80
 const BAR_LENGTH = 50

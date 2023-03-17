@@ -8,7 +8,7 @@ import {
   assertEquals,
   assertMatch,
   assertStringIncludes
-} from 'https://deno.land/std@0.125.0/testing/asserts.ts'
+} from 'std/testing/asserts.ts'
 import { exams, instructionTypes } from './meeting-types.ts'
 
 /**

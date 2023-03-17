@@ -1,4 +1,4 @@
-import { assert } from 'https://deno.land/std@0.178.0/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { Course as ScrapedCourse, readCourses } from './scrape.ts'
 
 export type MeetingTime<Time = number> = {
