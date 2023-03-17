@@ -33,3 +33,8 @@ export const instructionTypes = {
   OT: 'Other Sessions'
 }
 export type InstructionCodes = keyof typeof instructionTypes
+
+export const meetingTypes: Record<string, string> = {
+  ...exams,
+  ...instructionTypes
+}

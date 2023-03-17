@@ -4,6 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'https://esm.sh/preact@10.6.6/hooks'
+import { meetingTypes } from '../../meeting-types.ts'
 import { RoomMeeting } from '../from-file.ts'
 import { Now } from '../now.ts'
 
@@ -69,8 +70,11 @@ export function Schedule ({ now, meetings }: BuildingProps) {
                   }}
                 >
                   <div class='meeting-name'>
-                    {meeting.course}
-                    {meeting.capacity !== null && ` (${meeting.capacity})`}
+                    {meeting.course} (
+                    <abbr title={meetingTypes[meeting.type]}>
+                      {meeting.type}
+                    </abbr>
+                    )
                   </div>
                   <div class='meeting-time'>
                     {meeting.start.toString()}–{meeting.end.toString()}

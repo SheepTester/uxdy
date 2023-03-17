@@ -4,6 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'https://esm.sh/preact@10.6.6/hooks'
+import { meetingTypes } from '../../meeting-types.ts'
 import { colleges } from '../building-locations.ts'
 import { Building, compareRoomNums } from '../from-file.ts'
 import { Now, used } from '../now.ts'
@@ -64,15 +65,24 @@ export function RoomList ({
                   </div>
                   {now && (
                     <div className='current-meeting'>
-                      {activeMeeting
-                        ? soon
-                          ? `${activeMeeting.course} soon`
-                          : `${activeMeeting.course}${
-                              activeMeeting.capacity !== null
-                                ? ` (${activeMeeting.capacity})`
-                                : ''
-                            }`
-                        : 'Not in use'}
+                      {activeMeeting ? (
+                        <>
+                          {activeMeeting.course}{' '}
+                          {soon ? (
+                            'soon'
+                          ) : (
+                            <>
+                              (
+                              <abbr title={meetingTypes[activeMeeting.type]}>
+                                {activeMeeting.type}
+                              </abbr>
+                              )
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        'Not in use'
+                      )}
                     </div>
                   )}
                 </button>
