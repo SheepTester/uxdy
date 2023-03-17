@@ -39,7 +39,7 @@ async function printMeeting (meeting: Meeting, days = true): Promise<void> {
 await print('V2\n')
 for await (const course of Object.values(
   groupSections(
-    await readCourses(`../scheduleofclasses/terms/${Deno.args[0]}.json`)
+    await readCourses(`./scheduleofclasses/terms/${Deno.args[0]}.json`)
   )
 )) {
   const [subject, number] = course.code.split(' ')
@@ -76,12 +76,12 @@ for await (const course of Object.values(
     if (group.exams.length > 0) {
       await print('\t')
       for (const meeting of group.exams) {
-        await printMeeting(meeting, false)
         await print(meeting.date.getUTCFullYear().toString().padStart(4, '0'))
         await print(
           (meeting.date.getUTCMonth() + 1).toString().padStart(2, '0')
         )
         await print(meeting.date.getUTCDate().toString().padStart(2, '0'))
+        await printMeeting(meeting, false)
       }
       await print('\n')
     }

@@ -4,6 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
+import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
 import { colleges } from '../building-locations.ts'
 import { Building, compareRoomNums } from '../from-file.ts'
 import { Now, used } from '../now.ts'

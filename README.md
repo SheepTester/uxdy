@@ -79,17 +79,17 @@ import(
 
 ```sh
 # In the repo root directory
-# Build
 $ deno run --allow-net scheduleofclasses/scrape.ts WI23 > scheduleofclasses/terms/WI23.json
 $ deno run --allow-read classrooms/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
-$ deno task classrooms:build
-# Develop
+# Develop (does not minify)
 $ deno task classrooms:watch
+# Build
+$ deno task classrooms:build
 # Deploy built version (run classrooms:build first to minify)
 $ ./scripts/deploy.sh ./classrooms/dist/ classrooms
 ```
 
-Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 16, x: -3 to 3, y: -3 to 3)
+Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 17, x: -6 to 5, y: -6 to 4)
 
 Features to add:
 

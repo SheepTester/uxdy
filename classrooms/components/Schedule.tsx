@@ -20,14 +20,23 @@ type BuildingProps = {
 export function Schedule ({ now, meetings }: BuildingProps) {
   const [day, setDay] = useState<number | null>(null)
 
-  const hasWeekend = meetings.some(
+  const currentMeetings = meetings.filter(meeting => !('date' in meeting))
+  if (currentMeetings.length === 0) {
+    return (
+      <div class='schedule finals-only'>
+        <p>This room is only used during finals.</p>
+      </div>
+    )
+  }
+
+  const hasWeekend = currentMeetings.some(
     meeting => meeting.days.includes(6) || meeting.days.includes(7)
   )
-  const earliest = meetings.reduce(
+  const earliest = currentMeetings.reduce(
     (acc, curr) => Math.min(acc, +curr.start),
     Infinity
   )
-  const latest = meetings.reduce(
+  const latest = currentMeetings.reduce(
     (acc, curr) => Math.max(acc, +curr.end),
     -Infinity
   )
@@ -53,8 +62,10 @@ export function Schedule ({ now, meetings }: BuildingProps) {
             key={day}
             style={{ height: `${(latest - earliest) / SCALE}px` }}
           >
-            {meetings
-              .filter(meeting => meeting.days.includes(day))
+            {currentMeetings
+              .filter(
+                meeting => meeting.days.includes(day) && !('date' in meeting)
+              )
               .map(meeting => (
                 <div
                   class={`meeting ${

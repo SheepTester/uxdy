@@ -159,15 +159,15 @@ export const colleges = {
 }
 
 // Tile bounds used to generate the map image
-const TILE_LEFT = -3
-const TILE_RIGHT = 3
-const TILE_TOP = -3
+const TILE_LEFT = -6
+const TILE_RIGHT = 5
+const TILE_TOP = 4
 /** maps.ucsd.edu zoom level used for the map image. */
-export const ZOOM = 16
+export const ZOOM = 17
 /** Size of each map tile */
 const TILE_SIZE = 256
 /** Zoom into the map on this web page */
-export const MAP_ZOOM = 3
+export const MAP_ZOOM = 1.5
 const SCALE = 2 ** (7 + ZOOM) * MAP_ZOOM
 export function latLongToPixel ([latitude, longitude]: Location): {
   x: number
@@ -207,7 +207,7 @@ export const mapPosition = {
     Math.floor(center.x / MAP_TILE_SIZE + TILE_LEFT) * MAP_TILE_SIZE -
     (southwest.x - PADDING),
   y:
-    Math.floor(center.y / MAP_TILE_SIZE + TILE_TOP) * MAP_TILE_SIZE -
+    Math.floor(center.y / MAP_TILE_SIZE - TILE_TOP) * MAP_TILE_SIZE -
     (northeast.y - PADDING),
   width: (TILE_RIGHT - TILE_LEFT + 1) * MAP_TILE_SIZE
 }

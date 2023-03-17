@@ -41,9 +41,9 @@ class StringTaker {
     return +time.slice(0, 2) * 60 + +time.slice(2)
   }
 
-  takeMeeting (time = true): Meeting {
+  takeMeeting (day: number | null = null): Meeting {
     const building = this.take(5)
-    const days = time ? this.take(5) : ''
+    const days = day === null ? this.take(5) : String(day)
     return {
       type: this.take(2),
       location:
@@ -93,11 +93,12 @@ export function coursesFromFile (file: string): Course[] {
         }
       } else if (nextState === 'exams') {
         while (taker.hasMore()) {
+          const date = new Date(
+            Date.UTC(taker.takeInt(4), taker.takeInt(2) - 1, taker.takeInt(2))
+          )
           group.exams.push({
-            ...taker.takeMeeting(false),
-            date: new Date(
-              Date.UTC(taker.takeInt(4), taker.takeInt(2) - 1, taker.takeInt(2))
-            )
+            date,
+            ...taker.takeMeeting(date.getUTCDay())
           })
         }
       } else {
@@ -146,7 +147,12 @@ export function compareRoomNums (a: string, b: string): number {
   }
 }
 
-export type RoomMeeting = Omit<Meeting | Exam, 'time' | 'location'> &
+// Omit<Meeting | Exam, 'time' | 'location'> does not work with type narrowing
+// with `'date' in meeting`
+export type RoomMeeting = (
+  | Omit<Meeting, 'time' | 'location'>
+  | Omit<Exam, 'time' | 'location'>
+) &
   MeetingTime<Time> & {
     capacity: number
     course: string
@@ -203,7 +209,6 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
       }
     }
   }
-  console.log(buildings)
   return Object.values(buildings)
 }
 
