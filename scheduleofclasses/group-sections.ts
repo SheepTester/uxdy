@@ -1,15 +1,15 @@
 import { assert } from 'https://deno.land/std@0.178.0/testing/asserts.ts'
 import { Course as ScrapedCourse, readCourses } from './scrape.ts'
 
-export type MeetingTime = {
+export type MeetingTime<Time = number> = {
   /**
    * Sorted array of numbers 0-6 representing days of the week. 0 is Sunday.
    */
   days: number[]
   /** In minutes since the start of the day. */
-  start: number
+  start: Time
   /** In minutes since the start of the day. */
-  end: number
+  end: Time
 }
 export type Meeting = {
   type: string

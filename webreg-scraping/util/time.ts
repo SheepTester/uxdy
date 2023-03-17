@@ -15,7 +15,7 @@ export class Time {
   /**
    * Displays the time in a 12-hour format Americans are familiar with.
    */
-  toString () {
+  toString (): string {
     return `${((this.hour + 11) % 12) + 1}:${this.minute
       .toString()
       .padStart(2, '0')} ${this.hour < 12 ? 'a' : 'p'}m`
@@ -25,8 +25,13 @@ export class Time {
    * Returns the minutes since 00:00. This allows `Time` to be used with JS's
    * comparison operators.
    */
-  valueOf () {
+  valueOf (): number {
     return this.hour * 60 + this.minute
+  }
+
+  /** Create a `Time` from the number of minutes since 00:00. */
+  static from (minutes: number): Time {
+    return new Time(Math.floor(minutes / 60), minutes % 60)
   }
 }
 

@@ -7,11 +7,13 @@ type InfoPanelProps = {
   quarter: string | null
   onQuarter: (quarter: string | null) => void
   class?: string
+  quarters: Record<string, string>
 }
 export function InfoPanel ({
   quarter,
   onQuarter,
-  class: className = ''
+  class: className = '',
+  quarters
 }: InfoPanelProps) {
   return (
     <div class={`info-panel ${className}`}>
@@ -31,14 +33,11 @@ export function InfoPanel ({
             }
           >
             <option value='current'>Current quarter</option>
-            <option value='wi22'>Winter 2022</option>
-            <option value='sp22'>Spring 2022</option>
-            <option value='s122'>Summer I 2022</option>
-            <option value='s222'>Summer II 2022</option>
-            <option value='s322'>Special 2022</option>
-            <option value='fa22'>Fall 2022</option>
-            <option value='wi23'>Winter 2023</option>
-            <option value='sp23'>Spring 2023</option>
+            {Object.entries(quarters).map(([code, name]) => (
+              <option value={code} key={code}>
+                {name}
+              </option>
+            ))}
           </select>
         </span>
       </h1>

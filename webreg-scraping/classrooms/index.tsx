@@ -21,7 +21,7 @@ import { useNow } from './now.ts'
 
 function currentQuarter () {
   const { year, season } = getTerm(Day.today())
-  return termCode(year, season).toLowerCase()
+  return termCode(year, season)
 }
 
 function App () {
@@ -80,6 +80,10 @@ function App () {
             quarter={quarter}
             onQuarter={setQuarter}
             class='panel-contents'
+            quarters={{
+              WI23: 'Winter 2023',
+              SP23: 'Spring 2023'
+            }}
           />
         )}
       </div>

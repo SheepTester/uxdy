@@ -2,8 +2,10 @@ import {
   Course,
   Exam,
   Meeting,
+  MeetingTime,
   Section
 } from '../../scheduleofclasses/group-sections.ts'
+import { Time } from '../util/time.ts'
 
 class StringTaker {
   #string: string
@@ -11,6 +13,12 @@ class StringTaker {
 
   constructor (string: string) {
     this.#string = string
+  }
+
+  /** IMPURE. */
+  discard (chars: number): null {
+    this.#index += chars
+    return null
   }
 
   /** IMPURE. Trims string. */
@@ -34,24 +42,20 @@ class StringTaker {
   }
 
   takeMeeting (time = true): Meeting {
-    const type = this.take(2)
     const building = this.take(5)
-    const room = this.take(5)
     const days = time ? this.take(5) : ''
-    if (days === 'TBA') {
-      this.take(8)
-    }
     return {
-      type,
-      location: building === 'TBA' ? null : { building, room },
+      type: this.take(2),
+      location:
+        building === 'TBA' ? this.discard(5) : { building, room: this.take(5) },
       time:
-        days === 'TBA'
+        days !== 'TBA'
           ? {
               days: Array.from(days, Number),
               start: this.#takeMinutes(),
               end: this.#takeMinutes()
             }
-          : null
+          : this.discard(8)
     }
   }
 
@@ -63,19 +67,22 @@ class StringTaker {
 export function coursesFromFile (file: string): Course[] {
   const courses: Course[] = []
   const state: ('sections' | 'meetings' | 'exams')[] = []
-  for (const line of file.trim().split(/\r?\n/)) {
+  const lines = file.trim().split(/\r?\n/)
+  if (lines.shift() !== 'V2') {
+    throw new SyntaxError("I don't understand the format the courses are in.")
+  }
+  for (const line of lines) {
     const taker = new StringTaker(line)
     if (line.startsWith('\t')) {
-      taker.take(1)
+      taker.discard(1)
       const course = courses[courses.length - 1]
       const group = course.groups[course.groups.length - 1]
-      const nextState = state.pop()
+      const nextState = state.shift()
       if (nextState === 'sections') {
         while (taker.hasMore()) {
-          const code = taker.take(3)
           const capacity = taker.takeInt(4)
           group.sections.push({
-            code,
+            code: taker.take(3),
             capacity: capacity === 9999 ? Infinity : capacity,
             ...taker.takeMeeting()
           })
@@ -87,7 +94,7 @@ export function coursesFromFile (file: string): Course[] {
       } else if (nextState === 'exams') {
         while (taker.hasMore()) {
           group.exams.push({
-            ...taker.takeMeeting(),
+            ...taker.takeMeeting(false),
             date: new Date(
               Date.UTC(taker.takeInt(4), taker.takeInt(2) - 1, taker.takeInt(2))
             )
@@ -139,15 +146,16 @@ export function compareRoomNums (a: string, b: string): number {
   }
 }
 
-export type RoomMeeting = (Meeting | Exam) & {
-  capacity: number
-  course: string
-  index: {
-    group: number
-    meeting: number
-    type: 'section' | 'meeting' | 'exam'
+export type RoomMeeting = Omit<Meeting | Exam, 'time' | 'location'> &
+  MeetingTime<Time> & {
+    capacity: number
+    course: string
+    index: {
+      group: number
+      meeting: number
+      type: 'section' | 'meeting' | 'exam'
+    }
   }
-}
 
 export type Building = {
   name: string
@@ -168,14 +176,17 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
         ...exams
       ]
       for (const meeting of allMeetings) {
-        const { location } = meeting
-        if (!location || location.building === 'RCLAS') {
+        const { location, time } = meeting
+        if (!time || !location || location.building === 'RCLAS') {
           continue
         }
         buildings[location.building] ??= { name: location.building, rooms: {} }
         buildings[location.building].rooms[location.room] ??= []
         buildings[location.building].rooms[location.room].push({
           ...meeting,
+          days: time.days,
+          start: Time.from(time.start),
+          end: Time.from(time.end),
           capacity: 'capacity' in meeting ? meeting.capacity : groupCapacity,
           course: code,
           index: {
@@ -192,6 +203,7 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
       }
     }
   }
+  console.log(buildings)
   return Object.values(buildings)
 }
 

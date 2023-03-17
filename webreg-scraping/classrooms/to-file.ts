@@ -1,4 +1,4 @@
-// deno run --allow-read classrooms/to-file.ts WI22 > classrooms/dist/classrooms-wi22.txt
+// deno run --allow-read classrooms/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
 
 import { writeAll } from 'https://deno.land/std@0.126.0/streams/conversion.ts'
 import {
@@ -26,16 +26,16 @@ const printTime = (minutes?: number) =>
           .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
   )
 async function printMeeting (meeting: Meeting, days = true): Promise<void> {
-  await print(meeting.type)
   await print((meeting.location?.building ?? 'TBA').padEnd(5, ' '))
+  if (days) {
+    await print((meeting.time?.days.join('') ?? 'TBA').padEnd(5, ' '))
+  }
+  await print(meeting.type)
   // Remove hyphens from Mandeville basement room numbers because they're
   // inconsistent
   await print(
     (meeting.location?.room.replace(/^B-/, 'B') ?? 'TBA').padEnd(5, ' ')
   )
-  if (days) {
-    await print((meeting.time?.days.join('') ?? 'TBA').padEnd(5, ' '))
-  }
   await printTime(meeting.time?.start)
   await printTime(meeting.time?.end)
 }
@@ -60,12 +60,12 @@ for await (const course of Object.values(
     await print('\n')
     await print('\t')
     for (const meeting of group.sections) {
-      await print(meeting.code)
       await print(
         meeting.capacity === Infinity
           ? '9999'
           : meeting.capacity.toString().padStart(4, '0')
       )
+      await print(meeting.code)
       await printMeeting(meeting)
     }
     await print('\n')
