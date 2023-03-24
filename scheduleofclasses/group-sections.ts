@@ -1,3 +1,5 @@
+// deno run --allow-read scheduleofclasses/group-sections.ts SP23
+
 import { assert } from 'std/testing/asserts.ts'
 import { Course as ScrapedCourse, readCourses } from './scrape.ts'
 
@@ -112,11 +114,27 @@ export function groupSections (
 }
 
 if (import.meta.main) {
-  const term = 'SP23'
+  const term = Deno.args[0] || 'SP23'
 
   const scrapedCourses: ScrapedCourse[] = await readCourses(
     `./scheduleofclasses/terms/${term}.json`
   )
   const courses = groupSections(scrapedCourses)
-  console.log(courses['CAT 125'])
+  for (const course of Object.values(courses)) {
+    const onlineSections = course.groups.flatMap(group =>
+      group.meetings.every(
+        meeting => !meeting.location || meeting.location.building === 'RCLAS'
+      ) &&
+      group.exams.every(
+        exam => !exam.location || exam.location.building === 'RCLAS'
+      )
+        ? group.sections
+            .filter(section => section.location?.building === 'RCLAS')
+            .map(section => section.code)
+        : []
+    )
+    if (onlineSections.length > 0) {
+      console.log(`${course.code}: ${onlineSections.join(', ')}`)
+    }
+  }
 }
