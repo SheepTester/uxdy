@@ -26,7 +26,7 @@ function displayTime (minutes: number): string {
 
 const start = Deno.args.length === 1 ? +Deno.args[0] : undefined
 console.log(bold(TERM))
-for await (const { item } of getCourseIterator(TERM, start)) {
+for await (const { item } of getCourseIterator(TERM, { start })) {
   if ('subject' in item) {
     const units =
       item.units.from === item.units.to

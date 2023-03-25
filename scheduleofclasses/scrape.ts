@@ -1,4 +1,5 @@
 // deno run --allow-net scheduleofclasses/scrape.ts SP23 > scheduleofclasses/terms/SP23.json
+// Outputs JSON file of scraped courses to stdout. Prints progress status to stderr.
 
 import { writeAll } from 'std/streams/write_all.ts'
 import { DOMParser, Element } from 'deno_dom/deno-dom-wasm.ts'
@@ -9,6 +10,12 @@ export const DAYS = ['Sun', 'M', 'Tu', 'W', 'Th', 'F', 'S']
 
 function unwrap (expected?: Error): never {
   throw expected ?? new RangeError('Expected non-nullish value')
+}
+
+const encoder = new TextEncoder()
+/** Prints to stderr */
+async function print (content: string): Promise<void> {
+  await writeAll(Deno.stderr, encoder.encode(content))
 }
 
 /**
@@ -144,6 +151,12 @@ type SubjectList = {
   value: string
 }[]
 
+export type CourseIteratorOptions = {
+  /** Start page. Default: 1 */
+  start: number
+  /** Whether to print progress status to stderr. Default: false */
+  progress: boolean
+}
 export type ResultRow = {
   /** 1-indexed */
   page: number
@@ -154,7 +167,10 @@ export type ResultRow = {
 const MAX_CONC_REQS = 10
 export async function * getCourseIterator (
   term: string,
-  startPage: number = 1
+  {
+    start: startPage = 1,
+    progress = false
+  }: Partial<CourseIteratorOptions> = {}
 ): AsyncGenerator<ResultRow> {
   const subjects = await fetch(
     'https://act.ucsd.edu/scheduleOfClasses/subject-list.json?selectedTerm=' +
@@ -242,6 +258,12 @@ export async function * getCourseIterator (
         const inc = unitMatch[4]
           ? parseNatural(unitMatch[4]) + (unitMatch[5] ? 0.5 : 0)
           : null
+        if (progress) {
+          print(
+            `\r${subject} ${number}`.padEnd(60, ' ') +
+              `${page}/${pageCount}`.padStart(20, ' ')
+          )
+        }
         yield {
           page,
           pages: pageCount,
@@ -306,6 +328,13 @@ export async function * getCourseIterator (
         if (lastNumber === null) {
           throw new Error('Section does not belong to a course')
         }
+        if (progress) {
+          print(
+            `\r${subject} ${lastNumber}: ${meetingType} ${
+              sectionCodeOrDate.includes('/') ? 'exam' : sectionCodeOrDate
+            }`.padEnd(60, ' ') + `${page}/${pageCount}`.padStart(20, ' ')
+          )
+        }
         yield {
           page,
           pages: pageCount,
@@ -357,11 +386,18 @@ export async function * getCourseIterator (
       }
     }
   }
+  if (progress) {
+    print('\r'.padEnd(80, ' '))
+    print('\r')
+  }
 }
 
-export async function getCourses (term: string): Promise<Course[]> {
+export async function getCourses (
+  term: string,
+  progress = false
+): Promise<Course[]> {
   const courses: Course[] = []
-  for await (const { item } of getCourseIterator(term)) {
+  for await (const { item } of getCourseIterator(term, { progress })) {
     if ('subject' in item) {
       courses.push({ ...item, sections: [] })
     } else {
@@ -369,50 +405,6 @@ export async function getCourses (term: string): Promise<Course[]> {
     }
   }
   return courses
-}
-
-if (import.meta.main) {
-  if (Deno.args.length < 1 || Deno.args.length > 2) {
-    console.error(
-      'Usage: deno run --allow-net scheduleofclasses/scrape.ts [term code] (start page) > courses.json'
-    )
-    Deno.exit(64)
-  }
-
-  const encoder = new TextEncoder()
-  /** Prints to stderr */
-  async function print (content: string): Promise<void> {
-    await writeAll(Deno.stderr, encoder.encode(content))
-  }
-
-  const [term, start = '1'] = Deno.args
-  let first = start === '1'
-  let course: Course | null = null
-  for await (const { page, pages, item } of getCourseIterator(term, +start)) {
-    if ('subject' in item) {
-      if (course) {
-        console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
-        first = false
-      }
-      course = { ...item, sections: [] }
-      print(
-        `\r${item.subject} ${item.number}`.padEnd(60, ' ') +
-          `${page}/${pages}`.padStart(20, ' ')
-      )
-    } else if (course) {
-      course.sections.push(item)
-      print(
-        `\r${course.subject} ${course.number}: ${item.type} ${
-          item.section instanceof Date ? 'exam' : item.section
-        }`.padEnd(60, ' ') + `${page}/${pages}`.padStart(20, ' ')
-      )
-    } else {
-      console.error('?? Received section before course')
-    }
-  }
-  console.log(']')
-  print('\r'.padEnd(80, ' '))
-  print('\r')
 }
 
 export async function readCourses (path: string | URL): Promise<Course[]> {
@@ -423,4 +415,34 @@ export async function readCourses (path: string | URL): Promise<Course[]> {
       ? Infinity
       : value
   )
+}
+
+if (import.meta.main) {
+  if (Deno.args.length < 1 || Deno.args.length > 2) {
+    console.error(
+      'Usage: deno run --allow-net scheduleofclasses/scrape.ts [term code] (start page) > courses.json'
+    )
+    Deno.exit(64)
+  }
+
+  const [term, start = '1'] = Deno.args
+  let first = start === '1'
+  let course: Course | null = null
+  for await (const { item } of getCourseIterator(term, {
+    start: +start,
+    progress: true
+  })) {
+    if ('subject' in item) {
+      if (course) {
+        console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
+        first = false
+      }
+      course = { ...item, sections: [] }
+    } else if (course) {
+      course.sections.push(item)
+    } else {
+      console.error('?? Received section before course')
+    }
+  }
+  console.log(']')
 }

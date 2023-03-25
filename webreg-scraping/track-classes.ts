@@ -2,7 +2,7 @@
 // deno run --allow-all track-classes.ts <UqZBpD3n> <jlinksessionidx>
 
 import { ensureDir } from 'std/fs/ensure_dir.ts'
-import { writeAll } from 'std/streams/conversion.ts'
+import { writeAll } from 'std/streams/write_all.ts'
 import { exams, instructionTypes } from './meeting-types.ts'
 import { Scraper } from './scrape.ts'
 import { displayProgress } from '../util/display-progress.ts'

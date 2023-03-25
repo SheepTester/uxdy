@@ -1,7 +1,8 @@
 // deno run --allow-read scheduleofclasses/group-sections.ts SP23
+// Prints list of remote sections.
 
 import { assert } from 'std/testing/asserts.ts'
-import { Course as ScrapedCourse, readCourses } from './scrape.ts'
+import { Course as ScrapedCourse, getCourses, readCourses } from './scrape.ts'
 
 export type MeetingTime<Time = number> = {
   /**
@@ -114,11 +115,23 @@ export function groupSections (
 }
 
 if (import.meta.main) {
+  const seasons: Record<string, string> = {
+    FA: 'Fall',
+    WI: 'Winter',
+    SP: 'Spring',
+    S1: 'Summer Session I',
+    S2: 'Summer Session II',
+    S3: 'Special Summer Session',
+    SU: 'Summer Med School'
+  }
   const term = Deno.args[0] || 'SP23'
+  console.log(`## ${term}: ${seasons[term.slice(0, 2)]} 20${term.slice(2)}`)
+  console.log()
 
-  const scrapedCourses: ScrapedCourse[] = await readCourses(
-    `./scheduleofclasses/terms/${term}.json`
-  )
+  const scrapedCourses: ScrapedCourse[] =
+    Deno.args[1] === 'fetch'
+      ? await getCourses(term, true)
+      : await readCourses(`./scheduleofclasses/terms/${term}.json`)
   const courses = groupSections(scrapedCourses)
   for (const course of Object.values(courses)) {
     const onlineSections = course.groups.flatMap(group =>
@@ -134,7 +147,7 @@ if (import.meta.main) {
         : []
     )
     if (onlineSections.length > 0) {
-      console.log(`${course.code}: ${onlineSections.join(', ')}`)
+      console.log(`- ${course.code}: ${onlineSections.join(', ')}`)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { writeAll } from 'std/streams/conversion.ts'
+import { writeAll } from 'std/streams/write_all.ts'
 
 const LINE_LENGTH = 80
 const BAR_LENGTH = 50
