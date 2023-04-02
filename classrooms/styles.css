@@ -80,6 +80,8 @@ select:not(:disabled) {
 .scroll-area {
   background-image: url('./map.webp');
   background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 .building {
   position: absolute;
@@ -281,6 +283,11 @@ select:not(:disabled) {
   height: 0;
   display: flex;
   flex-direction: column;
+}
+.finals-only {
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
 }
 .day-names,
 .meetings-wrapper {
