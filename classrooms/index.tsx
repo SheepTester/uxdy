@@ -34,10 +34,17 @@ function App () {
 
   useEffect(() => {
     fetch(`./classrooms-${quarter ?? currentQuarter()}.txt`)
-      .then(r => r.text())
+      .then(r =>
+        r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status} error`))
+      )
       .then(coursesFromFile)
       .then(coursesToClassrooms)
       .then(setBuildings)
+      .catch(err => {
+        if (err instanceof SyntaxError) {
+          window.location.reload()
+        }
+      })
   }, [quarter])
 
   return buildings ? (
