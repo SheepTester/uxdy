@@ -150,19 +150,6 @@ select:not(:disabled) {
 .subtitle {
   color: var(--secondary);
 }
-.quarter {
-  padding: 5px 10px;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  padding-right: 34px;
-  background-image: var(--dropdown);
-  background-position: right 5px center;
-  background-repeat: no-repeat;
-  background-size: 24px;
-}
-.quarter option {
-  background-color: var(--background);
-}
 .instructions {
   margin: 0;
   font-size: 14px;
@@ -175,7 +162,7 @@ select:not(:disabled) {
 .link:hover {
   text-decoration: underline;
 }
-@media (max-width: 630px) {
+@media (max-width: 530px) {
   .panel {
     height: 80px;
   }
@@ -188,6 +175,27 @@ select:not(:disabled) {
     justify-content: center;
     padding: 0 15px;
   }
+}
+
+.quarter-selector {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 20px;
+  background-color: var(--background);
+  z-index: 2;
+  border-radius: 10px;
+}
+.quarter {
+  padding: 5px 10px;
+  padding-right: 34px;
+  background-image: var(--dropdown);
+  background-position: right 5px center;
+  background-repeat: no-repeat;
+  background-size: 24px;
+}
+.quarter option {
+  background-color: var(--background);
 }
 
 .room-list {

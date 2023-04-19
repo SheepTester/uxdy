@@ -15,6 +15,7 @@ import {
 } from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
+import { QuarterSelector } from './components/QuarterSelector.tsx'
 import { RoomList } from './components/RoomList.tsx'
 import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
 import { useNow } from './now.ts'
@@ -49,6 +50,14 @@ function App () {
 
   return buildings ? (
     <>
+      <QuarterSelector
+        quarter={quarter}
+        onQuarter={setQuarter}
+        quarters={{
+          WI23: 'Winter 2023',
+          SP23: 'Spring 2023'
+        }}
+      />
       <div class='buildings' ref={scrollWrapper ? undefined : setScrollWrapper}>
         <div
           class='scroll-area'
@@ -83,15 +92,7 @@ function App () {
             class='panel-contents'
           />
         ) : (
-          <InfoPanel
-            quarter={quarter}
-            onQuarter={setQuarter}
-            class='panel-contents'
-            quarters={{
-              WI23: 'Winter 2023',
-              SP23: 'Spring 2023'
-            }}
-          />
+          <InfoPanel class='panel-contents' />
         )}
       </div>
     </>
