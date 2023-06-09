@@ -31,6 +31,7 @@ export function Building ({
   selected
 }: BuildingProps) {
   if (!locations[building.name]) {
+    console.warn('No location data for', building)
     return <p>No location data for {building.name}</p>
   }
   const college = colleges[building.name]

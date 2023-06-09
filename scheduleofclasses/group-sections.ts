@@ -133,6 +133,22 @@ if (import.meta.main) {
       ? await getCourses(term, true)
       : await readCourses(`./scheduleofclasses/terms/${term}.json`)
   const courses = groupSections(scrapedCourses)
+  console.log(Object.values(courses).length)
+  console.log(
+    Object.values(courses).reduce(
+      (cum, curr) =>
+        cum +
+        curr.groups.reduce(
+          (cum, curr) =>
+            cum +
+            curr.sections.length +
+            curr.meetings.length +
+            curr.exams.length,
+          0
+        ),
+      0
+    )
+  )
   for (const course of Object.values(courses)) {
     const onlineSections = course.groups.flatMap(group =>
       group.meetings.every(
