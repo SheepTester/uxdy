@@ -99,9 +99,11 @@ const med: Record<string, Location> = {
 const health: Record<string, Location> = {
   MCC: [32.87832294065095, -117.22294309501584] // Moores Cancer Center
 }
+// Eighth College
 const playhouse: Record<string, Location> = {
   DANCE: [32.87186729617818, -117.24003377110412], // Wagner Dance Bldg
   MWEIS: [32.87095079844769, -117.24121579783444], // Mandell Weiss Theatre
+  PODEM: [32.87340196755349, -117.24174621477657], // probably "Podemos"
   POTKR: [32.87110810161448, -117.24052277636109] // Potiker Theatre
 }
 const sio: Record<string, Location> = {

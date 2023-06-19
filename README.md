@@ -79,8 +79,8 @@ import(
 
 ```sh
 # In the repo root directory
-$ deno run --allow-net scheduleofclasses/scrape.ts WI23 > scheduleofclasses/terms/WI23.json
-$ deno run --allow-read classrooms/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
+$ deno run --allow-net scheduleofclasses/scrape.ts FA23 > scheduleofclasses/terms/FA23.json
+$ deno run --allow-read classrooms/to-file.ts FA23 > classrooms/dist/classrooms-FA23.txt
 # Develop (does not minify)
 $ deno task classrooms:watch
 # Build

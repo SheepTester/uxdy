@@ -55,7 +55,10 @@ function App () {
         onQuarter={setQuarter}
         quarters={{
           WI23: 'Winter 2023',
-          SP23: 'Spring 2023'
+          SP23: 'Spring 2023',
+          S123: 'Summer Session I 2023',
+          S223: 'Summer Session II 2023',
+          FA23: 'Fall 2023'
         }}
       />
       <div class='buildings' ref={scrollWrapper ? undefined : setScrollWrapper}>
