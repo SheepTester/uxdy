@@ -7,6 +7,7 @@ import { render } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { getTerm } from '../terms/index.ts'
 import { Day } from '../util/day.ts'
+import { Time } from '../util/time.ts'
 import {
   northeast,
   southwest,
@@ -14,8 +15,8 @@ import {
   mapPosition
 } from './building-locations.ts'
 import { Building as BuildingComponent } from './components/Building.tsx'
+import { Calendar } from './components/date-time/Calendar.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
-import { QuarterSelector } from './components/QuarterSelector.tsx'
 import { RoomList } from './components/RoomList.tsx'
 import { Building, coursesToClassrooms } from './from-file.ts'
 import { useNow } from './now.ts'
@@ -23,15 +24,14 @@ import { QuarterCache } from './quarter-cache.ts'
 
 function App () {
   const quarters = useRef(new QuarterCache())
-  const [customDate, setCustomDate] = useState<Day | null>(
-    Day.parse('2023-05-03')
-  )
+  const [date, setDate] = useState(Day.parse('2023-05-03')!) // TEMP
+  const [customTime, setCustomTime] = useState<Time | null>(null)
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const now = useNow()
 
-  const date = customDate ?? Day.today()
+  const currentTime = customTime ? { day: date.day, time: customTime } : now
 
   useEffect(() => {
     const { year, season, current, finals } = getTerm(date)
@@ -53,17 +53,7 @@ function App () {
 
   return buildings ? (
     <>
-      {/* <QuarterSelector
-        quarter={quarter}
-        onQuarter={setQuarter}
-        quarters={{
-          WI23: 'Winter 2023',
-          SP23: 'Spring 2023',
-          S123: 'Summer Session I 2023',
-          S223: 'Summer Session II 2023',
-          FA23: 'Fall 2023'
-        }}
-      /> */}
+      <Calendar />
       <div class='buildings' ref={scrollWrapper ? undefined : setScrollWrapper}>
         <div
           class='scroll-area'
@@ -78,7 +68,7 @@ function App () {
           buildings.map(building => (
             <BuildingComponent
               key={building.name}
-              now={customDate ? null : now}
+              now={currentTime}
               building={building}
               onSelect={setViewing}
               scrollWrapper={scrollWrapper}
@@ -92,7 +82,7 @@ function App () {
             // Force state to reset on prop change
             // https://stackoverflow.com/a/53313430
             key={viewing.name}
-            now={customDate ? null : now}
+            now={currentTime}
             building={viewing}
             onClose={() => setViewing(null)}
             class='panel-contents'

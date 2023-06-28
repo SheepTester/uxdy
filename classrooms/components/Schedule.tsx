@@ -20,6 +20,14 @@ type BuildingProps = {
 export function Schedule ({ now, meetings }: BuildingProps) {
   const [day, setDay] = useState<number | null>(null)
 
+  if (meetings.length === 0) {
+    return (
+      <div class='schedule finals-only'>
+        <p>This room is only used during finals.</p>
+      </div>
+    )
+  }
+
   const hasWeekend = meetings.some(
     meeting => meeting.days.includes(6) || meeting.days.includes(7)
   )

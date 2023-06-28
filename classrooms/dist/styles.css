@@ -177,25 +177,20 @@ select:not(:disabled) {
   }
 }
 
-.quarter-selector {
+.calendar {
+  /* TEMP */
   position: fixed;
   top: 0;
   right: 0;
-  margin: 20px;
-  background-color: var(--background);
-  z-index: 2;
-  border-radius: 10px;
+  width: 500px;
+  height: 500px;
+  overflow: auto;
+  background-color: black;
+  z-index: 5;
 }
-.quarter {
-  padding: 5px 10px;
-  padding-right: 34px;
-  background-image: var(--dropdown);
-  background-position: right 5px center;
-  background-repeat: no-repeat;
-  background-size: 24px;
-}
-.quarter option {
-  background-color: var(--background);
+.calendar-row {
+  position: absolute;
+  height: 40px;
 }
 
 .room-list {

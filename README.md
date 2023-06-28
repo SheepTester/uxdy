@@ -91,8 +91,21 @@ $ ./scripts/deploy.sh ./classrooms/dist/ classrooms
 
 Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 17, x: -6 to 5, y: -6 to 4)
 
+Current uses:
+
+- **Checking when a classroom is available.** Does RWAC 0935 have classes in it? When are they?
+- **Finding ongoing lectures nearby to crash.** I'm sitting in the Jeannie studying as the next lecture comes in. What course is it for?
+
+Planned uses:
+
+- **Finding available classrooms during a specific time.** Spencer is available to teach juggling at 3 pm. What classroom can he teach it in? (Feature: changing the "current" time.)
+- **Finding buildings by their code on the map.** Where is RECGM? (Feature: search buildings by code.)
+- **Finding what classes are taught by a professor this quarter.** What classes is Sworder teaching next quarter? (Feature: search sections by professor.)
+- **Looking up the lecture location for a class.** I'll crash ECE 100. Where is it? I'm too lazy to sign into WebReg, and searching up courses on there is slow. (Feature: search courses by course code, list meeting times/locations for a course.)
+
 Features to add:
 
 - Scrape data from schedule of classes rather than WebReg (so it doesn't require authentication)
 - Search by professor and course code
 - Set current time so can see what classrooms are available at a given date/time
+- Use Pacific Time regardless of browser time zone
