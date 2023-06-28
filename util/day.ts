@@ -39,11 +39,19 @@ export class Day {
   }
 
   /**
-   * Returns the Sunday of a week, which can be used to get a unique ID for a
-   * week.
+   * Returns the Sunday of a week beginning on Sunday (i.e. returns the last
+   * Sunday), which can be used to get a unique ID for a week.
    */
   get sunday (): Day {
     return this.add(-this.day)
+  }
+
+  /**
+   * Like `sunday`, returns the Monday of a week beginning on Monday (i.e. the
+   * last Monday).
+   */
+  get monday (): Day {
+    return this.day === 0 ? this.add(-6) : this.add(1 - this.day)
   }
 
   get valid (): boolean {

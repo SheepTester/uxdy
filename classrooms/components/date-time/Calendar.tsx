@@ -5,7 +5,7 @@
 
 import { JSX } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import { getTermDays } from '../../../terms/index.ts'
+import { getTermDays, Season, termCode } from '../../../terms/index.ts'
 import { Day } from '../../../util/day.ts'
 import { useRect } from '../../../util/useRect.ts'
 import { CalendarHeaderRow, CalendarRow } from './CalendarRow.tsx'
@@ -13,25 +13,36 @@ import { CalendarHeaderRow, CalendarRow } from './CalendarRow.tsx'
 /** Height of each calendar row. (px) */
 const ROW_HEIGHT = 40
 
-/** Returns a unique number for `date`'s week (starting on Monday). */
-function weekId (date: Day) {
-  return date.add(-1).sunday.id / 7
+type TermCalendarProps = { year: number; season: Season }
+function TermCalendar ({ year, season }: TermCalendarProps) {
+  const termDays = getTermDays(year, season)
+
+  const weeks: JSX.Element[] = []
+  for (
+    let week = termDays.start.day === 1 ? 1 : 0;
+    termDays.start.monday.add(week * 7) <= termDays.end;
+    week++
+  ) {
+    weeks.push(<CalendarRow termDays={termDays} week={week} key={week} />)
+  }
+
+  return (
+    <>
+      <CalendarHeaderRow name={termCode(year, season)} />
+      {weeks}
+    </>
+  )
 }
 
 export type CalendarProps = {}
 export function Calendar ({}: CalendarProps) {
-  const t = getTermDays(2023, 'FA')
-
-  const weeks: JSX.Element[] = []
-
   return (
     <div class='calendar'>
-      <CalendarHeaderRow name='FA23' />
-      <CalendarRow termDays={t} week={0} />
-      <CalendarRow termDays={t} week={1} />
-      <CalendarRow termDays={t} week={2} />
-      <CalendarRow termDays={t} week={10} />
-      <CalendarRow termDays={t} week={11} />
+      <TermCalendar year={2022} season='FA' />
+      <TermCalendar year={2023} season='WI' />
+      <TermCalendar year={2023} season='SP' />
+      <TermCalendar year={2023} season='S1' />
+      <TermCalendar year={2023} season='S2' />
     </div>
   )
 }

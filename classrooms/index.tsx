@@ -39,11 +39,7 @@ function App () {
       quarters.current
         .get(year, season)
         .then(courses =>
-          coursesToClassrooms(courses, {
-            // .add(-1) is so Sunday is mapped to the previous not next Monday
-            monday: date.add(-1).sunday.add(1),
-            finals
-          })
+          coursesToClassrooms(courses, { monday: date.monday, finals })
         )
         .then(setBuildings)
     } else {
