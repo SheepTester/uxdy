@@ -2,12 +2,6 @@ import { Day } from '../util/day.ts'
 
 export type Season = 'FA' | 'WI' | 'SP' | 'S1' | 'S2'
 
-export type TermDays = {
-  start: Day
-  finals: Day
-  end: Day
-}
-
 /** When each quarter starts, in days from the start of winter quarter. */
 const offset: Record<Season, number> = {
   WI: 0,
@@ -39,6 +33,12 @@ const finalsOffset: Record<Season, number> = {
 function winterStart (year: number): Day {
   const jan1 = Day.from(year, 1, 1)
   return Day.from(year, 1, 9 - jan1.day)
+}
+
+export type TermDays = {
+  start: Day
+  finals: Day
+  end: Day
 }
 
 export function getTermDays (year: number, season: Season): TermDays {

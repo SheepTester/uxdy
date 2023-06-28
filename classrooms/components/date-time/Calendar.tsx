@@ -5,17 +5,13 @@
 
 import { JSX } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+import { getTermDays } from '../../../terms/index.ts'
 import { Day } from '../../../util/day.ts'
 import { useRect } from '../../../util/useRect.ts'
-import { CalendarRow } from './CalendarRow.tsx'
+import { CalendarHeaderRow, CalendarRow } from './CalendarRow.tsx'
 
 /** Height of each calendar row. (px) */
 const ROW_HEIGHT = 40
-/**
- * Number of weeks before and after the current week to show by default in the
- * calendar.
- */
-const INIT_WEEK_RANGE = 20
 
 /** Returns a unique number for `date`'s week (starting on Monday). */
 function weekId (date: Day) {
@@ -24,19 +20,18 @@ function weekId (date: Day) {
 
 export type CalendarProps = {}
 export function Calendar ({}: CalendarProps) {
-  const [start, setStart] = useState(
-    () => weekId(Day.today()) - INIT_WEEK_RANGE
+  const t = getTermDays(2023, 'FA')
+
+  const weeks: JSX.Element[] = []
+
+  return (
+    <div class='calendar'>
+      <CalendarHeaderRow name='FA23' />
+      <CalendarRow termDays={t} week={0} />
+      <CalendarRow termDays={t} week={1} />
+      <CalendarRow termDays={t} week={2} />
+      <CalendarRow termDays={t} week={10} />
+      <CalendarRow termDays={t} week={11} />
+    </div>
   )
-  // Exclusive
-  const [end, setEnd] = useState(() => weekId(Day.today()) + INIT_WEEK_RANGE)
-
-  const visibleRows: JSX.Element[] = []
-  for (let week = start; week < end; week++) {
-    // NOTE: Week IDs jump by 7 (because they're the IDs of their Sundays)
-    if (week >= start && week < end) {
-      visibleRows.push(<CalendarRow weekId={week} key={week} />)
-    }
-  }
-
-  return <div class='calendar'>{visibleRows}</div>
 }

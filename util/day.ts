@@ -95,6 +95,7 @@ export class Day {
     return new Day(new Date(0))
   }
 
+  /** `month` is 1-indexed. */
   static from (year: number, month: number, date: number): Day {
     return new Day(new Date(Date.UTC(year, month - 1, date)))
   }

@@ -210,18 +210,24 @@ select:not(:disabled) {
   align-items: center;
   justify-content: flex-end;
 }
-.calendar-day {
+.calendar-item {
   width: 40px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: auto;
+}
+.calendar-day {
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.1);
-  margin-right: auto;
+  cursor: pointer;
 }
 .calendar-day:focus-within {
   background-color: blue;
+}
+.calendar-finals-day {
+  color: pink;
 }
 
 .room-list {

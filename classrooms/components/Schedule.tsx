@@ -5,12 +5,12 @@
 
 import { useState } from 'preact/hooks'
 import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
+import { DAY_NAMES } from '../day-names.ts'
 import { RoomMeeting } from '../from-file.ts'
 import { Now } from '../now.ts'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
-const DAY_NAMES = ['', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 const SCALE = 1 // px per min
 
 type BuildingProps = {
