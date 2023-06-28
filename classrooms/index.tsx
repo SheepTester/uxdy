@@ -4,9 +4,9 @@
 /// <reference lib="deno.ns" />
 
 import { render } from 'preact'
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { Day } from '../terms/day.ts'
-import { getTerm, termCode } from '../terms/index.ts'
+import { getTerm } from '../terms/index.ts'
 import {
   northeast,
   southwest,
@@ -17,40 +17,43 @@ import { Building as BuildingComponent } from './components/Building.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
 import { QuarterSelector } from './components/QuarterSelector.tsx'
 import { RoomList } from './components/RoomList.tsx'
-import { Building, coursesFromFile, coursesToClassrooms } from './from-file.ts'
+import { Building, coursesToClassrooms } from './from-file.ts'
 import { useNow } from './now.ts'
-
-function currentQuarter () {
-  const { year, season } = getTerm(Day.today())
-  return termCode(year, season)
-}
+import { QuarterCache } from './quarter-cache.ts'
 
 function App () {
-  const [quarter, setQuarter] = useState<string | null>(() => null)
+  const quarters = useRef(new QuarterCache())
+  const [customDate, setCustomDate] = useState<Day | null>(
+    Day.parse('2023-05-03')
+  )
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
+  const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const now = useNow()
 
-  const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
+  const date = customDate ?? Day.today()
 
   useEffect(() => {
-    fetch(`./classrooms-${quarter ?? currentQuarter()}.txt`)
-      .then(r =>
-        r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status} error`))
-      )
-      .then(coursesFromFile)
-      .then(coursesToClassrooms)
-      .then(setBuildings)
-      .catch(err => {
-        if (err instanceof SyntaxError) {
-          window.location.reload()
-        }
-      })
-  }, [quarter])
+    const { year, season, current, finals } = getTerm(date)
+    if (current) {
+      quarters.current
+        .get(year, season)
+        .then(courses =>
+          coursesToClassrooms(courses, {
+            // .add(-1) is so Sunday is mapped to the previous not next Monday
+            monday: date.add(-1).sunday.add(1),
+            finals
+          })
+        )
+        .then(setBuildings)
+    } else {
+      setBuildings([])
+    }
+  }, [+date])
 
   return buildings ? (
     <>
-      <QuarterSelector
+      {/* <QuarterSelector
         quarter={quarter}
         onQuarter={setQuarter}
         quarters={{
@@ -60,7 +63,7 @@ function App () {
           S223: 'Summer Session II 2023',
           FA23: 'Fall 2023'
         }}
-      />
+      /> */}
       <div class='buildings' ref={scrollWrapper ? undefined : setScrollWrapper}>
         <div
           class='scroll-area'
@@ -75,7 +78,7 @@ function App () {
           buildings.map(building => (
             <BuildingComponent
               key={building.name}
-              now={quarter ? null : now}
+              now={customDate ? null : now}
               building={building}
               onSelect={setViewing}
               scrollWrapper={scrollWrapper}
@@ -89,7 +92,7 @@ function App () {
             // Force state to reset on prop change
             // https://stackoverflow.com/a/53313430
             key={viewing.name}
-            now={quarter ? null : now}
+            now={customDate ? null : now}
             building={viewing}
             onClose={() => setViewing(null)}
             class='panel-contents'

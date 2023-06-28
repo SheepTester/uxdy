@@ -341,6 +341,10 @@ select:not(:disabled) {
   background-color: var(--meeting-active);
   color: var(--meeting-active-text);
 }
+.exam {
+  /* TEMP */
+  outline: 1px solid yellow;
+}
 .meeting-time {
   font-size: 0.5em;
 }

@@ -8,7 +8,7 @@ import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
 import { RoomMeeting } from '../from-file.ts'
 import { Now } from '../now.ts'
 
-const DAYS = [7, 1, 2, 3, 4, 5, 6]
+const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
 const DAY_NAMES = ['', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 const SCALE = 1 // px per min
@@ -20,23 +20,14 @@ type BuildingProps = {
 export function Schedule ({ now, meetings }: BuildingProps) {
   const [day, setDay] = useState<number | null>(null)
 
-  const currentMeetings = meetings.filter(meeting => !('date' in meeting))
-  if (currentMeetings.length === 0) {
-    return (
-      <div class='schedule finals-only'>
-        <p>This room is only used during finals.</p>
-      </div>
-    )
-  }
-
-  const hasWeekend = currentMeetings.some(
+  const hasWeekend = meetings.some(
     meeting => meeting.days.includes(6) || meeting.days.includes(7)
   )
-  const earliest = currentMeetings.reduce(
+  const earliest = meetings.reduce(
     (acc, curr) => Math.min(acc, +curr.start),
     Infinity
   )
-  const latest = currentMeetings.reduce(
+  const latest = meetings.reduce(
     (acc, curr) => Math.max(acc, +curr.end),
     -Infinity
   )
@@ -62,10 +53,8 @@ export function Schedule ({ now, meetings }: BuildingProps) {
             key={day}
             style={{ height: `${(latest - earliest) / SCALE}px` }}
           >
-            {currentMeetings
-              .filter(
-                meeting => meeting.days.includes(day) && !('date' in meeting)
-              )
+            {meetings
+              .filter(meeting => meeting.days.includes(day))
               .map(meeting => (
                 <div
                   class={`meeting ${
@@ -74,7 +63,7 @@ export function Schedule ({ now, meetings }: BuildingProps) {
                     now.time < meeting.end
                       ? 'current'
                       : ''
-                  }`}
+                  } ${'date' in meeting ? 'exam' : ''}`}
                   style={{
                     top: `${(+meeting.start - earliest) / SCALE}px`,
                     height: `${(+meeting.end - +meeting.start) / SCALE}px`

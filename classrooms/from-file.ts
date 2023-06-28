@@ -5,6 +5,7 @@ import {
   Course,
   Section
 } from '../scheduleofclasses/group-sections.ts'
+import { Day } from '../terms/day.ts'
 import { Time } from '../util/time.ts'
 
 class StringTaker {
@@ -64,12 +65,18 @@ class StringTaker {
   }
 }
 
+export class CourseFormatError extends SyntaxError {
+  name = this.constructor.name
+}
+
 export function coursesFromFile (file: string): Course[] {
   const courses: Course[] = []
   const state: ('sections' | 'meetings' | 'exams')[] = []
   const lines = file.trim().split(/\r?\n/)
   if (lines.shift() !== 'V2') {
-    throw new SyntaxError("I don't understand the format the courses are in.")
+    throw new CourseFormatError(
+      "I don't understand the format the courses are in."
+    )
   }
   for (const line of lines) {
     const taker = new StringTaker(line)
@@ -168,7 +175,30 @@ export type Building = {
   rooms: Record<string, RoomMeeting[]>
 }
 
-export function coursesToClassrooms (courses: Course[]): Building[] {
+/**
+ * Allows more context for what meetings to show. By default, this only shows
+ * regular meetings, such as lectures, and won't include single-day meetings
+ * such as midterms and finals.
+ */
+export type CoursesToClassroomsOptions = {
+  /**
+   * Whether it's finals week. If so, regular meetings (e.g. lectures) won't be
+   * included. Default: false.
+   */
+  finals?: boolean
+  /**
+   * The Monday of the current week. By WebReg convention, weeks start on
+   * Mondays. This will include exams from the given Monday to the following
+   * Sunday. If omitted, exams will not be included.
+   */
+  monday?: Day
+}
+
+export function coursesToClassrooms (
+  courses: Course[],
+  { finals, monday }: CoursesToClassroomsOptions = {}
+): Building[] {
+  const nextMonday = monday?.add(7)
   const buildings: Record<string, Building> = {}
   for (const [i, { code, groups }] of courses.entries()) {
     for (const [j, { sections, meetings, exams }] of groups.entries()) {
@@ -188,6 +218,16 @@ export function coursesToClassrooms (courses: Course[]): Building[] {
         }
         buildings[location.building] ??= { name: location.building, rooms: {} }
         buildings[location.building].rooms[location.room] ??= []
+        if ('date' in meeting) {
+          // Exam
+          const date = new Day(meeting.date)
+          if (!monday || !nextMonday || date < monday || date >= nextMonday) {
+            continue
+          }
+        } else if (finals) {
+          // Omit regular meetings during finals week
+          continue
+        }
         buildings[location.building].rooms[location.room].push({
           ...meeting,
           days: time.days,
