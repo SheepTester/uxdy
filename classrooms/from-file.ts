@@ -5,7 +5,7 @@ import {
   Course,
   Section
 } from '../scheduleofclasses/group-sections.ts'
-import { Day } from '../terms/day.ts'
+import { Day } from '../util/day.ts'
 import { Time } from '../util/time.ts'
 
 class StringTaker {

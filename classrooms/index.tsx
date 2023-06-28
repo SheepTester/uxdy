@@ -5,8 +5,8 @@
 
 import { render } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { Day } from '../terms/day.ts'
 import { getTerm } from '../terms/index.ts'
+import { Day } from '../util/day.ts'
 import {
   northeast,
   southwest,

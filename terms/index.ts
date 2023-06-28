@@ -1,4 +1,4 @@
-import { Day } from './day.ts'
+import { Day } from '../util/day.ts'
 
 export type Season = 'FA' | 'WI' | 'SP' | 'S1' | 'S2'
 
