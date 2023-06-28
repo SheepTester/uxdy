@@ -24,50 +24,19 @@ function weekId (date: Day) {
 
 export type CalendarProps = {}
 export function Calendar ({}: CalendarProps) {
-  const { ref, height } = useRect<HTMLDivElement>()
   const [start, setStart] = useState(
     () => weekId(Day.today()) - INIT_WEEK_RANGE
   )
   // Exclusive
   const [end, setEnd] = useState(() => weekId(Day.today()) + INIT_WEEK_RANGE)
-  const [scroll, setScroll] = useState(0)
-
-  // Add an extra row at the top and bottom
-  const scrollHeight = (end - start + 2) * ROW_HEIGHT
-
-  useEffect(() => {
-    const element = ref.current
-    if (!element) {
-      return
-    }
-    const scrollHandler = () => {
-      setScroll(element.scrollTop)
-    }
-    element.addEventListener('scroll', scrollHandler)
-    return () => {
-      element.removeEventListener('scroll', scrollHandler)
-    }
-  }, [ref.current])
 
   const visibleRows: JSX.Element[] = []
-  const endRow = Math.floor((scroll + height) / ROW_HEIGHT)
-  for (let i = Math.floor(scroll / ROW_HEIGHT); i <= endRow; i++) {
+  for (let week = start; week < end; week++) {
     // NOTE: Week IDs jump by 7 (because they're the IDs of their Sundays)
-    const week = start + i - 1
     if (week >= start && week < end) {
-      visibleRows.push(
-        <CalendarRow weekId={week} style={{ top: `${i * ROW_HEIGHT}px` }} />
-      )
+      visibleRows.push(<CalendarRow weekId={week} key={week} />)
     }
   }
 
-  return (
-    <div class='calendar' ref={ref}>
-      <div
-        class='calendar-scroll-height'
-        style={{ height: `${scrollHeight}px` }}
-      />
-      {visibleRows}
-    </div>
-  )
+  return <div class='calendar'>{visibleRows}</div>
 }

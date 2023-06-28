@@ -55,6 +55,7 @@ body {
 button,
 select {
   -webkit-appearance: none;
+  appearance: none;
   background: none;
   border: none;
   color: inherit;
@@ -63,6 +64,16 @@ select {
 button:not(:disabled),
 select:not(:disabled) {
   cursor: pointer;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 #root {
@@ -189,8 +200,28 @@ select:not(:disabled) {
   z-index: 5;
 }
 .calendar-row {
-  position: absolute;
+  display: flex;
   height: 40px;
+}
+.calendar-week-num {
+  width: 40px;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.calendar-day {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-right: auto;
+}
+.calendar-day:focus-within {
+  background-color: blue;
 }
 
 .room-list {
