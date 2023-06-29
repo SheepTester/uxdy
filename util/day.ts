@@ -3,6 +3,12 @@
 export const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 /**
+ * A 7-item list from 0 to 6, representing the week day numbers of a week
+ * starting on a Sunday.
+ */
+export const DAY_NUMS = [0, 1, 2, 3, 4, 5, 6]
+
+/**
  * A single, unified Day object representing a day (no time). Months are
  * 1-indexed.
  */
@@ -21,12 +27,32 @@ export class Day {
     return this.#date.getUTCMonth() + 1
   }
 
+  monthName (
+    length: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' = 'long',
+    locales?: string | string[]
+  ): string {
+    return new Intl.DateTimeFormat(locales, {
+      timeZone: 'UTC',
+      month: length
+    }).format(this.#date)
+  }
+
   get date (): number {
     return this.#date.getUTCDate()
   }
 
   get day (): number {
     return this.#date.getUTCDay()
+  }
+
+  dayName (
+    length: 'long' | 'short' | 'narrow' = 'long',
+    locales?: string | string[]
+  ): string {
+    return new Intl.DateTimeFormat(locales, {
+      timeZone: 'UTC',
+      weekday: length
+    }).format(this.#date)
   }
 
   /**
@@ -121,5 +147,24 @@ export class Day {
 
   static fromId (dayId: number): Day {
     return Day.EPOCH.add(dayId)
+  }
+
+  /** `month` is 1-indexed. */
+  static monthName (
+    month: number,
+    length: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' = 'long',
+    locales?: string | string[]
+  ): string {
+    return this.from(1970, month, 1).monthName(length, locales)
+  }
+
+  /** If `day` >= 7, then it will be modulo'd by 7. */
+  static dayName (
+    day: number,
+    length: 'long' | 'short' | 'narrow' = 'long',
+    locales?: string | string[]
+  ): string {
+    // 1970-01-04 is a Sunday
+    return this.from(1970, 1, 4 + day).dayName(length, locales)
   }
 }

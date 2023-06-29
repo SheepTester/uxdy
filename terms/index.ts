@@ -29,6 +29,15 @@ const finalsOffset: Record<Season, number> = {
   S2: 1
 }
 
+/** Names of each term, according to WebReg. */
+const names: Record<Season, string> = {
+  FA: 'Fall',
+  WI: 'Winter',
+  SP: 'Spring',
+  S1: 'Summer Session I',
+  S2: 'Summer Session II'
+}
+
 /** Returns the day when winter quarter starts in the given year. */
 function winterStart (year: number): Day {
   const jan1 = Day.from(year, 1, 1)
@@ -84,6 +93,10 @@ export function getTerm (day: Day): CurrentTerm {
 
 export function termCode (year: number, season: Season): string {
   return season + (year % 100).toString().padStart(2, '0')
+}
+
+export function termName (year: number, season: Season): string {
+  return `${names[season]} ${year}`
 }
 
 if (import.meta.main) {

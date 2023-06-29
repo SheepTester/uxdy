@@ -5,30 +5,63 @@
 
 import { JSX } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import { getTermDays, Season, termCode } from '../../../terms/index.ts'
+import {
+  getTermDays,
+  Season,
+  termCode,
+  termName
+} from '../../../terms/index.ts'
 import { Day } from '../../../util/day.ts'
 import { useRect } from '../../../util/useRect.ts'
-import { CalendarHeaderRow, CalendarRow } from './CalendarRow.tsx'
-
-/** Height of each calendar row. (px) */
-const ROW_HEIGHT = 40
+import {
+  CalendarHeaderRow,
+  CalendarMonthHeadingRow,
+  CalendarQuarterHeadingRow,
+  CalendarRow
+} from './CalendarRow.tsx'
 
 type TermCalendarProps = { year: number; season: Season }
 function TermCalendar ({ year, season }: TermCalendarProps) {
   const termDays = getTermDays(year, season)
 
-  const weeks: JSX.Element[] = []
+  let month: number = termDays.start.monday.month
+  const weeks: JSX.Element[] = [
+    <CalendarMonthHeadingRow month={month} key='first month' />
+  ]
   for (
-    let week = termDays.start.day === 1 ? 1 : 0;
-    termDays.start.monday.add(week * 7) <= termDays.end;
-    week++
+    let monday = termDays.start.monday;
+    monday <= termDays.end;
+    monday = monday.add(7)
   ) {
-    weeks.push(<CalendarRow termDays={termDays} week={week} key={week} />)
+    if (monday.month === month) {
+      weeks.push(
+        <CalendarRow
+          termDays={termDays}
+          monday={monday}
+          month={month}
+          key={monday.id}
+        />
+      )
+    }
+
+    const sunday = monday.add(6)
+    if (sunday.month !== month) {
+      month = sunday.month
+      weeks.push(
+        <CalendarMonthHeadingRow month={month} key={`month ${month}`} />,
+        <CalendarRow
+          termDays={termDays}
+          monday={monday}
+          month={month}
+          key={`new month ${monday.id}`}
+        />
+      )
+    }
   }
 
   return (
     <>
-      <CalendarHeaderRow name={termCode(year, season)} />
+      <CalendarQuarterHeadingRow year={year} season={season} />
       {weeks}
     </>
   )
@@ -38,11 +71,14 @@ export type CalendarProps = {}
 export function Calendar ({}: CalendarProps) {
   return (
     <div class='calendar'>
-      <TermCalendar year={2022} season='FA' />
-      <TermCalendar year={2023} season='WI' />
-      <TermCalendar year={2023} season='SP' />
-      <TermCalendar year={2023} season='S1' />
-      <TermCalendar year={2023} season='S2' />
+      <div class='calendar-scroll-area'>
+        <CalendarHeaderRow name='Week' />
+        <TermCalendar year={2022} season='FA' />
+        <TermCalendar year={2023} season='WI' />
+        <TermCalendar year={2023} season='SP' />
+        <TermCalendar year={2023} season='S1' />
+        <TermCalendar year={2023} season='S2' />
+      </div>
     </div>
   )
 }

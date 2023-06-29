@@ -1,3 +1,5 @@
+import { Day, DAY_NUMS } from './day.ts'
+
 /**
  * A time.
  */
@@ -69,21 +71,11 @@ export class Period {
     return `${this.start}–${this.end}`
   }
 
-  static readonly #DAY_NAMES = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ]
-
   /**
    * Returns the name of the day the time period is on.
    */
   dayName () {
-    return Period.#DAY_NAMES[this.day]
+    return Day.dayName(this.day, 'long', 'en-US')
   }
 
   /**

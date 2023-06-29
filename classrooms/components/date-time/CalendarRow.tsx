@@ -3,42 +3,93 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { JSX } from 'preact/jsx-runtime'
-import { TermDays } from '../../../terms/index.ts'
-import { Day } from '../../../util/day.ts'
-import { DAY_NAMES } from '../../day-names.ts'
-
-const DAYS = DAY_NAMES.slice(1)
+import { ComponentChildren, JSX } from 'preact'
+import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
+import { Day, DAY_NUMS } from '../../../util/day.ts'
 
 export type CalendarHeaderRowProps = {
   name?: string
 }
 export function CalendarHeaderRow ({ name }: CalendarHeaderRowProps) {
   return (
-    <div class='calendar-row'>
+    <div class='calendar-row calendar-header-row'>
       <div class='calendar-week-num'>{name}</div>
-      {DAYS.map(day => (
-        <div class='calendar-item calendar-week-day'>{day}</div>
+      {DAY_NUMS.map(day => (
+        <div class='calendar-item calendar-week-day'>
+          {Day.dayName(day + 1, 'short', 'en-US')}
+        </div>
       ))}
     </div>
   )
 }
 
+type CalendarHeadingRowProps = {
+  children?: ComponentChildren
+}
+function CalendarHeadingRow ({ children }: CalendarHeadingRowProps) {
+  return (
+    <div class='calendar-heading-row'>
+      <div class='calendar-week-num'></div>
+      {children}
+    </div>
+  )
+}
+
+export type CalendarQuarterHeadingRowProps = {
+  year: number
+  season: Season
+}
+export function CalendarQuarterHeadingRow ({
+  year,
+  season
+}: CalendarQuarterHeadingRowProps) {
+  return (
+    <CalendarHeadingRow>
+      <h2 class='calendar-heading calendar-quarter-heading'>
+        {termCode(year, season)}: {termName(year, season)}
+      </h2>
+    </CalendarHeadingRow>
+  )
+}
+
+export type CalendarMonthHeadingRowProps = {
+  month: number
+}
+export function CalendarMonthHeadingRow ({
+  month
+}: CalendarMonthHeadingRowProps) {
+  return (
+    <CalendarHeadingRow>
+      <h3 class='calendar-heading calendar-month-heading'>
+        {Day.monthName(month)}
+      </h3>
+    </CalendarHeadingRow>
+  )
+}
+
 export type CalendarRowProps = {
   termDays: TermDays
-  week: number
+  monday: Day
+  month?: number
   style?: JSX.CSSProperties
 }
-export function CalendarRow ({ termDays, week, style }: CalendarRowProps) {
-  // Shift all days so that Sunday becomes the next Saturday (+6), round down to
-  // the last Sunday, then add 1 to get the first Monday of the quarter
-  const firstMonday = termDays.start.add(6).sunday.add(1)
+export function CalendarRow ({
+  termDays,
+  monday,
+  month,
+  style
+}: CalendarRowProps) {
+  const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
   return (
     <div class='calendar-row' style={style}>
-      <div class='calendar-week-num'>{week === 11 ? 'Finals' : week}</div>
-      {DAYS.map((_, i) => {
-        const day = firstMonday.add((week - 1) * 7 + i)
-        if (day < termDays.start || day > termDays.end) {
+      <div class='calendar-week-num'>{week === 11 ? 'Final' : week}</div>
+      {DAY_NUMS.map(i => {
+        const day = monday.add(i)
+        if (
+          (month && day.month !== month) ||
+          day < termDays.start ||
+          day > termDays.end
+        ) {
           return <div class='calendar-item' />
         }
         return (

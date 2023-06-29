@@ -188,27 +188,38 @@ select:not(:disabled) {
   }
 }
 
+/* TEMP */
 .calendar {
-  /* TEMP */
   position: fixed;
   top: 0;
   right: 0;
   width: 500px;
-  height: 500px;
-  overflow: auto;
   background-color: black;
   z-index: 5;
+}
+.calendar-scroll-area {
+  overflow: auto;
+  height: 500px;
 }
 .calendar-row {
   display: flex;
   height: 40px;
 }
+.calendar-header-row {
+  position: sticky;
+  top: 0;
+  background-color: black;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
 .calendar-week-num {
-  width: 40px;
+  width: 41.5px;
   margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  padding-right: 10px;
+  color: rgba(255, 255, 255, 0.5);
 }
 .calendar-item {
   width: 40px;
@@ -220,7 +231,6 @@ select:not(:disabled) {
 }
 .calendar-day {
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 .calendar-day:focus-within {
@@ -228,6 +238,20 @@ select:not(:disabled) {
 }
 .calendar-finals-day {
   color: pink;
+}
+.calendar-heading-row {
+  display: flex;
+}
+.calendar-heading {
+  margin: 0;
+  margin-right: auto;
+  font-weight: normal;
+}
+.calendar-quarter-heading {
+  margin-top: 40px;
+}
+.calendar-month-heading {
+  margin-top: 10px;
 }
 
 .room-list {

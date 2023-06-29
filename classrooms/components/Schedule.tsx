@@ -4,8 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
+import { Day } from '../../util/day.ts'
 import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
-import { DAY_NAMES } from '../day-names.ts'
 import { RoomMeeting } from '../from-file.ts'
 import { Now } from '../now.ts'
 
@@ -49,7 +49,7 @@ export function Schedule ({ now, meetings }: BuildingProps) {
             key={weekDay}
             onClick={() => setDay(day => (weekDay === day ? null : weekDay))}
           >
-            {DAY_NAMES[weekDay]}
+            {Day.dayName(weekDay, 'short', 'en-US')}
           </button>
         ))}
       </div>
