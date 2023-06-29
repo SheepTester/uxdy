@@ -2,7 +2,7 @@
 // Prints list of remote sections.
 
 import { assert } from 'std/testing/asserts.ts'
-import { Course as ScrapedCourse, getCourses, readCourses } from './scrape.ts'
+import { ScrapedCourse, getCourses, readCourses } from './scrape.ts'
 
 export type MeetingTime<Time = number> = {
   /**

@@ -7,7 +7,7 @@
   },
   "tasks": {
     "bookmarklet:build": "deno bundle webreg-scraping/bookmarklet/index.tsx | terser --module > webreg-scraping/bookmarklet/dist/bookmarklet.min.js",
-    "classrooms:build": "deno bundle classrooms/index.tsx | terser --module > classrooms/dist/index.min.js",
-    "classrooms:watch": "echo \"Serving dist/ at http://localhost:8080/\" && http-server classrooms/dist/ -c-1 -s & deno bundle --watch classrooms/index.tsx classrooms/dist/index.min.js"
+    "classrooms:build": "deno bundle classrooms/index.tsx | terser --module > classrooms/public/index.min.js",
+    "classrooms:watch": "echo \"Serving public/ at http://localhost:8080/\" && http-server classrooms/public/ -c-1 -s & deno bundle --watch classrooms/index.tsx classrooms/public/index.min.js"
   }
 }

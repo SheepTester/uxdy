@@ -5,17 +5,17 @@
 
 import { useCallback } from 'preact/hooks'
 import {
+  locations,
   colleges,
   latLongToPixel,
-  locations,
-  northeast,
   southwest,
-  PADDING
-} from '../building-locations.ts'
-import { Building } from '../from-file.ts'
-import { Now, used } from '../now.ts'
+  PADDING,
+  northeast
+} from '../lib/building-locations.ts'
+import { Building } from '../lib/coursesFromFile.ts'
+import { Now, used } from '../lib/now.ts'
 
-type BuildingProps = {
+type BuildingButtonProps = {
   now?: Now | null
   building: Building
   onSelect: (building: Building) => void
@@ -23,13 +23,13 @@ type BuildingProps = {
   selected: boolean
 }
 
-export function Building ({
+export function BuildingButton ({
   now,
   building,
   onSelect,
   scrollWrapper,
   selected
-}: BuildingProps) {
+}: BuildingButtonProps) {
   if (!locations[building.name]) {
     console.warn('No location data for', building)
     return <p>No location data for {building.name}</p>

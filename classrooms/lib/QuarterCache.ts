@@ -1,6 +1,6 @@
-import { Course } from '../scheduleofclasses/group-sections.ts'
-import { Season, termCode } from '../terms/index.ts'
-import { CourseFormatError, coursesFromFile } from './from-file.ts'
+import { Course } from '../../scheduleofclasses/group-sections.ts'
+import { Season, termCode } from '../../terms/index.ts'
+import { coursesFromFile, CourseFormatError } from './coursesFromFile.ts'
 
 export class QuarterCache {
   #cache: Record<string, Course[] | 'none'> = {}

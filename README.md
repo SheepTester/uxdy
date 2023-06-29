@@ -80,13 +80,13 @@ import(
 ```sh
 # In the repo root directory
 $ deno run --allow-net scheduleofclasses/scrape.ts FA23 > scheduleofclasses/terms/FA23.json
-$ deno run --allow-read classrooms/to-file.ts FA23 > classrooms/dist/classrooms-FA23.txt
+$ deno run --allow-read classrooms/to-file.ts FA23 > classrooms/public/classrooms-FA23.txt
 # Develop (does not minify)
 $ deno task classrooms:watch
 # Build
 $ deno task classrooms:build
 # Deploy built version (run classrooms:build first to minify)
-$ ./scripts/deploy.sh ./classrooms/dist/ classrooms
+$ ./scripts/deploy.sh ./classrooms/public/ classrooms
 ```
 
 Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 17, x: -6 to 5, y: -6 to 4)

@@ -9,19 +9,23 @@ import { getTerm } from '../terms/index.ts'
 import { Day } from '../util/Day.ts'
 import { Time } from '../util/Time.ts'
 import { useAsyncEffect } from '../util/useAsyncEffect.ts'
+import { BuildingButton } from './components/BuildingButton.tsx'
+import { Calendar } from './components/date-time/Calendar.tsx'
+import { InfoPanel } from './components/InfoPanel.tsx'
+import { RoomList } from './components/RoomList.tsx'
 import {
   northeast,
   southwest,
   PADDING,
   mapPosition
-} from './building-locations.ts'
-import { Building as BuildingComponent } from './components/Building.tsx'
-import { Calendar } from './components/date-time/Calendar.tsx'
-import { InfoPanel } from './components/InfoPanel.tsx'
-import { RoomList } from './components/RoomList.tsx'
-import { Building, coursesToClassrooms, defaultBuildings } from './from-file.ts'
-import { useNow } from './now.ts'
-import { QuarterCache } from './quarter-cache.ts'
+} from './lib/building-locations.ts'
+import { Building } from './lib/coursesFromFile.ts'
+import {
+  coursesToClassrooms,
+  defaultBuildings
+} from './lib/coursesToClassrooms.ts'
+import { useNow } from './lib/now.ts'
+import { QuarterCache } from './lib/QuarterCache.ts'
 
 function App () {
   const quarters = useRef(new QuarterCache())
@@ -63,7 +67,7 @@ function App () {
         />
         {scrollWrapper &&
           buildings.map(building => (
-            <BuildingComponent
+            <BuildingButton
               key={building.name}
               now={currentTime}
               building={building}

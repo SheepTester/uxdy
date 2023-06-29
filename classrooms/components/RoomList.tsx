@@ -5,9 +5,9 @@
 
 import { useState } from 'preact/hooks'
 import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
-import { colleges } from '../building-locations.ts'
-import { Building, compareRoomNums } from '../from-file.ts'
-import { Now, used } from '../now.ts'
+import { colleges } from '../lib/building-locations.ts'
+import { Building, compareRoomNums } from '../lib/coursesFromFile.ts'
+import { Now, used } from '../lib/now.ts'
 import { BackIcon } from './BackIcon.tsx'
 import { CloseIcon } from './CloseIcon.tsx'
 import { Schedule } from './Schedule.tsx'

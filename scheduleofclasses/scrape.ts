@@ -73,7 +73,7 @@ const fetchHtml = (url: string) =>
     )
 
 /** Represents a scheduled meeting time for a course. */
-export type Section = {
+export type ScrapedSection = {
   /**
    * Only defined if the section is selectable in WebReg (eg a discussion time
    * as opposed to its lecture)
@@ -123,7 +123,7 @@ export type Section = {
   instructors: [firstName: string, lastName: string][]
 }
 
-export type Course = {
+export type ScrapedCourse = {
   subject: string
   number: string
   title: string
@@ -134,7 +134,7 @@ export type Course = {
    * NOTE: `inc` may be 0.5.
    */
   units: { from: number; to: number; inc: number }
-  sections: Section[]
+  sections: ScrapedSection[]
 }
 
 // https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=SP23&selectedSubjects=CAT&selectedSubjects=SYN&page=1
@@ -161,7 +161,7 @@ export type ResultRow = {
   /** 1-indexed */
   page: number
   pages: number
-  item: Omit<Course, 'sections'> | Section
+  item: Omit<ScrapedCourse, 'sections'> | ScrapedSection
 }
 /** Maximum requests to be made at once. */
 const MAX_CONC_REQS = 10
@@ -395,8 +395,8 @@ export async function * getCourseIterator (
 export async function getCourses (
   term: string,
   progress = false
-): Promise<Course[]> {
-  const courses: Course[] = []
+): Promise<ScrapedCourse[]> {
+  const courses: ScrapedCourse[] = []
   for await (const { item } of getCourseIterator(term, { progress })) {
     if ('subject' in item) {
       courses.push({ ...item, sections: [] })
@@ -407,7 +407,9 @@ export async function getCourses (
   return courses
 }
 
-export async function readCourses (path: string | URL): Promise<Course[]> {
+export async function readCourses (
+  path: string | URL
+): Promise<ScrapedCourse[]> {
   return JSON.parse(await Deno.readTextFile(path), (key, value) =>
     key === 'section' && value.endsWith('T00:00:00.000Z')
       ? new Date(value)
@@ -427,7 +429,7 @@ if (import.meta.main) {
 
   const [term, start = '1'] = Deno.args
   let first = start === '1'
-  let course: Course | null = null
+  let course: ScrapedCourse | null = null
   for await (const { item } of getCourseIterator(term, {
     start: +start,
     progress: true
