@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import { getTerm } from '../terms/index.ts'
 import { Day } from '../util/Day.ts'
 import { Time } from '../util/Time.ts'
+import { useAsyncEffect } from '../util/useAsyncEffect.ts'
 import {
   northeast,
   southwest,
@@ -18,13 +19,13 @@ import { Building as BuildingComponent } from './components/Building.tsx'
 import { Calendar } from './components/date-time/Calendar.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
 import { RoomList } from './components/RoomList.tsx'
-import { Building, coursesToClassrooms } from './from-file.ts'
+import { Building, coursesToClassrooms, defaultBuildings } from './from-file.ts'
 import { useNow } from './now.ts'
 import { QuarterCache } from './quarter-cache.ts'
 
 function App () {
   const quarters = useRef(new QuarterCache())
-  const [date, setDate] = useState(Day.parse('2023-05-03')!) // TEMP
+  const [date, setDate] = useState(Day.today()) // TEMP
   const [customTime, setCustomTime] = useState<Time | null>(null)
   const [buildings, setBuildings] = useState<Building[] | null>(null)
   const [viewing, setViewing] = useState<Building | null>(null)
@@ -33,23 +34,23 @@ function App () {
 
   const currentTime = customTime ? { day: date.day, time: customTime } : now
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     const { year, season, current, finals } = getTerm(date)
     if (current) {
-      quarters.current
-        .get(year, season)
-        .then(courses =>
+      const courses = await quarters.current.get(year, season)
+      if (courses) {
+        setBuildings(
           coursesToClassrooms(courses, { monday: date.monday, finals })
         )
-        .then(setBuildings)
-    } else {
-      setBuildings([])
+        return
+      }
     }
-  }, [+date])
+    setBuildings(Object.values(defaultBuildings()))
+  }, [date.id])
 
   return buildings ? (
     <>
-      <Calendar />
+      <Calendar date={date} onDate={setDate} />
       <div class='buildings' ref={scrollWrapper ? undefined : setScrollWrapper}>
         <div
           class='scroll-area'

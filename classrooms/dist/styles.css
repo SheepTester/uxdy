@@ -234,7 +234,10 @@ select:not(:disabled) {
   cursor: pointer;
 }
 .calendar-day:focus-within {
-  background-color: blue;
+  outline: 1px solid blue;
+}
+.calendar-selected {
+  background-color: red;
 }
 .calendar-finals-day {
   color: pink;

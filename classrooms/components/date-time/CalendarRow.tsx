@@ -71,12 +71,16 @@ export type CalendarRowProps = {
   termDays: TermDays
   monday: Day
   month?: number
+  date: Day
+  onDate: (date: Day) => void
   style?: JSX.CSSProperties
 }
 export function CalendarRow ({
   termDays,
   monday,
   month,
+  date,
+  onDate,
   style
 }: CalendarRowProps) {
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
@@ -96,9 +100,38 @@ export function CalendarRow ({
           <label
             class={`calendar-item calendar-day ${
               day >= termDays.finals ? 'calendar-finals-day' : ''
-            }`}
+            } ${day.id === date.id ? 'calendar-selected' : ''}`}
           >
-            <input type='radio' class='visually-hidden' name='calendar-day' />
+            <input
+              type='radio'
+              class='visually-hidden'
+              name='calendar-day'
+              onKeyDown={e => {
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                  // TODO: This is very finicky
+                  const up = e.key === 'ArrowUp'
+                  onDate(day.add(up ? -7 : 7))
+                  e.preventDefault()
+                  let nextLabel: Element | null | undefined =
+                    e.currentTarget.parentElement?.parentElement
+                  do {
+                    nextLabel = up
+                      ? nextLabel?.previousElementSibling
+                      : nextLabel?.nextElementSibling
+                    if (nextLabel?.className === 'calendar-row') {
+                      const radio =
+                        nextLabel.children[i + 1].querySelector('input')
+                      if (radio) {
+                        radio.focus()
+                        break
+                      }
+                    }
+                  } while (nextLabel)
+                }
+              }}
+              onInput={() => onDate(day)}
+              checked={day.id === date.id}
+            />
             {day.date}
           </label>
         )

@@ -175,6 +175,11 @@ export type Building = {
   rooms: Record<string, RoomMeeting[]>
 }
 
+/** Always have Center Hall defined so the map can scroll to it. */
+export const defaultBuildings = (): Record<string, Building> => ({
+  CENTR: { name: 'CENTR', rooms: {} }
+})
+
 /**
  * Allows more context for what meetings to show. By default, this only shows
  * regular meetings, such as lectures, and won't include single-day meetings
@@ -199,7 +204,7 @@ export function coursesToClassrooms (
   { finals, monday }: CoursesToClassroomsOptions = {}
 ): Building[] {
   const nextMonday = monday?.add(7)
-  const buildings: Record<string, Building> = {}
+  const buildings = defaultBuildings()
   for (const [i, { code, groups }] of courses.entries()) {
     for (const [j, { sections, meetings, exams }] of groups.entries()) {
       const groupCapacity = sections.reduce(
