@@ -4,7 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { render } from 'preact'
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { getTerm, termName } from '../terms/index.ts'
 import { Day } from '../util/Day.ts'
 import { Time } from '../util/Time.ts'
@@ -19,9 +19,7 @@ import {
   PADDING,
   mapPosition
 } from './lib/building-locations.ts'
-import { Building } from './lib/coursesFromFile.ts'
 import {
-  Buildings,
   coursesToClassrooms,
   defaultBuildings
 } from './lib/coursesToClassrooms.ts'
@@ -30,9 +28,9 @@ import { QuarterCache } from './lib/QuarterCache.ts'
 
 function App () {
   const quarters = useRef(new QuarterCache())
-  const [date, setDate] = useState(Day.today()) // TEMP
+  const [date, setDate] = useState(Day.today())
   const [customTime, setCustomTime] = useState<Time | null>(null)
-  const [buildings, setBuildings] = useState<Buildings | null>(null)
+  const [buildings, setBuildings] = useState(defaultBuildings)
   const [viewing, setViewing] = useState<string | null>(null)
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const [notice, setNotice] = useState('Loading...')
@@ -49,10 +47,9 @@ function App () {
       const needToFetch = await Promise.race([
         promise.then(() => false),
         // Can't do Promise.resolve(true) because that's faster than
-        // resolved.then(() => false), probably for event loop reasons.
+        // resolved.then(() => false), probably for event loop reasons
         Promise.resolve().then(() => true)
       ])
-      console.log(needToFetch)
       if (needToFetch) {
         setNotice('Loading...')
       }
@@ -75,7 +72,6 @@ function App () {
           : 'Summer break.'
       )
     }
-    setBuildings(defaultBuildings())
     setViewing(null)
   }, [date.id])
 

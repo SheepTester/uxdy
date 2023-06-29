@@ -88,6 +88,7 @@ export function Calendar ({ date, onDate }: CalendarProps) {
             }
           }}
         />
+        <button onClick={() => onDate(Day.today())}>Today</button>
       </div>
       <div class='calendar-scroll-area'>
         <CalendarHeaderRow name='Week' />
