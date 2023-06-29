@@ -3,7 +3,8 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { ComponentChildren, JSX } from 'preact'
+import { ComponentChildren } from 'preact'
+import { useEffect, useRef } from 'preact/hooks'
 import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
 
@@ -25,10 +26,14 @@ export function CalendarHeaderRow ({ name }: CalendarHeaderRowProps) {
 
 type CalendarHeadingRowProps = {
   children?: ComponentChildren
+  class?: string
 }
-function CalendarHeadingRow ({ children }: CalendarHeadingRowProps) {
+function CalendarHeadingRow ({
+  children,
+  class: className = ''
+}: CalendarHeadingRowProps) {
   return (
-    <div class='calendar-heading-row'>
+    <div class={`calendar-heading-row ${className}`}>
       <div class='calendar-week-num'></div>
       {children}
     </div>
@@ -44,7 +49,7 @@ export function CalendarQuarterHeadingRow ({
   season
 }: CalendarQuarterHeadingRowProps) {
   return (
-    <CalendarHeadingRow>
+    <CalendarHeadingRow class='calendar-quarter-heading-row'>
       <h2 class='calendar-heading calendar-quarter-heading'>
         {termCode(year, season)}: {termName(year, season)}
       </h2>
@@ -59,7 +64,7 @@ export function CalendarMonthHeadingRow ({
   month
 }: CalendarMonthHeadingRowProps) {
   return (
-    <CalendarHeadingRow>
+    <CalendarHeadingRow class='calendar-month-heading-row'>
       <h3 class='calendar-heading calendar-month-heading'>
         {Day.monthName(month)}
       </h3>
@@ -67,13 +72,16 @@ export function CalendarMonthHeadingRow ({
   )
 }
 
+/** Height of the calendar header. */
+const HEADER_HEIGHT = 31
+
 export type CalendarRowProps = {
   termDays: TermDays
   monday: Day
   month?: number
   date: Day
   onDate: (date: Day) => void
-  style?: JSX.CSSProperties
+  scrollToDate: number | null
 }
 export function CalendarRow ({
   termDays,
@@ -81,12 +89,39 @@ export function CalendarRow ({
   month,
   date,
   onDate,
-  style
+  scrollToDate
 }: CalendarRowProps) {
+  const ref = useRef<HTMLDivElement>(null)
+  const div = ref.current
+
+  useEffect(() => {
+    // Shouldn't need to adjust scroll on resize since there's no text wrapping
+    // in the calendar
+    if (
+      div?.parentElement &&
+      scrollToDate &&
+      date >= monday &&
+      date < monday.add(7)
+    ) {
+      const scrollRect = div.parentElement.getBoundingClientRect()
+      const rowRect = div.getBoundingClientRect()
+      // offsetTop is the y-position of the div relative to the top of the
+      // scroll contents
+      div.parentElement.scrollTo({
+        top:
+          div.offsetTop -
+          HEADER_HEIGHT -
+          (scrollRect.height - HEADER_HEIGHT - rowRect.height) / 2,
+        // `scrollToDate` is only 1 when the web page first loads
+        behavior: scrollToDate === 1 ? 'auto' : 'smooth'
+      })
+    }
+  }, [div, scrollToDate])
+
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
   return (
-    <div class='calendar-row' style={style}>
-      <div class='calendar-week-num'>{week === 11 ? 'Final' : week}</div>
+    <div class='calendar-row' ref={ref}>
+      <div class='calendar-week-num'>{week === 11 ? 'FI' : week}</div>
       {DAY_NUMS.map(i => {
         const day = monday.add(i)
         if (

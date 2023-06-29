@@ -30,6 +30,7 @@ function App () {
   const quarters = useRef(new QuarterCache())
   const [date, setDate] = useState(Day.today())
   const [customTime, setCustomTime] = useState<Time | null>(null)
+  const [scrollToDate, setScrollToDate] = useState<number | null>(1)
   const [buildings, setBuildings] = useState(defaultBuildings)
   const [viewing, setViewing] = useState<string | null>(null)
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
@@ -77,7 +78,20 @@ function App () {
 
   return (
     <>
-      <Calendar date={date} onDate={setDate} />
+      <Calendar
+        date={date}
+        onDate={(date, scrollToDate) => {
+          setDate(date)
+          if (scrollToDate) {
+            // Force useEffect to run again, if necessary. Start counting from 2
+            // to reserve `scrollToDate = 1` to mean "app just loaded"
+            setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
+          } else {
+            setScrollToDate(null)
+          }
+        }}
+        scrollToDate={scrollToDate}
+      />
       <div class='buildings-wrapper'>
         <p class={`notice ${noticeVisible ? 'notice-visible' : ''}`}>
           <span class='notice-text'>{notice}</span>

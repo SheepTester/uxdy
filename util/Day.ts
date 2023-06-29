@@ -136,7 +136,11 @@ export class Day {
 
   static today (): Day {
     const today = new Date()
-    return Day.from(today.getFullYear(), today.getMonth() + 1, today.getDate())
+    return Day.from(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate()
+    ).add(-14) // TEMP
   }
 
   static parse (str: string): Day | null {

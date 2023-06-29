@@ -228,20 +228,22 @@ select:not(:disabled) {
 /* TEMP */
 .calendar {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 20px;
+  right: 20px;
   width: 300px;
   background-color: black;
   z-index: 5;
 }
 .calendar-scroll-area {
   overflow: auto;
-  height: 500px;
+  height: 300px;
+  /* Needed for offsetTop; see CalendarRow */
+  position: relative;
 }
 .calendar-row {
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 30px;
 }
 .calendar-header-row {
   position: sticky;
@@ -250,7 +252,7 @@ select:not(:disabled) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 .calendar-week-num {
-  width: 41.5px;
+  width: 29px;
   flex: none;
   align-self: stretch;
   margin-right: auto;
@@ -284,6 +286,13 @@ select:not(:disabled) {
 }
 .calendar-heading-row {
   display: flex;
+  align-items: flex-end;
+}
+.calendar-quarter-heading-row {
+  height: 60px;
+}
+.calendar-month-heading-row {
+  height: 30px;
 }
 .calendar-heading {
   margin: 0;
@@ -292,10 +301,10 @@ select:not(:disabled) {
   text-align: center;
 }
 .calendar-quarter-heading {
-  margin-top: 40px;
+  font-size: 20px;
 }
 .calendar-month-heading {
-  margin-top: 10px;
+  font-size: 1em;
 }
 
 .room-list {

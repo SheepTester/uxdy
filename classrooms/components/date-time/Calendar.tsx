@@ -18,8 +18,15 @@ type TermCalendarProps = {
   season: Season
   date: Day
   onDate: (date: Day) => void
+  scrollToDate: number | null
 }
-function TermCalendar ({ year, season, date, onDate }: TermCalendarProps) {
+function TermCalendar ({
+  year,
+  season,
+  date,
+  onDate,
+  scrollToDate
+}: TermCalendarProps) {
   const termDays = getTermDays(year, season)
 
   let month: number = termDays.start.monday.month
@@ -39,6 +46,7 @@ function TermCalendar ({ year, season, date, onDate }: TermCalendarProps) {
           month={month}
           date={date}
           onDate={onDate}
+          scrollToDate={scrollToDate}
           key={monday.id}
         />
       )
@@ -55,6 +63,7 @@ function TermCalendar ({ year, season, date, onDate }: TermCalendarProps) {
           month={month}
           date={date}
           onDate={onDate}
+          scrollToDate={scrollToDate}
           key={`new month ${monday.id}`}
         />
       )
@@ -71,9 +80,10 @@ function TermCalendar ({ year, season, date, onDate }: TermCalendarProps) {
 
 export type CalendarProps = {
   date: Day
-  onDate: (date: Day) => void
+  onDate: (date: Day, scrollToDate?: boolean) => void
+  scrollToDate: number | null
 }
-export function Calendar ({ date, onDate }: CalendarProps) {
+export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
   return (
     <div class='calendar'>
       <div>
@@ -84,19 +94,49 @@ export function Calendar ({ date, onDate }: CalendarProps) {
           onInput={e => {
             const date = Day.parse(e.currentTarget.value)
             if (date) {
-              onDate(date)
+              onDate(date, true)
             }
           }}
         />
-        <button onClick={() => onDate(Day.today())}>Today</button>
+        <button onClick={() => onDate(Day.today(), true)}>Today</button>
       </div>
       <div class='calendar-scroll-area'>
-        <CalendarHeaderRow name='Week' />
-        <TermCalendar year={2022} season='FA' date={date} onDate={onDate} />
-        <TermCalendar year={2023} season='WI' date={date} onDate={onDate} />
-        <TermCalendar year={2023} season='SP' date={date} onDate={onDate} />
-        <TermCalendar year={2023} season='S1' date={date} onDate={onDate} />
-        <TermCalendar year={2023} season='S2' date={date} onDate={onDate} />
+        <CalendarHeaderRow name='Wk' />
+        <TermCalendar
+          year={2022}
+          season='FA'
+          date={date}
+          onDate={onDate}
+          scrollToDate={scrollToDate}
+        />
+        <TermCalendar
+          year={2023}
+          season='WI'
+          date={date}
+          onDate={onDate}
+          scrollToDate={scrollToDate}
+        />
+        <TermCalendar
+          year={2023}
+          season='SP'
+          date={date}
+          onDate={onDate}
+          scrollToDate={scrollToDate}
+        />
+        <TermCalendar
+          year={2023}
+          season='S1'
+          date={date}
+          onDate={onDate}
+          scrollToDate={scrollToDate}
+        />
+        <TermCalendar
+          year={2023}
+          season='S2'
+          date={date}
+          onDate={onDate}
+          scrollToDate={scrollToDate}
+        />
       </div>
     </div>
   )
