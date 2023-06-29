@@ -4,15 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { JSX } from 'preact'
-import { useEffect, useState } from 'preact/hooks'
-import {
-  getTermDays,
-  Season,
-  termCode,
-  termName
-} from '../../../terms/index.ts'
+import { getTermDays, Season } from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
-import { useRect } from '../../../util/useRect.ts'
 import {
   CalendarHeaderRow,
   CalendarMonthHeadingRow,
@@ -83,6 +76,19 @@ export type CalendarProps = {
 export function Calendar ({ date, onDate }: CalendarProps) {
   return (
     <div class='calendar'>
+      <div>
+        <input
+          type='date'
+          name='date'
+          value={date.toString()}
+          onInput={e => {
+            const date = Day.parse(e.currentTarget.value)
+            if (date) {
+              onDate(date)
+            }
+          }}
+        />
+      </div>
       <div class='calendar-scroll-area'>
         <CalendarHeaderRow name='Week' />
         <TermCalendar year={2022} season='FA' date={date} onDate={onDate} />

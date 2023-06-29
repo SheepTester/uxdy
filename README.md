@@ -102,6 +102,8 @@ Planned uses:
 - **Finding buildings by their code on the map.** Where is RECGM? (Feature: search buildings by code.)
 - **Finding what classes are taught by a professor this quarter.** What classes is Sworder teaching next quarter? (Feature: search sections by professor.)
 - **Looking up the lecture location for a class.** I'll crash ECE 100. Where is it? I'm too lazy to sign into WebReg, and searching up courses on there is slow. (Feature: search courses by course code, list meeting times/locations for a course.)
+- **Getting the start and end dates of each quarter.** The internship application asks when I'm available to start. When does spring end? I'm too lazy to find that enrollment calendar website. (Feature: calendar view with quarters marked out.)
+- **Converting between month/day dates and quarter weeks.** May 15, what week is that? (Feature: calendar view with week numbers.)
 
 Features to add:
 

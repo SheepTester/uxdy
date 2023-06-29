@@ -2,6 +2,8 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
+// NOTE: Currently unused
+
 import { RefObject } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 
