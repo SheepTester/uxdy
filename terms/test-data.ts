@@ -1,4 +1,4 @@
-import { Day } from '../util/day.ts'
+import { Day } from '../util/Day.ts'
 import { Season } from './index.ts'
 
 /**

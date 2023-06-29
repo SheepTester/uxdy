@@ -7,7 +7,7 @@
 import { ComponentChildren, render } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import { Course, Group, Scraper } from '../scrape.ts'
-import { Period } from '../../util/time.ts'
+import { Period } from '../../util/Time.ts'
 
 const params = new URL(window.location.href).searchParams
 const term = params.get('p1')

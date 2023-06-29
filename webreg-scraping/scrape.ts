@@ -2,7 +2,7 @@
 
 import { join as joinPath } from 'std/path/mod.ts'
 import { ExamCodes, InstructionCodes } from './meeting-types.ts'
-import { Period, Time } from '../util/time.ts'
+import { Period, Time } from '../util/Time.ts'
 
 export type RawSearchLoadSubjectResult = {
   LONG_DESC: string

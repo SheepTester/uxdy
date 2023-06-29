@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks'
-import { Time } from '../util/time.ts'
+import { Time } from '../util/Time.ts'
 import { RoomMeeting } from './from-file.ts'
 
 export type Now = {

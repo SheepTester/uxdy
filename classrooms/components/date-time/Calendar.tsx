@@ -11,7 +11,7 @@ import {
   termCode,
   termName
 } from '../../../terms/index.ts'
-import { Day } from '../../../util/day.ts'
+import { Day } from '../../../util/Day.ts'
 import { useRect } from '../../../util/useRect.ts'
 import {
   CalendarHeaderRow,

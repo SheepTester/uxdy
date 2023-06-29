@@ -1,4 +1,4 @@
-import { Day, DAY_NUMS } from './day.ts'
+import { Day, DAY_NUMS } from './Day.ts'
 
 /**
  * A time.

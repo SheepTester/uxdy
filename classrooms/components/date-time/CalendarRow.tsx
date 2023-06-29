@@ -5,7 +5,7 @@
 
 import { ComponentChildren, JSX } from 'preact'
 import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
-import { Day, DAY_NUMS } from '../../../util/day.ts'
+import { Day, DAY_NUMS } from '../../../util/Day.ts'
 
 export type CalendarHeaderRowProps = {
   name?: string

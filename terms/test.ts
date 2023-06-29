@@ -1,5 +1,5 @@
 import { assertEquals } from 'std/testing/asserts.ts'
-import { Day } from '../util/day.ts'
+import { Day } from '../util/Day.ts'
 import { getTerm, getTermDays } from './index.ts'
 import { data } from './test-data.ts'
 

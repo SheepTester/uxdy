@@ -4,7 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
-import { Day } from '../../util/day.ts'
+import { Day } from '../../util/Day.ts'
 import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
 import { RoomMeeting } from '../from-file.ts'
 import { Now } from '../now.ts'

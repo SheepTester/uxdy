@@ -5,7 +5,7 @@ import { ensureDir } from 'std/fs/ensure_dir.ts'
 import { writeAll } from 'std/streams/write_all.ts'
 import { exams, instructionTypes } from './meeting-types.ts'
 import { Scraper } from './scrape.ts'
-import { displayProgress } from '../util/display-progress.ts'
+import { displayProgress } from '../util/displayProgress.ts'
 
 await ensureDir('./webreg-data2/courses/')
 
