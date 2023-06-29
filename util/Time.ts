@@ -17,10 +17,13 @@ export class Time {
   /**
    * Displays the time in a 12-hour format Americans are familiar with.
    */
-  toString (): string {
-    return `${((this.hour + 11) % 12) + 1}:${this.minute
-      .toString()
-      .padStart(2, '0')} ${this.hour < 12 ? 'a' : 'p'}m`
+  toString (hour24 = false): string {
+    const minute = this.minute.toString().padStart(2, '0')
+    return hour24
+      ? `${this.hour.toString().padStart(2, '0')}:${minute}`
+      : `${((this.hour + 11) % 12) + 1}:${minute} ${
+          this.hour < 12 ? 'a' : 'p'
+        }m`
   }
 
   /**
@@ -34,6 +37,23 @@ export class Time {
   /** Create a `Time` from the number of minutes since 00:00. */
   static from (minutes: number): Time {
     return new Time(Math.floor(minutes / 60), minutes % 60)
+  }
+
+  /** Parses a 24-hour timestamp. */
+  static parse24 (string: string): Time | null {
+    const [hour, minute] = string.split(':').map(Number)
+    if (
+      Number.isInteger(hour) &&
+      hour >= 0 &&
+      hour < 24 &&
+      Number.isInteger(minute) &&
+      minute >= 0 &&
+      minute < 60
+    ) {
+      return new Time(hour, minute)
+    } else {
+      return null
+    }
   }
 }
 

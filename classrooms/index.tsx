@@ -23,7 +23,7 @@ import {
   coursesToClassrooms,
   defaultBuildings
 } from './lib/coursesToClassrooms.ts'
-import { useNow } from './lib/now.ts'
+import { Now, useNow } from './lib/now.ts'
 import { QuarterCache } from './lib/QuarterCache.ts'
 
 function App () {
@@ -36,9 +36,10 @@ function App () {
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const [notice, setNotice] = useState('Loading...')
   const [noticeVisible, setNoticeVisible] = useState(true)
-  const now = useNow()
-
-  const currentTime = customTime ? { day: date.day, time: customTime } : now
+  const { time: realTime } = useNow()
+  // TODO: Use Day + Time instead of Now in the components that currently use
+  // it, since they're now independent
+  const currentTime: Now = { day: date.day, time: customTime ?? realTime }
 
   useAsyncEffect(async () => {
     const { year, season, current, finals } = getTerm(date)
@@ -92,6 +93,33 @@ function App () {
         }}
         scrollToDate={scrollToDate}
       />
+      <div>
+        <label>
+          <input
+            type='checkbox'
+            checked={!customTime}
+            onInput={e => {
+              if (e.currentTarget.checked) {
+                setCustomTime(null)
+              } else {
+                setCustomTime(realTime)
+              }
+            }}
+          />
+          Use current time
+        </label>
+        <input
+          type='time'
+          value={currentTime.time.toString(true)}
+          onInput={e => {
+            const time = Time.parse24(e.currentTarget.value)
+            if (time) {
+              setCustomTime(time)
+            }
+          }}
+          disabled={!customTime}
+        />
+      </div>
       <div class='buildings-wrapper'>
         <p class={`notice ${noticeVisible ? 'notice-visible' : ''}`}>
           <span class='notice-text'>{notice}</span>
