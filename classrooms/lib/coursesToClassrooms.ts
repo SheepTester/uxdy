@@ -8,8 +8,11 @@ import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
 import { Building } from './coursesFromFile.ts'
 
+/** Maps building codes to `Building`s. */
+export type Buildings = Record<string, Building>
+
 /** Always have Center Hall defined so the map can scroll to it. */
-export const defaultBuildings = (): Record<string, Building> => ({
+export const defaultBuildings = (): Buildings => ({
   CENTR: { name: 'CENTR', rooms: {} }
 })
 
@@ -35,7 +38,7 @@ export type CoursesToClassroomsOptions = {
 export function coursesToClassrooms (
   courses: Course[],
   { finals, monday }: CoursesToClassroomsOptions = {}
-): Building[] {
+): Buildings {
   const nextMonday = monday?.add(7)
   const buildings = defaultBuildings()
   for (const [i, { code, groups }] of courses.entries()) {
@@ -87,5 +90,5 @@ export function coursesToClassrooms (
       }
     }
   }
-  return Object.values(buildings)
+  return buildings
 }

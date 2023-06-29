@@ -18,7 +18,7 @@ import { Now, used } from '../lib/now.ts'
 type BuildingButtonProps = {
   now?: Now | null
   building: Building
-  onSelect: (building: Building) => void
+  onSelect: (building: string) => void
   scrollWrapper: Element
   selected: boolean
 }
@@ -58,7 +58,7 @@ export function BuildingButton ({
         top: `${y - northeast.y + PADDING}px`
       }}
       ref={ref}
-      onClick={() => onSelect(building)}
+      onClick={() => onSelect(building.name)}
     >
       {building.name}
       <span class='room-count'>

@@ -21,6 +21,7 @@ import {
 } from './lib/building-locations.ts'
 import { Building } from './lib/coursesFromFile.ts'
 import {
+  Buildings,
   coursesToClassrooms,
   defaultBuildings
 } from './lib/coursesToClassrooms.ts'
@@ -31,8 +32,8 @@ function App () {
   const quarters = useRef(new QuarterCache())
   const [date, setDate] = useState(Day.today()) // TEMP
   const [customTime, setCustomTime] = useState<Time | null>(null)
-  const [buildings, setBuildings] = useState<Building[] | null>(null)
-  const [viewing, setViewing] = useState<Building | null>(null)
+  const [buildings, setBuildings] = useState<Buildings | null>(null)
+  const [viewing, setViewing] = useState<string | null>(null)
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const now = useNow()
 
@@ -49,7 +50,7 @@ function App () {
         return
       }
     }
-    setBuildings(Object.values(defaultBuildings()))
+    setBuildings(defaultBuildings())
   }, [date.id])
 
   return buildings ? (
@@ -66,14 +67,14 @@ function App () {
           }}
         />
         {scrollWrapper &&
-          buildings.map(building => (
+          Object.values(buildings).map(building => (
             <BuildingButton
               key={building.name}
               now={currentTime}
               building={building}
               onSelect={setViewing}
               scrollWrapper={scrollWrapper}
-              selected={building === viewing}
+              selected={building.name === viewing}
             />
           ))}
       </div>
@@ -82,9 +83,9 @@ function App () {
           <RoomList
             // Force state to reset on prop change
             // https://stackoverflow.com/a/53313430
-            key={viewing.name}
+            key={viewing}
             now={currentTime}
-            building={viewing}
+            building={buildings[viewing]}
             onClose={() => setViewing(null)}
             class='panel-contents'
           />

@@ -193,7 +193,7 @@ select:not(:disabled) {
   position: fixed;
   top: 0;
   right: 0;
-  width: 500px;
+  width: 300px;
   background-color: black;
   z-index: 5;
 }
@@ -203,6 +203,7 @@ select:not(:disabled) {
 }
 .calendar-row {
   display: flex;
+  align-items: center;
   height: 40px;
 }
 .calendar-header-row {
@@ -213,6 +214,8 @@ select:not(:disabled) {
 }
 .calendar-week-num {
   width: 41.5px;
+  flex: none;
+  align-self: stretch;
   margin-right: auto;
   display: flex;
   align-items: center;
@@ -222,8 +225,8 @@ select:not(:disabled) {
   color: rgba(255, 255, 255, 0.5);
 }
 .calendar-item {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -249,6 +252,7 @@ select:not(:disabled) {
   margin: 0;
   margin-right: auto;
   font-weight: normal;
+  text-align: center;
 }
 .calendar-quarter-heading {
   margin-top: 40px;
