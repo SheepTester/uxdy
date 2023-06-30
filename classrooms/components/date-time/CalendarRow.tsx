@@ -8,18 +8,19 @@ import { useEffect, useRef } from 'preact/hooks'
 import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
 
-export type CalendarHeaderRowProps = {
-  name?: string
-}
-export function CalendarHeaderRow ({ name }: CalendarHeaderRowProps) {
+export type CalendarHeaderRowProps = {}
+export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
   return (
     <div class='calendar-row calendar-header-row'>
-      <div class='calendar-week-num'>{name}</div>
+      <div class='calendar-week-num'>
+        <span>Wk</span>
+      </div>
       {DAY_NUMS.map(day => (
         <div class='calendar-item calendar-week-day'>
           {Day.dayName(day + 1, 'short', 'en-US')}
         </div>
       ))}
+      <div class='calendar-header-line' />
     </div>
   )
 }
@@ -33,7 +34,7 @@ function CalendarHeadingRow ({
   class: className = ''
 }: CalendarHeadingRowProps) {
   return (
-    <div class={`calendar-heading-row ${className}`}>
+    <div class={`calendar-row calendar-heading-row ${className}`}>
       <div class='calendar-week-num'></div>
       {children}
     </div>
@@ -73,7 +74,7 @@ export function CalendarMonthHeadingRow ({
 }
 
 /** Height of the calendar header. */
-const HEADER_HEIGHT = 31
+const HEADER_HEIGHT = 30
 
 export type CalendarRowProps = {
   termDays: TermDays
@@ -120,7 +121,7 @@ export function CalendarRow ({
 
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
   return (
-    <div class='calendar-row' ref={ref}>
+    <div class='calendar-row calendar-date-row' ref={ref}>
       <div class='calendar-week-num'>{week === 11 ? 'FI' : week}</div>
       {DAY_NUMS.map(i => {
         const day = monday.add(i)
@@ -153,7 +154,7 @@ export function CalendarRow ({
                     nextLabel = up
                       ? nextLabel?.previousElementSibling
                       : nextLabel?.nextElementSibling
-                    if (nextLabel?.className === 'calendar-row') {
+                    if (nextLabel?.classList.contains('calendar-date-row')) {
                       const radio =
                         nextLabel.children[i + 1].querySelector('input')
                       if (radio) {

@@ -11,6 +11,7 @@ import { Time } from '../util/Time.ts'
 import { useAsyncEffect } from '../util/useAsyncEffect.ts'
 import { BuildingButton } from './components/BuildingButton.tsx'
 import { Calendar } from './components/date-time/Calendar.tsx'
+import { DateTimePicker } from './components/date-time/DateTimePicker.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
 import { RoomList } from './components/RoomList.tsx'
 import {
@@ -47,23 +48,41 @@ function App () {
     if (current) {
       const promise = quarters.current.get(year, season)
       const needToFetch = await Promise.race([
-        promise.then(() => false),
-        // Can't do Promise.resolve(true) because that's faster than
-        // resolved.then(() => false), probably for event loop reasons
-        Promise.resolve().then(() => true)
+        promise.then(() => false).catch(() => false),
+        // Probably for event loop reasons, I need to add some dummy .then's so
+        // that it doesn't resolve faster than an already fulfilled
+        // .then(.catch)
+        Promise.resolve()
+          .then(() => {})
+          .then(() => true)
       ])
       if (needToFetch) {
         setNotice('Loading...')
       }
-      const courses = await promise
-      if (courses) {
-        setBuildings(
-          coursesToClassrooms(courses, { monday: date.monday, finals })
+      try {
+        const courses = await promise
+        if (courses) {
+          setBuildings(
+            coursesToClassrooms(courses, { monday: date.monday, finals })
+          )
+          setNoticeVisible(false)
+          return
+        } else {
+          setNotice(`Schedules aren't available for ${termName(year, season)}.`)
+        }
+      } catch (error) {
+        console.error(error)
+        setNotice(
+          needToFetch
+            ? `I couldn't load schedules for ${termName(
+                year,
+                season
+              )}. Is ResNet failing you again?`
+            : `For whatever reason, I couldn't load the schedules for ${termName(
+                year,
+                season
+              )}. Something weird happened. If you're a CSE major, can you check the console to see what's wrong?`
         )
-        setNoticeVisible(false)
-        return
-      } else {
-        setNotice(`Schedules aren't available for ${termName(year, season)}.`)
       }
     } else {
       setNotice(
@@ -79,7 +98,7 @@ function App () {
 
   return (
     <>
-      <Calendar
+      <DateTimePicker
         date={date}
         onDate={(date, scrollToDate) => {
           setDate(date)
@@ -92,34 +111,10 @@ function App () {
           }
         }}
         scrollToDate={scrollToDate}
+        realTime={realTime}
+        customTime={customTime}
+        onCustomTime={setCustomTime}
       />
-      <div>
-        <label>
-          <input
-            type='checkbox'
-            checked={!customTime}
-            onInput={e => {
-              if (e.currentTarget.checked) {
-                setCustomTime(null)
-              } else {
-                setCustomTime(realTime)
-              }
-            }}
-          />
-          Use current time
-        </label>
-        <input
-          type='time'
-          value={currentTime.time.toString(true)}
-          onInput={e => {
-            const time = Time.parse24(e.currentTarget.value)
-            if (time) {
-              setCustomTime(time)
-            }
-          }}
-          disabled={!customTime}
-        />
-      </div>
       <div class='buildings-wrapper'>
         <p class={`notice ${noticeVisible ? 'notice-visible' : ''}`}>
           <span class='notice-text'>{notice}</span>

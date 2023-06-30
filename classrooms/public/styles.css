@@ -53,6 +53,7 @@ body {
   overflow: hidden;
 }
 button,
+input,
 select {
   -webkit-appearance: none;
   appearance: none;
@@ -62,7 +63,8 @@ select {
   font: inherit;
 }
 button:not(:disabled),
-select:not(:disabled) {
+select:not(:disabled),
+input[type='checkbox']:not(:disabled) {
   cursor: pointer;
 }
 
@@ -74,6 +76,21 @@ select:not(:disabled) {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+input[type='checkbox'] {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
+}
+input[type='checkbox']:checked {
+  border-color: transparent;
+  background-color: rgba(0, 184, 255, 0.3);
+  background-image: url('./material-check-white.svg');
+  background-position: center;
+  background-size: cover;
 }
 
 #root {
@@ -113,6 +130,8 @@ select:not(:disabled) {
   visibility: visible;
 }
 .notice-text {
+  display: block;
+  max-width: 500px;
   transform: scale(0.9);
   transition: transform 0.5s;
 }
@@ -225,20 +244,23 @@ select:not(:disabled) {
   }
 }
 
-/* TEMP */
-.calendar {
+.date-time-picker {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 300px;
-  background-color: black;
   z-index: 5;
+  top: 0;
+  right: 0;
+  width: 300px;
+  background-color: var(--modal);
+  margin: 20px;
+  border-radius: 15px;
 }
 .calendar-scroll-area {
   overflow: auto;
   height: 300px;
   /* Needed for offsetTop; see CalendarRow */
   position: relative;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 .calendar-row {
   display: flex;
@@ -248,8 +270,8 @@ select:not(:disabled) {
 .calendar-header-row {
   position: sticky;
   top: 0;
-  background-color: black;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--modal);
+  z-index: 5;
 }
 .calendar-week-num {
   width: 29px;
@@ -259,9 +281,17 @@ select:not(:disabled) {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid transparent;
   padding-right: 10px;
   color: rgba(255, 255, 255, 0.5);
+}
+.calendar-date-row .calendar-week-num {
+  border-right-color: var(--line);
+}
+.calendar-header-row .calendar-week-num span {
+  display: block;
+  position: relative;
+  top: 60px;
 }
 .calendar-item {
   width: 30px;
@@ -285,14 +315,26 @@ select:not(:disabled) {
   color: pink;
 }
 .calendar-heading-row {
-  display: flex;
-  align-items: flex-end;
+  position: sticky;
+  background-color: var(--modal);
+}
+.calendar-header-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 90px;
+  border-bottom: 1px solid var(--line);
 }
 .calendar-quarter-heading-row {
-  height: 60px;
+  margin-top: 30px;
+  top: 30px;
 }
 .calendar-month-heading-row {
   height: 30px;
+  top: 60px;
+}
+.calendar-heading-row:nth-child(2) {
+  margin-top: 0;
 }
 .calendar-heading {
   margin: 0;
@@ -305,6 +347,38 @@ select:not(:disabled) {
 }
 .calendar-month-heading {
   font-size: 1em;
+}
+
+.date-time-flex {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.date-input,
+.time-input,
+.today-btn {
+  height: 40px;
+  padding: 0 15px;
+  border-radius: 10px;
+}
+.date-input,
+.time-input {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.today-btn {
+  background-color: rgba(0, 184, 255, 0.3);
+}
+.checkbox-label,
+.date-input {
+  flex: auto;
+}
+.time-input:disabled {
+  opacity: 0.5;
 }
 
 .room-list {
