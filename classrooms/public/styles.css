@@ -185,6 +185,7 @@ input[type='checkbox']:checked {
   border-radius: 50px;
   padding: 2px 5px;
   box-shadow: 0 2px 5px var(--shadow);
+  font-family: var(--normal);
 }
 .in-use {
   color: var(--text);
@@ -266,7 +267,7 @@ input[type='checkbox']:checked {
   z-index: 3;
   border-radius: 10px;
   padding: 10px 15px;
-  transition: opacity 0.5s;
+  transition: opacity 0.2s;
 }
 .date-time-button:disabled {
   opacity: 0;
@@ -290,8 +291,11 @@ input[type='checkbox']:checked {
   font-size: 0.8em;
   font-family: var(--normal);
 }
+.edit-icon {
+  background-image: url('./material-edit-white.svg');
+}
 
-.date-time-picker {
+.date-time-panel {
   position: absolute;
   z-index: 5;
   top: 0;
@@ -303,10 +307,11 @@ input[type='checkbox']:checked {
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.5s, visibility 0.5s;
+  transition: transform 0.2s, opacity 0.2s, visibility 0.2s;
 }
-.date-time-picker-hidden {
-  transform: translate(350px);
+.date-time-panel-hidden {
+  transform: translate(20px);
+  opacity: 0;
   visibility: hidden;
 }
 .calendar-scroll-area {
@@ -431,6 +436,9 @@ input[type='checkbox']:checked {
 .time-input {
   background-color: rgba(255, 255, 255, 0.1);
 }
+.today-btn {
+  font-family: var(--normal);
+}
 .today-btn,
 .icon-btn {
   background-color: rgba(0, 184, 255, 0.3);
@@ -447,6 +455,12 @@ input[type='checkbox']:checked {
   height: 40px;
   border-radius: 50%;
   font-size: 0;
+  background-size: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.close-date-btn {
+  background-image: url('./material-done-white.svg');
 }
 
 .room-list {
@@ -462,12 +476,12 @@ input[type='checkbox']:checked {
   align-items: center;
   background-color: var(--modal);
   border-radius: 15px;
-  transition: transform 0.5s, opacity 0.5s, visibility 0.5s, right 0.5s;
+  transition: transform 0.2s, opacity 0.2s, visibility 0.2s, right 0.2s;
   overflow: auto;
 }
 .room-list-invisible {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(20px);
   visibility: hidden;
 }
 .right-panel-open {
@@ -491,7 +505,7 @@ input[type='checkbox']:checked {
 }
 .schedule-view {
   height: 48px;
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 .building-name .abbrev-heading {
   font-weight: normal;
@@ -512,10 +526,19 @@ input[type='checkbox']:checked {
 .building-name .long {
   transition: opacity 0.5s;
 }
+.building-name .abbrev {
+  opacity: 0.3;
+}
 .schedule-view .abbrev {
   opacity: 1;
 }
 .schedule-view .long {
+  opacity: 0;
+}
+.room-number {
+  transition: opacity 0.5s;
+}
+.list-view .room-number {
   opacity: 0;
 }
 .building-gradient,
@@ -662,6 +685,7 @@ input[type='checkbox']:checked {
 }
 .meeting-time {
   font-size: 0.5em;
+  font-family: var(--normal);
 }
 @media (max-width: 660px) {
   .full-week .meeting-name {

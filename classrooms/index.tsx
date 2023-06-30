@@ -4,7 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { render } from 'preact'
-import { useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { getTerm, termName } from '../terms/index.ts'
 import { Day } from '../util/Day.ts'
 import { Time } from '../util/Time.ts'
@@ -35,6 +35,7 @@ function App () {
   const [scrollToDate, setScrollToDate] = useState<number | null>(1)
   const [buildings, setBuildings] = useState(defaultBuildings)
   const [viewing, setViewing] = useState<string | null>(null)
+  const [lastViewing, setLastViewing] = useState('CENTR')
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const [notice, setNotice] = useState('Loading...')
   const [noticeVisible, setNoticeVisible] = useState(true)
@@ -97,6 +98,13 @@ function App () {
     setViewing(null)
   }, [date.id])
 
+  // Keep last building visible when closing room list
+  useEffect(() => {
+    if (viewing) {
+      setLastViewing(viewing)
+    }
+  }, [viewing])
+
   return (
     <>
       <DateTimeButton
@@ -157,8 +165,10 @@ function App () {
       </div>
       {buildings && (
         <RoomList
+          // Force new elements when building changes
+          key={viewing || lastViewing}
           now={currentTime}
-          building={viewing ? buildings[viewing] : null}
+          building={buildings[viewing || lastViewing]}
           onClose={() => setViewing(null)}
           visible={!!viewing}
           rightPanelOpen={showDate}

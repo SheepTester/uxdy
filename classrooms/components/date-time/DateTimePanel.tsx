@@ -28,7 +28,13 @@ export function DateTimePanel ({
   onClose
 }: DateTimePanelProps) {
   return (
-    <div class={`date-time-picker ${visible ? '' : 'date-time-picker-hidden'}`}>
+    <form
+      class={`date-time-panel ${visible ? '' : 'date-time-panel-hidden'}`}
+      onSubmit={e => {
+        onClose()
+        e.preventDefault()
+      }}
+    >
       <div class='date-time-flex'>
         <input
           type='date'
@@ -42,12 +48,14 @@ export function DateTimePanel ({
           }}
           class='date-input'
         />
-        <button class='today-btn' onClick={() => onDate(Day.today(), true)}>
+        <button
+          type='button'
+          class='today-btn'
+          onClick={() => onDate(Day.today(), true)}
+        >
           Today
         </button>
-        <button class='icon-btn close-date-btn' onClick={onClose}>
-          Close
-        </button>
+        <button class='icon-btn close-date-btn'>Close</button>
       </div>
       <Calendar date={date} onDate={onDate} scrollToDate={scrollToDate} />
       <div class='date-time-flex'>
@@ -78,6 +86,6 @@ export function DateTimePanel ({
           class='time-input'
         />
       </div>
-    </div>
+    </form>
   )
 }

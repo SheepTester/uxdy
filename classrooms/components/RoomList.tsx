@@ -15,7 +15,7 @@ import { Schedule } from './Schedule.tsx'
 
 type RoomListProps = {
   now?: Now | null
-  building: Building | null
+  building: Building
   onClose: () => void
   visible: boolean
   rightPanelOpen: boolean
@@ -28,18 +28,14 @@ export function RoomList ({
   rightPanelOpen
 }: RoomListProps) {
   const [selected, setSelected] = useState<string | null>(null)
-  const [lastBuilding, setLastBuilding] = useState<Building>({
-    name: '',
-    rooms: {}
-  })
+  const [lastRoom, setLastRoom] = useState('')
 
-  // Keep last selected building visible when animating closed
+  // Keep last room number visible when animating back to room list
   useEffect(() => {
-    if (building) {
-      setLastBuilding(building)
+    if (selected) {
+      setLastRoom(selected)
     }
-  }, [building])
-  building ??= lastBuilding
+  }, [selected])
 
   return (
     <div
@@ -59,7 +55,12 @@ export function RoomList ({
         <img class='building-image' src='https://i.imgur.com/PiC2Cb8.jpeg' />
         <AbbrevHeading
           heading='h2'
-          abbrev={`${building.name} ${selected ?? ''}`}
+          abbrev={
+            <span>
+              {building.name}{' '}
+              <span class='room-number'>{selected || lastRoom}</span>
+            </span>
+          }
         >
           Center Hall
         </AbbrevHeading>
@@ -86,7 +87,7 @@ export function RoomList ({
                   onClick={() => setSelected(room)}
                 >
                   <div className='room-name'>
-                    {(building ?? lastBuilding).name} {room}
+                    {building.name} {room}
                   </div>
                   {now && (
                     <div className='current-meeting'>
