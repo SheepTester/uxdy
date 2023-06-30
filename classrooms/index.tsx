@@ -155,21 +155,15 @@ function App () {
             ))}
         </div>
       </div>
-      <div class={`panel ${buildings && viewing ? 'has-rooms' : 'has-info'}`}>
-        {buildings && viewing ? (
-          <RoomList
-            // Force state to reset on prop change
-            // https://stackoverflow.com/a/53313430
-            key={viewing}
-            now={currentTime}
-            building={buildings[viewing]}
-            onClose={() => setViewing(null)}
-            class='panel-contents'
-          />
-        ) : (
-          <InfoPanel class='panel-contents' />
-        )}
-      </div>
+      {buildings && (
+        <RoomList
+          now={currentTime}
+          building={viewing ? buildings[viewing] : null}
+          onClose={() => setViewing(null)}
+          visible={!!viewing}
+          rightPanelOpen={showDate}
+        />
+      )}
     </>
   )
 }

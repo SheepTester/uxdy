@@ -3,32 +3,51 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
 import { colleges } from '../lib/building-locations.ts'
 import { Building, compareRoomNums } from '../lib/coursesFromFile.ts'
 import { Now, used } from '../lib/now.ts'
+import { AbbrevHeading } from './AbbrevHeading.tsx'
 import { BackIcon } from './BackIcon.tsx'
 import { CloseIcon } from './CloseIcon.tsx'
 import { Schedule } from './Schedule.tsx'
 
 type RoomListProps = {
   now?: Now | null
-  building: Building
+  building: Building | null
   onClose: () => void
-  class?: string
+  visible: boolean
+  rightPanelOpen: boolean
 }
 export function RoomList ({
   now,
   building,
   onClose,
-  class: className = ''
+  visible,
+  rightPanelOpen
 }: RoomListProps) {
   const [selected, setSelected] = useState<string | null>(null)
+  const [lastBuilding, setLastBuilding] = useState<Building>({
+    name: '',
+    rooms: {}
+  })
+
+  // Keep last selected building visible when animating closed
+  useEffect(() => {
+    if (building) {
+      setLastBuilding(building)
+    }
+  }, [building])
+  building ??= lastBuilding
 
   return (
-    <div class={`room-list ${className}`}>
-      <h2 class='building-name'>
+    <div
+      class={`room-list ${visible ? '' : 'room-list-invisible'} ${
+        rightPanelOpen ? 'right-panel-open' : ''
+      }`}
+    >
+      <div class={`building-name ${selected ? 'schedule-view' : 'list-view'}`}>
         <button
           class='back'
           onClick={() => setSelected(null)}
@@ -37,11 +56,17 @@ export function RoomList ({
           <BackIcon />
         </button>
         <div class={`building-gradient college-${colleges[building.name]}`} />
-        {building.name} {selected}
+        <img class='building-image' src='https://i.imgur.com/PiC2Cb8.jpeg' />
+        <AbbrevHeading
+          heading='h2'
+          abbrev={`${building.name} ${selected ?? ''}`}
+        >
+          Center Hall
+        </AbbrevHeading>
         <button class='close' onClick={onClose}>
           <CloseIcon />
         </button>
-      </h2>
+      </div>
       {selected ? (
         <Schedule now={now} meetings={building.rooms[selected]} />
       ) : (
@@ -56,12 +81,12 @@ export function RoomList ({
               return (
                 <button
                   class={`room ${
-                    activeMeeting ? (soon ? 'soon' : 'active') : ''
+                    activeMeeting ? (soon ? 'soon' : 'active') : 'inactive'
                   }`}
                   onClick={() => setSelected(room)}
                 >
                   <div className='room-name'>
-                    {building.name} {room}
+                    {(building ?? lastBuilding).name} {room}
                   </div>
                   {now && (
                     <div className='current-meeting'>

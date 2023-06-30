@@ -6,7 +6,7 @@
 import { ComponentChildren } from 'preact'
 
 export type AbbrevHeadingProps = {
-  heading: 'h1' | 'h2' | 'h3'
+  heading: 'h1' | 'h2' | 'h3' | 'span'
   abbrev?: ComponentChildren
   children?: ComponentChildren
   class?: string

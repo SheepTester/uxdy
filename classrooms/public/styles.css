@@ -18,10 +18,11 @@
   --link: #9acfff;
   color-scheme: dark;
 
-  --normal: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  --normal: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
-  --narrow: 'Oswald', Impact, sans-serif;
+  --narrow: 'Oswald', Impact, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
 }
 @media (prefers-color-scheme: light) {
   :root {
@@ -189,25 +190,6 @@ input[type='checkbox']:checked {
   color: var(--text);
 }
 
-.panel {
-  flex: none;
-  display: flex;
-  background-color: var(--modal);
-  overflow: auto;
-  transition: height 0.2s;
-  height: 56px;
-}
-.panel.has-rooms {
-  height: 60vh;
-}
-@media (max-height: 500px) {
-  .panel.has-rooms {
-    height: 300px;
-  }
-}
-.panel-contents {
-  flex: auto;
-}
 .info-panel {
   display: flex;
   flex-direction: row;
@@ -265,9 +247,9 @@ input[type='checkbox']:checked {
 }
 .long {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0.1em;
+  left: 0.2em;
+  right: 0.2em;
   font-size: 0.5em;
   font-family: var(--normal);
 }
@@ -468,33 +450,93 @@ input[type='checkbox']:checked {
 }
 
 .room-list {
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  margin: 0 auto;
+  max-width: 800px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  background-color: var(--modal);
+  border-radius: 15px;
+  transition: transform 0.5s, opacity 0.5s, visibility 0.5s, right 0.5s;
+  overflow: auto;
+}
+.room-list-invisible {
+  opacity: 0;
+  transform: translateY(50px);
+  visibility: hidden;
+}
+.right-panel-open {
+  right: 340px;
 }
 .building-name,
 .rooms,
 .schedule {
   width: 100%;
-  max-width: 800px;
   box-sizing: border-box;
 }
 .building-name {
-  margin: 0;
-  font-weight: normal;
+  height: 150px;
+  flex: none;
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  transition: height 0.5s, margin-bottom 0.5s;
+}
+.schedule-view {
+  height: 48px;
+  margin-bottom: 0;
+}
+.building-name .abbrev-heading {
+  font-weight: normal;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 64px;
+  margin: 20px;
+  transition: margin 0.5s, font-size 0.5s;
+}
+.schedule-view .abbrev-heading {
+  margin: 12px 48px;
   font-size: 24px;
-  padding: 8px;
+}
+.building-name .abbrev,
+.building-name .long {
+  transition: opacity 0.5s;
+}
+.schedule-view .abbrev {
+  opacity: 1;
+}
+.schedule-view .long {
+  opacity: 0;
+}
+.building-gradient,
+.building-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 .building-gradient {
-  width: 24px;
-  height: 24px;
-  margin: 12px;
-  border-radius: 50%;
-  margin-right: 20px;
   background-image: linear-gradient(120deg, #00629b, #182b49);
+}
+.building-image {
+  object-fit: cover;
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+.schedule-view .building-image {
+  opacity: 0;
 }
 .close,
 .back {
@@ -514,9 +556,10 @@ input[type='checkbox']:checked {
   width: 24px;
 }
 .back {
-  transition: opacity 0.2s, margin-left 0.2s;
+  transition: opacity 0.5s, margin-left 0.5s, visibility 0.5s;
 }
-.back:disabled {
+.list-view .back {
+  visibility: hidden;
   opacity: 0;
   margin-left: -48px;
 }
@@ -553,6 +596,9 @@ input[type='checkbox']:checked {
 }
 .soon .current-meeting {
   color: var(--soon);
+}
+.inactive .current-meeting {
+  font-family: var(--normal);
 }
 
 .schedule {
