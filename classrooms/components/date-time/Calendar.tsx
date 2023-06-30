@@ -114,28 +114,9 @@ export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
   }
 
   return (
-    <div class='calendar'>
-      <div class='date-time-flex'>
-        <input
-          type='date'
-          name='date'
-          value={date.toString()}
-          onInput={e => {
-            const date = Day.parse(e.currentTarget.value)
-            if (date) {
-              onDate(date, true)
-            }
-          }}
-          class='date-input'
-        />
-        <button class='today-btn' onClick={() => onDate(Day.today(), true)}>
-          Today
-        </button>
-      </div>
-      <div class='calendar-scroll-area'>
-        <CalendarHeaderRow />
-        {calendars}
-      </div>
+    <div class='calendar-scroll-area'>
+      <CalendarHeaderRow />
+      {calendars}
     </div>
   )
 }

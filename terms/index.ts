@@ -59,21 +59,36 @@ export function getTermDays (year: number, season: Season): TermDays {
   }
 }
 
-export type CurrentTerm = {
-  year: number
-  season: Season
-  /** If false, then the year/season refers to the following quarter. */
-  current: boolean
-  /** Whether finals are ongoing. */
-  finals: boolean
-}
+export type CurrentTerm =
+  | {
+      current: true
+      year: number
+      season: Season
+      /**
+       * Week number of the given day. The first Monday of the quarter is in week 1;
+       * if there are days before it, then they are in week 0. Finals week for fall,
+       * winter, and spring quarter is mostly in week 11.
+       */
+      week: number
+      /** Whether finals are ongoing. */
+      finals: boolean
+    }
+  | {
+      /** The year/season refers to the following quarter. */
+      current: false
+      year: number
+      season: Season
+      week: -1
+      finals: false
+    }
 
 /**
  * Determines the quarter that the day is in, or the next term if the day is
  * during a break.
  */
 export function getTerm (day: Day): CurrentTerm {
-  const daysSinceWinter = +day - +winterStart(day.year)
+  const winterStartDay = winterStart(day.year).id
+  const daysSinceWinter = day.id - winterStartDay
   let season: Season | null = null
   let current = false
   for (const term of ['WI', 'SP', 'S1', 'S2', 'FA'] as const) {
@@ -85,10 +100,16 @@ export function getTerm (day: Day): CurrentTerm {
   }
   const year = season === null ? day.year + 1 : day.year
   season ??= 'WI'
-  const finals =
-    current &&
-    daysSinceWinter >= offset[season] + length[season] - finalsOffset[season]
-  return { year, season, current, finals }
+  if (current) {
+    const finals =
+      current &&
+      daysSinceWinter >= offset[season] + length[season] - finalsOffset[season]
+    const week =
+      Math.floor((day.monday.id - (winterStartDay + offset[season])) / 7) + 1
+    return { year, season, current, week, finals }
+  } else {
+    return { year, season, current, week: -1, finals: false }
+  }
 }
 
 export function termCode (year: number, season: Season): string {

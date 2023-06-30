@@ -10,8 +10,8 @@ import { Day } from '../util/Day.ts'
 import { Time } from '../util/Time.ts'
 import { useAsyncEffect } from '../util/useAsyncEffect.ts'
 import { BuildingButton } from './components/BuildingButton.tsx'
-import { Calendar } from './components/date-time/Calendar.tsx'
-import { DateTimePicker } from './components/date-time/DateTimePicker.tsx'
+import { DateTimeButton } from './components/date-time/DateTimeButton.tsx'
+import { DateTimePanel } from './components/date-time/DateTimePanel.tsx'
 import { InfoPanel } from './components/InfoPanel.tsx'
 import { RoomList } from './components/RoomList.tsx'
 import {
@@ -29,6 +29,7 @@ import { QuarterCache } from './lib/QuarterCache.ts'
 
 function App () {
   const quarters = useRef(new QuarterCache())
+  const [showDate, setShowDate] = useState(false)
   const [date, setDate] = useState(Day.today())
   const [customTime, setCustomTime] = useState<Time | null>(null)
   const [scrollToDate, setScrollToDate] = useState<number | null>(1)
@@ -98,24 +99,32 @@ function App () {
 
   return (
     <>
+      <DateTimeButton
+        date={date}
+        time={currentTime.time}
+        onClick={() => setShowDate(true)}
+        disabled={showDate}
+      />
+      <DateTimePanel
+        date={date}
+        onDate={(date, scrollToDate) => {
+          setDate(date)
+          if (scrollToDate) {
+            // Force useEffect to run again, if necessary. Start counting from 2
+            // to reserve `scrollToDate = 1` to mean "app just loaded"
+            setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
+          } else {
+            setScrollToDate(null)
+          }
+        }}
+        scrollToDate={scrollToDate}
+        realTime={realTime}
+        customTime={customTime}
+        onCustomTime={setCustomTime}
+        visible={showDate}
+        onClose={() => setShowDate(false)}
+      />
       <div class='buildings-wrapper'>
-        <DateTimePicker
-          date={date}
-          onDate={(date, scrollToDate) => {
-            setDate(date)
-            if (scrollToDate) {
-              // Force useEffect to run again, if necessary. Start counting from 2
-              // to reserve `scrollToDate = 1` to mean "app just loaded"
-              setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
-            } else {
-              setScrollToDate(null)
-            }
-          }}
-          scrollToDate={scrollToDate}
-          realTime={realTime}
-          customTime={customTime}
-          onCustomTime={setCustomTime}
-        />
         <p class={`notice ${noticeVisible ? 'notice-visible' : ''}`}>
           <span class='notice-text'>{notice}</span>
         </p>

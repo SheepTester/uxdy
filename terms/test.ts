@@ -20,12 +20,14 @@ Deno.test('getTerm', async t => {
     year: 2021,
     season: 'FA',
     current: false,
+    week: -1,
     finals: false
   })
   assertEquals(getTerm(Day.from(2021, 9, 23)), {
     year: 2021,
     season: 'FA',
     current: true,
+    week: 0,
     finals: false
   })
 
@@ -34,12 +36,14 @@ Deno.test('getTerm', async t => {
     year: 2021,
     season: 'FA',
     current: true,
+    week: 10,
     finals: false
   })
   assertEquals(getTerm(Day.from(2021, 12, 4)), {
     year: 2021,
     season: 'FA',
     current: true,
+    week: 10,
     finals: true
   })
 
@@ -48,12 +52,14 @@ Deno.test('getTerm', async t => {
     year: 2021,
     season: 'FA',
     current: true,
+    week: 11,
     finals: true
   })
   assertEquals(getTerm(Day.from(2021, 12, 12)), {
     year: 2022,
     season: 'WI',
     current: false,
+    week: -1,
     finals: false
   })
 
@@ -62,12 +68,14 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'WI',
     current: false,
+    week: -1,
     finals: false
   })
   assertEquals(getTerm(Day.from(2022, 1, 1)), {
     year: 2022,
     season: 'WI',
     current: false,
+    week: -1,
     finals: false
   })
 
@@ -76,12 +84,14 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'WI',
     current: false,
+    week: -1,
     finals: false
   })
   assertEquals(getTerm(Day.from(2022, 1, 3)), {
     year: 2022,
     season: 'WI',
     current: true,
+    week: 1,
     finals: false
   })
 
@@ -90,6 +100,7 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'WI',
     current: true,
+    week: 11,
     finals: true
   })
 
@@ -98,6 +109,7 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'SP',
     current: false,
+    week: -1,
     finals: false
   })
 
@@ -106,6 +118,7 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'S1',
     current: false,
+    week: -1,
     finals: false
   })
 
@@ -114,6 +127,7 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'S2',
     current: true,
+    week: 5,
     finals: true
   })
 
@@ -122,6 +136,7 @@ Deno.test('getTerm', async t => {
     year: 2022,
     season: 'FA',
     current: false,
+    week: -1,
     finals: false
   })
 })

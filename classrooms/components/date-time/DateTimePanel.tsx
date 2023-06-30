@@ -7,24 +7,48 @@ import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 import { Calendar } from './Calendar.tsx'
 
-export type DateTimePickerProps = {
+export type DateTimePanelProps = {
   date: Day
   onDate: (date: Day, scrollToDate?: boolean) => void
   scrollToDate: number | null
   realTime: Time
   customTime: Time | null
   onCustomTime: (customTime: Time | null) => void
+  visible: boolean
+  onClose: () => void
 }
-export function DateTimePicker ({
+export function DateTimePanel ({
   date,
   onDate,
   scrollToDate,
   realTime,
   customTime,
-  onCustomTime
-}: DateTimePickerProps) {
+  onCustomTime,
+  visible,
+  onClose
+}: DateTimePanelProps) {
   return (
-    <div class='date-time-picker'>
+    <div class={`date-time-picker ${visible ? '' : 'date-time-picker-hidden'}`}>
+      <div class='date-time-flex'>
+        <input
+          type='date'
+          name='date'
+          value={date.toString()}
+          onInput={e => {
+            const date = Day.parse(e.currentTarget.value)
+            if (date) {
+              onDate(date, true)
+            }
+          }}
+          class='date-input'
+        />
+        <button class='today-btn' onClick={() => onDate(Day.today(), true)}>
+          Today
+        </button>
+        <button class='icon-btn close-date-btn' onClick={onClose}>
+          Close
+        </button>
+      </div>
       <Calendar date={date} onDate={onDate} scrollToDate={scrollToDate} />
       <div class='date-time-flex'>
         <label class='checkbox-label'>

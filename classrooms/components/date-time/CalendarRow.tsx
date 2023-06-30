@@ -7,6 +7,7 @@ import { ComponentChildren } from 'preact'
 import { useEffect, useRef } from 'preact/hooks'
 import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
+import { AbbrevHeading } from '../AbbrevHeading.tsx'
 
 export type CalendarHeaderRowProps = {}
 export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
@@ -51,9 +52,13 @@ export function CalendarQuarterHeadingRow ({
 }: CalendarQuarterHeadingRowProps) {
   return (
     <CalendarHeadingRow class='calendar-quarter-heading-row'>
-      <h2 class='calendar-heading calendar-quarter-heading'>
-        {termCode(year, season)}: {termName(year, season)}
-      </h2>
+      <AbbrevHeading
+        heading='h2'
+        abbrev={termCode(year, season)}
+        class='calendar-heading calendar-quarter-heading'
+      >
+        {termName(year, season)}
+      </AbbrevHeading>
     </CalendarHeadingRow>
   )
 }
@@ -74,7 +79,7 @@ export function CalendarMonthHeadingRow ({
 }
 
 /** Height of the calendar header. */
-const HEADER_HEIGHT = 90
+const HEADER_HEIGHT = 110
 
 export type CalendarRowProps = {
   termDays: TermDays
