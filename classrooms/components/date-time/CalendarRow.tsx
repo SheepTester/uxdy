@@ -74,7 +74,7 @@ export function CalendarMonthHeadingRow ({
 }
 
 /** Height of the calendar header. */
-const HEADER_HEIGHT = 30
+const HEADER_HEIGHT = 90
 
 export type CalendarRowProps = {
   termDays: TermDays
@@ -146,23 +146,19 @@ export function CalendarRow ({
                 if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
                   // TODO: This is very finicky
                   const up = e.key === 'ArrowUp'
-                  onDate(day.add(up ? -7 : 7))
+                  onDate(date.add(up ? -7 : 7))
                   e.preventDefault()
-                  let nextLabel: Element | null | undefined =
-                    e.currentTarget.parentElement?.parentElement
-                  do {
-                    nextLabel = up
-                      ? nextLabel?.previousElementSibling
-                      : nextLabel?.nextElementSibling
-                    if (nextLabel?.classList.contains('calendar-date-row')) {
-                      const radio =
-                        nextLabel.children[i + 1].querySelector('input')
-                      if (radio) {
-                        radio.focus()
-                        break
-                      }
+
+                  const element = e.currentTarget
+                  window.requestAnimationFrame(() => {
+                    const input =
+                      element.parentElement?.parentElement?.parentElement?.querySelector(
+                        ':checked'
+                      )
+                    if (input instanceof HTMLInputElement) {
+                      input.focus()
                     }
-                  } while (nextLabel)
+                  })
                 }
               }}
               onInput={() => onDate(day)}

@@ -98,24 +98,24 @@ function App () {
 
   return (
     <>
-      <DateTimePicker
-        date={date}
-        onDate={(date, scrollToDate) => {
-          setDate(date)
-          if (scrollToDate) {
-            // Force useEffect to run again, if necessary. Start counting from 2
-            // to reserve `scrollToDate = 1` to mean "app just loaded"
-            setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
-          } else {
-            setScrollToDate(null)
-          }
-        }}
-        scrollToDate={scrollToDate}
-        realTime={realTime}
-        customTime={customTime}
-        onCustomTime={setCustomTime}
-      />
       <div class='buildings-wrapper'>
+        <DateTimePicker
+          date={date}
+          onDate={(date, scrollToDate) => {
+            setDate(date)
+            if (scrollToDate) {
+              // Force useEffect to run again, if necessary. Start counting from 2
+              // to reserve `scrollToDate = 1` to mean "app just loaded"
+              setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
+            } else {
+              setScrollToDate(null)
+            }
+          }}
+          scrollToDate={scrollToDate}
+          realTime={realTime}
+          customTime={customTime}
+          onCustomTime={setCustomTime}
+        />
         <p class={`notice ${noticeVisible ? 'notice-visible' : ''}`}>
           <span class='notice-text'>{notice}</span>
         </p>

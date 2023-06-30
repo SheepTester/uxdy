@@ -245,21 +245,29 @@ input[type='checkbox']:checked {
 }
 
 .date-time-picker {
-  position: fixed;
+  position: absolute;
   z-index: 5;
   top: 0;
   right: 0;
+  bottom: 0;
   width: 300px;
   background-color: var(--modal);
   margin: 20px;
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.calendar {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
 }
 .calendar-scroll-area {
   overflow: auto;
-  height: 300px;
+  height: 0;
+  flex: auto;
   /* Needed for offsetTop; see CalendarRow */
   position: relative;
-  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 .calendar-row {
