@@ -3,7 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { buildings } from '../../lib/buildings.ts'
 import { Building } from '../../lib/coursesFromFile.ts'
 import { Now } from '../../lib/now.ts'
@@ -25,6 +25,8 @@ function BuildingPanelContent ({
 }: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [lastRoom, setLastRoom] = useState('')
+  const [imageLoaded, setImageLoaded] = useState(true)
+  const imageRef = useRef<HTMLImageElement>(null)
 
   // Keep last room number visible when animating back to room list
   useEffect(() => {
@@ -33,6 +35,16 @@ function BuildingPanelContent ({
     }
   }, [selected])
 
+  // Make Imgur compress the image.
+  // https://thomas.vanhoutte.be/miniblog/imgur-thumbnail-trick/
+  const imageUrl = buildings[building.code].images[0]?.replace(
+    /\.jpeg$/,
+    'l.jpeg'
+  )
+  useEffect(() => {
+    setImageLoaded(!!imageRef.current?.complete)
+  }, [imageUrl, imageRef.current])
+
   return (
     <>
       <div
@@ -40,7 +52,16 @@ function BuildingPanelContent ({
           selected ? 'schedule-view' : 'list-view'
         } college-${buildings[building.code].college}`}
       >
-        <img class='building-image' src='https://i.imgur.com/PiC2Cb8.jpeg' />
+        {buildings[building.code].images.length > 0 && (
+          <img
+            ref={imageRef}
+            class={`building-image ${
+              imageLoaded ? '' : 'building-image-loading'
+            }`}
+            src={imageUrl}
+            onLoad={() => setImageLoaded(true)}
+          />
+        )}
         <button
           class='back'
           onClick={() => setSelected(null)}
@@ -57,7 +78,7 @@ function BuildingPanelContent ({
             </span>
           }
         >
-          Center Hall
+          {buildings[building.code].name}
         </AbbrevHeading>
         <button class='close' onClick={onClose}>
           <CloseIcon />

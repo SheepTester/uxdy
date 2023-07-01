@@ -161,7 +161,12 @@ function App () {
       {buildings && (
         <BuildingPanel
           now={currentTime}
-          building={buildings[viewing || lastViewing]}
+          building={
+            buildings[viewing || lastViewing] ?? {
+              code: viewing || lastViewing,
+              rooms: {}
+            }
+          }
           onClose={() => setViewing(null)}
           visible={!!viewing}
           rightPanelOpen={showDate}

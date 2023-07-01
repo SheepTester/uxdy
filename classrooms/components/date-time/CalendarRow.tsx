@@ -79,7 +79,7 @@ export function CalendarMonthHeadingRow ({
 }
 
 /** Height of the calendar header. */
-const HEADER_HEIGHT = 110
+const HEADER_HEIGHT = 120
 
 export type CalendarRowProps = {
   termDays: TermDays
