@@ -42,18 +42,20 @@ export function Schedule ({ now, meetings }: BuildingProps) {
 
   return (
     <div class='schedule'>
-      <div class='day-names'>
-        {(hasWeekend ? DAYS : WEEKDAYS).map(weekDay => (
-          <button
-            class={`day day-name ${weekDay === day ? 'selected-day' : ''}`}
-            key={weekDay}
-            onClick={() => setDay(day => (weekDay === day ? null : weekDay))}
-          >
-            {Day.dayName(weekDay, 'short', 'en-US')}
-          </button>
-        ))}
+      <div class='day-names-wrapper'>
+        <div class='gradient gradient-bg gradient-top' />
+        <div class='day-names'>
+          {(hasWeekend ? DAYS : WEEKDAYS).map(weekDay => (
+            <button
+              class={`day day-name ${weekDay === day ? 'selected-day' : ''}`}
+              key={weekDay}
+              onClick={() => setDay(day => (weekDay === day ? null : weekDay))}
+            >
+              {Day.dayName(weekDay, 'short', 'en-US')}
+            </button>
+          ))}
+        </div>
       </div>
-      <div class='gradient gradient-top'></div>
       <div class={`meetings-wrapper ${day === null ? 'full-week' : ''}`}>
         {(day !== null ? [day] : hasWeekend ? DAYS : WEEKDAYS).map(day => (
           <div
@@ -100,8 +102,10 @@ export function Schedule ({ now, meetings }: BuildingProps) {
           </div>
         ))}
       </div>
-      <div class='gradient gradient-bottom'></div>
-      <p class='disclaimer'>Note: some classes book rooms but don't meet.</p>
+      <div class='disclaimer-wrapper'>
+        <div class='gradient gradient-bg gradient-bottom' />
+        <p class='disclaimer'>Note: some classes book rooms but don't meet.</p>
+      </div>
     </div>
   )
 }
