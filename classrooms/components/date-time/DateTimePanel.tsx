@@ -15,6 +15,7 @@ export type DateTimePanelProps = {
   customTime: Time | null
   onCustomTime: (customTime: Time | null) => void
   visible: boolean
+  bottomPanelOpen: boolean
   onClose: () => void
 }
 export function DateTimePanel ({
@@ -25,11 +26,14 @@ export function DateTimePanel ({
   customTime,
   onCustomTime,
   visible,
+  bottomPanelOpen,
   onClose
 }: DateTimePanelProps) {
   return (
     <form
-      class={`date-time-panel ${visible ? '' : 'date-time-panel-hidden'}`}
+      class={`date-time-panel ${visible ? '' : 'date-time-panel-hidden'} ${
+        bottomPanelOpen ? 'date-time-panel-bottom-panel' : ''
+      }`}
       onSubmit={e => {
         onClose()
         e.preventDefault()

@@ -129,6 +129,7 @@ function App () {
         customTime={customTime}
         onCustomTime={setCustomTime}
         visible={showDate}
+        bottomPanelOpen={!!viewing}
         onClose={() => setShowDate(false)}
       />
       <div class='buildings-wrapper'>

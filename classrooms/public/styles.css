@@ -314,6 +314,9 @@ input[type='checkbox']:checked {
   opacity: 0;
   visibility: hidden;
 }
+.date-time-panel-bottom-panel.date-time-panel-hidden {
+  transform: translate(350px);
+}
 .calendar-scroll-area {
   overflow: auto;
   height: 0;
