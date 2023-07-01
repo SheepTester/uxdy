@@ -13,20 +13,16 @@ import { CloseIcon } from '../CloseIcon.tsx'
 import { RoomList } from './RoomList.tsx'
 import { Schedule } from './Schedule.tsx'
 
-type BuildingPanelProps = {
+type BuildingPanelContentProps = {
   now?: Now | null
   building: Building
   onClose: () => void
-  visible: boolean
-  rightPanelOpen: boolean
 }
-export function BuildingPanel ({
+function BuildingPanelContent ({
   now,
   building,
-  onClose,
-  visible,
-  rightPanelOpen
-}: BuildingPanelProps) {
+  onClose
+}: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [lastRoom, setLastRoom] = useState('')
 
@@ -38,11 +34,7 @@ export function BuildingPanel ({
   }, [selected])
 
   return (
-    <div
-      class={`room-list ${visible ? '' : 'room-list-invisible'} ${
-        rightPanelOpen ? 'right-panel-open' : ''
-      }`}
-    >
+    <>
       <div class={`building-name ${selected ? 'schedule-view' : 'list-view'}`}>
         <button
           class='back'
@@ -73,6 +65,37 @@ export function BuildingPanel ({
       ) : (
         <RoomList now={now} building={building} onSelect={setSelected} />
       )}
+    </>
+  )
+}
+
+export type BuildingPanelProps = {
+  now?: Now | null
+  building: Building
+  onClose: () => void
+  visible: boolean
+  rightPanelOpen: boolean
+}
+export function BuildingPanel ({
+  now,
+  building,
+  onClose,
+  visible,
+  rightPanelOpen
+}: BuildingPanelProps) {
+  return (
+    <div
+      class={`building-panel ${visible ? '' : 'building-panel-invisible'} ${
+        rightPanelOpen ? 'right-panel-open' : ''
+      }`}
+    >
+      <BuildingPanelContent
+        now={now}
+        building={building}
+        onClose={onClose}
+        // Force new elements (disable transition) when building changes
+        key={building}
+      />
     </div>
   )
 }
