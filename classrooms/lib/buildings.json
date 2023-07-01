@@ -1,0 +1,605 @@
+{
+  "$schema": "../schemas/locations.schema.json",
+  "comment": [
+    "https://registrar.ucsd.edu/StudentLink/bldg_codes.html",
+    "For locations, go onto Google Maps, right click on approximate center of building, click on coordinates to copy.",
+    "I omit 'College' and 'Outdoor Classroom' from building names, but not 'Building.'"
+  ],
+  "colleges": {
+    "revelle": {
+      "BONN": {
+        "location": [32.876084946774036, -117.24038814500676],
+        "name": "Bonner Hall",
+        "images": [""]
+      },
+      "GH": {
+        "location": [32.87374584111353, -117.24092662366324],
+        "name": "Galbraith Hall",
+        "images": [""]
+      },
+      "MAYER": {
+        "location": [32.87528696893803, -117.24019479635555],
+        "name": "Mayer Hall",
+        "images": [""]
+      },
+      "MYR-A": {
+        "location": [32.87536189399691, -117.23970412241734],
+        "name": "Mayer Hall Addition",
+        "images": [""]
+      },
+      "NSB": {
+        "location": [32.87527130105447, -117.24282324774462],
+        "name": "Natural Sciences Building",
+        "images": [""]
+      },
+      "PACIF": {
+        "location": [32.87595284128824, -117.24210006678864],
+        "name": "Pacific Hall",
+        "images": [""]
+      },
+      "REV": {
+        "location": [32.87480385710217, -117.24096166711239],
+        "name": "Revelle Plaza",
+        "images": [""],
+        "comment": ["Revelle Plaza Outdoor Classroom"]
+      },
+      "RVCOM": {
+        "location": [32.87457496393089, -117.2425008415767],
+        "name": "Revelle Commons",
+        "images": [""]
+      },
+      "TATA": {
+        "location": [32.876460769081355, -117.24152230144844],
+        "name": "Tata Hall",
+        "images": [""]
+      },
+      "UREY": {
+        "location": [32.875555403867246, -117.2412962102085],
+        "name": "Urey Hall",
+        "images": [""]
+      },
+      "YORK": {
+        "location": [32.87454593562147, -117.24000502137861],
+        "name": "York Hall",
+        "images": [""],
+        "comment": ["Herbert F. York Undergraduate Sciences Building"]
+      }
+    },
+    "muir": {
+      "APM": {
+        "location": [32.87900949086575, -117.24105009713044],
+        "name": "Applied Physics and Mathematics",
+        "images": [""]
+      },
+      "BIO": {
+        "location": [32.878428690703146, -117.24103674033825],
+        "name": "Biology Building",
+        "images": ["https://i.imgur.com/7fdINBO.jpeg"]
+      },
+      "HSS": {
+        "location": [32.87834508545459, -117.24168835799722],
+        "name": "Humanities and Social Sciences Building",
+        "images": [""]
+      },
+      "LEDDN": {
+        "location": [32.87876783002103, -117.24168242455174],
+        "name": "Center Hall",
+        "images": ["Ledden Auditorium"]
+      },
+      "MANDE": {
+        "location": [32.877812337766414, -117.23998508397895],
+        "name": "Mandeville Center",
+        "images": [
+          "https://i.imgur.com/2yXTr9k.jpeg",
+          "https://i.imgur.com/w93BY9I.jpeg",
+          "https://i.imgur.com/4MCnqQs.jpeg",
+          "https://i.imgur.com/kUJwqWS.jpeg",
+          "https://i.imgur.com/vcZNcYB.jpeg",
+          "https://i.imgur.com/aW79Stz.jpeg",
+          "https://i.imgur.com/Xb8Lgc3.jpeg"
+        ]
+      },
+      "MCGIL": {
+        "location": [32.87900601797463, -117.24205773606351],
+        "name": "McGill Hall",
+        "images": [""]
+      },
+      "MNDLR": {
+        "location": [32.87928595670899, -117.24214505416418],
+        "name": "Mandler Hall",
+        "images": [""]
+      },
+      "RECGM": {
+        "location": [32.87672837413399, -117.24124478552716],
+        "name": "Recreation Gym",
+        "images": ["https://i.imgur.com/qRSwZXl.jpeg"]
+      }
+    },
+    "sixth": {
+      "CTL": {
+        "location": [32.880720265920914, -117.24142517100402],
+        "name": "Catalyst",
+        "images": [
+          "https://i.imgur.com/Wgtxcio.jpeg",
+          "https://i.imgur.com/TApNHHe.jpeg",
+          "https://i.imgur.com/UzvzE2n.jpeg",
+          "https://i.imgur.com/PgRu7iI.jpeg",
+          "https://i.imgur.com/brkGKmT.jpeg",
+          "https://i.imgur.com/MzO8kdg.jpeg"
+        ]
+      },
+      "JEANN": {
+        "location": [32.8799296621332, -117.24119652096547],
+        "name": "The Jeannie",
+        "images": [
+          "https://i.imgur.com/S7hWyFi.jpeg",
+          "https://i.imgur.com/Gr72SGn.jpeg",
+          "https://i.imgur.com/jcmweDB.jpeg",
+          "https://i.imgur.com/7g2ddgc.jpeg",
+          "https://i.imgur.com/H3pf35p.jpeg",
+          "https://i.imgur.com/WXEOHoX.jpeg",
+          "https://i.imgur.com/0SCGaj1.jpeg"
+        ]
+      },
+      "MOS": {
+        "location": [32.88001190738399, -117.24163094823878],
+        "name": "Mosaic",
+        "images": [
+          "https://i.imgur.com/mMpazXy.jpeg",
+          "https://i.imgur.com/kOoJMGj.jpeg",
+          "https://i.imgur.com/uYLVGh5.jpeg",
+          "https://i.imgur.com/PiC2Cb8.jpeg",
+          "https://i.imgur.com/FHpBJYo.jpeg",
+          "https://i.imgur.com/6woeDzV.jpeg",
+          "https://i.imgur.com/6woeDzV.jpeg"
+        ]
+      },
+      "RWAC": {
+        "location": [32.880374742852574, -117.24106684310492],
+        "name": "Ridge Walk Academic Complex",
+        "images": [
+          "https://i.imgur.com/wzZrECe.jpeg",
+          "https://i.imgur.com/rHbydi1.jpeg",
+          "https://i.imgur.com/bckfXJi.jpeg",
+          "https://i.imgur.com/6hH79mc.jpeg",
+          "https://i.imgur.com/OHUnhy9.jpeg",
+          "https://i.imgur.com/jBTe18L.jpeg",
+          "https://i.imgur.com/cga1K75.jpeg",
+          "https://i.imgur.com/ltI4q8O.jpeg",
+          "https://i.imgur.com/8yGvvrA.jpeg",
+          "https://i.imgur.com/PKQ0Eda.jpeg",
+          "https://i.imgur.com/GJlru9N.jpeg",
+          "https://i.imgur.com/pvCEee4.jpeg",
+          "https://i.imgur.com/U817BWw.jpeg"
+        ]
+      }
+    },
+    "marshall": {
+      "CSB": {
+        "location": [32.880517237245954, -117.23939317415764],
+        "name": "Cognitive Science Building",
+        "images": [""]
+      },
+      "ECON": {
+        "location": [32.88235588485967, -117.24040328432459],
+        "name": "Economics Building",
+        "images": [""]
+      },
+      "PETER": {
+        "location": [32.879984046654364, -117.2402525268966],
+        "name": "Peterson Hall",
+        "images": [""]
+      },
+      "SEQUO": {
+        "location": [32.88203974495475, -117.24103633144476],
+        "name": "Sequoyah Hall",
+        "images": [""]
+      },
+      "SOLIS": {
+        "location": [32.880935740253626, -117.23964750230745],
+        "name": "Solís Hall",
+        "images": [""]
+      },
+      "SSRB": {
+        "location": [32.88075657728253, -117.240142743495],
+        "name": "Social Sciences Research Building",
+        "images": [""]
+      },
+      "TM102": {
+        "location": [32.88134401507817, -117.23933111579409],
+        "name": "Thurgood Marshall 102",
+        "images": [""]
+      }
+    },
+    "erc": {
+      "ASANT": {
+        "location": [32.88423744331073, -117.24213984468823],
+        "name": "Asante House",
+        "images": [
+          "https://i.imgur.com/41b7QoK.jpeg",
+          "https://i.imgur.com/cg9qmez.jpeg",
+          "https://i.imgur.com/KAX1Krl.jpeg"
+        ]
+      },
+      "ERCA": {
+        "location": [32.886087113975414, -117.24205254723678],
+        "name": "ERC Administration",
+        "images": [
+          "https://i.imgur.com/zTuN3ki.jpeg",
+          "https://i.imgur.com/K38yRo7.jpeg",
+          "https://i.imgur.com/xsRVr2m.jpeg",
+          "https://i.imgur.com/jQdIpgH.jpeg"
+        ]
+      },
+      "GREAT": {
+        "location": [32.883944240936444, -117.24193249617227],
+        "name": "Great Hall",
+        "images": [
+          "https://i.imgur.com/2iS1TGa.jpeg",
+          "https://i.imgur.com/OKLA6JX.jpeg",
+          "https://i.imgur.com/2v7svKU.jpeg"
+        ]
+      },
+      "LASB": {
+        "location": [32.88557327735999, -117.2413567320843],
+        "name": "Latin American Studies Building",
+        "images": ["https://i.imgur.com/kP1FInU.jpeg"]
+      },
+      "RBC": {
+        "location": [32.88427044449085, -117.2408680383893],
+        "name": "Robinson Building Complex",
+        "images": [
+          "https://i.imgur.com/SDNf4ci.jpeg",
+          "https://i.imgur.com/jQMCHrY.jpeg",
+          "https://i.imgur.com/G0GLZQD.jpeg",
+          "https://i.imgur.com/XrAZzhh.jpeg",
+          "https://i.imgur.com/1ysjMHf.jpeg"
+        ],
+        "comment": [
+          "https://gps.ucsd.edu/_files/misc/GPS-Printable-Map-2015.pdf",
+          "I think Garner is part of this"
+        ]
+      },
+      "SSB": {
+        "location": [32.88391338508008, -117.24045720071513],
+        "name": "Social Sciences Building",
+        "images": [
+          "https://i.imgur.com/bHveajb.jpeg",
+          "https://i.imgur.com/0V90Tca.jpeg",
+          "https://i.imgur.com/5A2kawY.jpeg",
+          "https://i.imgur.com/t15im8k.jpeg"
+        ]
+      }
+    },
+    "seventh": {
+      "OTRSN": {
+        "location": [32.88665760836001, -117.24102406579628],
+        "name": "Otterson Hall",
+        "images": [
+          "https://i.imgur.com/2DncCdV.jpeg",
+          "https://i.imgur.com/nuuiXO9.jpeg",
+          "https://i.imgur.com/ByRotXZ.jpeg",
+          "https://i.imgur.com/rh1PE4K.jpeg",
+          "https://i.imgur.com/k8Bubgx.jpeg"
+        ]
+      },
+      "SEVW2": {
+        "location": [32.8880285561251, -117.24255222849888],
+        "name": "Seventh West Building 2",
+        "images": [""]
+      },
+      "SEVE3": {
+        "location": [32.88825009555447, -117.24173440393453],
+        "name": "Seventh East Ecoflats 3",
+        "images": [
+          "https://i.imgur.com/RFVU7xr.jpeg",
+          "https://i.imgur.com/81Y5Bqh.jpeg",
+          "https://i.imgur.com/z85Z6w3.jpeg",
+          "https://i.imgur.com/K7KBhkk.jpeg",
+          "https://i.imgur.com/46FqmYp.jpeg",
+          "https://i.imgur.com/A7z04lV.jpeg"
+        ]
+      },
+      "SEVE4": {
+        "location": [32.88807303667593, -117.2417902045747],
+        "name": "Seventh East Ecoflats 4",
+        "images": [
+          "https://i.imgur.com/rvX3WRu.jpeg",
+          "https://i.imgur.com/3HtM3MY.jpeg",
+          "https://i.imgur.com/7qsGG1G.jpeg",
+          "https://i.imgur.com/A7z04lV.jpeg"
+        ]
+      },
+      "WFH": {
+        "location": [32.886967814911024, -117.24173638805067],
+        "name": "Wells Fargo Hall",
+        "images": [
+          "https://i.imgur.com/JwSFFD5.jpeg",
+          "https://i.imgur.com/wd4xodE.jpeg",
+          "https://i.imgur.com/gPAVIsw.jpeg",
+          "https://i.imgur.com/k8Bubgx.jpeg"
+        ]
+      }
+    },
+    "warren": {
+      "EBU1": {
+        "location": [32.88168612813114, -117.2352758424052],
+        "name": "Jacobs Hall",
+        "images": [
+          "https://i.imgur.com/KqK2iLM.jpeg",
+          "https://i.imgur.com/6vAmVAz.jpeg",
+          "https://i.imgur.com/TAqZDMr.jpeg",
+          "https://i.imgur.com/5heLBXk.jpeg",
+          "https://i.imgur.com/z9nZx9E.jpeg"
+        ]
+      },
+      "EBU2": {
+        "location": [32.88116494369773, -117.23334050065942],
+        "name": "Engineering Building Unit II",
+        "images": [
+          "https://i.imgur.com/hABuTPh.jpeg",
+          "https://i.imgur.com/W3BFNPh.jpeg"
+        ]
+      },
+      "EBU3B": {
+        "location": [32.8817383470234, -117.23358830529953],
+        "name": "Computer Science and Engineering Building",
+        "images": [
+          "https://i.imgur.com/cIKcb6i.jpeg",
+          "https://i.imgur.com/840Ijht.jpeg",
+          "https://i.imgur.com/EHbekQN.jpeg",
+          "https://i.imgur.com/989kevK.jpeg"
+        ]
+      },
+      "FAH": {
+        "location": [32.883557123107536, -117.23496426482438],
+        "name": "Franklin Antonio Hall",
+        "images": [
+          "https://i.imgur.com/MGZugul.jpeg",
+          "https://i.imgur.com/dMr7V2X.jpeg",
+          "https://i.imgur.com/TbzWfMa.jpeg"
+        ]
+      },
+      "PFBH": {
+        "location": [32.88173836638747, -117.2343791731388],
+        "name": "Powell-Focht Bioengineering Hall",
+        "images": ["https://i.imgur.com/lYP4GT9.jpeg"]
+      },
+      "WARR": {
+        "location": [32.88114818094256, -117.23504265009306],
+        "name": "Warren Mall",
+        "images": [
+          "https://i.imgur.com/zqg1cHJ.jpeg",
+          "https://i.imgur.com/zlTUVJf.jpeg"
+        ],
+        "comment": ["Warren Mall Outdoor Classroom"]
+      },
+      "WLH": {
+        "location": [32.88059104682919, -117.23436049332548],
+        "name": "Warren Lecture Hall",
+        "images": [
+          "https://i.imgur.com/YEaKlBF.jpeg",
+          "https://i.imgur.com/Kdv8YiX.jpeg"
+        ]
+      },
+      "WSAC": {
+        "location": [32.88246082957613, -117.23329893891902],
+        "name": "Warren Student Activities Center",
+        "images": [
+          "https://i.imgur.com/DRjFAFy.jpeg",
+          "https://i.imgur.com/Q3u5WgD.jpeg",
+          "https://i.imgur.com/Byuu0Vw.jpeg"
+        ]
+      }
+    },
+    "pepperCanyon": {
+      "DIB": {
+        "location": [32.87937650181871, -117.23229157766367],
+        "name": "Design & Innovation Building",
+        "images": [""]
+      },
+      "PCYNH": {
+        "location": [32.878341870703316, -117.23391147692307],
+        "name": "Pepper Canyon Hall",
+        "images": [""]
+      },
+      "SME": {
+        "location": [32.879887628129154, -117.23275634017203],
+        "name": "Structural and Materials Engineering Building",
+        "images": [""]
+      },
+      "VAF": {
+        "location": [32.879139240878324, -117.23396876625009],
+        "name": "Visual Arts Facility",
+        "images": [""]
+      }
+    },
+    "universityCenter": {
+      "CENTR": {
+        "location": [32.87797399985619, -117.237243418587],
+        "name": "Center Hall",
+        "images": [""]
+      },
+      "CSC": {
+        "location": [32.87840034888087, -117.23791254127356],
+        "name": "Career Services Center",
+        "images": [""]
+      },
+      "CPMC": {
+        "location": [32.87808507377693, -117.23466682590514],
+        "name": "Conrad Presbys Music Center",
+        "images": [""]
+      },
+      "P416": {
+        "location": [32.87775532737337, -117.23812995691154],
+        "name": "Center Hall",
+        "images": ["Parking Lot P416"],
+        "comment": ["P416 Outdoor Classroom"]
+      },
+      "PRICE": {
+        "location": [32.879954671864304, -117.23711807270978],
+        "name": "Price Center",
+        "images": [""]
+      },
+      "SERF": {
+        "location": [32.87969838069206, -117.23507094146997],
+        "name": "Science & Engineering Research Facility",
+        "images": [""]
+      },
+      "U201": {
+        "location": [32.87750663014029, -117.23672981527089],
+        "name": "University Center 201",
+        "images": [""]
+      },
+      "U301": {
+        "location": [32.87773977889938, -117.23584205327144],
+        "name": "University Center 301",
+        "images": [""]
+      }
+    },
+    "med": {
+      "BRF2": {
+        "location": [32.874320265698685, -117.2350725903077],
+        "name": "Biomedical Research Facility II",
+        "images": [""]
+      },
+      "BSB": {
+        "location": [32.87583620115867, -117.23610217780087],
+        "name": "Biomedical Sciences Building",
+        "images": [""]
+      },
+      "CMME": {
+        "location": [32.876369320524, -117.23767828382417],
+        "name": "Cellular and Molecular Medicine East",
+        "images": [""]
+      },
+      "CNCB": {
+        "location": [32.87569310599253, -117.23819914713752],
+        "name": "Center for Neural Circuits and Behavior",
+        "images": [""]
+      },
+      "KECK": {
+        "location": [32.87504438926279, -117.23617314958287],
+        "name": "W. M. Keck Building",
+        "images": [""]
+      },
+      "LFFB": {
+        "location": [32.87668499513593, -117.23686452737942],
+        "name": "Leichtag Biomedical Research Building",
+        "images": [""]
+      },
+      "MET": {
+        "location": [32.875220419083554, -117.23478623990438],
+        "name": "Medical Education and Telemedicine Building",
+        "images": [""]
+      },
+      "MTF": {
+        "location": [32.87559622253949, -117.23543639784786],
+        "name": "Medical Teaching Facility",
+        "images": [""]
+      },
+      "PSB": {
+        "location": [32.874209066736114, -117.23571795183558],
+        "name": "Skaggs Pharmaceutical Sciences Building",
+        "images": [""]
+      },
+      "SCRB": {
+        "location": [32.8758549279704, -117.23394815633426],
+        "name": "Stein Clinical Research Building",
+        "images": [""]
+      }
+    },
+    "health": {
+      "MCC": {
+        "location": [32.87832294065095, -117.22294309501584],
+        "name": "Moores Cancer Center",
+        "images": [""]
+      }
+    },
+    "playhouse": {
+      "DANCE": {
+        "location": [32.87186729617818, -117.24003377110412],
+        "name": "Molli and Arthur Wagner Dance Building",
+        "images": [""]
+      },
+      "MWEIS": {
+        "location": [32.87095079844769, -117.24121579783444],
+        "name": "Mandell Weiss Theatre",
+        "images": [""]
+      },
+      "PODEM": {
+        "location": [32.87340196755349, -117.24174621477657],
+        "name": "Podemos",
+        "images": [""],
+        "comment": [
+          "https://www.reddit.com/r/UCSD/comments/13pua2j/podem_1a18/"
+        ]
+      },
+      "POTKR": {
+        "location": [32.87110810161448, -117.24052277636109],
+        "name": "Sheila and Hughes Potiker Theatre",
+        "images": [""]
+      }
+    },
+    "sio": {
+      "ECKRT": {
+        "location": [32.8672217685922, -117.25258463073409],
+        "name": "Eckart Building",
+        "images": [""]
+      },
+      "HUBBS": {
+        "location": [32.86744021132684, -117.25344551951103],
+        "name": "Hubbs Hall",
+        "images": [""]
+      },
+      "HYDRO": {
+        "location": [32.86889985285985, -117.25226455555327],
+        "name": "Hydraulics Laboratory",
+        "images": [""]
+      },
+      "IGPP": {
+        "location": [32.86830699100889, -117.25287278628777],
+        "name": "Institute of Geophysics and Planetary Physics",
+        "images": [""]
+      },
+      "NIERN": {
+        "location": [32.86846701354387, -117.25120611888595],
+        "name": "Nierenberg Hall",
+        "images": [""]
+      },
+      "OAR": {
+        "location": [32.86949599612524, -117.25063208743448],
+        "name": "Keck Oceanographic and Atmospheric Research",
+        "images": [""],
+        "comment": [
+          "https://blink.ucsd.edu/sponsor/advancement/advancement-services/stewardship/named-buildings/keck-oceanographic-atmospheric-research-2.html"
+        ]
+      },
+      "MCTF": {
+        "location": [32.87120629806947, -117.25201093495335],
+        "name": "Marine Conservation and Technology Facility",
+        "images": [""]
+      },
+      "RITTR": {
+        "location": [32.86529347606621, -117.25357019529167],
+        "name": "Ritter Hall",
+        "images": [""]
+      },
+      "SPIES": {
+        "location": [32.86909245015263, -117.25095900205372],
+        "name": "Spiess Hall",
+        "images": [""]
+      },
+      "SUMNR": {
+        "location": [32.86488587494083, -117.2529119246211],
+        "name": "Sumner Auditorium",
+        "images": [""]
+      },
+      "VAUGN": {
+        "location": [32.86531011859729, -117.25300219413253],
+        "name": "Vaughan Hall",
+        "images": [""]
+      }
+    }
+  }
+}

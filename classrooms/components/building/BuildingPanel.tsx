@@ -4,7 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useState } from 'preact/hooks'
-import { colleges } from '../../lib/building-locations.ts'
+import { buildings } from '../../lib/buildings.ts'
 import { Building } from '../../lib/coursesFromFile.ts'
 import { Now } from '../../lib/now.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
@@ -38,7 +38,7 @@ function BuildingPanelContent ({
       <div
         class={`building-name ${
           selected ? 'schedule-view' : 'list-view'
-        } college-${colleges[building.name]}`}
+        } college-${buildings[building.code].college}`}
       >
         <img class='building-image' src='https://i.imgur.com/PiC2Cb8.jpeg' />
         <button
@@ -52,7 +52,7 @@ function BuildingPanelContent ({
           heading='h2'
           abbrev={
             <span>
-              {building.name}{' '}
+              {building.code}{' '}
               <span class='room-number'>{selected || lastRoom}</span>
             </span>
           }

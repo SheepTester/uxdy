@@ -4,15 +4,14 @@
 /// <reference lib="deno.ns" />
 
 import { useCallback } from 'preact/hooks'
+import { buildings } from '../lib/buildings.ts'
+import { Building } from '../lib/coursesFromFile.ts'
 import {
-  locations,
-  colleges,
   latLongToPixel,
   southwest,
   PADDING,
   northeast
-} from '../lib/building-locations.ts'
-import { Building } from '../lib/coursesFromFile.ts'
+} from '../lib/locations.ts'
 import { Now, used } from '../lib/now.ts'
 
 type BuildingButtonProps = {
@@ -30,14 +29,14 @@ export function BuildingButton ({
   scrollWrapper,
   selected
 }: BuildingButtonProps) {
-  if (!locations[building.name]) {
+  if (!buildings[building.code]) {
     console.warn('No location data for', building)
-    return <p>No location data for {building.name}</p>
+    return <p>No location data for {building.code}</p>
   }
-  const college = colleges[building.name]
+  const college = buildings[building.code].college
 
   const ref = useCallback((button: HTMLButtonElement | null) => {
-    if (building.name === 'CENTR' && button) {
+    if (building.code === 'CENTR' && button) {
       window.requestAnimationFrame(() => {
         const { left, top, width, height } = button.getBoundingClientRect()
         scrollWrapper.scrollBy(
@@ -48,7 +47,7 @@ export function BuildingButton ({
     }
   }, [])
 
-  const { x, y } = latLongToPixel(locations[building.name])
+  const { x, y } = latLongToPixel(buildings[building.code].location)
 
   return (
     <button
@@ -58,9 +57,9 @@ export function BuildingButton ({
         top: `${y - northeast.y + PADDING}px`
       }}
       ref={ref}
-      onClick={() => onSelect(building.name)}
+      onClick={() => onSelect(building.code)}
     >
-      {building.name}
+      {building.code}
       <span class='room-count'>
         {now && (
           <>

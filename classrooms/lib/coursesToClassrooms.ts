@@ -13,7 +13,7 @@ export type Buildings = Record<string, Building>
 
 /** Always have Center Hall defined so the map can scroll to it. */
 export const defaultBuildings = (): Buildings => ({
-  CENTR: { name: 'CENTR', rooms: {} }
+  CENTR: { code: 'CENTR', rooms: {} }
 })
 
 /**
@@ -57,7 +57,7 @@ export function coursesToClassrooms (
         if (!time || !location || location.building === 'RCLAS') {
           continue
         }
-        buildings[location.building] ??= { name: location.building, rooms: {} }
+        buildings[location.building] ??= { code: location.building, rooms: {} }
         buildings[location.building].rooms[location.room] ??= []
         if ('date' in meeting) {
           // Exam

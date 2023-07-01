@@ -32,7 +32,7 @@ export function RoomList ({ now, building, onSelect }: RoomListProps) {
                 onClick={() => onSelect(room)}
               >
                 <div className='room-name'>
-                  {building.name} {room}
+                  {building.code} {room}
                 </div>
                 {now && (
                   <div className='current-meeting'>

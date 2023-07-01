@@ -14,15 +14,10 @@ import { BuildingButton } from './components/BuildingButton.tsx'
 import { DateTimeButton } from './components/date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './components/date-time/DateTimePanel.tsx'
 import {
-  northeast,
-  southwest,
-  PADDING,
-  mapPosition
-} from './lib/building-locations.ts'
-import {
   coursesToClassrooms,
   defaultBuildings
 } from './lib/coursesToClassrooms.ts'
+import { northeast, southwest, PADDING, mapPosition } from './lib/locations.ts'
 import { Now, useNow } from './lib/now.ts'
 import { QuarterCache } from './lib/QuarterCache.ts'
 
@@ -153,12 +148,12 @@ function App () {
             scrollWrapper &&
             Object.values(buildings).map(building => (
               <BuildingButton
-                key={building.name}
+                key={building.code}
                 now={currentTime}
                 building={building}
                 onSelect={setViewing}
                 scrollWrapper={scrollWrapper}
-                selected={building.name === viewing}
+                selected={building.code === viewing}
               />
             ))}
         </div>

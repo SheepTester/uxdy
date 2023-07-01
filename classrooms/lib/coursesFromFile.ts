@@ -169,7 +169,7 @@ export type RoomMeeting = (
   }
 
 export type Building = {
-  name: string
+  code: string
   rooms: Record<string, RoomMeeting[]>
 }
 
