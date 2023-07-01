@@ -35,7 +35,12 @@ function BuildingPanelContent ({
 
   return (
     <>
-      <div class={`building-name ${selected ? 'schedule-view' : 'list-view'}`}>
+      <div
+        class={`building-name ${
+          selected ? 'schedule-view' : 'list-view'
+        } college-${colleges[building.name]}`}
+      >
+        <img class='building-image' src='https://i.imgur.com/PiC2Cb8.jpeg' />
         <button
           class='back'
           onClick={() => setSelected(null)}
@@ -43,8 +48,6 @@ function BuildingPanelContent ({
         >
           <BackIcon />
         </button>
-        <div class={`building-gradient college-${colleges[building.name]}`} />
-        <img class='building-image' src='https://i.imgur.com/PiC2Cb8.jpeg' />
         <AbbrevHeading
           heading='h2'
           abbrev={

@@ -500,6 +500,7 @@ input[type='checkbox']:checked {
   align-items: flex-start;
   justify-content: space-between;
   transition: height 0.5s;
+  background-image: linear-gradient(120deg, #00629b, #182b49);
 }
 .schedule-view {
   height: 48px;
@@ -538,19 +539,12 @@ input[type='checkbox']:checked {
 .list-view .room-number {
   opacity: 0;
 }
-.building-gradient,
 .building-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-}
-.building-gradient {
-  background-image: linear-gradient(120deg, #00629b, #182b49);
-}
-.building-image {
   object-fit: cover;
   opacity: 0.5;
   transition: opacity 0.5s;
@@ -563,6 +557,8 @@ input[type='checkbox']:checked {
   font-size: 0;
   padding: 12px;
   border-radius: 50%;
+  position: relative;
+  z-index: 1;
 }
 .close:hover,
 .back:hover {
