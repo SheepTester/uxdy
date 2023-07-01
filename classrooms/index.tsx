@@ -9,11 +9,10 @@ import { getTerm, termName } from '../terms/index.ts'
 import { Day } from '../util/Day.ts'
 import { Time } from '../util/Time.ts'
 import { useAsyncEffect } from '../util/useAsyncEffect.ts'
+import { BuildingPanel } from './components/building/BuildingPanel.tsx'
 import { BuildingButton } from './components/BuildingButton.tsx'
 import { DateTimeButton } from './components/date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './components/date-time/DateTimePanel.tsx'
-import { InfoPanel } from './components/InfoPanel.tsx'
-import { RoomList } from './components/RoomList.tsx'
 import {
   northeast,
   southwest,
@@ -164,9 +163,7 @@ function App () {
         </div>
       </div>
       {buildings && (
-        <RoomList
-          // Force new elements when building changes
-          key={viewing || lastViewing}
+        <BuildingPanel
           now={currentTime}
           building={buildings[viewing || lastViewing]}
           onClose={() => setViewing(null)}

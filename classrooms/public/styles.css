@@ -463,7 +463,7 @@ input[type='checkbox']:checked {
   background-image: url('./material-done-white.svg');
 }
 
-.room-list {
+.building-panel {
   position: fixed;
   left: 20px;
   right: 20px;
@@ -478,24 +478,10 @@ input[type='checkbox']:checked {
   transition: transform 0.2s, opacity 0.2s, visibility 0.2s, right 0.2s;
   overflow: auto;
 }
-.room-list-invisible {
+.building-panel-invisible {
   opacity: 0;
   transform: translateY(20px);
   visibility: hidden;
-  animation-duration: 0;
-}
-.room-list:not(.room-list-invisible) {
-  animation: room-list-in 0.2s;
-}
-@keyframes room-list-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 .right-panel-open {
   right: 340px;

@@ -4,20 +4,20 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
-import { Day } from '../../util/Day.ts'
-import { meetingTypes } from '../../webreg-scraping/meeting-types.ts'
-import { RoomMeeting } from '../lib/coursesFromFile.ts'
-import { Now } from '../lib/now.ts'
+import { Day } from '../../../util/Day.ts'
+import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
+import { RoomMeeting } from '../../lib/coursesFromFile.ts'
+import { Now } from '../../lib/now.ts'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
 const SCALE = 1 // px per min
 
-type BuildingProps = {
+export type ScheduleProps = {
   now?: Now | null
   meetings: RoomMeeting[]
 }
-export function Schedule ({ now, meetings }: BuildingProps) {
+export function Schedule ({ now, meetings }: ScheduleProps) {
   const [day, setDay] = useState<number | null>(null)
 
   if (meetings.length === 0) {
