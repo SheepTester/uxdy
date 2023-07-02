@@ -121,6 +121,7 @@ export type ScrapedSection = {
    * empty.
    */
   instructors: [firstName: string, lastName: string][]
+  note?: string
 }
 
 /** `month` is 1-indexed. */
@@ -128,8 +129,21 @@ export type DateTuple = [year: number, month: number, date: number]
 
 export type ScrapedCourse = {
   subject: string
+  subjectName: string
   number: string
   title: string
+  /** Seminar classes list their topic under the course title. */
+  description?: string
+  /**
+   * The path to the course's entry in the course catalog, e.g.
+   * `/courses/CSE.html#cse11`. Some courses, such as S123 ANBI 143GS, link to
+   * https://registrar.ucsd.edu/studentlink/cnd.html which says that it is not
+   * in the course catalog. Others just don't have links at all (e.g. FA23 ANES
+   * 227). FA23 SPPS 201 links to http://pharmacy.ucsd.edu/current, which isn't
+   * in the course catalog.
+   */
+  catalog?: string
+  note?: string
   /**
    * A range of selectable units from `from` to `to` (inclusive) in increments
    * of `inc`.
@@ -137,6 +151,7 @@ export type ScrapedCourse = {
    * NOTE: `inc` may be 0.5.
    */
   units: { from: number; to: number; inc: number }
+  /** Guaranteed to be present for summer terms. */
   dateRange?: [DateTuple, DateTuple]
   sections: ScrapedSection[]
 }
@@ -191,6 +206,11 @@ export type ResultRow = {
   pages: number
   item: Omit<ScrapedCourse, 'sections'> | ScrapedSection
 }
+type NoteState =
+  | { type: 'none' }
+  | { type: 'expect-note'; number: string }
+  | { type: 'note'; number: string; content: string }
+  | { type: 'note-taken' }
 /** Maximum requests to be made at once. */
 const MAX_CONC_REQS = 10
 export async function * getCourseIterator (
@@ -243,7 +263,9 @@ export async function * getCourseIterator (
   }
 
   let subject: string | null = null
+  let subjectName = ''
   let lastNumber: string | null = null
+  let noteState: NoteState = { type: 'none' }
   while (responseQueue.length > 0) {
     const { page, form } = await responseQueue.shift()!
 
@@ -251,13 +273,67 @@ export async function * getCourseIterator (
       form.querySelector('.tbrdr')?.children[1].children ??
       unwrap(new Error('Missing results table'))
     for (const row of rows) {
+      // Course header, but with less info, which precedes red notes
+      if (row.querySelector('.crsheader') && row.children.length === 3) {
+        if (noteState.type === 'none') {
+          noteState = {
+            type: 'expect-note',
+            number: row.children[1].textContent
+          }
+        } else {
+          throw new TypeError(
+            `Invalid state '${noteState.type}' for a reduced-info course header.`
+          )
+        }
+        continue
+      }
+
+      // Red notes describe a course.
+      if (row.querySelector('.nonenrtxt') && row.children.length === 2) {
+        if (noteState.type === 'expect-note') {
+          noteState = {
+            type: 'note',
+            number: noteState.number,
+            content: row.children[1].textContent.trim().replaceAll(/\s+/g, ' ')
+          }
+        } else {
+          throw new TypeError(`Invalid state '${noteState.type}' for a note.`)
+        }
+        continue
+      } else if (noteState.type === 'expect-note') {
+        throw new TypeError(
+          'Expected a note after a reduced-info course header.'
+        )
+      }
+
+      // Black notes describe a section. You can see examples for S123 COMM
+      // 101T and cancelled CSE sections in FA95. They describe the section
+      // row before it.
+      if (row.className === 'nonenrtxt' && row.children.length === 2) {
+        if (noteState.type === 'note-taken') {
+          noteState = { type: 'none' }
+        } else {
+          console.warn(subject, lastNumber)
+          throw new TypeError(`Invalid state '${noteState.type}' for a note.`)
+        }
+        continue
+      }
+
       // Heading with subject code
       const subjectHeading = row.querySelector('h2')
       if (subjectHeading) {
-        const match = subjectHeading.textContent.match(/\(([A-Z]+)\s*\)/)
-        if (match && match[1] !== subject) {
-          subject = match[1]
-          lastNumber = null
+        const heading = subjectHeading.textContent
+          .trim()
+          .replaceAll(/\s+/g, ' ')
+        const match = heading.match(/^(.+) \(([A-Z]+) ?\)$/)
+        if (match) {
+          if (match[2] !== subject) {
+            subjectName = match[1]
+            subject = match[2]
+            lastNumber = null
+          }
+        } else if (heading.endsWith(')')) {
+          throw new SyntaxError(`Couldn't parse subject heading:\n${heading}`)
         }
         continue
       }
@@ -271,25 +347,45 @@ export async function * getCourseIterator (
         if (number === lastNumber) {
           continue
         }
+        const note =
+          noteState.type === 'note'
+            ? noteState.number === number
+              ? noteState.content
+              : unwrap(
+                  new TypeError(
+                    `The note was intended for ${noteState.number} but instead was received by ${number}.`
+                  )
+                )
+            : undefined
+        noteState = { type: 'none' }
+        const catalogUrl = row.children[2]
+          .querySelector('a')
+          ?.getAttribute('href')
+          ?.slice(26, -2)
+        const catalog =
+          !catalogUrl ||
+          catalogUrl === 'http://registrar.ucsd.edu/studentlink/cnd.html'
+            ? undefined
+            : catalogUrl?.startsWith('http://www.ucsd.edu/catalog/')
+            ? catalogUrl.replace('http://www.ucsd.edu/catalog', '')
+            : catalogUrl
+        const courseInfo = row.children[2].textContent
+          .trim()
+          .replaceAll(/\s+/g, ' ')
         // ( 2 Units)
         // ( 2 /4 by 2 Units)
         // ( 1 -4 Units)
         // ( 1 /5 by 0.5 Units) [SP23 BIOM 231]
         // ( 2.5 Units) [SP23 LIAB 1C]
         const unitMatch =
-          row.children[2].textContent.match(
-            /\(\s*(\d+)(\.5)?(?:\s*[/-](\d+)(?:\s+by\s+(\d+)(\.5)?)?)?\s+Units\)/
-          ) ??
-          unwrap(
-            new SyntaxError(
-              'Missing "(N units)"\n' +
-                row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
-            )
-          )
-        const from = parseNatural(unitMatch[1]) + (unitMatch[2] ? 0.5 : 0)
-        const to = unitMatch[3] ? parseNatural(unitMatch[3]) : null
-        const inc = unitMatch[4]
-          ? parseNatural(unitMatch[4]) + (unitMatch[5] ? 0.5 : 0)
+          courseInfo.match(
+            /^(.+) \( (\d+)(\.5)?(?: [/-](\d+)(?: by (\d+)(\.5)?)?)? Units\) ?/
+          ) ?? unwrap(new SyntaxError('Missing "(N units)"\n' + courseInfo))
+        const title = unitMatch[1]
+        const from = parseNatural(unitMatch[2]) + (unitMatch[3] ? 0.5 : 0)
+        const to = unitMatch[4] ? parseNatural(unitMatch[4]) : null
+        const inc = unitMatch[5]
+          ? parseNatural(unitMatch[5]) + (unitMatch[6] ? 0.5 : 0)
           : null
         if (progress) {
           print(
@@ -297,8 +393,12 @@ export async function * getCourseIterator (
               `${page}/${pageCount}`.padStart(20, ' ')
           )
         }
-        const dateRangeMatch = row.children[2].textContent.match(
-          /(?:(Sum Sess I|Sum Ses II|SpecSumSes|Summer Qtr)\s(\d+))?:\s([A-Z][a-z]*)\s(\d+)\s(\d+)\s-\s([A-Z][a-z]*)\s(\d+)\s(\d+)/
+        const dateRangeMatch = courseInfo.match(
+          / ?(?:(Sum Sess I|Sum Ses II|SpecSumSes|Summer Qtr) (\d+))?: ([A-Z][a-z]*) (\d+) (\d+) - ([A-Z][a-z]*) (\d+) (\d+)$/
+        )
+        const description = courseInfo.slice(
+          unitMatch[0].length,
+          dateRangeMatch?.index
         )
         if (term[0] === 'S') {
           if (dateRangeMatch) {
@@ -318,10 +418,13 @@ export async function * getCourseIterator (
             }
           } else {
             throw new SyntaxError(
-              'Missing summer session date range\n' +
-                row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
+              'Missing summer session date range\n' + courseInfo
             )
           }
+        } else if (dateRangeMatch) {
+          throw new TypeError(
+            `Why does a non-summer quarter have a summer session date range?\n${description}`
+          )
         }
         const dateRange: [DateTuple, DateTuple] | undefined = dateRangeMatch
           ? [
@@ -342,12 +445,12 @@ export async function * getCourseIterator (
           pages: pageCount,
           item: {
             subject,
+            subjectName,
             number,
-            title:
-              row
-                .querySelector('td[colspan="5"] .boldtxt')
-                ?.textContent.trim() ??
-              unwrap(new Error(`No course title for ${subject} ${number}`)),
+            title,
+            description: description || undefined,
+            catalog,
+            note,
             units: { from, to: to ?? from, inc: inc ?? 1 },
             dateRange
           }
@@ -360,15 +463,18 @@ export async function * getCourseIterator (
       if (row.className === 'sectxt' || row.className === 'nonenrtxt') {
         const tds = Array.from(row.children, td => td.textContent.trim())
         let instructor: Element | null = row.children[9]
+        // Manipulate the <td>s so each section row is somewhat consistent
         if (row.className === 'nonenrtxt') {
-          if (tds.length === 2) {
-            // SP23 BGGN 500 uses a .nonenrtxt for a note, so skip it
-            continue
-          }
           // .nonenrtxt is used mostly for exams, but it's also used for
           // sections with multiple lectures (eg SP23 BENG 100). It appears as
           // white rather than lavender and doesn't repeat the instructor name.
           // The location may be different too.
+          if (tds.length !== 10 && tds.length !== 5) {
+            // 5 cells for cancelled sections (FA95 CSE sections)
+            throw new RangeError(
+              `This white section row has ${tds.length} cells.`
+            )
+          }
           tds.unshift('')
           tds.splice(9, 0, 'Staff')
           instructor = row.children[8]
@@ -376,7 +482,25 @@ export async function * getCourseIterator (
           // Replace the colspan TBA with four TBA cells
           tds.splice(6, 0, 'TBA', 'TBA', 'TBA')
           instructor = row.children[6]
+        } else if (tds.length !== 13 && tds.length !== 6) {
+          // 6 cells for cancelled sections (S123 BIPN 194)
+          throw new RangeError(
+            `This purple section row has ${tds.length} cells.`
+          )
         }
+
+        // Black notes describe sections.
+        let note: string | undefined
+        if (
+          row.nextElementSibling?.className === 'nonenrtxt' &&
+          row.nextElementSibling.children.length === 2
+        ) {
+          noteState = { type: 'note-taken' }
+          note = row.nextElementSibling.children[1].textContent
+            .trim()
+            .replaceAll(/\s+/g, ' ')
+        }
+
         const [
           ,
           ,
@@ -454,10 +578,21 @@ export async function * getCourseIterator (
             instructors: Array.from(instructor.querySelectorAll('a'), td => {
               const [last, first] = td.textContent.trim().split(', ')
               return [first, last]
-            })
+            }),
+            note
           }
         }
+        continue
       }
+
+      // Header row
+      if (row.querySelector('.ubrdr')) {
+        continue
+      }
+
+      throw new TypeError(
+        `Unknown row type:\n${row.outerHTML.replaceAll(/\s+/g, ' ')}`
+      )
     }
   }
   if (progress) {
