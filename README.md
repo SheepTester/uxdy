@@ -79,8 +79,7 @@ import(
 
 ```sh
 # In the repo root directory
-$ deno run --allow-net scheduleofclasses/scrape.ts FA23 > scheduleofclasses/terms/FA23.json
-$ deno run --allow-read classrooms/to-file.ts FA23 > classrooms/public/classrooms-FA23.txt
+$ TERM=FA23 deno task classrooms:scrape-to-file
 # Develop (does not minify)
 $ deno task classrooms:watch
 # Build

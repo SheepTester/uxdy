@@ -1,4 +1,4 @@
-// deno run --allow-read classrooms/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
+// deno run --allow-read classrooms/scripts/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
 
 import { writeAll } from 'std/streams/write_all.ts'
 import {

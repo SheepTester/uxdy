@@ -338,6 +338,20 @@ input[type='checkbox']:checked {
   background-color: var(--modal);
   z-index: 5;
 }
+.calendar-deco-row {
+  margin-bottom: -30px;
+  height: 0;
+  position: sticky;
+  top: 30px;
+}
+.calendar-header-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  transform: translateY(90px);
+  border-bottom: 1px solid var(--line);
+}
 .calendar-week-num {
   width: 29px;
   flex: none;
@@ -382,28 +396,21 @@ input[type='checkbox']:checked {
 }
 .calendar-heading-row {
   position: sticky;
-  background-color: var(--modal);
-}
-.calendar-heading-row .calendar-week-num {
-  margin-right: 0;
-}
-.calendar-header-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 120px;
-  border-bottom: 1px solid var(--line);
 }
 .calendar-quarter-heading-row {
-  margin-top: 30px;
-  top: 30px;
+  padding-top: 30px;
+  top: 0;
   height: 60px;
 }
 .calendar-month-heading-row {
   top: 90px;
+  background-color: var(--modal);
 }
 .calendar-heading-row:nth-child(2) {
   margin-top: 0;
+}
+.calendar-heading-row .calendar-week-num {
+  margin-right: 0;
 }
 .calendar-heading {
   margin: 0;
@@ -475,7 +482,7 @@ input[type='checkbox']:checked {
   bottom: 20px;
   margin: 0 auto;
   max-width: 820px;
-  height: 400px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   background-color: var(--modal);

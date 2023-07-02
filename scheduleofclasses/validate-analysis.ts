@@ -5,7 +5,7 @@ import { readCourses } from './scrape.ts'
 
 const term = 'SP23'
 
-const courses = await readCourses(`./scheduleofclasses/terms/${term}.json`)
+const { courses } = await readCourses(`./scheduleofclasses/terms/${term}.json`)
 
 const buildings: Record<string, number> = {}
 

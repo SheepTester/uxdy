@@ -12,17 +12,21 @@ import { AbbrevHeading } from '../AbbrevHeading.tsx'
 export type CalendarHeaderRowProps = {}
 export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
   return (
-    <div class='calendar-row calendar-header-row'>
-      <div class='calendar-week-num'>
-        <span>Wk</span>
-      </div>
-      {DAY_NUMS.map(day => (
-        <div class='calendar-item calendar-week-day'>
-          {Day.dayName(day + 1, 'short', 'en-US')}
+    <>
+      <div class='calendar-row calendar-header-row'>
+        <div class='calendar-week-num'>
+          <span>Wk</span>
         </div>
-      ))}
-      <div class='calendar-header-line' />
-    </div>
+        {DAY_NUMS.map(day => (
+          <div class='calendar-item calendar-week-day'>
+            {Day.dayName(day + 1, 'short', 'en-US')}
+          </div>
+        ))}
+      </div>
+      <div class='calendar-row calendar-deco-row'>
+        <div class='calendar-header-line' />
+      </div>
+    </>
   )
 }
 
@@ -52,6 +56,7 @@ export function CalendarQuarterHeadingRow ({
 }: CalendarQuarterHeadingRowProps) {
   return (
     <CalendarHeadingRow class='calendar-quarter-heading-row'>
+      <div class='gradient gradient-bg gradient-bottom' />
       <AbbrevHeading
         heading='h2'
         abbrev={termCode(year, season)}

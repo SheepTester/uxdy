@@ -123,6 +123,9 @@ export type ScrapedSection = {
   instructors: [firstName: string, lastName: string][]
 }
 
+/** `month` is 1-indexed. */
+export type DateTuple = [year: number, month: number, date: number]
+
 export type ScrapedCourse = {
   subject: string
   number: string
@@ -134,22 +137,47 @@ export type ScrapedCourse = {
    * NOTE: `inc` may be 0.5.
    */
   units: { from: number; to: number; inc: number }
+  dateRange?: [DateTuple, DateTuple]
   sections: ScrapedSection[]
 }
 
+const BASE = 'https://act.ucsd.edu/scheduleOfClasses'
+
 // https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=SP23&selectedSubjects=CAT&selectedSubjects=SYN&page=1
-const getUrl = (term: string, subjects: string[], page: number) =>
-  'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?' +
-  new URLSearchParams([
+const getUrl = (term: string, departments: string[], page: number) =>
+  `${BASE}/scheduleOfClassesStudentResult.htm?${new URLSearchParams([
     ['selectedTerm', term],
-    ...subjects.map(subject => ['selectedSubjects', subject]),
+    ['tabNum', 'tabs-dept'],
+    ...departments.map(department => ['selectedDepartments', department]),
     ['page', String(page)]
-  ])
+  ])}`
 
 type SubjectList = {
   code: string
   value: string
 }[]
+
+const expectedSumSessName: Record<string, string> = {
+  S1: 'Sum Sess I',
+  S2: 'Sum Ses II',
+  S3: 'SpecSumSes',
+  SU: 'Summer Qtr'
+}
+const months = [
+  '',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
 
 export type CourseIteratorOptions = {
   /** Start page. Default: 1 */
@@ -172,20 +200,25 @@ export async function * getCourseIterator (
     progress = false
   }: Partial<CourseIteratorOptions> = {}
 ): AsyncGenerator<ResultRow> {
-  const subjects = await fetch(
-    'https://act.ucsd.edu/scheduleOfClasses/subject-list.json?selectedTerm=' +
-      term
+  const departments = await fetch(
+    `${BASE}/department-list.json?${new URLSearchParams([
+      ['selectedTerm', term]
+    ])}`
   )
     .then(r => r.json())
     .then((json: SubjectList) => json.map(({ code }) => code))
 
   const fetchPage = async (page: number) => {
-    const document = await fetchHtml(getUrl(term, subjects, page))
+    const document = await fetchHtml(getUrl(term, departments, page))
     return {
       page,
       form:
         document.getElementById('socDisplayCVO') ??
-        unwrap(new Error('Missing results wrapper'))
+        unwrap(
+          new Error(
+            `Missing results wrapper for ${getUrl(term, departments, page)}`
+          )
+        )
     }
   }
   const responseQueue = [fetchPage(startPage)]
@@ -264,6 +297,46 @@ export async function * getCourseIterator (
               `${page}/${pageCount}`.padStart(20, ' ')
           )
         }
+        const dateRangeMatch = row.children[2].textContent.match(
+          /(?:(Sum Sess I|Sum Ses II|SpecSumSes|Summer Qtr)\s(\d+))?:\s([A-Z][a-z]*)\s(\d+)\s(\d+)\s-\s([A-Z][a-z]*)\s(\d+)\s(\d+)/
+        )
+        if (term[0] === 'S') {
+          if (dateRangeMatch) {
+            if (
+              dateRangeMatch[1] &&
+              expectedSumSessName[term.slice(0, 2)] !== dateRangeMatch[1]
+            ) {
+              throw new RangeError(
+                `For term ${term}, this date range says ${dateRangeMatch[1]}.`
+              )
+            }
+            if (!months.includes(dateRangeMatch[3])) {
+              throw new RangeError(`${dateRangeMatch[3]} is not a month.`)
+            }
+            if (!months.includes(dateRangeMatch[6])) {
+              throw new RangeError(`${dateRangeMatch[6]} is not a month.`)
+            }
+          } else {
+            throw new SyntaxError(
+              'Missing summer session date range\n' +
+                row.children[2].textContent.trim().replaceAll(/\s+/g, ' ')
+            )
+          }
+        }
+        const dateRange: [DateTuple, DateTuple] | undefined = dateRangeMatch
+          ? [
+              [
+                +dateRangeMatch[5],
+                months.indexOf(dateRangeMatch[3]),
+                +dateRangeMatch[4]
+              ],
+              [
+                +dateRangeMatch[8],
+                months.indexOf(dateRangeMatch[6]),
+                +dateRangeMatch[7]
+              ]
+            ]
+          : undefined
         yield {
           page,
           pages: pageCount,
@@ -275,7 +348,8 @@ export async function * getCourseIterator (
                 .querySelector('td[colspan="5"] .boldtxt')
                 ?.textContent.trim() ??
               unwrap(new Error(`No course title for ${subject} ${number}`)),
-            units: { from, to: to ?? from, inc: inc ?? 1 }
+            units: { from, to: to ?? from, inc: inc ?? 1 },
+            dateRange
           }
         }
         lastNumber = number
@@ -392,10 +466,15 @@ export async function * getCourseIterator (
   }
 }
 
+export type ScrapedResult = {
+  scrapeTime: number
+  courses: ScrapedCourse[]
+}
+
 export async function getCourses (
   term: string,
   progress = false
-): Promise<ScrapedCourse[]> {
+): Promise<ScrapedResult> {
   const courses: ScrapedCourse[] = []
   for await (const { item } of getCourseIterator(term, { progress })) {
     if ('subject' in item) {
@@ -404,12 +483,13 @@ export async function getCourses (
       courses[courses.length - 1].sections.push(item)
     }
   }
-  return courses
+  return {
+    scrapeTime: Date.now(),
+    courses
+  }
 }
 
-export async function readCourses (
-  path: string | URL
-): Promise<ScrapedCourse[]> {
+export async function readCourses (path: string | URL): Promise<ScrapedResult> {
   return JSON.parse(await Deno.readTextFile(path), (key, value) =>
     key === 'section' && value.endsWith('T00:00:00.000Z')
       ? new Date(value)
@@ -430,6 +510,13 @@ if (import.meta.main) {
   const [term, start = '1'] = Deno.args
   let first = start === '1'
   let course: ScrapedCourse | null = null
+  if (start === '1') {
+    const metadata: Omit<ScrapedResult, 'courses'> = {
+      scrapeTime: Date.now()
+    }
+    console.log(JSON.stringify(metadata).slice(0, -1))
+    console.log(', "courses":')
+  }
   for await (const { item } of getCourseIterator(term, {
     start: +start,
     progress: true
@@ -446,5 +533,5 @@ if (import.meta.main) {
       console.error('?? Received section before course')
     }
   }
-  console.log(']')
+  console.log(']}')
 }
