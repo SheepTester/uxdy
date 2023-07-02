@@ -13,9 +13,10 @@ import { BuildingPanel } from './components/building/BuildingPanel.tsx'
 import { BuildingButton } from './components/BuildingButton.tsx'
 import { DateTimeButton } from './components/date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './components/date-time/DateTimePanel.tsx'
+import { buildings } from './lib/buildings.ts'
 import {
   coursesToClassrooms,
-  defaultBuildings
+  TermBuildings
 } from './lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from './lib/locations.ts'
 import { Now, useNow } from './lib/now.ts'
@@ -27,7 +28,7 @@ function App () {
   const [date, setDate] = useState(Day.today())
   const [customTime, setCustomTime] = useState<Time | null>(null)
   const [scrollToDate, setScrollToDate] = useState<number | null>(1)
-  const [buildings, setBuildings] = useState(defaultBuildings)
+  const [termBuildings, setTermBuildings] = useState<TermBuildings>({})
   const [viewing, setViewing] = useState<string | null>(null)
   const [lastViewing, setLastViewing] = useState('CENTR')
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
@@ -58,7 +59,7 @@ function App () {
       try {
         const result = await promise
         if (result) {
-          setBuildings(
+          setTermBuildings(
             coursesToClassrooms(result.courses, { monday: date.monday, finals })
           )
           setNoticeVisible(false)
@@ -144,16 +145,17 @@ function App () {
               backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`
             }}
           />
-          {buildings &&
-            scrollWrapper &&
+          {scrollWrapper &&
             Object.values(buildings).map(building => (
               <BuildingButton
                 key={building.code}
                 now={currentTime}
                 building={building}
+                rooms={Object.values(termBuildings[building.code] ?? {})}
                 onSelect={setViewing}
                 scrollWrapper={scrollWrapper}
                 selected={building.code === viewing}
+                visible={building.code in termBuildings}
               />
             ))}
         </div>
@@ -161,12 +163,8 @@ function App () {
       {buildings && (
         <BuildingPanel
           now={currentTime}
-          building={
-            buildings[viewing || lastViewing] ?? {
-              code: viewing || lastViewing,
-              rooms: {}
-            }
-          }
+          building={buildings[viewing || lastViewing]}
+          rooms={termBuildings[viewing || lastViewing] ?? {}}
           onClose={() => setViewing(null)}
           visible={!!viewing}
           rightPanelOpen={showDate}

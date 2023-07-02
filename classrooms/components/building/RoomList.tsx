@@ -5,20 +5,37 @@
 
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { compareRoomNums } from '../../lib/compareRoomNums.ts'
-import { TermBuilding } from '../../lib/coursesToClassrooms.ts'
+import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { Now, used } from '../../lib/now.ts'
 
 export type RoomListProps = {
   now?: Now | null
-  building: TermBuilding
+  buildingCode: string
+  rooms: Record<string, RoomMeeting[]>
   onSelect: (room: string) => void
 }
-export function RoomList ({ now, building, onSelect }: RoomListProps) {
+export function RoomList ({
+  now,
+  buildingCode,
+  rooms,
+  onSelect
+}: RoomListProps) {
+  if (Object.keys(rooms).length === 0) {
+    return (
+      <div class='empty'>
+        <p>
+          This building isn't used for any classes this week, as far as WebReg
+          is concerned.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <div class='gradient gradient-top' />
       <div class='rooms'>
-        {Object.entries(building.rooms)
+        {Object.entries(rooms)
           // Can't pre-sort the rooms object entries because JS sorts numerical
           // properties differently
           .sort(([a], [b]) => compareRoomNums(a, b))
@@ -33,7 +50,7 @@ export function RoomList ({ now, building, onSelect }: RoomListProps) {
                 onClick={() => onSelect(room)}
               >
                 <div className='room-name'>
-                  {building.code} {room}
+                  {buildingCode} {room}
                 </div>
                 {now && (
                   <div className='current-meeting'>

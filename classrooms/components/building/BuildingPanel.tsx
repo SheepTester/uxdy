@@ -4,8 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { buildings } from '../../lib/buildings.ts'
-import { TermBuilding } from '../../lib/coursesToClassrooms.ts'
+import { BuildingDatum, buildings } from '../../lib/buildings.ts'
+import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { Now } from '../../lib/now.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { BackIcon } from '../BackIcon.tsx'
@@ -15,12 +15,14 @@ import { Schedule } from './Schedule.tsx'
 
 type BuildingPanelContentProps = {
   now?: Now | null
-  building: TermBuilding
+  building: BuildingDatum
+  rooms: Record<string, RoomMeeting[]>
   onClose: () => void
 }
 function BuildingPanelContent ({
   now,
   building,
+  rooms,
   onClose
 }: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
@@ -85,9 +87,14 @@ function BuildingPanelContent ({
         </button>
       </div>
       {selected ? (
-        <Schedule now={now} meetings={building.rooms[selected]} />
+        <Schedule now={now} meetings={rooms[selected] ?? []} />
       ) : (
-        <RoomList now={now} building={building} onSelect={setSelected} />
+        <RoomList
+          now={now}
+          buildingCode={building.code}
+          rooms={rooms}
+          onSelect={setSelected}
+        />
       )}
     </>
   )
@@ -95,7 +102,8 @@ function BuildingPanelContent ({
 
 export type BuildingPanelProps = {
   now?: Now | null
-  building: TermBuilding
+  building: BuildingDatum
+  rooms: Record<string, RoomMeeting[]>
   onClose: () => void
   visible: boolean
   rightPanelOpen: boolean
@@ -103,6 +111,7 @@ export type BuildingPanelProps = {
 export function BuildingPanel ({
   now,
   building,
+  rooms,
   onClose,
   visible,
   rightPanelOpen
@@ -116,6 +125,7 @@ export function BuildingPanel ({
       <BuildingPanelContent
         now={now}
         building={building}
+        rooms={rooms}
         onClose={onClose}
         // Force new elements (disable transition) when building changes
         key={building}

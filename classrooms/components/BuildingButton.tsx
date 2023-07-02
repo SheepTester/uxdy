@@ -4,8 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { useCallback } from 'preact/hooks'
-import { buildings } from '../lib/buildings.ts'
-import { TermBuilding } from '../lib/coursesToClassrooms.ts'
+import { BuildingDatum } from '../lib/buildings.ts'
+import { RoomMeeting } from '../lib/coursesToClassrooms.ts'
 import {
   latLongToPixel,
   southwest,
@@ -16,24 +16,24 @@ import { Now, used } from '../lib/now.ts'
 
 type BuildingButtonProps = {
   now?: Now | null
-  building: TermBuilding
+  building: BuildingDatum
+  rooms: RoomMeeting[][]
   onSelect: (building: string) => void
   scrollWrapper: Element
   selected: boolean
+  visible: boolean
 }
 
 export function BuildingButton ({
   now,
   building,
+  rooms,
   onSelect,
   scrollWrapper,
-  selected
+  selected,
+  visible
 }: BuildingButtonProps) {
-  if (!buildings[building.code]) {
-    console.warn('No location data for', building)
-    return <p>No location data for {building.code}</p>
-  }
-  const college = buildings[building.code].college
+  const college = building.college
 
   const ref = useCallback((button: HTMLButtonElement | null) => {
     if (building.code === 'CENTR' && button) {
@@ -47,11 +47,13 @@ export function BuildingButton ({
     }
   }, [])
 
-  const { x, y } = latLongToPixel(buildings[building.code].location)
+  const { x, y } = latLongToPixel(building.location)
 
   return (
     <button
-      class={`building college-${college} ${selected ? 'selected' : ''}`}
+      class={`building-btn college-${college} ${selected ? 'selected' : ''} ${
+        visible ? '' : 'building-btn-hidden'
+      }`}
       style={{
         left: `${x - southwest.x + PADDING}px`,
         top: `${y - northeast.y + PADDING}px`
@@ -64,16 +66,12 @@ export function BuildingButton ({
         {now && (
           <>
             <span class='in-use'>
-              {
-                Object.values(building.rooms).filter(meetings =>
-                  meetings.some(used(now))
-                ).length
-              }
+              {rooms.filter(meetings => meetings.some(used(now))).length}
             </span>
             /
           </>
         )}
-        {Object.values(building.rooms).length}
+        {rooms.length}
       </span>
     </button>
   )

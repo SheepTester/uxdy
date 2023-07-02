@@ -157,7 +157,7 @@ input[type='checkbox']:checked {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
-.building {
+.building-btn {
   position: absolute;
   transform: translate(-50%, -50%);
   padding: 5px 10px;
@@ -166,13 +166,17 @@ input[type='checkbox']:checked {
   color: #ffcd00;
   box-shadow: 0 2px 5px var(--shadow);
   white-space: nowrap;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, visibility 0.2s, opacity 0.2s;
 }
-.building:active {
+.building-btn:active {
   box-shadow: 0 0 0 var(--shadow-press);
 }
-.building.selected {
+.building-btn.selected {
   box-shadow: 0 0 0 3px var(--highlight);
+}
+.building-btn-hidden {
+  visibility: hidden;
+  opacity: 0;
 }
 .room-count {
   background-color: var(--modal);
@@ -597,6 +601,21 @@ input[type='checkbox']:checked {
   fill: currentColor;
   width: 24px;
 }
+
+.empty {
+  flex: auto;
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  font-family: var(--normal);
+  text-align: center;
+}
+.empty p {
+  max-width: 350px;
+}
+
 .rooms {
   padding: 0 20px;
   display: grid;
@@ -633,11 +652,6 @@ input[type='checkbox']:checked {
 .schedule {
   display: flex;
   flex-direction: column;
-}
-.finals-only {
-  align-items: center;
-  justify-content: center;
-  color: var(--secondary);
 }
 .day-names,
 .meetings-wrapper {

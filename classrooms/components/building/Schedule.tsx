@@ -22,8 +22,11 @@ export function Schedule ({ now, meetings }: ScheduleProps) {
 
   if (meetings.length === 0) {
     return (
-      <div class='schedule finals-only'>
-        <p>This room is only used during finals.</p>
+      <div class='empty'>
+        <p>
+          This room isn't used for any classes this week, as far as WebReg is
+          concerned.
+        </p>
       </div>
     )
   }

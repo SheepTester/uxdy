@@ -6,6 +6,326 @@
     "I omit 'College' and 'Outdoor Classroom' from building names, but not 'Building.'"
   ],
   "colleges": {
+    "seventh": {
+      "OTRSN": {
+        "location": [32.88665760836001, -117.24102406579628],
+        "name": "Otterson Hall",
+        "images": [
+          "https://i.imgur.com/2DncCdV.jpeg",
+          "https://i.imgur.com/nuuiXO9.jpeg",
+          "https://i.imgur.com/ByRotXZ.jpeg",
+          "https://i.imgur.com/rh1PE4K.jpeg",
+          "https://i.imgur.com/k8Bubgx.jpeg"
+        ]
+      },
+      "SEVW2": {
+        "location": [32.8880285561251, -117.24255222849888],
+        "name": "Seventh West Building 2",
+        "images": []
+      },
+      "SEVE3": {
+        "location": [32.88825009555447, -117.24173440393453],
+        "name": "Seventh East Ecoflats 3",
+        "images": [
+          "https://i.imgur.com/RFVU7xr.jpeg",
+          "https://i.imgur.com/81Y5Bqh.jpeg",
+          "https://i.imgur.com/z85Z6w3.jpeg",
+          "https://i.imgur.com/K7KBhkk.jpeg",
+          "https://i.imgur.com/46FqmYp.jpeg",
+          "https://i.imgur.com/A7z04lV.jpeg"
+        ]
+      },
+      "SEVE4": {
+        "location": [32.88807303667593, -117.2417902045747],
+        "name": "Seventh East Ecoflats 4",
+        "images": [
+          "https://i.imgur.com/rvX3WRu.jpeg",
+          "https://i.imgur.com/3HtM3MY.jpeg",
+          "https://i.imgur.com/7qsGG1G.jpeg",
+          "https://i.imgur.com/A7z04lV.jpeg"
+        ]
+      },
+      "WFH": {
+        "location": [32.886967814911024, -117.24173638805067],
+        "name": "Wells Fargo Hall",
+        "images": [
+          "https://i.imgur.com/JwSFFD5.jpeg",
+          "https://i.imgur.com/wd4xodE.jpeg",
+          "https://i.imgur.com/gPAVIsw.jpeg",
+          "https://i.imgur.com/k8Bubgx.jpeg"
+        ]
+      }
+    },
+    "erc": {
+      "ASANT": {
+        "location": [32.88423744331073, -117.24213984468823],
+        "name": "Asante House",
+        "images": [
+          "https://i.imgur.com/41b7QoK.jpeg",
+          "https://i.imgur.com/cg9qmez.jpeg",
+          "https://i.imgur.com/KAX1Krl.jpeg"
+        ]
+      },
+      "ERCA": {
+        "location": [32.886087113975414, -117.24205254723678],
+        "name": "ERC Administration",
+        "images": [
+          "https://i.imgur.com/zTuN3ki.jpeg",
+          "https://i.imgur.com/K38yRo7.jpeg",
+          "https://i.imgur.com/xsRVr2m.jpeg",
+          "https://i.imgur.com/jQdIpgH.jpeg"
+        ]
+      },
+      "GREAT": {
+        "location": [32.883944240936444, -117.24193249617227],
+        "name": "Great Hall",
+        "images": [
+          "https://i.imgur.com/2iS1TGa.jpeg",
+          "https://i.imgur.com/OKLA6JX.jpeg",
+          "https://i.imgur.com/2v7svKU.jpeg"
+        ]
+      },
+      "LASB": {
+        "location": [32.88557327735999, -117.2413567320843],
+        "name": "Latin American Studies Building",
+        "images": ["https://i.imgur.com/kP1FInU.jpeg"]
+      },
+      "RBC": {
+        "location": [32.88427044449085, -117.2408680383893],
+        "name": "Robinson Building Complex",
+        "images": [
+          "https://i.imgur.com/SDNf4ci.jpeg",
+          "https://i.imgur.com/jQMCHrY.jpeg",
+          "https://i.imgur.com/G0GLZQD.jpeg",
+          "https://i.imgur.com/XrAZzhh.jpeg",
+          "https://i.imgur.com/1ysjMHf.jpeg"
+        ],
+        "comment": [
+          "https://gps.ucsd.edu/_files/misc/GPS-Printable-Map-2015.pdf",
+          "I think Garner is part of this"
+        ]
+      },
+      "SSB": {
+        "location": [32.88391338508008, -117.24045720071513],
+        "name": "Social Sciences Building",
+        "images": [
+          "https://i.imgur.com/bHveajb.jpeg",
+          "https://i.imgur.com/0V90Tca.jpeg",
+          "https://i.imgur.com/5A2kawY.jpeg",
+          "https://i.imgur.com/t15im8k.jpeg"
+        ]
+      }
+    },
+    "marshall": {
+      "CSB": {
+        "location": [32.880517237245954, -117.23939317415764],
+        "name": "Cognitive Science Building",
+        "images": [
+          "https://i.imgur.com/CXa715U.jpeg",
+          "https://i.imgur.com/6NiZ46R.jpeg",
+          "https://i.imgur.com/wSSxyyj.jpeg",
+          "https://i.imgur.com/fSMNNuc.jpeg",
+          "https://i.imgur.com/riutYQz.jpeg",
+          "https://i.imgur.com/pa0BSpr.jpeg",
+          "https://i.imgur.com/jZvJO05.jpeg"
+        ]
+      },
+      "ECON": {
+        "location": [32.88235588485967, -117.24040328432459],
+        "name": "Economics Building",
+        "images": [
+          "https://i.imgur.com/MTxt62o.jpeg",
+          "https://i.imgur.com/iQIL8bu.jpeg",
+          "https://i.imgur.com/xnokzUN.jpeg",
+          "https://i.imgur.com/YY7YmrA.jpeg"
+        ]
+      },
+      "PETER": {
+        "location": [32.879984046654364, -117.2402525268966],
+        "name": "Peterson Hall",
+        "images": [
+          "https://i.imgur.com/7O3YLwu.jpeg",
+          "https://i.imgur.com/kZeE8oF.jpeg",
+          "https://i.imgur.com/ryxGEki.jpeg",
+          "https://i.imgur.com/JWDIvEy.jpeg",
+          "https://i.imgur.com/ZwBOssV.jpeg"
+        ]
+      },
+      "SEQUO": {
+        "location": [32.88203974495475, -117.24103633144476],
+        "name": "Sequoyah Hall",
+        "images": [
+          "https://i.imgur.com/YXgBI1O.jpeg",
+          "https://i.imgur.com/UJa4KNw.jpeg",
+          "https://i.imgur.com/NUqDM5a.jpeg",
+          "https://i.imgur.com/f7EFZpT.jpeg",
+          "https://i.imgur.com/7zLoJjJ.jpeg",
+          "https://i.imgur.com/KBUySt6.jpeg"
+        ]
+      },
+      "SOLIS": {
+        "location": [32.880935740253626, -117.23964750230745],
+        "name": "Solís Hall",
+        "images": [
+          "https://i.imgur.com/bZzkyvr.jpeg",
+          "https://i.imgur.com/EeChtxt.jpeg",
+          "https://i.imgur.com/CXa715U.jpeg"
+        ]
+      },
+      "SSRB": {
+        "location": [32.88075657728253, -117.240142743495],
+        "name": "Social Sciences Research Building",
+        "images": [
+          "https://i.imgur.com/ktWIzDA.jpeg",
+          "https://i.imgur.com/suB1Zw2.jpeg",
+          "https://i.imgur.com/suB1Zw2.jpeg",
+          "https://i.imgur.com/batB9YN.jpeg",
+          "https://i.imgur.com/gNdZy7z.jpeg",
+          "https://i.imgur.com/wOK32RL.jpeg",
+          "https://i.imgur.com/2Ne0Zz3.jpeg"
+        ]
+      },
+      "TM102": {
+        "location": [32.88134401507817, -117.23933111579409],
+        "name": "Thurgood Marshall 102",
+        "images": ["https://i.imgur.com/gGIHRxo.jpeg"]
+      }
+    },
+    "sixth": {
+      "CTL": {
+        "location": [32.880720265920914, -117.24142517100402],
+        "name": "Catalyst",
+        "images": [
+          "https://i.imgur.com/Wgtxcio.jpeg",
+          "https://i.imgur.com/TApNHHe.jpeg",
+          "https://i.imgur.com/UzvzE2n.jpeg",
+          "https://i.imgur.com/PgRu7iI.jpeg",
+          "https://i.imgur.com/brkGKmT.jpeg",
+          "https://i.imgur.com/MzO8kdg.jpeg"
+        ]
+      },
+      "JEANN": {
+        "location": [32.8799296621332, -117.24119652096547],
+        "name": "The Jeannie",
+        "images": [
+          "https://i.imgur.com/S7hWyFi.jpeg",
+          "https://i.imgur.com/Gr72SGn.jpeg",
+          "https://i.imgur.com/jcmweDB.jpeg",
+          "https://i.imgur.com/7g2ddgc.jpeg",
+          "https://i.imgur.com/H3pf35p.jpeg",
+          "https://i.imgur.com/WXEOHoX.jpeg",
+          "https://i.imgur.com/0SCGaj1.jpeg"
+        ]
+      },
+      "MOS": {
+        "location": [32.88001190738399, -117.24163094823878],
+        "name": "Mosaic",
+        "images": [
+          "https://i.imgur.com/mMpazXy.jpeg",
+          "https://i.imgur.com/kOoJMGj.jpeg",
+          "https://i.imgur.com/uYLVGh5.jpeg",
+          "https://i.imgur.com/PiC2Cb8.jpeg",
+          "https://i.imgur.com/FHpBJYo.jpeg",
+          "https://i.imgur.com/6woeDzV.jpeg",
+          "https://i.imgur.com/6woeDzV.jpeg"
+        ]
+      },
+      "RWAC": {
+        "location": [32.880374742852574, -117.24106684310492],
+        "name": "Ridge Walk Academic Complex",
+        "images": [
+          "https://i.imgur.com/wzZrECe.jpeg",
+          "https://i.imgur.com/rHbydi1.jpeg",
+          "https://i.imgur.com/bckfXJi.jpeg",
+          "https://i.imgur.com/6hH79mc.jpeg",
+          "https://i.imgur.com/OHUnhy9.jpeg",
+          "https://i.imgur.com/jBTe18L.jpeg",
+          "https://i.imgur.com/cga1K75.jpeg",
+          "https://i.imgur.com/ltI4q8O.jpeg",
+          "https://i.imgur.com/8yGvvrA.jpeg",
+          "https://i.imgur.com/PKQ0Eda.jpeg",
+          "https://i.imgur.com/GJlru9N.jpeg",
+          "https://i.imgur.com/pvCEee4.jpeg",
+          "https://i.imgur.com/U817BWw.jpeg"
+        ]
+      }
+    },
+    "muir": {
+      "APM": {
+        "location": [32.87900949086575, -117.24105009713044],
+        "name": "Applied Physics and Mathematics",
+        "images": [
+          "https://i.imgur.com/89vhOWC.jpeg",
+          "https://i.imgur.com/1xFYiGu.jpeg",
+          "https://i.imgur.com/89vhOWC.jpeg",
+          "https://i.imgur.com/FloMKYA.jpeg"
+        ]
+      },
+      "BIO": {
+        "location": [32.878428690703146, -117.24103674033825],
+        "name": "Biology Building",
+        "images": [
+          "https://i.imgur.com/voBOeaq.jpeg",
+          "https://i.imgur.com/7fdINBO.jpeg",
+          "https://i.imgur.com/BklsyEi.jpeg"
+        ]
+      },
+      "HSS": {
+        "location": [32.87834508545459, -117.24168835799722],
+        "name": "Humanities and Social Sciences Building",
+        "images": [
+          "https://i.imgur.com/Lue4Hz0.jpeg",
+          "https://i.imgur.com/ESTU5K4.jpeg",
+          "https://i.imgur.com/hoq0JCh.jpeg",
+          "https://i.imgur.com/q36eBkZ.jpeg"
+        ]
+      },
+      "LEDDN": {
+        "location": [32.87876783002103, -117.24168242455174],
+        "name": "Ledden Auditorium",
+        "images": [
+          "https://i.imgur.com/TeEhzeV.jpeg",
+          "https://i.imgur.com/BklsyEi.jpeg",
+          "https://i.imgur.com/TqvKBYJ.jpeg"
+        ]
+      },
+      "MANDE": {
+        "location": [32.877812337766414, -117.23998508397895],
+        "name": "Mandeville Center",
+        "images": [
+          "https://i.imgur.com/2yXTr9k.jpeg",
+          "https://i.imgur.com/w93BY9I.jpeg",
+          "https://i.imgur.com/4MCnqQs.jpeg",
+          "https://i.imgur.com/kUJwqWS.jpeg",
+          "https://i.imgur.com/vcZNcYB.jpeg",
+          "https://i.imgur.com/aW79Stz.jpeg",
+          "https://i.imgur.com/Xb8Lgc3.jpeg"
+        ]
+      },
+      "MCGIL": {
+        "location": [32.87900601797463, -117.24205773606351],
+        "name": "McGill Hall",
+        "images": [
+          "https://i.imgur.com/ean0Xw4.jpeg",
+          "https://i.imgur.com/FAyAZ2g.jpeg",
+          "https://i.imgur.com/oKUKr7n.jpeg",
+          "https://i.imgur.com/RyCAZpz.jpeg"
+        ]
+      },
+      "MNDLR": {
+        "location": [32.87928595670899, -117.24214505416418],
+        "name": "Mandler Hall",
+        "images": [
+          "https://i.imgur.com/wHkcEkv.jpeg",
+          "https://i.imgur.com/VjGXYpA.jpeg"
+        ]
+      },
+      "RECGM": {
+        "location": [32.87672837413399, -117.24124478552716],
+        "name": "Recreation Gym",
+        "images": ["https://i.imgur.com/qRSwZXl.jpeg"]
+      }
+    },
     "revelle": {
       "BONN": {
         "location": [32.876084946774036, -117.24038814500676],
@@ -119,323 +439,47 @@
         ]
       }
     },
-    "muir": {
-      "APM": {
-        "location": [32.87900949086575, -117.24105009713044],
-        "name": "Applied Physics and Mathematics",
+    "eighth": {
+      "DANCE": {
+        "location": [32.87186729617818, -117.24003377110412],
+        "name": "Molli and Arthur Wagner Dance Building",
         "images": [
-          "https://i.imgur.com/89vhOWC.jpeg",
-          "https://i.imgur.com/1xFYiGu.jpeg",
-          "https://i.imgur.com/89vhOWC.jpeg",
-          "https://i.imgur.com/FloMKYA.jpeg"
+          "https://i.imgur.com/IjcxcYu.jpeg",
+          "https://i.imgur.com/mZqSm9K.jpeg",
+          "https://i.imgur.com/Ff2omog.jpeg",
+          "https://i.imgur.com/Cd9qF5k.jpeg"
         ]
       },
-      "BIO": {
-        "location": [32.878428690703146, -117.24103674033825],
-        "name": "Biology Building",
+      "MWEIS": {
+        "location": [32.87095079844769, -117.24121579783444],
+        "name": "Mandell Weiss Theatre",
         "images": [
-          "https://i.imgur.com/voBOeaq.jpeg",
-          "https://i.imgur.com/7fdINBO.jpeg",
-          "https://i.imgur.com/BklsyEi.jpeg"
-        ]
-      },
-      "HSS": {
-        "location": [32.87834508545459, -117.24168835799722],
-        "name": "Humanities and Social Sciences Building",
-        "images": [
-          "https://i.imgur.com/Lue4Hz0.jpeg",
-          "https://i.imgur.com/ESTU5K4.jpeg",
-          "https://i.imgur.com/hoq0JCh.jpeg",
-          "https://i.imgur.com/q36eBkZ.jpeg"
-        ]
-      },
-      "LEDDN": {
-        "location": [32.87876783002103, -117.24168242455174],
-        "name": "Ledden Auditorium",
-        "images": [
-          "https://i.imgur.com/TeEhzeV.jpeg",
-          "https://i.imgur.com/BklsyEi.jpeg",
-          "https://i.imgur.com/TqvKBYJ.jpeg"
-        ]
-      },
-      "MANDE": {
-        "location": [32.877812337766414, -117.23998508397895],
-        "name": "Mandeville Center",
-        "images": [
-          "https://i.imgur.com/2yXTr9k.jpeg",
-          "https://i.imgur.com/w93BY9I.jpeg",
-          "https://i.imgur.com/4MCnqQs.jpeg",
-          "https://i.imgur.com/kUJwqWS.jpeg",
-          "https://i.imgur.com/vcZNcYB.jpeg",
-          "https://i.imgur.com/aW79Stz.jpeg",
-          "https://i.imgur.com/Xb8Lgc3.jpeg"
-        ]
-      },
-      "MCGIL": {
-        "location": [32.87900601797463, -117.24205773606351],
-        "name": "McGill Hall",
-        "images": [
-          "https://i.imgur.com/ean0Xw4.jpeg",
-          "https://i.imgur.com/FAyAZ2g.jpeg",
-          "https://i.imgur.com/oKUKr7n.jpeg",
-          "https://i.imgur.com/RyCAZpz.jpeg"
-        ]
-      },
-      "MNDLR": {
-        "location": [32.87928595670899, -117.24214505416418],
-        "name": "Mandler Hall",
-        "images": [
-          "https://i.imgur.com/wHkcEkv.jpeg",
-          "https://i.imgur.com/VjGXYpA.jpeg"
-        ]
-      },
-      "RECGM": {
-        "location": [32.87672837413399, -117.24124478552716],
-        "name": "Recreation Gym",
-        "images": ["https://i.imgur.com/qRSwZXl.jpeg"]
-      }
-    },
-    "sixth": {
-      "CTL": {
-        "location": [32.880720265920914, -117.24142517100402],
-        "name": "Catalyst",
-        "images": [
-          "https://i.imgur.com/Wgtxcio.jpeg",
-          "https://i.imgur.com/TApNHHe.jpeg",
-          "https://i.imgur.com/UzvzE2n.jpeg",
-          "https://i.imgur.com/PgRu7iI.jpeg",
-          "https://i.imgur.com/brkGKmT.jpeg",
-          "https://i.imgur.com/MzO8kdg.jpeg"
-        ]
-      },
-      "JEANN": {
-        "location": [32.8799296621332, -117.24119652096547],
-        "name": "The Jeannie",
-        "images": [
-          "https://i.imgur.com/S7hWyFi.jpeg",
-          "https://i.imgur.com/Gr72SGn.jpeg",
-          "https://i.imgur.com/jcmweDB.jpeg",
-          "https://i.imgur.com/7g2ddgc.jpeg",
-          "https://i.imgur.com/H3pf35p.jpeg",
-          "https://i.imgur.com/WXEOHoX.jpeg",
-          "https://i.imgur.com/0SCGaj1.jpeg"
-        ]
-      },
-      "MOS": {
-        "location": [32.88001190738399, -117.24163094823878],
-        "name": "Mosaic",
-        "images": [
-          "https://i.imgur.com/mMpazXy.jpeg",
-          "https://i.imgur.com/kOoJMGj.jpeg",
-          "https://i.imgur.com/uYLVGh5.jpeg",
-          "https://i.imgur.com/PiC2Cb8.jpeg",
-          "https://i.imgur.com/FHpBJYo.jpeg",
-          "https://i.imgur.com/6woeDzV.jpeg",
-          "https://i.imgur.com/6woeDzV.jpeg"
-        ]
-      },
-      "RWAC": {
-        "location": [32.880374742852574, -117.24106684310492],
-        "name": "Ridge Walk Academic Complex",
-        "images": [
-          "https://i.imgur.com/wzZrECe.jpeg",
-          "https://i.imgur.com/rHbydi1.jpeg",
-          "https://i.imgur.com/bckfXJi.jpeg",
-          "https://i.imgur.com/6hH79mc.jpeg",
-          "https://i.imgur.com/OHUnhy9.jpeg",
-          "https://i.imgur.com/jBTe18L.jpeg",
-          "https://i.imgur.com/cga1K75.jpeg",
-          "https://i.imgur.com/ltI4q8O.jpeg",
-          "https://i.imgur.com/8yGvvrA.jpeg",
-          "https://i.imgur.com/PKQ0Eda.jpeg",
-          "https://i.imgur.com/GJlru9N.jpeg",
-          "https://i.imgur.com/pvCEee4.jpeg",
-          "https://i.imgur.com/U817BWw.jpeg"
-        ]
-      }
-    },
-    "marshall": {
-      "CSB": {
-        "location": [32.880517237245954, -117.23939317415764],
-        "name": "Cognitive Science Building",
-        "images": [
-          "https://i.imgur.com/CXa715U.jpeg",
-          "https://i.imgur.com/6NiZ46R.jpeg",
-          "https://i.imgur.com/wSSxyyj.jpeg",
-          "https://i.imgur.com/fSMNNuc.jpeg",
-          "https://i.imgur.com/riutYQz.jpeg",
-          "https://i.imgur.com/pa0BSpr.jpeg",
-          "https://i.imgur.com/jZvJO05.jpeg"
-        ]
-      },
-      "ECON": {
-        "location": [32.88235588485967, -117.24040328432459],
-        "name": "Economics Building",
-        "images": [
-          "https://i.imgur.com/MTxt62o.jpeg",
-          "https://i.imgur.com/iQIL8bu.jpeg",
-          "https://i.imgur.com/xnokzUN.jpeg",
-          "https://i.imgur.com/YY7YmrA.jpeg"
-        ]
-      },
-      "PETER": {
-        "location": [32.879984046654364, -117.2402525268966],
-        "name": "Peterson Hall",
-        "images": [
-          "https://i.imgur.com/7O3YLwu.jpeg",
-          "https://i.imgur.com/kZeE8oF.jpeg",
-          "https://i.imgur.com/ryxGEki.jpeg",
-          "https://i.imgur.com/JWDIvEy.jpeg",
-          "https://i.imgur.com/ZwBOssV.jpeg"
-        ]
-      },
-      "SEQUO": {
-        "location": [32.88203974495475, -117.24103633144476],
-        "name": "Sequoyah Hall",
-        "images": [
-          "https://i.imgur.com/YXgBI1O.jpeg",
-          "https://i.imgur.com/UJa4KNw.jpeg",
-          "https://i.imgur.com/NUqDM5a.jpeg",
-          "https://i.imgur.com/f7EFZpT.jpeg",
-          "https://i.imgur.com/7zLoJjJ.jpeg",
-          "https://i.imgur.com/KBUySt6.jpeg"
-        ]
-      },
-      "SOLIS": {
-        "location": [32.880935740253626, -117.23964750230745],
-        "name": "Solís Hall",
-        "images": [
-          "https://i.imgur.com/bZzkyvr.jpeg",
-          "https://i.imgur.com/EeChtxt.jpeg",
-          "https://i.imgur.com/CXa715U.jpeg"
-        ]
-      },
-      "SSRB": {
-        "location": [32.88075657728253, -117.240142743495],
-        "name": "Social Sciences Research Building",
-        "images": [
-          "https://i.imgur.com/ktWIzDA.jpeg",
-          "https://i.imgur.com/suB1Zw2.jpeg",
-          "https://i.imgur.com/suB1Zw2.jpeg",
-          "https://i.imgur.com/batB9YN.jpeg",
-          "https://i.imgur.com/gNdZy7z.jpeg",
-          "https://i.imgur.com/wOK32RL.jpeg",
-          "https://i.imgur.com/2Ne0Zz3.jpeg"
-        ]
-      },
-      "TM102": {
-        "location": [32.88134401507817, -117.23933111579409],
-        "name": "Thurgood Marshall 102",
-        "images": ["https://i.imgur.com/gGIHRxo.jpeg"]
-      }
-    },
-    "erc": {
-      "ASANT": {
-        "location": [32.88423744331073, -117.24213984468823],
-        "name": "Asante House",
-        "images": [
-          "https://i.imgur.com/41b7QoK.jpeg",
-          "https://i.imgur.com/cg9qmez.jpeg",
-          "https://i.imgur.com/KAX1Krl.jpeg"
-        ]
-      },
-      "ERCA": {
-        "location": [32.886087113975414, -117.24205254723678],
-        "name": "ERC Administration",
-        "images": [
-          "https://i.imgur.com/zTuN3ki.jpeg",
-          "https://i.imgur.com/K38yRo7.jpeg",
-          "https://i.imgur.com/xsRVr2m.jpeg",
-          "https://i.imgur.com/jQdIpgH.jpeg"
-        ]
-      },
-      "GREAT": {
-        "location": [32.883944240936444, -117.24193249617227],
-        "name": "Great Hall",
-        "images": [
-          "https://i.imgur.com/2iS1TGa.jpeg",
-          "https://i.imgur.com/OKLA6JX.jpeg",
-          "https://i.imgur.com/2v7svKU.jpeg"
-        ]
-      },
-      "LASB": {
-        "location": [32.88557327735999, -117.2413567320843],
-        "name": "Latin American Studies Building",
-        "images": ["https://i.imgur.com/kP1FInU.jpeg"]
-      },
-      "RBC": {
-        "location": [32.88427044449085, -117.2408680383893],
-        "name": "Robinson Building Complex",
-        "images": [
-          "https://i.imgur.com/SDNf4ci.jpeg",
-          "https://i.imgur.com/jQMCHrY.jpeg",
-          "https://i.imgur.com/G0GLZQD.jpeg",
-          "https://i.imgur.com/XrAZzhh.jpeg",
-          "https://i.imgur.com/1ysjMHf.jpeg"
+          "https://i.imgur.com/hFfdmH0.jpeg",
+          "https://i.imgur.com/axNZj29.jpeg",
+          "https://i.imgur.com/7XrSpQc.jpeg",
+          "https://i.imgur.com/U1yMrNx.jpeg"
         ],
         "comment": [
-          "https://gps.ucsd.edu/_files/misc/GPS-Printable-Map-2015.pdf",
-          "I think Garner is part of this"
+          "According to http://m.ucsd.edu/maps/static/location/5?query=&no_server_init it's the theater not forum"
         ]
       },
-      "SSB": {
-        "location": [32.88391338508008, -117.24045720071513],
-        "name": "Social Sciences Building",
-        "images": [
-          "https://i.imgur.com/bHveajb.jpeg",
-          "https://i.imgur.com/0V90Tca.jpeg",
-          "https://i.imgur.com/5A2kawY.jpeg",
-          "https://i.imgur.com/t15im8k.jpeg"
-        ]
-      }
-    },
-    "seventh": {
-      "OTRSN": {
-        "location": [32.88665760836001, -117.24102406579628],
-        "name": "Otterson Hall",
-        "images": [
-          "https://i.imgur.com/2DncCdV.jpeg",
-          "https://i.imgur.com/nuuiXO9.jpeg",
-          "https://i.imgur.com/ByRotXZ.jpeg",
-          "https://i.imgur.com/rh1PE4K.jpeg",
-          "https://i.imgur.com/k8Bubgx.jpeg"
+      "PODEM": {
+        "location": [32.87340196755349, -117.24174621477657],
+        "name": "Podemos",
+        "images": [],
+        "comment": [
+          "https://www.reddit.com/r/UCSD/comments/13pua2j/podem_1a18/"
         ]
       },
-      "SEVW2": {
-        "location": [32.8880285561251, -117.24255222849888],
-        "name": "Seventh West Building 2",
-        "images": []
-      },
-      "SEVE3": {
-        "location": [32.88825009555447, -117.24173440393453],
-        "name": "Seventh East Ecoflats 3",
+      "POTKR": {
+        "location": [32.87110810161448, -117.24052277636109],
+        "name": "Sheila and Hughes Potiker Theatre",
         "images": [
-          "https://i.imgur.com/RFVU7xr.jpeg",
-          "https://i.imgur.com/81Y5Bqh.jpeg",
-          "https://i.imgur.com/z85Z6w3.jpeg",
-          "https://i.imgur.com/K7KBhkk.jpeg",
-          "https://i.imgur.com/46FqmYp.jpeg",
-          "https://i.imgur.com/A7z04lV.jpeg"
-        ]
-      },
-      "SEVE4": {
-        "location": [32.88807303667593, -117.2417902045747],
-        "name": "Seventh East Ecoflats 4",
-        "images": [
-          "https://i.imgur.com/rvX3WRu.jpeg",
-          "https://i.imgur.com/3HtM3MY.jpeg",
-          "https://i.imgur.com/7qsGG1G.jpeg",
-          "https://i.imgur.com/A7z04lV.jpeg"
-        ]
-      },
-      "WFH": {
-        "location": [32.886967814911024, -117.24173638805067],
-        "name": "Wells Fargo Hall",
-        "images": [
-          "https://i.imgur.com/JwSFFD5.jpeg",
-          "https://i.imgur.com/wd4xodE.jpeg",
-          "https://i.imgur.com/gPAVIsw.jpeg",
-          "https://i.imgur.com/k8Bubgx.jpeg"
+          "https://i.imgur.com/g5FaydY.jpeg",
+          "https://i.imgur.com/sUsYzqf.jpeg"
+        ],
+        "comment": [
+          "This is the building with the big glass windows that say 'La Jolla Playhouse.' It's labelled as La Jolla Playhouse on the map."
         ]
       }
     },
@@ -632,50 +676,6 @@
         "location": [32.87832294065095, -117.22294309501584],
         "name": "Moores Cancer Center",
         "images": []
-      }
-    },
-    "playhouse": {
-      "DANCE": {
-        "location": [32.87186729617818, -117.24003377110412],
-        "name": "Molli and Arthur Wagner Dance Building",
-        "images": [
-          "https://i.imgur.com/IjcxcYu.jpeg",
-          "https://i.imgur.com/mZqSm9K.jpeg",
-          "https://i.imgur.com/Ff2omog.jpeg",
-          "https://i.imgur.com/Cd9qF5k.jpeg"
-        ]
-      },
-      "MWEIS": {
-        "location": [32.87095079844769, -117.24121579783444],
-        "name": "Mandell Weiss Theatre",
-        "images": [
-          "https://i.imgur.com/hFfdmH0.jpeg",
-          "https://i.imgur.com/axNZj29.jpeg",
-          "https://i.imgur.com/7XrSpQc.jpeg",
-          "https://i.imgur.com/U1yMrNx.jpeg"
-        ],
-        "comment": [
-          "According to http://m.ucsd.edu/maps/static/location/5?query=&no_server_init it's the theater not forum"
-        ]
-      },
-      "PODEM": {
-        "location": [32.87340196755349, -117.24174621477657],
-        "name": "Podemos",
-        "images": [],
-        "comment": [
-          "https://www.reddit.com/r/UCSD/comments/13pua2j/podem_1a18/"
-        ]
-      },
-      "POTKR": {
-        "location": [32.87110810161448, -117.24052277636109],
-        "name": "Sheila and Hughes Potiker Theatre",
-        "images": [
-          "https://i.imgur.com/g5FaydY.jpeg",
-          "https://i.imgur.com/sUsYzqf.jpeg"
-        ],
-        "comment": [
-          "This is the building with the big glass windows that say 'La Jolla Playhouse.' It's labelled as La Jolla Playhouse on the map."
-        ]
       }
     },
     "sio": {

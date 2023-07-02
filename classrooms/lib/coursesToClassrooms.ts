@@ -24,18 +24,7 @@ export type RoomMeeting = (
     }
   }
 
-export type TermBuilding = {
-  code: string
-  rooms: Record<string, RoomMeeting[]>
-}
-
-/** Maps building codes to `Building`s. */
-export type TermBuildings = Record<string, TermBuilding>
-
-/** Always have Center Hall defined so the map can scroll to it. */
-export const defaultBuildings = (): TermBuildings => ({
-  CENTR: { code: 'CENTR', rooms: {} }
-})
+export type TermBuildings = Record<string, Record<string, RoomMeeting[]>>
 
 /**
  * Allows more context for what meetings to show. By default, this only shows
@@ -61,7 +50,7 @@ export function coursesToClassrooms (
   { finals, monday }: CoursesToClassroomsOptions = {}
 ): TermBuildings {
   const nextMonday = monday?.add(7)
-  const buildings = defaultBuildings()
+  const buildings: TermBuildings = {}
   for (const [i, { code, groups }] of courses.entries()) {
     for (const [j, { sections, meetings, exams }] of groups.entries()) {
       const groupCapacity = sections.reduce(
@@ -78,8 +67,6 @@ export function coursesToClassrooms (
         if (!time || !location || location.building === 'RCLAS') {
           continue
         }
-        buildings[location.building] ??= { code: location.building, rooms: {} }
-        buildings[location.building].rooms[location.room] ??= []
         if ('date' in meeting) {
           // Exam
           if (
@@ -94,7 +81,9 @@ export function coursesToClassrooms (
           // Omit regular meetings during finals week
           continue
         }
-        buildings[location.building].rooms[location.room].push({
+        buildings[location.building] ??= {}
+        buildings[location.building][location.room] ??= []
+        buildings[location.building][location.room].push({
           ...meeting,
           days: time.days,
           start: Time.from(time.start),

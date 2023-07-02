@@ -401,7 +401,8 @@ export async function * getCourseIterator (
           unitMatch[0].length,
           dateRangeMatch?.index
         )
-        if (term[0] === 'S') {
+        // If summer quarter
+        if (term[0] === 'S' && term[1] !== 'P') {
           if (dateRangeMatch) {
             if (
               dateRangeMatch[1] &&
