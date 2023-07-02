@@ -5,16 +5,11 @@ import {
   groupSections,
   Meeting
 } from '../../scheduleofclasses/group-sections.ts'
-import { readCourses } from '../../scheduleofclasses/scrape.ts'
+import { readCourses, ScrapedResult } from '../../scheduleofclasses/scrape.ts'
 
 const encoder = new TextEncoder()
 async function print (content: string) {
   await writeAll(Deno.stdout, encoder.encode(content))
-}
-
-if (!Deno.args[0]) {
-  console.error('Usage: deno run --allow-read classrooms/to-file.ts [term]')
-  Deno.exit(1)
 }
 
 const printTime = (minutes?: number) =>
@@ -25,6 +20,7 @@ const printTime = (minutes?: number) =>
           .toString()
           .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
   )
+
 async function printMeeting (meeting: Meeting, days = true): Promise<void> {
   await print((meeting.location?.building ?? 'TBA').padEnd(5, ' '))
   if (days) {
@@ -39,54 +35,99 @@ async function printMeeting (meeting: Meeting, days = true): Promise<void> {
   await printTime(meeting.time?.start)
   await printTime(meeting.time?.end)
 }
-await print('V2\n')
-for await (const course of Object.values(
-  groupSections(
-    await readCourses(`./scheduleofclasses/terms/${Deno.args[0]}.json`)
-  )
-)) {
-  const [subject, number] = course.code.split(' ')
-  await print(subject.padEnd(4, ' '))
-  await print(number.padEnd(5, ' '))
-  await print(course.title)
-  await print('\n')
-  for (const group of course.groups) {
-    await print('\t')
-    await print(
-      String((+(group.meetings.length > 0) << 1) | +(group.exams.length > 0))
-    )
-    await print(group.code)
-    await print(group.instructors.map(names => names.join(',')).join('\t'))
-    await print('\n')
-    await print('\t')
-    for (const meeting of group.sections) {
-      await print(
-        meeting.capacity === Infinity
-          ? '9999'
-          : meeting.capacity.toString().padStart(4, '0')
-      )
-      await print(meeting.code)
-      await printMeeting(meeting)
-    }
-    await print('\n')
-    if (group.meetings.length > 0) {
-      await print('\t')
-      for (const meeting of group.meetings) {
-        await printMeeting(meeting)
-      }
-      await print('\n')
-    }
-    if (group.exams.length > 0) {
-      await print('\t')
-      for (const meeting of group.exams) {
-        await print(meeting.date.getUTCFullYear().toString().padStart(4, '0'))
-        await print(
-          (meeting.date.getUTCMonth() + 1).toString().padStart(2, '0')
+
+function inPerson (meeting: Meeting): boolean {
+  return meeting.location !== null && meeting.location.building !== 'RCLAS'
+}
+
+/**
+ * When `buildingsOnly` is true, it'll only include relevant information for
+ * showing classroom schedules:
+ * - Remote and TBA meetings and courses are omitted.
+ * -
+ */
+async function coursesToFile (
+  result: ScrapedResult,
+  buildingsOnly = false
+): Promise<void> {
+  await print(`V3${result.scrapeTime}\n`)
+  for await (const course of Object.values(groupSections(result))) {
+    if (
+      buildingsOnly &&
+      course.groups.every(group =>
+        [...group.sections, ...group.meetings, ...group.exams].every(
+          meeting => !inPerson(meeting)
         )
-        await print(meeting.date.getUTCDate().toString().padStart(2, '0'))
-        await printMeeting(meeting, false)
+      )
+    ) {
+      continue
+    }
+    const [subject, number] = course.code.split(' ')
+    await print(subject.padEnd(4, ' '))
+    await print(number.padEnd(5, ' '))
+    if (!buildingsOnly) {
+      await print(course.title)
+      if (course.catalog) {
+        await print('\t')
+        await print(course.catalog)
+      }
+    }
+    await print('\n')
+    for (const group of course.groups) {
+      if (
+        buildingsOnly &&
+        [...group.sections, ...group.meetings, ...group.exams].every(
+          meeting => !inPerson(meeting)
+        )
+      ) {
+        continue
+      }
+      const meetings = buildingsOnly
+        ? group.meetings.filter(inPerson)
+        : group.meetings
+      const exams = buildingsOnly ? group.exams.filter(inPerson) : group.exams
+      await print(String((+(meetings.length > 0) << 1) | +(exams.length > 0)))
+      await print(group.code)
+      if (!buildingsOnly) {
+        await print(group.instructors.map(names => names.join(',')).join('\t'))
       }
       await print('\n')
+      for (const meeting of group.sections) {
+        await print(
+          meeting.capacity === Infinity
+            ? '9999'
+            : meeting.capacity.toString().padStart(4, '0')
+        )
+        await printMeeting(meeting)
+        if (meeting.code !== group.code || group.sections.length > 1) {
+          await print(meeting.code)
+        }
+      }
+      await print('\n')
+      if (meetings.length > 0) {
+        for (const meeting of meetings) {
+          await printMeeting(meeting)
+        }
+        await print('\n')
+      }
+      if (exams.length > 0) {
+        for (const meeting of exams) {
+          await print(meeting.date.toString().replaceAll('-', ''))
+          await printMeeting(meeting, false)
+        }
+        await print('\n')
+      }
     }
   }
+}
+
+if (import.meta.main) {
+  if (!Deno.args[0]) {
+    console.error('Usage: deno run --allow-read classrooms/to-file.ts [term]')
+    Deno.exit(1)
+  }
+  await coursesToFile(
+    await readCourses(`./scheduleofclasses/terms/${Deno.args[0]}.json`),
+    Deno.args[1] === 'abridged'
+  )
 }

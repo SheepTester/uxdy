@@ -6,7 +6,7 @@
 import { useState } from 'preact/hooks'
 import { Day } from '../../../util/Day.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
-import { RoomMeeting } from '../../lib/coursesFromFile.ts'
+import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { Now } from '../../lib/now.ts'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]

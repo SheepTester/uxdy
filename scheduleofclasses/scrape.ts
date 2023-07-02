@@ -3,6 +3,7 @@
 
 import { writeAll } from 'std/streams/write_all.ts'
 import { DOMParser, Element } from 'deno_dom/deno-dom-wasm.ts'
+import { Day } from '../util/Day.ts'
 
 // S for Saturday, SP23 BIPN 100
 // Sun for Sunday, SP23 MGT 404
@@ -32,13 +33,13 @@ function parseNatural (string: string): number {
  * Parses a US-style date (eg 06/15/2023) as a UTC JS Date object. Used for
  * parsing exam dates.
  */
-function parseDate (usDate: string): Date {
+function parseDate (usDate: string): Day {
   const [month, date, year] = usDate.split('/').map(parseNatural)
-  const dateObj = new Date(Date.UTC(year, month - 1, date))
-  if (Number.isNaN(dateObj.getTime())) {
+  const day = Day.from(year, month, date)
+  if (!day.valid) {
     throw new RangeError(`"${usDate}" is not a valid US date.`)
   }
-  return dateObj
+  return day
 }
 /**
  * Parses a time of the form "11:50a" or "9:59p," returning the number of
@@ -96,7 +97,7 @@ export type ScrapedSection = {
    * UTC Date if it's an exam (eg a final) that occurs on one day. Otherwise,
    * it's a section code like A00 or 001.
    */
-  section: string | Date
+  section: string | Day
   /** Null if TBA. */
   time: {
     /**
@@ -626,8 +627,8 @@ export async function getCourses (
 
 export async function readCourses (path: string | URL): Promise<ScrapedResult> {
   return JSON.parse(await Deno.readTextFile(path), (key, value) =>
-    key === 'section' && value.endsWith('T00:00:00.000Z')
-      ? new Date(value)
+    key === 'section' && value.length > 3
+      ? Day.parse(value)
       : key === 'capacity' && value === null
       ? Infinity
       : value

@@ -121,6 +121,10 @@ export class Day {
     return this.id
   }
 
+  toJSON (): string {
+    return this.toString()
+  }
+
   [Symbol.for('Deno.customInspect')] (): string {
     return this.toString()
   }

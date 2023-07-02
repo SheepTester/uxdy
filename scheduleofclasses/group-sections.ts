@@ -37,7 +37,7 @@ export type Section = Meeting & {
 }
 export type Exam = Meeting & {
   /** UTC Date. */
-  date: Date
+  date: Day
 }
 export type Group = {
   /** The section code for the lecture in charge of the group, eg A00 or 001. */
@@ -55,6 +55,7 @@ export type Course = {
   /** The subject and number, joined by a space, eg "CSE 11." */
   code: string
   title: string
+  catalog?: string
   groups: Group[]
 }
 
@@ -70,7 +71,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
         location: section.location
       }
 
-      if (section.section instanceof Date) {
+      if (section.section instanceof Day) {
         if (!lastGroup) {
           // For some reason, SP23 LTWL 194A's A00 section doesn't show on
           // ScheduleOfClasses, only WebReg.
@@ -111,6 +112,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
     courses[code] = {
       code,
       title: course.title,
+      catalog: course.catalog,
       groups: Object.values(groups)
     }
   }

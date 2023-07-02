@@ -1,10 +1,5 @@
-import {
-  Meeting,
-  Exam,
-  MeetingTime,
-  Course
-} from '../../scheduleofclasses/group-sections.ts'
-import { Time } from '../../util/Time.ts'
+import { Meeting, Course } from '../../scheduleofclasses/group-sections.ts'
+import { Day } from '../../util/Day.ts'
 
 class StringTaker {
   #string: string
@@ -40,6 +35,7 @@ class StringTaker {
     return +time.slice(0, 2) * 60 + +time.slice(2)
   }
 
+  /** IMPURE. */
   takeMeeting (day: number | null = null): Meeting {
     const building = this.take(5)
     const days = day === null ? this.take(5) : String(day)
@@ -67,54 +63,50 @@ export class CourseFormatError extends SyntaxError {
   name = this.constructor.name
 }
 
-export function coursesFromFile (file: string): Course[] {
+export type TermCourses = {
+  scraped: Date
+  courses: Course[]
+}
+
+type State =
+  | { type: 'course-or-group' }
+  | {
+      type: 'sections'
+      hasMeetings: boolean
+      hasExams: boolean
+    }
+  | { type: 'meetings'; hasExams: boolean }
+  | { type: 'exams' }
+
+export function coursesFromFile (file: string): TermCourses {
   const courses: Course[] = []
-  const state: ('sections' | 'meetings' | 'exams')[] = []
+  let state: State = { type: 'course-or-group' }
   const lines = file.trim().split(/\r?\n/)
-  if (lines.shift() !== 'V2') {
+  const metadata = new StringTaker(lines.shift() ?? '')
+  if (metadata.take(2) !== 'V3') {
     throw new CourseFormatError(
       "I don't understand the format the courses are in."
     )
   }
+  const scraped = new Date(+metadata.takeRest())
   for (const line of lines) {
     const taker = new StringTaker(line)
-    if (line.startsWith('\t')) {
-      taker.discard(1)
-      const course = courses[courses.length - 1]
-      const group = course.groups[course.groups.length - 1]
-      const nextState = state.shift()
-      if (nextState === 'sections') {
-        while (taker.hasMore()) {
-          const capacity = taker.takeInt(4)
-          group.sections.push({
-            code: taker.take(3),
-            capacity: capacity === 9999 ? Infinity : capacity,
-            ...taker.takeMeeting()
-          })
-        }
-      } else if (nextState === 'meetings') {
-        while (taker.hasMore()) {
-          group.meetings.push(taker.takeMeeting())
-        }
-      } else if (nextState === 'exams') {
-        while (taker.hasMore()) {
-          const date = new Date(
-            Date.UTC(taker.takeInt(4), taker.takeInt(2) - 1, taker.takeInt(2))
-          )
-          group.exams.push({
-            date,
-            ...taker.takeMeeting(date.getUTCDay())
-          })
-        }
+    const course = courses[courses.length - 1]
+    const group = course?.groups[course.groups.length - 1]
+    if (state.type === 'course-or-group') {
+      if (/^[A-Z]/.test(line)) {
+        // Course
+        const code = [taker.take(4), taker.take(5)].join(' ')
+        const [title, catalog] = taker.takeRest().split('\t')
+        courses.push({
+          code,
+          title,
+          catalog,
+          groups: []
+        })
       } else {
+        // Group
         const additionalMeetings = taker.takeInt(1)
-        state.push('sections')
-        if (additionalMeetings & 0b10) {
-          state.push('meetings')
-        }
-        if (additionalMeetings & 0b01) {
-          state.push('exams')
-        }
         course.groups.push({
           code: taker.take(3),
           instructors: taker
@@ -128,18 +120,51 @@ export function coursesFromFile (file: string): Course[] {
           meetings: [],
           exams: []
         })
+        state = {
+          type: 'sections',
+          hasMeetings: !!(additionalMeetings & 0b10),
+          hasExams: !!(additionalMeetings & 0b01)
+        }
       }
-    } else {
-      courses.push({
-        code: [taker.take(4), taker.take(5)].join(' '),
-        title: taker.takeRest(),
-        groups: []
-      })
+    } else if (state.type === 'sections') {
+      while (taker.hasMore()) {
+        const capacity = taker.takeInt(4)
+        group.sections.push({
+          capacity: capacity === 9999 ? Infinity : capacity,
+          ...taker.takeMeeting(),
+          code: taker.take(3) || group.code
+        })
+      }
+      state = state.hasMeetings
+        ? { type: 'meetings', hasExams: state.hasExams }
+        : state.hasExams
+        ? { type: 'exams' }
+        : { type: 'course-or-group' }
+    } else if (state.type === 'meetings') {
+      while (taker.hasMore()) {
+        group.meetings.push(taker.takeMeeting())
+      }
+      state = state.hasExams ? { type: 'exams' } : { type: 'course-or-group' }
+    } else if (state.type === 'exams') {
+      while (taker.hasMore()) {
+        const date = Day.from(
+          taker.takeInt(4),
+          taker.takeInt(2),
+          taker.takeInt(2)
+        )
+        group.exams.push({
+          date,
+          ...taker.takeMeeting(date.day)
+        })
+      }
+      state = { type: 'course-or-group' }
     }
   }
-  return courses
+  return { scraped, courses }
 }
 
 if (import.meta.main) {
-  console.log(coursesFromFile(await Deno.readTextFile(Deno.args[0]))[100])
+  console.log(
+    coursesFromFile(await Deno.readTextFile(Deno.args[0])).courses[100]
+  )
 }

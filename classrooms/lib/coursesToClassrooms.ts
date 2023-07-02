@@ -82,8 +82,12 @@ export function coursesToClassrooms (
         buildings[location.building].rooms[location.room] ??= []
         if ('date' in meeting) {
           // Exam
-          const date = new Day(meeting.date)
-          if (!monday || !nextMonday || date < monday || date >= nextMonday) {
+          if (
+            !monday ||
+            !nextMonday ||
+            meeting.date < monday ||
+            meeting.date >= nextMonday
+          ) {
             continue
           }
         } else if (finals) {

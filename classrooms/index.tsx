@@ -56,10 +56,10 @@ function App () {
         setNotice('Loading...')
       }
       try {
-        const courses = await promise
-        if (courses) {
+        const result = await promise
+        if (result) {
           setBuildings(
-            coursesToClassrooms(courses, { monday: date.monday, finals })
+            coursesToClassrooms(result.courses, { monday: date.monday, finals })
           )
           setNoticeVisible(false)
           return
