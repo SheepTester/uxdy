@@ -10,7 +10,7 @@
     "scheduleofclasses:scrape": "deno run --allow-net=act.ucsd.edu ./scheduleofclasses/scrape.ts $TERM > ./scheduleofclasses/terms/$TERM.json",
     "classrooms:build": "deno bundle ./classrooms/index.tsx | terser --module > ./classrooms/public/index.min.js",
     "classrooms:watch": "echo \"Serving public/ at http://localhost:8080/\" && http-server ./classrooms/public/ -c-1 -s & deno bundle --watch ./classrooms/index.tsx ./classrooms/public/index.min.js",
-    "classrooms:to-file": "deno run --allow-read=./scheduleofclasses/terms/$TERM.json classrooms/scripts/to-file.ts $TERM > classrooms/public/classrooms-$TERM.txt",
+    "classrooms:to-file": "deno run --allow-read=./scheduleofclasses/terms/$TERM.json classrooms/scripts/coursesToFile.ts $TERM > classrooms/public/classrooms-$TERM.txt",
     "classrooms:scrape-to-file": "deno task scheduleofclasses:scrape && deno task classrooms:to-file"
   }
 }
