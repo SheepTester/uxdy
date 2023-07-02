@@ -2,17 +2,38 @@ import {
   Meeting,
   Exam,
   Course,
-  Section
+  Section,
+  MeetingTime
 } from '../../scheduleofclasses/group-sections.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
-import { Building } from './coursesFromFile.ts'
+
+// Omit<Meeting | Exam, 'time' | 'location'> does not work with type narrowing
+// with `'date' in meeting`
+export type RoomMeeting = (
+  | Omit<Meeting, 'time' | 'location'>
+  | Omit<Exam, 'time' | 'location'>
+) &
+  MeetingTime<Time> & {
+    capacity: number
+    course: string
+    index: {
+      group: number
+      meeting: number
+      type: 'section' | 'meeting' | 'exam'
+    }
+  }
+
+export type TermBuilding = {
+  code: string
+  rooms: Record<string, RoomMeeting[]>
+}
 
 /** Maps building codes to `Building`s. */
-export type Buildings = Record<string, Building>
+export type TermBuildings = Record<string, TermBuilding>
 
 /** Always have Center Hall defined so the map can scroll to it. */
-export const defaultBuildings = (): Buildings => ({
+export const defaultBuildings = (): TermBuildings => ({
   CENTR: { code: 'CENTR', rooms: {} }
 })
 
@@ -38,7 +59,7 @@ export type CoursesToClassroomsOptions = {
 export function coursesToClassrooms (
   courses: Course[],
   { finals, monday }: CoursesToClassroomsOptions = {}
-): Buildings {
+): TermBuildings {
   const nextMonday = monday?.add(7)
   const buildings = defaultBuildings()
   for (const [i, { code, groups }] of courses.entries()) {

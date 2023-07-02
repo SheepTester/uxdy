@@ -5,7 +5,7 @@
 
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { buildings } from '../../lib/buildings.ts'
-import { Building } from '../../lib/coursesFromFile.ts'
+import { TermBuilding } from '../../lib/coursesToClassrooms.ts'
 import { Now } from '../../lib/now.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { BackIcon } from '../BackIcon.tsx'
@@ -15,7 +15,7 @@ import { Schedule } from './Schedule.tsx'
 
 type BuildingPanelContentProps = {
   now?: Now | null
-  building: Building
+  building: TermBuilding
   onClose: () => void
 }
 function BuildingPanelContent ({
@@ -95,7 +95,7 @@ function BuildingPanelContent ({
 
 export type BuildingPanelProps = {
   now?: Now | null
-  building: Building
+  building: TermBuilding
   onClose: () => void
   visible: boolean
   rightPanelOpen: boolean

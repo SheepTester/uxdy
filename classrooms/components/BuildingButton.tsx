@@ -5,7 +5,7 @@
 
 import { useCallback } from 'preact/hooks'
 import { buildings } from '../lib/buildings.ts'
-import { Building } from '../lib/coursesFromFile.ts'
+import { TermBuilding } from '../lib/coursesToClassrooms.ts'
 import {
   latLongToPixel,
   southwest,
@@ -16,7 +16,7 @@ import { Now, used } from '../lib/now.ts'
 
 type BuildingButtonProps = {
   now?: Now | null
-  building: Building
+  building: TermBuilding
   onSelect: (building: string) => void
   scrollWrapper: Element
   selected: boolean

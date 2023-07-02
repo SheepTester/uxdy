@@ -4,12 +4,13 @@
 /// <reference lib="deno.ns" />
 
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
-import { Building, compareRoomNums } from '../../lib/coursesFromFile.ts'
+import { compareRoomNums } from '../../lib/compareRoomNums.ts'
+import { TermBuilding } from '../../lib/coursesToClassrooms.ts'
 import { Now, used } from '../../lib/now.ts'
 
 export type RoomListProps = {
   now?: Now | null
-  building: Building
+  building: TermBuilding
   onSelect: (room: string) => void
 }
 export function RoomList ({ now, building, onSelect }: RoomListProps) {
