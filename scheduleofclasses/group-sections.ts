@@ -56,6 +56,7 @@ export type Course = {
   code: string
   title: string
   catalog?: string
+  dateRange?: [Day, Day]
   groups: Group[]
 }
 
@@ -113,6 +114,9 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
       code,
       title: course.title,
       catalog: course.catalog,
+      dateRange: course.dateRange
+        ? [Day.from(...course.dateRange[0]), Day.from(...course.dateRange[1])]
+        : undefined,
       groups: Object.values(groups)
     }
   }

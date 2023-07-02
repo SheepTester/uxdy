@@ -37,7 +37,11 @@ async function printMeeting (meeting: Meeting, days = true): Promise<void> {
 }
 
 function inPerson (meeting: Meeting): boolean {
-  return meeting.location !== null && meeting.location.building !== 'RCLAS'
+  return (
+    meeting.time !== null &&
+    meeting.location !== null &&
+    meeting.location.building !== 'RCLAS'
+  )
 }
 
 /**
@@ -48,7 +52,8 @@ function inPerson (meeting: Meeting): boolean {
  */
 async function coursesToFile (
   result: ScrapedResult,
-  buildingsOnly = false
+  buildingsOnly = false,
+  includeDateRange = false
 ): Promise<void> {
   await print(`V3${result.scrapeTime}\n`)
   for await (const course of Object.values(groupSections(result))) {
@@ -65,6 +70,15 @@ async function coursesToFile (
     const [subject, number] = course.code.split(' ')
     await print(subject.padEnd(4, ' '))
     await print(number.padEnd(5, ' '))
+    if (includeDateRange) {
+      if (!course.dateRange) {
+        throw new TypeError(
+          `Summer session course ${course.code} does not have date range.`
+        )
+      }
+      await print(course.dateRange[0].toString().replaceAll('-', ''))
+      await print(course.dateRange[1].toString().replaceAll('-', ''))
+    }
     if (!buildingsOnly) {
       await print(course.title)
       if (course.catalog) {
@@ -86,13 +100,24 @@ async function coursesToFile (
         ? group.meetings.filter(inPerson)
         : group.meetings
       const exams = buildingsOnly ? group.exams.filter(inPerson) : group.exams
-      await print(String((+(meetings.length > 0) << 1) | +(exams.length > 0)))
+      await print(
+        meetings.length > 0
+          ? exams.length > 0
+            ? ':'
+            : '.'
+          : exams.length > 0
+          ? "'"
+          : ' '
+      )
       await print(group.code)
       if (!buildingsOnly) {
         await print(group.instructors.map(names => names.join(',')).join('\t'))
       }
       await print('\n')
       for (const meeting of group.sections) {
+        if (buildingsOnly && !inPerson(meeting)) {
+          continue
+        }
         await print(
           meeting.capacity === Infinity
             ? '9999'
@@ -106,12 +131,18 @@ async function coursesToFile (
       await print('\n')
       if (meetings.length > 0) {
         for (const meeting of meetings) {
+          if (buildingsOnly && !inPerson(meeting)) {
+            continue
+          }
           await printMeeting(meeting)
         }
         await print('\n')
       }
       if (exams.length > 0) {
         for (const meeting of exams) {
+          if (buildingsOnly && !inPerson(meeting)) {
+            continue
+          }
           await print(meeting.date.toString().replaceAll('-', ''))
           await printMeeting(meeting, false)
         }
@@ -128,6 +159,7 @@ if (import.meta.main) {
   }
   await coursesToFile(
     await readCourses(`./scheduleofclasses/terms/${Deno.args[0]}.json`),
-    Deno.args[1] === 'abridged'
+    Deno.args[1] === 'abridged',
+    Deno.args[0].startsWith('S3')
   )
 }
