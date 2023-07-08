@@ -11,9 +11,10 @@ export type DateTimePanelProps = {
   date: Day
   onDate: (date: Day, scrollToDate?: boolean) => void
   scrollToDate: number | null
-  realTime: Time
-  customTime: Time | null
-  onCustomTime: (customTime: Time | null) => void
+  time: Time
+  onTime: (customTime: Time | null) => void
+  useNow: boolean
+  onUseNow: (useNow: boolean) => void
   visible: boolean
   bottomPanelOpen: boolean
   onClose: () => void
@@ -22,9 +23,10 @@ export function DateTimePanel ({
   date,
   onDate,
   scrollToDate,
-  realTime,
-  customTime,
-  onCustomTime,
+  time,
+  onTime,
+  useNow,
+  onUseNow,
   visible,
   bottomPanelOpen,
   onClose
@@ -33,7 +35,7 @@ export function DateTimePanel ({
     <form
       class={`date-time-panel ${visible ? '' : 'date-time-panel-hidden'} ${
         bottomPanelOpen ? 'date-time-panel-bottom-panel' : ''
-      }`}
+      } ${useNow ? '' : 'calendar-open'}`}
       onSubmit={e => {
         onClose()
         e.preventDefault()
@@ -50,46 +52,44 @@ export function DateTimePanel ({
               onDate(date, true)
             }
           }}
+          disabled={useNow}
           class='date-input'
         />
         <button
           type='button'
           class='today-btn'
           onClick={() => onDate(Day.today(), true)}
+          disabled={useNow}
         >
           Today
         </button>
         <button class='icon-btn close-date-btn'>Close</button>
       </div>
-      <Calendar date={date} onDate={onDate} scrollToDate={scrollToDate} />
       <div class='date-time-flex'>
         <label class='checkbox-label'>
           <input
             type='checkbox'
-            checked={!customTime}
-            onInput={e => {
-              if (e.currentTarget.checked) {
-                onCustomTime(null)
-              } else {
-                onCustomTime(realTime)
-              }
-            }}
+            checked={useNow}
+            onInput={e => onUseNow(e.currentTarget.checked)}
           />
           Use current time
         </label>
         <input
           type='time'
-          value={(customTime ?? realTime).toString(true)}
+          value={time.toString(true)}
           onInput={e => {
             const time = Time.parse24(e.currentTarget.value)
             if (time) {
-              onCustomTime(time)
+              onTime(time)
             }
           }}
-          disabled={!customTime}
+          disabled={useNow}
           class='time-input'
         />
       </div>
+      {!useNow && (
+        <Calendar date={date} onDate={onDate} scrollToDate={scrollToDate} />
+      )}
     </form>
   )
 }

@@ -4,6 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useCallback } from 'preact/hooks'
+import { Time } from '../../util/Time.ts'
 import { BuildingDatum } from '../lib/buildings.ts'
 import { RoomMeeting } from '../lib/coursesToClassrooms.ts'
 import {
@@ -12,10 +13,11 @@ import {
   PADDING,
   northeast
 } from '../lib/locations.ts'
-import { Now, used } from '../lib/now.ts'
+import { used } from '../lib/now.ts'
 
 type BuildingButtonProps = {
-  now?: Now | null
+  weekday: number
+  time: Time
   building: BuildingDatum
   rooms: RoomMeeting[][]
   onSelect: (building: string) => void
@@ -25,7 +27,8 @@ type BuildingButtonProps = {
 }
 
 export function BuildingButton ({
-  now,
+  weekday,
+  time,
   building,
   rooms,
   onSelect,
@@ -63,15 +66,10 @@ export function BuildingButton ({
     >
       {building.code}
       <span class='room-count'>
-        {now && (
-          <>
-            <span class='in-use'>
-              {rooms.filter(meetings => meetings.some(used(now))).length}
-            </span>
-            /
-          </>
-        )}
-        {rooms.length}
+        <span class='in-use'>
+          {rooms.filter(meetings => meetings.some(used(weekday, time))).length}
+        </span>
+        /{rooms.length}
       </span>
     </button>
   )

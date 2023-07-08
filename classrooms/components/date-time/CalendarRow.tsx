@@ -24,7 +24,10 @@ export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
         ))}
       </div>
       <div class='calendar-row calendar-deco-row'>
-        <div class='calendar-header-line' />
+        <div class='calendar-deco'>
+          <div class='calendar-header-line' />
+          {/* <div class='gradient gradient-top' /> */}
+        </div>
       </div>
     </>
   )

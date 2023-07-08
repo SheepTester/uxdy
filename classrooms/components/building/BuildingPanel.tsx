@@ -4,9 +4,9 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { Time } from '../../../util/Time.ts'
 import { BuildingDatum, buildings } from '../../lib/buildings.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
-import { Now } from '../../lib/now.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { BackIcon } from '../BackIcon.tsx'
 import { CloseIcon } from '../CloseIcon.tsx'
@@ -14,13 +14,15 @@ import { RoomList } from './RoomList.tsx'
 import { Schedule } from './Schedule.tsx'
 
 type BuildingPanelContentProps = {
-  now?: Now | null
+  weekday: number
+  time: Time
   building: BuildingDatum
   rooms: Record<string, RoomMeeting[]>
   onClose: () => void
 }
 function BuildingPanelContent ({
-  now,
+  weekday,
+  time,
   building,
   rooms,
   onClose
@@ -87,10 +89,15 @@ function BuildingPanelContent ({
         </button>
       </div>
       {selected ? (
-        <Schedule now={now} meetings={rooms[selected] ?? []} />
+        <Schedule
+          weekday={weekday}
+          time={time}
+          meetings={rooms[selected] ?? []}
+        />
       ) : (
         <RoomList
-          now={now}
+          weekday={weekday}
+          time={time}
           buildingCode={building.code}
           rooms={rooms}
           onSelect={setSelected}
@@ -101,7 +108,8 @@ function BuildingPanelContent ({
 }
 
 export type BuildingPanelProps = {
-  now?: Now | null
+  weekday: number
+  time: Time
   building: BuildingDatum
   rooms: Record<string, RoomMeeting[]>
   onClose: () => void
@@ -109,7 +117,8 @@ export type BuildingPanelProps = {
   rightPanelOpen: boolean
 }
 export function BuildingPanel ({
-  now,
+  weekday,
+  time,
   building,
   rooms,
   onClose,
@@ -123,7 +132,8 @@ export function BuildingPanel ({
       }`}
     >
       <BuildingPanelContent
-        now={now}
+        weekday={weekday}
+        time={time}
         building={building}
         rooms={rooms}
         onClose={onClose}

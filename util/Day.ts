@@ -138,9 +138,13 @@ export class Day {
     return new Day(new Date(Date.UTC(year, month - 1, date)))
   }
 
+  /** Creates a `Day` from a `Date` using the client's local time. */
+  static fromLocal (date: Date): Day {
+    return Day.from(date.getFullYear(), date.getMonth() + 1, date.getDate())
+  }
+
   static today (): Day {
-    const today = new Date()
-    return Day.from(today.getFullYear(), today.getMonth() + 1, today.getDate())
+    return Day.fromLocal(new Date())
   }
 
   static parse (str: string): Day | null {

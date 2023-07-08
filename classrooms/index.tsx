@@ -19,13 +19,13 @@ import {
   TermBuildings
 } from './lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from './lib/locations.ts'
-import { Now, useNow } from './lib/now.ts'
+import { useNow } from './lib/now.ts'
 import { QuarterCache } from './lib/QuarterCache.ts'
 
 function App () {
   const quarters = useRef(new QuarterCache())
   const [showDate, setShowDate] = useState(false)
-  const [date, setDate] = useState(Day.today())
+  const [customDate, setCustomDate] = useState<Day | null>(null)
   const [customTime, setCustomTime] = useState<Time | null>(null)
   const [scrollToDate, setScrollToDate] = useState<number | null>(1)
   const [termBuildings, setTermBuildings] = useState<TermBuildings>({})
@@ -34,10 +34,9 @@ function App () {
   const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
   const [notice, setNotice] = useState('Loading...')
   const [noticeVisible, setNoticeVisible] = useState(true)
-  const { time: realTime } = useNow()
-  // TODO: Use Day + Time instead of Now in the components that currently use
-  // it, since they're now independent
-  const currentTime: Now = { day: date.day, time: customTime ?? realTime }
+  const { date: today, time: realTime } = useNow()
+  const date = customDate ?? today
+  const time = customTime ?? realTime
 
   useAsyncEffect(async () => {
     const { year, season, current, finals } = getTerm(date)
@@ -104,14 +103,14 @@ function App () {
     <>
       <DateTimeButton
         date={date}
-        time={currentTime.time}
+        time={time}
         onClick={() => setShowDate(true)}
         disabled={showDate}
       />
       <DateTimePanel
         date={date}
         onDate={(date, scrollToDate) => {
-          setDate(date)
+          setCustomDate(date)
           if (scrollToDate) {
             // Force useEffect to run again, if necessary. Start counting from 2
             // to reserve `scrollToDate = 1` to mean "app just loaded"
@@ -121,9 +120,18 @@ function App () {
           }
         }}
         scrollToDate={scrollToDate}
-        realTime={realTime}
-        customTime={customTime}
-        onCustomTime={setCustomTime}
+        time={time}
+        onTime={setCustomTime}
+        useNow={customDate === null && customTime === null}
+        onUseNow={useNow => {
+          if (useNow) {
+            setCustomDate(null)
+            setCustomTime(null)
+          } else {
+            setCustomDate(today)
+            setCustomTime(realTime)
+          }
+        }}
         visible={showDate}
         bottomPanelOpen={!!viewing}
         onClose={() => setShowDate(false)}
@@ -149,7 +157,8 @@ function App () {
             Object.values(buildings).map(building => (
               <BuildingButton
                 key={building.code}
-                now={currentTime}
+                weekday={date.day}
+                time={time}
                 building={building}
                 rooms={Object.values(termBuildings[building.code] ?? {})}
                 onSelect={setViewing}
@@ -162,7 +171,8 @@ function App () {
       </div>
       {buildings && (
         <BuildingPanel
-          now={currentTime}
+          weekday={date.day}
+          time={time}
           building={buildings[viewing || lastViewing]}
           rooms={termBuildings[viewing || lastViewing] ?? {}}
           onClose={() => setViewing(null)}

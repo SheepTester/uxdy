@@ -306,13 +306,14 @@ input[type='checkbox']:checked {
   z-index: 5;
   top: 0;
   right: 0;
-  bottom: 0;
   width: 300px;
   background-color: var(--modal);
   margin: 20px;
+  padding: 10px 0;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   transition: transform 0.2s, opacity 0.2s, visibility 0.2s;
 }
 .date-time-panel-hidden {
@@ -323,13 +324,16 @@ input[type='checkbox']:checked {
 .date-time-panel-bottom-panel.date-time-panel-hidden {
   transform: translate(350px);
 }
+.calendar-open {
+  bottom: 0;
+  padding-bottom: 0;
+}
 .calendar-scroll-area {
   overflow: auto;
   height: 0;
   flex: auto;
   /* Needed for offsetTop; see CalendarRow */
   position: relative;
-  border-bottom: 1px solid var(--line);
 }
 .calendar-row {
   display: flex;
@@ -348,13 +352,18 @@ input[type='checkbox']:checked {
   position: sticky;
   top: 30px;
 }
-.calendar-header-line {
+.calendar-deco {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   transform: translateY(90px);
+}
+.calendar-header-line {
   border-bottom: 1px solid var(--line);
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
 }
 .calendar-week-num {
   width: 29px;
@@ -432,7 +441,7 @@ input[type='checkbox']:checked {
 
 .date-time-flex {
   display: flex;
-  padding: 10px;
+  padding: 0 10px;
   gap: 10px;
 }
 .checkbox-label {
@@ -463,7 +472,7 @@ input[type='checkbox']:checked {
 .date-input {
   flex: auto;
 }
-.time-input:disabled {
+.date-time-panel :disabled {
   opacity: 0.5;
 }
 .icon-btn {
@@ -716,6 +725,8 @@ input[type='checkbox']:checked {
   display: flex;
   flex-direction: column;
   height: 20px;
+}
+.gradient-sticky {
   position: sticky;
 }
 .gradient-bg {

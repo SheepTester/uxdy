@@ -5,19 +5,21 @@
 
 import { useState } from 'preact/hooks'
 import { Day } from '../../../util/Day.ts'
+import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
-import { Now } from '../../lib/now.ts'
+import { used } from '../../lib/now.ts'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
 const SCALE = 1 // px per min
 
 export type ScheduleProps = {
-  now?: Now | null
+  weekday: number
+  time: Time
   meetings: RoomMeeting[]
 }
-export function Schedule ({ now, meetings }: ScheduleProps) {
+export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
   const [day, setDay] = useState<number | null>(null)
 
   if (meetings.length === 0) {
@@ -42,6 +44,8 @@ export function Schedule ({ now, meetings }: ScheduleProps) {
     (acc, curr) => Math.max(acc, +curr.end),
     -Infinity
   )
+
+  const inUse = used(weekday, time)
 
   return (
     <div class='schedule'>
@@ -68,15 +72,12 @@ export function Schedule ({ now, meetings }: ScheduleProps) {
           >
             {meetings
               .filter(meeting => meeting.days.includes(day))
+              .sort((a, b) => +a.start - +b.start)
               .map(meeting => (
                 <div
-                  class={`meeting ${
-                    now?.day === day &&
-                    meeting.start <= now.time &&
-                    now.time < meeting.end
-                      ? 'current'
-                      : ''
-                  } ${'date' in meeting ? 'exam' : ''}`}
+                  class={`meeting ${inUse(meeting) ? 'current' : ''} ${
+                    'date' in meeting ? 'exam' : ''
+                  }`}
                   style={{
                     top: `${(+meeting.start - earliest) / SCALE}px`,
                     height: `${(+meeting.end - +meeting.start) / SCALE}px`
@@ -94,11 +95,11 @@ export function Schedule ({ now, meetings }: ScheduleProps) {
                   </div>
                 </div>
               ))}
-            {now?.day === day && earliest <= +now.time && +now.time < latest && (
+            {weekday === day && earliest <= +time && +time < latest && (
               <div
                 class='now'
                 style={{
-                  top: `${(+now.time - earliest) / SCALE}px`
+                  top: `${(+time - earliest) / SCALE}px`
                 }}
               />
             )}
