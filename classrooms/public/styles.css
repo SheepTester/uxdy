@@ -281,10 +281,25 @@ input[type='checkbox']:checked {
   z-index: 3;
   border-radius: 10px;
   padding: 10px 15px;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, visibility 0.2s;
 }
 .date-time-button:disabled {
   opacity: 0;
+}
+@media (max-width: 930px) {
+  .bottom-panel-open {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@media (max-width: 670px) {
+  .date-time-button {
+    top: unset;
+    right: unset;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+  }
 }
 .showing-schedule-wrapper {
   margin: 0;
@@ -323,18 +338,46 @@ input[type='checkbox']:checked {
   flex-direction: column;
   gap: 10px;
   transition: transform 0.2s, opacity 0.2s, visibility 0.2s;
+  overflow: hidden;
 }
 .date-time-panel-hidden {
-  transform: translate(20px);
+  transform: translateX(20px);
   opacity: 0;
   visibility: hidden;
 }
 .date-time-panel-bottom-panel.date-time-panel-hidden {
-  transform: translate(350px);
+  transform: translateX(350px);
 }
 .calendar-open {
   bottom: 0;
   padding-bottom: 0;
+}
+@media (max-width: 930px) {
+  .date-time-panel-bottom-panel,
+  .date-time-panel-bottom-panel.date-time-panel-hidden {
+    transform: translateX(20px);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@media (max-width: 670px) {
+  .date-time-panel {
+    top: unset;
+    width: unset;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .date-time-panel-hidden,
+  .date-time-panel-bottom-panel,
+  .date-time-panel-bottom-panel.date-time-panel-hidden {
+    transform: translateY(20px);
+  }
+  .calendar-open {
+    height: 70vh;
+  }
 }
 .calendar-scroll-area {
   overflow: auto;
@@ -498,6 +541,7 @@ input[type='checkbox']:checked {
 
 .building-panel {
   position: fixed;
+  z-index: 3;
   left: 20px;
   right: 20px;
   bottom: 20px;
@@ -519,6 +563,24 @@ input[type='checkbox']:checked {
 .right-panel-open {
   right: 340px;
 }
+@media (max-width: 930px) {
+  .right-panel-open {
+    right: 20px;
+  }
+}
+@media (max-width: 670px) {
+  .building-panel {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 70vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .room-list .gradient-top {
+    margin-top: -10px;
+  }
+}
 .building-name,
 .rooms,
 .schedule {
@@ -529,6 +591,7 @@ input[type='checkbox']:checked {
   height: 160px;
   flex: none;
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -629,7 +692,7 @@ input[type='checkbox']:checked {
 }
 
 .rooms {
-  padding: 0 20px;
+  padding: 0 10px;
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fill, minmax(14ch, 1fr));
@@ -716,7 +779,7 @@ input[type='checkbox']:checked {
   font-size: 0.5em;
   font-family: var(--normal);
 }
-@media (max-width: 660px) {
+@media (max-width: 670px) {
   .full-week .meeting-name {
     font-size: 0.55em;
   }
@@ -792,6 +855,13 @@ input[type='checkbox']:checked {
   height: 40px;
   width: 300px;
   border-radius: 10px;
+}
+@media (max-width: 670px) {
+  .search-wrapper {
+    right: 0;
+    width: unset;
+    margin: 10px;
+  }
 }
 .search-input {
   padding: 0 8px;

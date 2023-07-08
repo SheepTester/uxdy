@@ -35,7 +35,7 @@ export function RoomList ({
   }
 
   return (
-    <div>
+    <div class='room-list'>
       <div class='gradient gradient-sticky gradient-top' />
       <div class='rooms'>
         {Object.entries(rooms)

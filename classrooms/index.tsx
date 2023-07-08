@@ -114,6 +114,7 @@ function App () {
         date={date}
         time={time}
         onClick={() => setShowDate(true)}
+        bottomPanelOpen={!!viewing}
         disabled={showDate}
       />
       <DateTimePanel

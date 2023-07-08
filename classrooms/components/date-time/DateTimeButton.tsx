@@ -11,17 +11,23 @@ export type DateTimeButtonProps = {
   date: Day
   time: Time
   onClick: () => void
+  bottomPanelOpen: boolean
   disabled: boolean
 }
 export function DateTimeButton ({
   date,
   time,
   onClick,
+  bottomPanelOpen,
   disabled
 }: DateTimeButtonProps) {
   const { year, season, current, week } = getTerm(date)
   return (
-    <button class='date-time-button' onClick={onClick} disabled={disabled}>
+    <button
+      class={`date-time-button ${bottomPanelOpen ? 'bottom-panel-open' : ''}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <p class='showing-schedule-wrapper'>
         <span class='showing-schedule-text'>Showing schedule for</span>
         <div class='date-time'>
