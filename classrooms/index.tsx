@@ -13,6 +13,7 @@ import { BuildingPanel } from './components/building/BuildingPanel.tsx'
 import { BuildingButton } from './components/BuildingButton.tsx'
 import { DateTimeButton } from './components/date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './components/date-time/DateTimePanel.tsx'
+import { SearchIcon } from './components/icons/SearchIcon.tsx'
 import { buildings } from './lib/buildings.ts'
 import {
   coursesToClassrooms,
@@ -101,6 +102,14 @@ function App () {
 
   return (
     <>
+      <label class='search-wrapper'>
+        <SearchIcon />
+        <input
+          type='search'
+          placeholder='Coming soon...'
+          class='search-input'
+        />
+      </label>
       <DateTimeButton
         date={date}
         time={time}
