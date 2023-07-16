@@ -25,7 +25,7 @@ export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
       </div>
       <div class='calendar-row calendar-deco-row'>
         <div class='calendar-deco'>
-          <div class='calendar-header-line' />
+          {/* <div class='calendar-header-line' /> */}
           {/* <div class='gradient gradient-top' /> */}
         </div>
       </div>
@@ -91,6 +91,8 @@ const HEADER_HEIGHT = 120
 
 export type CalendarRowProps = {
   termDays: TermDays
+  start: Day
+  end: Day
   monday: Day
   month?: number
   date: Day
@@ -99,6 +101,8 @@ export type CalendarRowProps = {
 }
 export function CalendarRow ({
   termDays,
+  start,
+  end,
   monday,
   month,
   date,
@@ -135,21 +139,29 @@ export function CalendarRow ({
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
   return (
     <div class='calendar-row calendar-date-row' ref={ref}>
-      <div class='calendar-week-num'>{week === 11 ? 'FI' : week}</div>
+      <div class='calendar-week-num'>
+        {week === 11
+          ? 'FI'
+          : monday.add(6) >= termDays.start && monday <= termDays.end
+          ? week
+          : ''}
+      </div>
       {DAY_NUMS.map(i => {
         const day = monday.add(i)
-        if (
-          (month && day.month !== month) ||
-          day < termDays.start ||
-          day > termDays.end
-        ) {
+        if ((month && day.month !== month) || day < start || day > end) {
           return <div class='calendar-item' />
         }
         return (
           <label
             class={`calendar-item calendar-day ${
-              day >= termDays.finals ? 'calendar-finals-day' : ''
-            } ${day.id === date.id ? 'calendar-selected' : ''}`}
+              day >= termDays.finals && day <= termDays.end
+                ? 'calendar-finals-day'
+                : ''
+            } ${day.id === date.id ? 'calendar-selected' : ''} ${
+              day >= termDays.start && day <= termDays.end
+                ? ''
+                : 'calendar-break-day'
+            }`}
           >
             <input
               type='radio'

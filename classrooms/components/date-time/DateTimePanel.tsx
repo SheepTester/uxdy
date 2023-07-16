@@ -5,6 +5,7 @@
 
 import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
+import { inPT } from '../../lib/now.ts'
 import { Calendar } from './Calendar.tsx'
 
 export type DateTimePanelProps = {
@@ -72,7 +73,10 @@ export function DateTimePanel ({
             checked={useNow}
             onInput={e => onUseNow(e.currentTarget.checked)}
           />
-          Use current time
+          <span>
+            Use current time
+            {inPT() ? null : <span class='tz-note'>(in San Diego)</span>}
+          </span>
         </label>
         <input
           type='time'

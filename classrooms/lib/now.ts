@@ -8,6 +8,14 @@ export type Moment = {
   time: Time
 }
 
+// https://github.com/Orbiit/gunn-web-app/blob/master/js/utils.js
+const TIME_ZONE = 'America/Los_Angeles'
+
+export function inPT (): boolean {
+  const { timeZone } = new Intl.DateTimeFormat().resolvedOptions()
+  return timeZone === TIME_ZONE
+}
+
 function toPT (date: Date): Moment {
   const string = date.toLocaleString('en-US', {
     year: 'numeric',
@@ -15,7 +23,7 @@ function toPT (date: Date): Moment {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'America/Los_Angeles'
+    timeZone: TIME_ZONE
   })
   const match = string.match(/^(\d\d)\/(\d\d)\/(\d{4}), (\d\d):(\d\d) ([AP]M)$/)
   if (match) {

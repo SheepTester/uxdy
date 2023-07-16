@@ -4,7 +4,12 @@
 /// <reference lib="deno.ns" />
 
 import { JSX } from 'preact'
-import { getTermDays, Season } from '../../../terms/index.ts'
+import {
+  getTermDays,
+  Season,
+  termCode,
+  TermDays
+} from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
 import {
   CalendarHeaderRow,
@@ -14,34 +19,37 @@ import {
 } from './CalendarRow.tsx'
 
 type TermCalendarProps = {
-  year: number
-  season: Season
+  termDays: TermDays
+  start: Day
+  end: Day
   date: Day
   onDate: (date: Day) => void
   scrollToDate: number | null
 }
 function TermCalendar ({
-  year,
-  season,
+  termDays,
+  start,
+  end,
   date,
   onDate,
   scrollToDate
 }: TermCalendarProps) {
-  const termDays = getTermDays(year, season)
-
-  let month: number = termDays.start.monday.month
-  const weeks: JSX.Element[] = [
-    <CalendarMonthHeadingRow month={month} key='first month' />
-  ]
+  let month: number = start.monday.month
+  const weeks: JSX.Element[] = []
+  if (start.monday.month === start.month) {
+    weeks.push(<CalendarMonthHeadingRow month={month} key='first month' />)
+  }
   for (
-    let monday = termDays.start.monday;
-    monday <= termDays.end;
+    let monday = start.monday;
+    monday <= end.monday;
     monday = monday.add(7)
   ) {
-    if (monday.month === month) {
+    if (monday.month === month && monday >= start) {
       weeks.push(
         <CalendarRow
           termDays={termDays}
+          start={start}
+          end={end}
           monday={monday}
           month={month}
           date={date}
@@ -59,6 +67,8 @@ function TermCalendar ({
         <CalendarMonthHeadingRow month={month} key={`month ${month}`} />,
         <CalendarRow
           termDays={termDays}
+          start={start}
+          end={end}
           monday={monday}
           month={month}
           date={date}
@@ -70,12 +80,7 @@ function TermCalendar ({
     }
   }
 
-  return (
-    <>
-      <CalendarQuarterHeadingRow year={year} season={season} />
-      {weeks}
-    </>
-  )
+  return <>{weeks}</>
 }
 
 const seasons: Season[] = ['WI', 'SP', 'S1', 'S2', 'FA']
@@ -99,11 +104,21 @@ export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
 
   const calendars: JSX.Element[] = []
   for (let year = start; year <= end; year++) {
-    for (const season of seasons) {
+    const yearTermDays = seasons.map(season => getTermDays(year, season))
+    for (const [i, season] of seasons.entries()) {
       calendars.push(
-        <TermCalendar
+        <CalendarQuarterHeadingRow
           year={year}
           season={season}
+          key={`${year} ${season} heading`}
+        />,
+        <TermCalendar
+          termDays={yearTermDays[i]}
+          start={i === 0 ? Day.from(year, 1, 1) : yearTermDays[i].start.monday}
+          end={
+            yearTermDays[i + 1]?.start.monday.add(-1) ??
+            Day.from(year + 1, 1, 0)
+          }
           date={date}
           onDate={onDate}
           scrollToDate={scrollToDate}
