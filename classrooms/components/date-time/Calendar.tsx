@@ -130,7 +130,7 @@ export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
 
   return (
     <div class='calendar-scroll-area'>
-      <CalendarHeaderRow />
+      <CalendarHeaderRow date={date} />
       {calendars}
       <div class='gradient gradient-sticky gradient-bottom' />
     </div>

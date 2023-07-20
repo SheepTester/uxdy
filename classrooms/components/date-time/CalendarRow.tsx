@@ -9,8 +9,10 @@ import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 
-export type CalendarHeaderRowProps = {}
-export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
+export type CalendarHeaderRowProps = {
+  date: Day
+}
+export function CalendarHeaderRow ({ date }: CalendarHeaderRowProps) {
   return (
     <>
       <div class='calendar-row calendar-header-row'>
@@ -18,7 +20,11 @@ export function CalendarHeaderRow ({}: CalendarHeaderRowProps) {
           <span>Wk</span>
         </div>
         {DAY_NUMS.map(day => (
-          <div class='calendar-item calendar-week-day'>
+          <div
+            class={`calendar-item calendar-week-day ${
+              (day + 1) % 7 === date.day ? 'calendar-selected' : ''
+            }`}
+          >
             {Day.dayName(day + 1, 'short', 'en-US')}
           </div>
         ))}
@@ -112,15 +118,12 @@ export function CalendarRow ({
   const ref = useRef<HTMLDivElement>(null)
   const div = ref.current
 
+  const endDay = monday.add(7)
+
   useEffect(() => {
     // Shouldn't need to adjust scroll on resize since there's no text wrapping
     // in the calendar
-    if (
-      div?.parentElement &&
-      scrollToDate &&
-      date >= monday &&
-      date < monday.add(7)
-    ) {
+    if (div?.parentElement && scrollToDate && date >= monday && date < endDay) {
       const scrollRect = div.parentElement.getBoundingClientRect()
       const rowRect = div.getBoundingClientRect()
       // offsetTop is the y-position of the div relative to the top of the
@@ -137,12 +140,16 @@ export function CalendarRow ({
   }, [div, scrollToDate])
 
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
+  const hasSelected = monday <= date && date < endDay
+
   return (
     <div class='calendar-row calendar-date-row' ref={ref}>
-      <div class='calendar-week-num'>
+      <div
+        class={`calendar-week-num ${hasSelected ? 'calendar-selected' : ''}`}
+      >
         {week === 11
           ? 'FI'
-          : monday.add(6) >= termDays.start && monday <= termDays.end
+          : termDays.start < endDay && monday <= termDays.end
           ? week
           : ''}
       </div>

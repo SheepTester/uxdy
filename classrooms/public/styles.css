@@ -289,13 +289,13 @@ input[type='checkbox']:checked {
 .date-time-button:disabled {
   opacity: 0;
 }
-@media (max-width: 930px) {
+@media (max-width: 950px) {
   .bottom-panel-open {
     opacity: 0;
     visibility: hidden;
   }
 }
-@media (max-width: 670px) {
+@media (max-width: 690px) {
   .date-time-button {
     top: unset;
     right: unset;
@@ -317,7 +317,7 @@ input[type='checkbox']:checked {
 }
 .date-time {
   display: flex;
-  gap: 10px;
+  gap: 1ch;
 }
 .quarter-week {
   font-size: 0.8em;
@@ -332,7 +332,7 @@ input[type='checkbox']:checked {
   z-index: 5;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 320px;
   background-color: var(--modal);
   margin: 20px;
   padding: 10px 0;
@@ -355,7 +355,7 @@ input[type='checkbox']:checked {
   bottom: 0;
   padding-bottom: 0;
 }
-@media (max-width: 930px) {
+@media (max-width: 950px) {
   .date-time-panel-bottom-panel,
   .date-time-panel-bottom-panel.date-time-panel-hidden {
     transform: translateX(20px);
@@ -363,7 +363,7 @@ input[type='checkbox']:checked {
     visibility: hidden;
   }
 }
-@media (max-width: 670px) {
+@media (max-width: 690px) {
   .date-time-panel {
     top: unset;
     width: unset;
@@ -424,7 +424,6 @@ input[type='checkbox']:checked {
   font-size: 0.8em;
   flex: none;
   align-self: stretch;
-  margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -441,12 +440,11 @@ input[type='checkbox']:checked {
   top: 90px;
 }
 .calendar-item {
-  width: 30px;
+  flex: 1 0 0;
   height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: auto;
   position: relative;
   z-index: 0;
 }
@@ -454,7 +452,7 @@ input[type='checkbox']:checked {
   cursor: pointer;
 }
 .calendar-day:focus-within {
-  outline: 1px solid blue;
+  outline: 1px solid white;
   border-radius: 50%;
 }
 .calendar-finals-day {
@@ -465,8 +463,10 @@ input[type='checkbox']:checked {
 }
 .calendar-selected {
   background-color: rgba(0, 184, 255, 0.3);
-  border-radius: 50%;
   color: white;
+}
+.calendar-day.calendar-selected {
+  border-radius: 30px;
 }
 .calendar-heading-row {
   position: sticky;
@@ -483,9 +483,6 @@ input[type='checkbox']:checked {
 }
 .calendar-heading-row:nth-child(2) {
   margin-top: 0;
-}
-.calendar-heading-row .calendar-week-num {
-  margin-right: 0;
 }
 .calendar-heading {
   margin: 0;
@@ -577,14 +574,14 @@ input[type='checkbox']:checked {
   visibility: hidden;
 }
 .right-panel-open {
-  right: 340px;
+  right: 360px;
 }
-@media (max-width: 930px) {
+@media (max-width: 950px) {
   .right-panel-open {
     right: 20px;
   }
 }
-@media (max-width: 670px) {
+@media (max-width: 690px) {
   .building-panel {
     left: 0;
     right: 0;
@@ -713,7 +710,7 @@ input[type='checkbox']:checked {
   gap: 10px;
   grid-template-columns: repeat(auto-fill, minmax(14ch, 1fr));
 }
-@media (max-width: 670px) {
+@media (max-width: 690px) {
   .rooms {
     padding: 0 10px;
   }
@@ -800,7 +797,7 @@ input[type='checkbox']:checked {
   font-size: 0.5em;
   font-family: var(--normal);
 }
-@media (max-width: 670px) {
+@media (max-width: 690px) {
   .full-week .meeting-name {
     font-size: 0.55em;
   }
@@ -876,10 +873,10 @@ input[type='checkbox']:checked {
   display: flex;
   padding-left: 8px;
   height: 40px;
-  width: 300px;
+  /* width: 320px; */
   border-radius: 10px;
 }
-@media (max-width: 670px) {
+@media (max-width: 690px) {
   .search-wrapper {
     right: 0;
     width: unset;
