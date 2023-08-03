@@ -60,7 +60,12 @@ function App () {
         const result = await promise
         if (result) {
           setTermBuildings(
-            coursesToClassrooms(result.courses, { monday: date.monday, finals })
+            coursesToClassrooms(result.courses, {
+              monday: date.monday,
+              // Summer sessions' finals week overlaps with classes, it seems
+              // like?
+              finals: finals && season !== 'S1' && season !== 'S2'
+            })
           )
           setNoticeVisible(false)
           return

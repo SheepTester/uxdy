@@ -10,6 +10,7 @@ import {
   red,
   yellow
 } from 'std/fmt/colors.ts'
+import { Day } from '../util/Day.ts'
 import { DAYS, getCourseIterator } from './scrape.ts'
 
 const TERM = 'SP23'
@@ -57,8 +58,8 @@ for await (const { item } of getCourseIterator(TERM, { start })) {
         : ` ${red(
             `${item.selectable.available}/${item.selectable.capacity}`
           )} available`
-      : item.section instanceof Date
-      ? ` on ${item.section.toISOString().slice(0, 10)}`
+      : item.section instanceof Day
+      ? ` on ${item.section}`
       : ''
     const instructor =
       item.instructors.length > 0
@@ -68,7 +69,7 @@ for await (const { item } of getCourseIterator(TERM, { start })) {
         : red('staff')
     console.log(
       `${gray('|')} ${magenta(item.type)} ${
-        item.section instanceof Date ? red('exm') : yellow(item.section)
+        item.section instanceof Day ? red('exm') : yellow(item.section)
       } ${cyan(time)}${location}${info} by ${instructor}`
     )
   }

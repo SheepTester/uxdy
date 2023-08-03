@@ -47,7 +47,7 @@ export type CoursesToClassroomsOptions = {
 
 export function coursesToClassrooms (
   courses: Course[],
-  { finals, monday }: CoursesToClassroomsOptions = {}
+  { finals = false, monday }: CoursesToClassroomsOptions = {}
 ): TermBuildings {
   const nextMonday = monday?.add(7)
   const buildings: TermBuildings = {}
