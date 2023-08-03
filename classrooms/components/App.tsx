@@ -3,27 +3,26 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { render } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { getTerm, termName } from '../terms/index.ts'
-import { Day } from '../util/Day.ts'
-import { Time } from '../util/Time.ts'
-import { useAsyncEffect } from '../util/useAsyncEffect.ts'
-import { BuildingPanel } from './components/building/BuildingPanel.tsx'
-import { BuildingButton } from './components/BuildingButton.tsx'
-import { DateTimeButton } from './components/date-time/DateTimeButton.tsx'
-import { DateTimePanel } from './components/date-time/DateTimePanel.tsx'
-import { SearchIcon } from './components/icons/SearchIcon.tsx'
-import { buildings } from './lib/buildings.ts'
+import { getTerm, termName } from '../../terms/index.ts'
+import { Day } from '../../util/Day.ts'
+import { Time } from '../../util/Time.ts'
+import { useAsyncEffect } from '../../util/useAsyncEffect.ts'
+import { buildings } from '../lib/buildings.ts'
 import {
-  coursesToClassrooms,
-  TermBuildings
-} from './lib/coursesToClassrooms.ts'
-import { northeast, southwest, PADDING, mapPosition } from './lib/locations.ts'
-import { useNow } from './lib/now.ts'
-import { QuarterCache } from './lib/QuarterCache.ts'
+  TermBuildings,
+  coursesToClassrooms
+} from '../lib/coursesToClassrooms.ts'
+import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
+import { useNow } from '../lib/now.ts'
+import { QuarterCache } from '../lib/QuarterCache.ts'
+import { BuildingPanel } from './building/BuildingPanel.tsx'
+import { BuildingButton } from './BuildingButton.tsx'
+import { DateTimeButton } from './date-time/DateTimeButton.tsx'
+import { DateTimePanel } from './date-time/DateTimePanel.tsx'
+import { SearchIcon } from './icons/SearchIcon.tsx'
 
-function App () {
+export function App () {
   const quarters = useRef(new QuarterCache())
   const [showDate, setShowDate] = useState(false)
   const [customDate, setCustomDate] = useState<Day | null>(null)
@@ -198,5 +197,3 @@ function App () {
     </>
   )
 }
-
-render(<App />, document.getElementById('root')!)
