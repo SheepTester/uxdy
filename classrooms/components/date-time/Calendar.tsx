@@ -4,12 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { JSX } from 'preact'
-import {
-  getTermDays,
-  Season,
-  termCode,
-  TermDays
-} from '../../../terms/index.ts'
+import { useEffect } from 'preact/hooks'
+import { getTermDays, Season, TermDays } from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
 import {
   CalendarHeaderRow,
@@ -17,6 +13,42 @@ import {
   CalendarQuarterHeadingRow,
   CalendarRow
 } from './CalendarRow.tsx'
+
+type MonthCalendarProps = TermCalendarProps & {
+  month: number
+}
+function MonthCalendar ({
+  start,
+  end,
+  scrollToDate,
+  month,
+  ...props
+}: MonthCalendarProps) {
+  const monthStart = Day.max(start, Day.from(start.year, month, 1))
+  const monthEnd = Day.min(end, Day.from(start.year, month + 1, 0))
+  const weeks: JSX.Element[] = []
+  for (
+    let monday = monthStart.monday;
+    monday <= monthEnd;
+    monday = monday.add(7)
+  ) {
+    weeks.push(
+      <CalendarRow
+        monday={monday}
+        start={monthStart}
+        end={monthEnd}
+        key={monday.id}
+        {...props}
+      />
+    )
+  }
+  return (
+    <div class='calendar-month'>
+      <CalendarMonthHeadingRow month={month} />
+      {weeks}
+    </div>
+  )
+}
 
 type TermCalendarProps = {
   termDays: TermDays
@@ -26,61 +58,13 @@ type TermCalendarProps = {
   onDate: (date: Day) => void
   scrollToDate: number | null
 }
-function TermCalendar ({
-  termDays,
-  start,
-  end,
-  date,
-  onDate,
-  scrollToDate
-}: TermCalendarProps) {
-  let month: number = start.monday.month
-  const weeks: JSX.Element[] = []
-  if (start.monday.month === start.month) {
-    weeks.push(<CalendarMonthHeadingRow month={month} key='first month' />)
+function TermCalendar (props: TermCalendarProps) {
+  const { start, end } = props
+  const months: JSX.Element[] = []
+  for (let month = start.month; month <= end.month; month++) {
+    months.push(<MonthCalendar month={month} key={month} {...props} />)
   }
-  for (
-    let monday = start.monday;
-    monday <= end.monday;
-    monday = monday.add(7)
-  ) {
-    if (monday.month === month && monday >= start) {
-      weeks.push(
-        <CalendarRow
-          termDays={termDays}
-          start={start}
-          end={end}
-          monday={monday}
-          month={month}
-          date={date}
-          onDate={onDate}
-          scrollToDate={scrollToDate}
-          key={monday.id}
-        />
-      )
-    }
-
-    const sunday = monday.add(6)
-    if (sunday.month !== month) {
-      month = sunday.month
-      weeks.push(
-        <CalendarMonthHeadingRow month={month} key={`month ${month}`} />,
-        <CalendarRow
-          termDays={termDays}
-          start={start}
-          end={end}
-          monday={monday}
-          month={month}
-          date={date}
-          onDate={onDate}
-          scrollToDate={scrollToDate}
-          key={`new month ${monday.id}`}
-        />
-      )
-    }
-  }
-
-  return <>{weeks}</>
+  return <>{months}</>
 }
 
 const seasons: Season[] = ['WI', 'SP', 'S1', 'S2', 'FA']
@@ -99,8 +83,22 @@ export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
   //   const { season } = getTerm(date)
   //   return season === 'FA' ? date.year + 1 : date.year
   // })
-  let start = 2023
-  let end = 2023
+  const start = 2023
+  const end = 2023
+
+  // Move focus to currently selected calendar day (this is still finicky)
+  useEffect(() => {
+    if (
+      document.activeElement instanceof HTMLInputElement &&
+      document.activeElement.name === 'calendar-day' &&
+      !document.activeElement.checked
+    ) {
+      const checked = document.querySelector('[name="calendar-day"]:checked')
+      if (checked instanceof HTMLInputElement) {
+        checked.focus()
+      }
+    }
+  }, [date.id])
 
   const calendars: JSX.Element[] = []
   for (let year = start; year <= end; year++) {
@@ -130,6 +128,7 @@ export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
 
   return (
     <div class='calendar-scroll-area'>
+      <div class='gradient gradient-sticky gradient-top' />
       <CalendarHeaderRow date={date} />
       {calendars}
       <div class='gradient gradient-sticky gradient-bottom' />

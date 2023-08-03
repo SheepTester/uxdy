@@ -175,4 +175,18 @@ export class Day {
     // 1970-01-04 is a Sunday
     return this.from(1970, 1, 4 + day).dayName(length, locales)
   }
+
+  static min (first: Day | Day[], ...rest: Day[]) {
+    const days = Array.isArray(first) ? [...first, ...rest] : [first, ...rest]
+    return this.fromId(
+      days.reduce((cum, curr) => Math.min(cum, curr.id), Infinity)
+    )
+  }
+
+  static max (first: Day | Day[], ...rest: Day[]) {
+    const days = Array.isArray(first) ? [...first, ...rest] : [first, ...rest]
+    return this.fromId(
+      days.reduce((cum, curr) => Math.max(cum, curr.id), -Infinity)
+    )
+  }
 }

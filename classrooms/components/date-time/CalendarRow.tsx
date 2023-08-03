@@ -4,7 +4,6 @@
 /// <reference lib="deno.ns" />
 
 import { ComponentChildren } from 'preact'
-import { useEffect, useRef } from 'preact/hooks'
 import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
@@ -28,12 +27,6 @@ export function CalendarHeaderRow ({ date }: CalendarHeaderRowProps) {
             {Day.dayName(day + 1, 'short', 'en-US')}
           </div>
         ))}
-      </div>
-      <div class='calendar-row calendar-deco-row'>
-        <div class='calendar-deco'>
-          {/* <div class='calendar-header-line' /> */}
-          {/* <div class='gradient gradient-top' /> */}
-        </div>
       </div>
     </>
   )
@@ -100,50 +93,24 @@ export type CalendarRowProps = {
   start: Day
   end: Day
   monday: Day
-  month?: number
   date: Day
   onDate: (date: Day) => void
-  scrollToDate: number | null
 }
 export function CalendarRow ({
   termDays,
   start,
   end,
   monday,
-  month,
   date,
-  onDate,
-  scrollToDate
+  onDate
 }: CalendarRowProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const div = ref.current
-
   const endDay = monday.add(7)
-
-  useEffect(() => {
-    // Shouldn't need to adjust scroll on resize since there's no text wrapping
-    // in the calendar
-    if (div?.parentElement && scrollToDate && date >= monday && date < endDay) {
-      const scrollRect = div.parentElement.getBoundingClientRect()
-      const rowRect = div.getBoundingClientRect()
-      // offsetTop is the y-position of the div relative to the top of the
-      // scroll contents
-      div.parentElement.scrollTo({
-        top:
-          div.offsetTop -
-          HEADER_HEIGHT -
-          (scrollRect.height - HEADER_HEIGHT - rowRect.height) / 2,
-        // `scrollToDate` is only 1 when the web page first loads
-        behavior: scrollToDate === 1 ? 'auto' : 'smooth'
-      })
-    }
-  }, [div, scrollToDate])
 
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
   const hasSelected = monday <= date && date < endDay
 
   return (
-    <div class='calendar-row calendar-date-row' ref={ref}>
+    <div class='calendar-row calendar-date-row'>
       <div
         class={`calendar-week-num ${hasSelected ? 'calendar-selected' : ''}`}
       >
@@ -155,7 +122,7 @@ export function CalendarRow ({
       </div>
       {DAY_NUMS.map(i => {
         const day = monday.add(i)
-        if ((month && day.month !== month) || day < start || day > end) {
+        if (day < start || day > end) {
           return <div class='calendar-item' />
         }
         return (
@@ -180,17 +147,6 @@ export function CalendarRow ({
                   const up = e.key === 'ArrowUp'
                   onDate(date.add(up ? -7 : 7))
                   e.preventDefault()
-
-                  const element = e.currentTarget
-                  window.requestAnimationFrame(() => {
-                    const input =
-                      element.parentElement?.parentElement?.parentElement?.querySelector(
-                        ':checked'
-                      )
-                    if (input instanceof HTMLInputElement) {
-                      input.focus()
-                    }
-                  })
                 }
               }}
               onInput={() => onDate(day)}

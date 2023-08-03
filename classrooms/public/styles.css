@@ -389,6 +389,11 @@ input[type='checkbox']:checked {
   /* Needed for offsetTop; see CalendarRow */
   position: relative;
 }
+.calendar-scroll-area .gradient-top {
+  height: 120px;
+  margin-bottom: -120px;
+  z-index: 1;
+}
 .calendar-row {
   display: flex;
   align-items: center;
@@ -476,10 +481,10 @@ input[type='checkbox']:checked {
   padding-top: 30px;
   top: 0;
   height: 60px;
+  z-index: 3;
 }
 .calendar-month-heading-row {
   top: 90px;
-  background-color: var(--modal);
 }
 .calendar-heading-row:nth-child(2) {
   margin-top: 0;
