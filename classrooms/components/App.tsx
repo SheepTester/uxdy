@@ -141,6 +141,7 @@ export function App () {
           if (useNow) {
             setCustomDate(null)
             setCustomTime(null)
+            setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
           } else {
             setCustomDate(today)
             setCustomTime(realTime)

@@ -4,7 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { JSX } from 'preact'
-import { useEffect } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import { getTermDays, Season, TermDays } from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
 import {
@@ -13,6 +13,9 @@ import {
   CalendarQuarterHeadingRow,
   CalendarRow
 } from './CalendarRow.tsx'
+
+/** Height of the calendar header. */
+const HEADER_HEIGHT = 90
 
 type MonthCalendarProps = TermCalendarProps & {
   month: number
@@ -24,6 +27,8 @@ function MonthCalendar ({
   month,
   ...props
 }: MonthCalendarProps) {
+  const { date } = props
+
   const monthStart = Day.max(start, Day.from(start.year, month, 1))
   const monthEnd = Day.min(end, Day.from(start.year, month + 1, 0))
   const weeks: JSX.Element[] = []
@@ -42,8 +47,26 @@ function MonthCalendar ({
       />
     )
   }
+
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const div = ref.current
+    if (
+      div?.parentElement &&
+      scrollToDate &&
+      date >= monthStart &&
+      date <= monthEnd
+    ) {
+      div.parentElement.scrollTo({
+        top: div.offsetTop - HEADER_HEIGHT,
+        // `scrollToDate` is only 1 when the web page first loads
+        behavior: scrollToDate === 1 ? 'auto' : 'smooth'
+      })
+    }
+  }, [scrollToDate])
+
   return (
-    <div class='calendar-month'>
+    <div class='calendar-month' ref={ref}>
       <CalendarMonthHeadingRow month={month} />
       {weeks}
     </div>
