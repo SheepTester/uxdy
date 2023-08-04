@@ -11,7 +11,8 @@ import {
   CalendarHeaderRow,
   CalendarMonthHeadingRow,
   CalendarQuarterHeadingRow,
-  CalendarRow
+  CalendarRow,
+  CalendarWeekRow
 } from './CalendarRow.tsx'
 
 export type ScrollMode = 'none' | 'init' | 'date-edited'
@@ -40,7 +41,7 @@ function MonthCalendar ({
     monday = monday.add(7)
   ) {
     weeks.push(
-      <CalendarRow
+      <CalendarWeekRow
         monday={monday}
         start={monthStart}
         end={monthEnd}
@@ -95,12 +96,18 @@ function TermCalendar (props: TermCalendarProps) {
 type YearRange = {
   start: number
   end: number
+  setRange: (start: number, end: number) => void
 }
 function useYearRange (date: Day, inputtingDate: boolean): YearRange {
   const { season } = getTerm(date)
+  const setRange = (start: number, end: number) => {
+    setStart(start)
+    setEnd(end)
+  }
   const selectedRange = {
     start: season === 'WI' || season === 'SP' ? date.year - 1 : date.year,
-    end: season === 'FA' ? date.year + 1 : date.year
+    end: season === 'FA' ? date.year + 1 : date.year,
+    setRange
   }
   const [start, setStart] = useState(selectedRange.start)
   const [end, setEnd] = useState(selectedRange.end)
@@ -112,7 +119,7 @@ function useYearRange (date: Day, inputtingDate: boolean): YearRange {
   }, [inputtingDate, date.id])
   // Return `selectedRange` early so it doesn't scroll to the month's old
   // position
-  return inputtingDate ? selectedRange : { start, end }
+  return inputtingDate ? selectedRange : { start, end, setRange }
 }
 
 const seasons: Season[] = ['WI', 'SP', 'S1', 'S2', 'FA']
@@ -124,7 +131,10 @@ export type CalendarProps = {
 }
 export function Calendar (props: CalendarProps) {
   const { date, scrollMode } = props
-  const { start, end } = useYearRange(date, scrollMode === 'date-edited')
+  const { start, end, setRange } = useYearRange(
+    date,
+    scrollMode === 'date-edited'
+  )
 
   // Move focus to currently selected calendar day (this is still finicky)
   useEffect(() => {
@@ -168,7 +178,25 @@ export function Calendar (props: CalendarProps) {
     <div class='calendar-scroll-area'>
       <div class='gradient gradient-sticky gradient-top' />
       <CalendarHeaderRow date={date} />
+      <CalendarRow class='show-year-btn-top'>
+        <button
+          type='button'
+          class='show-year-btn'
+          onClick={() => setRange(start - 1, end)}
+        >
+          Show {start - 1}
+        </button>
+      </CalendarRow>
       {calendars}
+      <CalendarRow>
+        <button
+          type='button'
+          class='show-year-btn'
+          onClick={() => setRange(start, end + 1)}
+        >
+          Show {end + 1}
+        </button>
+      </CalendarRow>
       <div class='gradient gradient-sticky gradient-bottom' />
     </div>
   )

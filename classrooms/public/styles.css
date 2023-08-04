@@ -397,7 +397,7 @@ input[type='checkbox']:checked {
 .calendar-row {
   display: flex;
   align-items: center;
-  height: 30px;
+  min-height: 30px;
 }
 .calendar-header-row {
   position: sticky;
@@ -502,6 +502,19 @@ input[type='checkbox']:checked {
 .calendar-month-heading {
   font-size: 1em;
   font-family: var(--normal);
+}
+.show-year-btn {
+  font-family: var(--normal);
+  margin: 10px auto;
+  padding: 5px 10px;
+  background-color: rgba(0, 184, 255, 0.3);
+  border-radius: 5px;
+  height: 100%;
+}
+.show-year-btn-top {
+  position: relative;
+  z-index: 4;
+  margin-bottom: -30px;
 }
 
 .date-time-flex {

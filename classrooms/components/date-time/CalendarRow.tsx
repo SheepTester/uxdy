@@ -8,43 +8,40 @@ import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 
+export type CalendarRowProps = {
+  children?: ComponentChildren
+  week?: ComponentChildren
+  class?: string
+}
+export function CalendarRow ({
+  children,
+  week,
+  class: className = ''
+}: CalendarRowProps) {
+  return (
+    <div class={`calendar-row ${className}`}>
+      <div class='calendar-week-num'>{week}</div>
+      {children}
+    </div>
+  )
+}
+
 export type CalendarHeaderRowProps = {
   date: Day
 }
 export function CalendarHeaderRow ({ date }: CalendarHeaderRowProps) {
   return (
-    <>
-      <div class='calendar-row calendar-header-row'>
-        <div class='calendar-week-num'>
-          <span>Wk</span>
+    <CalendarRow class='calendar-header-row' week={<span>Wk</span>}>
+      {DAY_NUMS.map(day => (
+        <div
+          class={`calendar-item calendar-week-day ${
+            (day + 1) % 7 === date.day ? 'calendar-selected' : ''
+          }`}
+        >
+          {Day.dayName(day + 1, 'short', 'en-US')}
         </div>
-        {DAY_NUMS.map(day => (
-          <div
-            class={`calendar-item calendar-week-day ${
-              (day + 1) % 7 === date.day ? 'calendar-selected' : ''
-            }`}
-          >
-            {Day.dayName(day + 1, 'short', 'en-US')}
-          </div>
-        ))}
-      </div>
-    </>
-  )
-}
-
-type CalendarHeadingRowProps = {
-  children?: ComponentChildren
-  class?: string
-}
-function CalendarHeadingRow ({
-  children,
-  class: className = ''
-}: CalendarHeadingRowProps) {
-  return (
-    <div class={`calendar-row calendar-heading-row ${className}`}>
-      <div class='calendar-week-num'></div>
-      {children}
-    </div>
+      ))}
+    </CalendarRow>
   )
 }
 
@@ -57,7 +54,7 @@ export function CalendarQuarterHeadingRow ({
   season
 }: CalendarQuarterHeadingRowProps) {
   return (
-    <CalendarHeadingRow class='calendar-quarter-heading-row'>
+    <CalendarRow class='calendar-heading-row calendar-quarter-heading-row'>
       <div class='gradient gradient-bg gradient-bottom' />
       <AbbrevHeading
         heading='h2'
@@ -66,7 +63,7 @@ export function CalendarQuarterHeadingRow ({
       >
         {termName(year, season)}
       </AbbrevHeading>
-    </CalendarHeadingRow>
+    </CalendarRow>
   )
 }
 
@@ -77,15 +74,15 @@ export function CalendarMonthHeadingRow ({
   month
 }: CalendarMonthHeadingRowProps) {
   return (
-    <CalendarHeadingRow class='calendar-month-heading-row'>
+    <CalendarRow class='calendar-heading-row calendar-month-heading-row'>
       <h3 class='calendar-heading calendar-month-heading'>
         {Day.monthName(month)}
       </h3>
-    </CalendarHeadingRow>
+    </CalendarRow>
   )
 }
 
-export type CalendarRowProps = {
+export type CalendarWeekRowProps = {
   termDays: TermDays
   start: Day
   end: Day
@@ -93,14 +90,14 @@ export type CalendarRowProps = {
   date: Day
   onDate: (date: Day) => void
 }
-export function CalendarRow ({
+export function CalendarWeekRow ({
   termDays,
   start,
   end,
   monday,
   date,
   onDate
-}: CalendarRowProps) {
+}: CalendarWeekRowProps) {
   const endDay = monday.add(7)
 
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
