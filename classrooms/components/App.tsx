@@ -18,6 +18,7 @@ import { useNow } from '../lib/now.ts'
 import { QuarterCache } from '../lib/QuarterCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
+import { ScrollMode } from './date-time/Calendar.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
 import { SearchIcon } from './icons/SearchIcon.tsx'
@@ -27,7 +28,7 @@ export function App () {
   const [showDate, setShowDate] = useState(false)
   const [customDate, setCustomDate] = useState<Day | null>(null)
   const [customTime, setCustomTime] = useState<Time | null>(null)
-  const [scrollToDate, setScrollToDate] = useState<number | null>(1)
+  const [scrollMode, setScrollToDate] = useState<ScrollMode>('init')
   const [termBuildings, setTermBuildings] = useState<TermBuildings>({})
   const [viewing, setViewing] = useState<string | null>(null)
   const [lastViewing, setLastViewing] = useState('CENTR')
@@ -123,17 +124,11 @@ export function App () {
       />
       <DateTimePanel
         date={date}
-        onDate={(date, scrollToDate) => {
+        onDate={(date, source) => {
           setCustomDate(date)
-          if (scrollToDate) {
-            // Force useEffect to run again, if necessary. Start counting from 2
-            // to reserve `scrollToDate = 1` to mean "app just loaded"
-            setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
-          } else {
-            setScrollToDate(null)
-          }
+          setScrollToDate(source === 'input' ? 'date-edited' : 'none')
         }}
-        scrollToDate={scrollToDate}
+        scrollMode={scrollMode}
         time={time}
         onTime={setCustomTime}
         useNow={customDate === null && customTime === null}
@@ -141,7 +136,7 @@ export function App () {
           if (useNow) {
             setCustomDate(null)
             setCustomTime(null)
-            setScrollToDate(scrollToDate => (scrollToDate ?? 1) + 1)
+            setScrollToDate('date-edited')
           } else {
             setCustomDate(today)
             setCustomTime(realTime)

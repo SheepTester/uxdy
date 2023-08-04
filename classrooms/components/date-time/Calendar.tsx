@@ -4,8 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { JSX } from 'preact'
-import { useEffect, useRef } from 'preact/hooks'
-import { getTermDays, Season, TermDays } from '../../../terms/index.ts'
+import { useEffect, useRef, useState } from 'preact/hooks'
+import { getTerm, getTermDays, Season, TermDays } from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
 import {
   CalendarHeaderRow,
@@ -13,6 +13,8 @@ import {
   CalendarQuarterHeadingRow,
   CalendarRow
 } from './CalendarRow.tsx'
+
+export type ScrollMode = 'none' | 'init' | 'date-edited'
 
 /** Height of the calendar header. */
 const HEADER_HEIGHT = 90
@@ -23,7 +25,7 @@ type MonthCalendarProps = TermCalendarProps & {
 function MonthCalendar ({
   start,
   end,
-  scrollToDate,
+  scrollMode,
   month,
   ...props
 }: MonthCalendarProps) {
@@ -53,17 +55,17 @@ function MonthCalendar ({
     const div = ref.current
     if (
       div?.parentElement &&
-      scrollToDate &&
+      scrollMode !== 'none' &&
       date >= monthStart &&
       date <= monthEnd
     ) {
       div.parentElement.scrollTo({
         top: div.offsetTop - HEADER_HEIGHT,
         // `scrollToDate` is only 1 when the web page first loads
-        behavior: scrollToDate === 1 ? 'auto' : 'smooth'
+        behavior: scrollMode === 'init' ? 'auto' : 'smooth'
       })
     }
-  }, [scrollToDate])
+  }, [scrollMode, date.id, monthStart.id, monthEnd.id])
 
   return (
     <div class='calendar-month' ref={ref}>
@@ -79,7 +81,7 @@ type TermCalendarProps = {
   end: Day
   date: Day
   onDate: (date: Day) => void
-  scrollToDate: number | null
+  scrollMode: ScrollMode
 }
 function TermCalendar (props: TermCalendarProps) {
   const { start, end } = props
@@ -90,24 +92,39 @@ function TermCalendar (props: TermCalendarProps) {
   return <>{months}</>
 }
 
+type YearRange = {
+  start: number
+  end: number
+}
+function useYearRange (date: Day, inputtingDate: boolean): YearRange {
+  const { season } = getTerm(date)
+  const selectedRange = {
+    start: season === 'WI' || season === 'SP' ? date.year - 1 : date.year,
+    end: season === 'FA' ? date.year + 1 : date.year
+  }
+  const [start, setStart] = useState(selectedRange.start)
+  const [end, setEnd] = useState(selectedRange.end)
+  useEffect(() => {
+    if (inputtingDate) {
+      setStart(selectedRange.start)
+      setEnd(selectedRange.end)
+    }
+  }, [inputtingDate, date.id])
+  // Return `selectedRange` early so it doesn't scroll to the month's old
+  // position
+  return inputtingDate ? selectedRange : { start, end }
+}
+
 const seasons: Season[] = ['WI', 'SP', 'S1', 'S2', 'FA']
 
 export type CalendarProps = {
   date: Day
   onDate: (date: Day, scrollToDate?: boolean) => void
-  scrollToDate: number | null
+  scrollMode: ScrollMode
 }
-export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
-  // const [start, setStart] = useState(() => {
-  //   const { season } = getTerm(date)
-  //   return season === 'WI' || season === 'SP' ? date.year - 1 : date.year
-  // })
-  // const [end, setEnd] = useState(() => {
-  //   const { season } = getTerm(date)
-  //   return season === 'FA' ? date.year + 1 : date.year
-  // })
-  const start = 2023
-  const end = 2023
+export function Calendar (props: CalendarProps) {
+  const { date, scrollMode } = props
+  const { start, end } = useYearRange(date, scrollMode === 'date-edited')
 
   // Move focus to currently selected calendar day (this is still finicky)
   useEffect(() => {
@@ -140,10 +157,8 @@ export function Calendar ({ date, onDate, scrollToDate }: CalendarProps) {
             yearTermDays[i + 1]?.start.monday.add(-1) ??
             Day.from(year + 1, 1, 0)
           }
-          date={date}
-          onDate={onDate}
-          scrollToDate={scrollToDate}
           key={`${year} ${season}`}
+          {...props}
         />
       )
     }

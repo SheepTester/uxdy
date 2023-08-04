@@ -497,6 +497,7 @@ input[type='checkbox']:checked {
 }
 .calendar-quarter-heading {
   font-size: 64px;
+  white-space: nowrap;
 }
 .calendar-month-heading {
   font-size: 1em;
@@ -565,7 +566,7 @@ input[type='checkbox']:checked {
   bottom: 20px;
   margin: 0 auto;
   max-width: 820px;
-  height: 420px;
+  height: 60vh;
   display: flex;
   flex-direction: column;
   background-color: var(--modal);

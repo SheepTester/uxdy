@@ -6,12 +6,12 @@
 import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 import { inPT } from '../../lib/now.ts'
-import { Calendar } from './Calendar.tsx'
+import { Calendar, ScrollMode } from './Calendar.tsx'
 
 export type DateTimePanelProps = {
   date: Day
-  onDate: (date: Day, scrollToDate?: boolean) => void
-  scrollToDate: number | null
+  onDate: (date: Day, source: 'calendar' | 'input') => void
+  scrollMode: ScrollMode
   time: Time
   onTime: (customTime: Time | null) => void
   useNow: boolean
@@ -23,7 +23,7 @@ export type DateTimePanelProps = {
 export function DateTimePanel ({
   date,
   onDate,
-  scrollToDate,
+  scrollMode,
   time,
   onTime,
   useNow,
@@ -58,7 +58,7 @@ export function DateTimePanel ({
           <button
             type='button'
             class='today-btn'
-            onClick={() => onDate(Day.today(), true)}
+            onClick={() => onDate(Day.today(), 'input')}
           >
             Today
           </button>
@@ -76,7 +76,7 @@ export function DateTimePanel ({
               if (useNow) {
                 onUseNow(false)
               }
-              onDate(date, true)
+              onDate(date, 'input')
             }
           }}
           class='date-input'
@@ -102,9 +102,9 @@ export function DateTimePanel ({
           if (useNow) {
             onUseNow(false)
           }
-          onDate(date)
+          onDate(date, 'calendar')
         }}
-        scrollToDate={scrollToDate}
+        scrollMode={scrollMode}
       />
     </form>
   )
