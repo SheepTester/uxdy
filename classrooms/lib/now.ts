@@ -49,7 +49,7 @@ function toPT (date: Date): Moment {
 }
 
 function getNow (): Moment {
-  return toPT(new Date(2023, 1, 10, 15, 10)) // TEMP
+  return toPT(new Date())
 }
 
 /**

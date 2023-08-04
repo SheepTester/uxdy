@@ -88,7 +88,7 @@ $ deno task classrooms:build
 $ ./scripts/deploy.sh ./classrooms/public/ classrooms
 ```
 
-Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 17, x: -6 to 5, y: -6 to 4)
+Map image was made with [this tool](https://sheeptester.github.io/words-go-here/misc/ucsd-map.html) (zoom 17, x: -6 to 5, y: -6 to 4). Because the map is now HD, please scale the image down to 3072 by 2816.
 
 Current uses:
 

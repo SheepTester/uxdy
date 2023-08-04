@@ -934,6 +934,10 @@ input[type='checkbox']:checked {
   background-image: linear-gradient(120deg, #e9b418, #d09228);
   color: white;
 }
+.college-eighth {
+  background-image: linear-gradient(120deg, #6c2ab3, #46206f);
+  color: white;
+}
 .college-pepperCanyon {
   background-image: linear-gradient(120deg, #068a96, #08484e);
   color: white;
