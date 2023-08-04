@@ -177,7 +177,7 @@ export function Calendar (props: CalendarProps) {
   return (
     <div class='calendar-scroll-area'>
       <div class='gradient gradient-sticky gradient-top' />
-      <CalendarHeaderRow date={date} />
+      <CalendarHeaderRow />
       <CalendarRow class='show-year-btn-top'>
         <button
           type='button'

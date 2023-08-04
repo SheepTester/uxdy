@@ -26,18 +26,11 @@ export function CalendarRow ({
   )
 }
 
-export type CalendarHeaderRowProps = {
-  date: Day
-}
-export function CalendarHeaderRow ({ date }: CalendarHeaderRowProps) {
+export function CalendarHeaderRow () {
   return (
     <CalendarRow class='calendar-header-row' week={<span>Wk</span>}>
       {DAY_NUMS.map(day => (
-        <div
-          class={`calendar-item calendar-week-day ${
-            (day + 1) % 7 === date.day ? 'calendar-selected' : ''
-          }`}
-        >
+        <div class={`calendar-item calendar-week-day`}>
           {Day.dayName(day + 1, 'short', 'en-US')}
         </div>
       ))}
@@ -99,15 +92,11 @@ export function CalendarWeekRow ({
   onDate
 }: CalendarWeekRowProps) {
   const endDay = monday.add(7)
-
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
-  const hasSelected = monday <= date && date < endDay
 
   return (
     <div class='calendar-row calendar-date-row'>
-      <div
-        class={`calendar-week-num ${hasSelected ? 'calendar-selected' : ''}`}
-      >
+      <div class='calendar-week-num'>
         {week === 11
           ? 'FI'
           : termDays.start < endDay && monday <= termDays.end
