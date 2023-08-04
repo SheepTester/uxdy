@@ -891,6 +891,7 @@ input[type='checkbox']:checked {
   height: 40px;
   /* width: 320px; */
   border-radius: 10px;
+  transition: opacity 0.4s, visibility 0.4s;
 }
 @media (max-width: 690px) {
   .search-wrapper {
@@ -898,6 +899,10 @@ input[type='checkbox']:checked {
     width: unset;
     margin: 10px;
   }
+}
+.hide-search {
+  visibility: hidden;
+  opacity: 0;
 }
 .search-input {
   padding: 0 8px;

@@ -105,7 +105,7 @@ export function App () {
 
   return (
     <>
-      <label class='search-wrapper'>
+      <label class={`search-wrapper ${noticeVisible ? 'hide-search' : ''}`}>
         <SearchIcon />
         <input
           type='search'

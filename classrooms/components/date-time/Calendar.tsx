@@ -135,13 +135,22 @@ export function Calendar (props: CalendarProps) {
   const selectedEnd = date.month >= 9 ? date.year + 1 : date.year
   const [start, setStart] = useState(selectedStart)
   const [end, setEnd] = useState(selectedEnd)
+  const [wasDateEdited, setWasDateEdited] = useState(false)
+  // This implementation sucks, but useEffect isn't ideal because I also want to
+  // render the new start/end immediately so the month can be scrolled to in the
+  // correct position.
   if (scrollMode === 'date-edited') {
-    if (start !== selectedStart) {
-      setStart(selectedStart)
+    if (!wasDateEdited) {
+      if (start !== selectedStart) {
+        setStart(selectedStart)
+      }
+      if (end !== selectedEnd) {
+        setEnd(selectedEnd)
+      }
+      setWasDateEdited(true)
     }
-    if (end !== selectedEnd) {
-      setEnd(selectedEnd)
-    }
+  } else if (wasDateEdited) {
+    setWasDateEdited(false)
   }
 
   // Move focus to currently selected calendar day (this is still finicky)
@@ -190,7 +199,22 @@ export function Calendar (props: CalendarProps) {
         <button
           type='button'
           class='show-year-btn'
-          onClick={() => setStart(start - 1)}
+          onClick={e => {
+            setStart(start - 1)
+
+            // Scroll down so it looks like the scroll area was extended upwards
+            const target = e.currentTarget
+              .closest('.calendar-scroll-area')
+              ?.querySelector('.calendar-month')
+            if (target instanceof HTMLElement) {
+              const oldX = target.offsetTop
+              window.requestAnimationFrame(() => {
+                target.parentElement?.scrollTo({
+                  top: target.offsetTop - oldX
+                })
+              })
+            }
+          }}
         >
           Show {start - 1}
         </button>
