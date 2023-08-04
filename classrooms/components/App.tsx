@@ -3,7 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import { getTerm, termName } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
@@ -95,15 +95,13 @@ export function App () {
           : 'Summer break.'
       )
     }
-    setViewing(null)
+    setViewing(viewing => {
+      if (viewing) {
+        setLastViewing(viewing)
+      }
+      return null
+    })
   }, [date.id])
-
-  // Keep last building visible when closing room list
-  useEffect(() => {
-    if (viewing) {
-      setLastViewing(viewing)
-    }
-  }, [viewing])
 
   return (
     <>
@@ -185,7 +183,14 @@ export function App () {
           time={time}
           building={buildings[viewing || lastViewing]}
           rooms={termBuildings[viewing || lastViewing] ?? {}}
-          onClose={() => setViewing(null)}
+          onClose={() => {
+            setViewing(viewing => {
+              if (viewing) {
+                setLastViewing(viewing)
+              }
+              return null
+            })
+          }}
           visible={!!viewing}
           rightPanelOpen={showDate}
         />

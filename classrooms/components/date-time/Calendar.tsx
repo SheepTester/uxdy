@@ -131,10 +131,18 @@ export type CalendarProps = {
 }
 export function Calendar (props: CalendarProps) {
   const { date, scrollMode } = props
-  const { start, end, setRange } = useYearRange(
-    date,
-    scrollMode === 'date-edited'
-  )
+  const selectedStart = date.month <= 6 ? date.year - 1 : date.year
+  const selectedEnd = date.month >= 9 ? date.year + 1 : date.year
+  const [start, setStart] = useState(selectedStart)
+  const [end, setEnd] = useState(selectedEnd)
+  if (scrollMode === 'date-edited') {
+    if (start !== selectedStart) {
+      setStart(selectedStart)
+    }
+    if (end !== selectedEnd) {
+      setEnd(selectedEnd)
+    }
+  }
 
   // Move focus to currently selected calendar day (this is still finicky)
   useEffect(() => {
@@ -182,7 +190,7 @@ export function Calendar (props: CalendarProps) {
         <button
           type='button'
           class='show-year-btn'
-          onClick={() => setRange(start - 1, end)}
+          onClick={() => setStart(start - 1)}
         >
           Show {start - 1}
         </button>
@@ -192,7 +200,7 @@ export function Calendar (props: CalendarProps) {
         <button
           type='button'
           class='show-year-btn'
-          onClick={() => setRange(start, end + 1)}
+          onClick={() => setEnd(end + 1)}
         >
           Show {end + 1}
         </button>

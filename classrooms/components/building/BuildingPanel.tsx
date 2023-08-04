@@ -3,7 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { Time } from '../../../util/Time.ts'
 import { BuildingDatum, buildings } from '../../lib/buildings.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
@@ -29,15 +29,7 @@ function BuildingPanelContent ({
 }: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [lastRoom, setLastRoom] = useState('')
-  const [imageLoaded, setImageLoaded] = useState(true)
-  const imageRef = useRef<HTMLImageElement>(null)
-
-  // Keep last room number visible when animating back to room list
-  useEffect(() => {
-    if (selected) {
-      setLastRoom(selected)
-    }
-  }, [selected])
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   // Make Imgur compress the image.
   // https://thomas.vanhoutte.be/miniblog/imgur-thumbnail-trick/
@@ -45,9 +37,6 @@ function BuildingPanelContent ({
     /\.jpeg$/,
     'l.jpeg'
   )
-  useEffect(() => {
-    setImageLoaded(!!imageRef.current?.complete)
-  }, [imageUrl, imageRef.current])
 
   return (
     <>
@@ -58,17 +47,24 @@ function BuildingPanelContent ({
       >
         {buildings[building.code].images.length > 0 && (
           <img
-            ref={imageRef}
             class={`building-image ${
               imageLoaded ? '' : 'building-image-loading'
             }`}
             src={imageUrl}
             onLoad={() => setImageLoaded(true)}
+            key={imageUrl}
           />
         )}
         <button
           class='back'
-          onClick={() => setSelected(null)}
+          onClick={() => {
+            setSelected(selected => {
+              if (selected) {
+                setLastRoom(selected)
+              }
+              return null
+            })
+          }}
           disabled={!selected}
         >
           <BackIcon />
