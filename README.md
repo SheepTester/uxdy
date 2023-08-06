@@ -104,6 +104,7 @@ Planned uses:
 - **Looking up the lecture location for a class.** I'll crash ECE 100. Where is it? I'm too lazy to sign into WebReg, and searching up courses on there is slow. (Feature: search courses by course code, list meeting times/locations for a course.)
 - **Getting the start and end dates of each quarter.** The internship application asks when I'm available to start. When does spring end? I'm too lazy to find that enrollment calendar website. (Feature: calendar view with quarters marked out.)
 - **Converting between month/day dates and quarter weeks.** May 15, what week is that? (Feature: calendar view with week numbers.)
+- **Determining when a professor is free.** I want to schedule a meeting with my professor. When might they be free? (Feature: calendar view for a professor. Note: this might have privacy implications, tread carefully.)
 
 Features to add:
 

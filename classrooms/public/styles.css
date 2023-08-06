@@ -1,23 +1,22 @@
 :root {
-  --background: #182330;
-  --text: rgba(255, 255, 255, 0.9);
-  --secondary: rgba(255, 255, 255, 0.5);
-  --line: rgba(255, 255, 255, 0.1);
-  --button-hover: rgba(255, 255, 255, 0.05);
-  --shadow: rgba(0, 0, 0, 0.2);
-  --shadow-press: rgba(0, 0, 0, 0.6);
-  --modal: #324153;
-  --modal-glass: #32415399;
+  color-scheme: dark;
+  --background: #212d1c;
+  --text: #d0d1ce;
+  --secondary: #899979;
+  --exam: #c1d84d;
+  --line: #313c24;
+  --card-line: #49513d;
+  --button: #59501d;
+  --field: #3c4838;
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  --shadow-press: 0 0 0 rgba(0, 0, 0, 0.6);
+  --modal: #232a21;
   --red: #ff4e84;
   --active: #41cf46;
   --soon: #f3d500;
-  --meeting: #405063;
-  --meeting-active: #516379;
-  --meeting-active-text: var(--text);
   --highlight: rgba(255, 255, 255, 0.5);
   --dropdown: url('./material-arrow-drop-down-white.svg');
   --link: #9acfff;
-  color-scheme: dark;
 
   --normal: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -27,6 +26,7 @@
 }
 @media (prefers-color-scheme: light) {
   :root {
+    color-scheme: light;
     --background: #f1f4f5;
     --text: rgba(0, 0, 0, 0.9);
     --secondary: rgba(0, 0, 0, 0.5);
@@ -44,7 +44,6 @@
     --highlight: rgba(0, 142, 255, 0.5);
     --dropdown: url('./material-arrow-drop-down-black.svg');
     --link: #2597ff;
-    color-scheme: light;
   }
 }
 
@@ -94,7 +93,7 @@ input[type='checkbox']:not(:disabled) {
 }
 
 input[type='checkbox'] {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--card-line);
   border-radius: 5px;
   width: 1.2em;
   height: 1.2em;
@@ -102,7 +101,7 @@ input[type='checkbox'] {
 }
 input[type='checkbox']:checked {
   border-color: transparent;
-  background-color: rgba(0, 184, 255, 0.3);
+  background-color: var(--button);
   background-image: url('./material-check-white.svg');
   background-position: center;
   background-size: cover;
@@ -173,12 +172,12 @@ input[type='checkbox']:checked {
   border-radius: 5px;
   background-image: linear-gradient(120deg, #00629b, #182b49);
   color: #ffcd00;
-  box-shadow: 0 2px 5px var(--shadow);
+  box-shadow: var(--shadow);
   white-space: nowrap;
   transition: box-shadow 0.2s, visibility 0.2s, opacity 0.2s;
 }
 .building-btn:active {
-  box-shadow: 0 0 0 var(--shadow-press);
+  box-shadow: var(--shadow-press);
 }
 .building-btn.selected {
   box-shadow: 0 0 0 3px var(--highlight);
@@ -197,7 +196,7 @@ input[type='checkbox']:checked {
   transform: translate(50%, -50%);
   border-radius: 50px;
   padding: 2px 5px;
-  box-shadow: 0 2px 5px var(--shadow);
+  box-shadow: var(--shadow);
   font-family: var(--normal);
 }
 .in-use {
@@ -278,9 +277,7 @@ input[type='checkbox']:checked {
   display: flex;
   gap: 15px;
   align-items: center;
-  background-color: var(--modal-glass);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--modal);
   z-index: 3;
   border-radius: 10px;
   padding: 10px 15px;
@@ -312,8 +309,8 @@ input[type='checkbox']:checked {
 }
 .showing-schedule-text {
   font-size: 0.8em;
-  opacity: 0.8;
   font-family: var(--normal);
+  color: var(--secondary);
 }
 .date-time {
   display: flex;
@@ -434,7 +431,7 @@ input[type='checkbox']:checked {
   justify-content: flex-end;
   border-right: 1px solid var(--line);
   padding-right: 10px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--secondary);
 }
 .calendar-header-row .calendar-week-num span {
   display: block;
@@ -454,18 +451,18 @@ input[type='checkbox']:checked {
   cursor: pointer;
 }
 .calendar-day:focus-within {
-  outline: 1px solid white;
+  outline: 1px solid white; /* TEMP */
   border-radius: 50%;
 }
 .calendar-finals-day {
-  color: pink;
+  color: var(--exam);
 }
 .calendar-break-day {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--secondary);
 }
 .calendar-selected {
-  background-color: rgba(0, 184, 255, 0.3);
-  color: white;
+  background-color: var(--button);
+  color: var(--text);
 }
 .calendar-day.calendar-selected {
   border-radius: 30px;
@@ -503,7 +500,7 @@ input[type='checkbox']:checked {
   font-family: var(--normal);
   margin: 10px auto;
   padding: 5px 10px;
-  background-color: rgba(0, 184, 255, 0.3);
+  background-color: var(--button);
   border-radius: 5px;
   height: 100%;
 }
@@ -526,8 +523,8 @@ input[type='checkbox']:checked {
 }
 .tz-note {
   display: block;
-  opacity: 0.5;
   font-size: 0.8em;
+  color: var(--secondary);
 }
 .date-input,
 .time-input,
@@ -538,21 +535,18 @@ input[type='checkbox']:checked {
 }
 .date-input,
 .time-input {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--field);
 }
 .today-btn {
   font-family: var(--normal);
 }
 .today-btn,
 .icon-btn {
-  background-color: rgba(0, 184, 255, 0.3);
+  background-color: var(--button);
 }
 .checkbox-label,
 .date-input {
   flex: auto;
-}
-.date-time-panel :disabled {
-  opacity: 0.5;
 }
 .icon-btn {
   width: 40px;
@@ -625,6 +619,7 @@ input[type='checkbox']:checked {
   justify-content: space-between;
   transition: height 0.5s;
   background-image: linear-gradient(120deg, #00629b, #182b49);
+  color: white;
   overflow: hidden;
 }
 .schedule-view {
@@ -734,14 +729,14 @@ input[type='checkbox']:checked {
   text-align: left;
   padding: 10px 15px;
   border-radius: 10px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--card-line);
   transition: box-shadow 0.2s;
 }
 .room:hover {
-  box-shadow: 0 2px 5px var(--shadow);
+  box-shadow: var(--shadow);
 }
 .room:active {
-  box-shadow: 0 0 0 var(--shadow-press);
+  box-shadow: var(--shadow-press);
 }
 .current-meeting {
   color: var(--secondary);
@@ -786,7 +781,7 @@ input[type='checkbox']:checked {
   background-color: var(--text);
   color: var(--modal);
   border-radius: 5px;
-  box-shadow: 0 2px 5px var(--shadow);
+  box-shadow: var(--shadow);
 }
 .meetings-wrapper {
   flex: auto;
@@ -794,19 +789,14 @@ input[type='checkbox']:checked {
 .meeting {
   padding: 5px;
   border-radius: 5px;
-  background-color: var(--meeting);
+  border: 1px solid var(--card-line);
   position: absolute;
   left: 0;
   right: 0;
   box-sizing: border-box;
 }
-.current {
-  background-color: var(--meeting-active);
-  color: var(--meeting-active-text);
-}
 .exam {
-  /* TEMP */
-  outline: 1px solid yellow;
+  border-color: var(--exam);
 }
 .meeting-time {
   font-size: 0.5em;
@@ -883,9 +873,7 @@ input[type='checkbox']:checked {
   top: 0;
   left: 0;
   margin: 20px;
-  background-color: var(--modal-glass);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--modal);
   display: flex;
   padding-left: 8px;
   height: 40px;
