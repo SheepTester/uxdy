@@ -1,15 +1,8 @@
 // deno run --allow-read scheduleofclasses/group-sections.ts SP23
 // Prints list of remote sections.
 
-import { assert } from 'std/testing/asserts.ts'
 import { Day } from '../util/Day.ts'
-import {
-  ScrapedCourse,
-  getCourses,
-  readCourses,
-  DAYS,
-  ScrapedResult
-} from './scrape.ts'
+import { getCourses, readCourses, ScrapedResult } from './scrape.ts'
 
 export type MeetingTime<Time = number> = {
   /**
@@ -123,7 +116,10 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
   return courses
 }
 
-if (import.meta.main) {
+function printRemoteSections (
+  term: string,
+  courses: Record<string, Course>
+): void {
   const seasons: Record<string, string> = {
     FA: 'Fall',
     WI: 'Winter',
@@ -133,47 +129,8 @@ if (import.meta.main) {
     S3: 'Special Summer Session',
     SU: 'Summer Med School'
   }
-  const term = Deno.args[0] || 'SP23'
   console.log(`## ${term}: ${seasons[term.slice(0, 2)]} 20${term.slice(2)}`)
   console.log()
-
-  const result: ScrapedResult =
-    Deno.args[1] === 'fetch'
-      ? await getCourses(term, true)
-      : await readCourses(`./scheduleofclasses/terms/${term}.json`)
-  const starts = Math.min(
-    ...result.courses.flatMap(course =>
-      course.dateRange ? [Day.from(...course.dateRange[0]).id] : []
-    )
-  )
-  const ends = Math.max(
-    ...result.courses.flatMap(course =>
-      course.dateRange ? [Day.from(...course.dateRange[0]).id] : []
-    )
-  )
-  // - S323: 2023-06-19 2023-09-08 -> no overlap with SP or FA (but it can start
-  //   before S123)
-  // - SU23: 2023-05-09 2023-06-26 -> overlap with SP !! but for some reason,
-  //   all their locations are TBA, so I could omit it from the app
-  // - SU18: 2018-05-14 2018-07-02
-  console.log(Day.fromId(starts), Day.fromId(ends))
-  const courses = groupSections(result)
-  // console.log(Object.values(courses).length)
-  // console.log(
-  //   Object.values(courses).reduce(
-  //     (cum, curr) =>
-  //       cum +
-  //       curr.groups.reduce(
-  //         (cum, curr) =>
-  //           cum +
-  //           curr.sections.length +
-  //           curr.meetings.length +
-  //           curr.exams.length,
-  //         0
-  //       ),
-  //     0
-  //   )
-  // )
   for (const course of Object.values(courses)) {
     const onlineSections = course.groups.flatMap(group =>
       group.meetings.every(
@@ -191,4 +148,105 @@ if (import.meta.main) {
       console.log(`- ${course.code}: ${onlineSections.join(', ')}`)
     }
   }
+}
+
+if (import.meta.main) {
+  const term = Deno.args[0] || 'SP23'
+
+  const result: ScrapedResult =
+    Deno.args[1] === 'fetch'
+      ? await getCourses(term, true)
+      : await readCourses(`./scheduleofclasses/terms/${term}.json`)
+
+  // Please put findings in README.md
+
+  // const starts = Math.min(
+  //   ...result.courses.flatMap(course =>
+  //     course.dateRange ? [Day.from(...course.dateRange[0]).id] : []
+  //   )
+  // )
+  // const ends = Math.max(
+  //   ...result.courses.flatMap(course =>
+  //     course.dateRange ? [Day.from(...course.dateRange[0]).id] : []
+  //   )
+  // )
+  // - S323: 2023-06-19 2023-09-08 -> no overlap with SP or FA (but it can start
+  //   before S123)
+  // - SU23: 2023-05-09 2023-06-26 -> overlap with SP !! but for some reason,
+  //   all their locations are TBA, so I could omit it from the app
+  // - SU18: 2018-05-14 2018-07-02
+  // console.log(Day.fromId(starts), Day.fromId(ends))
+  const courses = groupSections(result)
+
+  // printRemoteSections(courses)
+
+  type Period = {
+    day: number
+    start: number
+    end: number
+    note: string
+  }
+  function findOverlap (periods: Period[], pd: Period): Period | null {
+    for (const period of periods) {
+      if (
+        period.day === pd.day &&
+        period.start < pd.end &&
+        pd.start < period.end
+      ) {
+        return period
+      }
+    }
+    return null
+  }
+  const profs: Record<string, Period[]> = {}
+  for (const course of Object.values(courses)) {
+    for (const group of course.groups) {
+      if (group.instructors.length === 0) {
+        continue
+      }
+      const profName = group.instructors.map(name => name.join(' ')).join(', ')
+      profs[profName] ??= []
+      // DI sections can overlap. I guess we can assume that professors don't
+      // attend sections unless it's the only meetings of the course?
+      for (const meeting of group.meetings.length > 0
+        ? group.meetings
+        : group.sections) {
+        if (!meeting.time) {
+          continue
+        }
+        for (const day of meeting.time.days) {
+          const period = {
+            day,
+            start: meeting.time.start,
+            end: meeting.time.end,
+            note: `${course.code} ${
+              'code' in meeting ? meeting.code : group.code
+            } ${meeting.type}`
+          }
+          const overlap = findOverlap(profs[profName], period)
+          if (overlap) {
+            console.log(profName, period.note, 'overlaps with', overlap.note)
+          }
+          profs[profName].push(period)
+        }
+      }
+    }
+  }
+
+  // console.log(Object.values(courses).length)
+  // console.log(
+  //   Object.values(courses).reduce(
+  //     (cum, curr) =>
+  //       cum +
+  //       curr.groups.reduce(
+  //         (cum, curr) =>
+  //           cum +
+  //           curr.sections.length +
+  //           curr.meetings.length +
+  //           curr.exams.length,
+  //         0
+  //       ),
+  //     0
+  //   )
+  // )
 }
