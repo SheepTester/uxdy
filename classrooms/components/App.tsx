@@ -101,6 +101,7 @@ export function App () {
       }
       return null
     })
+    setShowDate(true)
   }, [date.id])
 
   return (
@@ -141,11 +142,17 @@ export function App () {
           }
         }}
         visible={showDate}
-        bottomPanelOpen={!!viewing}
+        class={`${viewing ? 'date-time-panel-bottom-panel' : ''} ${
+          noticeVisible ? 'date-time-panel-notice-visible' : ''
+        }`}
         onClose={() => setShowDate(false)}
       />
       <div class='buildings-wrapper'>
-        <p class={`notice ${noticeVisible ? 'notice-visible' : ''}`}>
+        <p
+          class={`notice ${noticeVisible ? 'notice-visible' : ''} ${
+            showDate ? 'notice-date-open' : ''
+          }`}
+        >
           <span class='notice-text'>{notice}</span>
         </p>
         <div

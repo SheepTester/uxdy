@@ -63,3 +63,80 @@ Yael Shmaryahu Yeshurun USP 105 A00 LE overlaps with SOCI 153 A00 LE
 Just glancing at the course codes, most of these make sense as cross-listed courses.
 
 However, the PHYS lab courses look kind of sus because PHYS 1AL is in MAYER 2306 while PHYS 1BL is in MAYER 2326. [According to Reddit](https://www.reddit.com/r/UCSD/comments/8h4vao/phys_1aal/dyh7q0t/), it seems the professor never shows up to lab.
+
+I took a look at SP23:
+
+```js
+BENG 193 BENG 102 A00 [ "PR", "DI" ] [ "PFBH 391", "CENTR 205" ]
+```
+
+BENG 102 has its lectures as the enrollable sections, while it has two additional discussion meetings. Pretty wacky. So my heuristic for what classes a professor might attend is wrong.
+
+However, a lot of the later output seems promising:
+
+```
+BNFO 285 BENG 285 A00 LE PETER 104
+BNFO 285 BENG 285 A00 LE PETER 104
+BIMM 182 BENG 182 A00 LE MANDE B-210
+BIMM 182 BENG 182 A00 LE MANDE B-210
+BIMM 194 BGGN 283 A00 SE YORK 3010
+BIMM 194 BGGN 283 C00 SE YORK 3010
+BIMM 194 BGGN 283 D00 SE YORK 3010
+BIPN 144 BGGN 250 A00 LE CENTR 212
+BIPN 144 BGGN 250 A00 LE CENTR 212
+BIPN 194 BGGN 284 A00 SE YORK 3010
+BIPN 194 BGGN 284 B00 SE YORK 3010
+BIPN 194 BGGN 284 C00 SE YORK 3010
+BIPN 194 BGGN 284 D00 SE YORK 3010
+BISP 194 BGGN 285 A00 SE YORK 3010
+BISP 194 BGGN 285 B00 SE YORK 3010
+```
+
+I changed the program to only print as an array when the values differ. Here, the section codes, type, and location all match. I think I can check if locations match to determine if a class is the same. But what about TBA?
+
+```
+BISP 195 BGGN 500 A00 PR [ "PACIF 3500", "TBA" ]
+BISP 195 BGGN 500 B00 PR [ "PACIF 3500", "TBA" ]
+BISP 195 BGGN 500 C00 PR [ "PACIF 3500", "TBA" ]
+```
+
+The course catalog doesn't say anything about them being related, but ScheduleOfClasses notes,
+
+> BGGN 500 A00 will meet the first six weeks of the quarter on April 3, 10, 17, 24 and May 1 and 8 in PACIF 3500.
+
+wtf. Well, it's not like the classrooms website cares about TBA locations. The main purpose of this was just to remove overlapping classes.
+
+```js
+CHEM 105A CHEM 105A [ "B00", "A00" ] LE [ "TBA", "CENTR 214" ]
+CHEM 108 CHEM 108 [ "B00", "A00" ] LE [ "TBA", "NSB 2303" ]
+CHEM 109 CHEM 109 [ "B00", "A00" ] LE [ "TBA", "NSB 2303" ]
+```
+
+These are weird because B00 has the same times for all sections as A00, but some of the B00 sections are TBA. They had a course capacity of 0 with 0 people on the waitlist. ??
+
+```js
+CSE 100R CSE 100 A00 LE [ "RCLAS R06", "WLH 2005" ]
+CSE 100R CSE 100 A00 LE [ "RCLAS R06", "WLH 2005" ]
+CSE 100R CSE 100 A00 LE [ "RCLAS R06", "WLH 2005" ]
+```
+
+I know that these classes are co-taught, but since they're at different locations, my working algorithm idea wouldn't work for this.
+
+```js
+DSC 291 DSC 190 [ "E00", "C00" ] LE WLH 2114
+DSC 291 DSC 190 [ "E00", "C00" ] LE WLH 2114
+DSC 291 DSC 190 [ "F00", "B00" ] LE WLH 2114
+DSC 291 DSC 190 [ "F00", "B00" ] LE WLH 2114
+```
+
+This just shows that the section codes don't have to match.
+
+```js
+EDS 289B EDS 282 A00 SE TBA
+EDS 291B EDS 282 A00 SE TBA
+EDS 294B EDS 282 A00 SE TBA [ [ 480, 990 ], [ 540, 960 ] ]
+```
+
+If TBA locations match, that doesn't mean they're co-scheduled I think.
+
+For matching non-TBA locations, their section types match too, so there's no need to check them.

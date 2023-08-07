@@ -184,7 +184,10 @@ if (import.meta.main) {
     day: number
     start: number
     end: number
-    note: string
+    course: string
+    code: string
+    type: string
+    location: string
   }
   function findOverlap (periods: Period[], pd: Period): Period | null {
     for (const period of periods) {
@@ -208,24 +211,49 @@ if (import.meta.main) {
       profs[profName] ??= []
       // DI sections can overlap. I guess we can assume that professors don't
       // attend sections unless it's the only meetings of the course?
-      for (const meeting of group.meetings.length > 0
-        ? group.meetings
-        : group.sections) {
+      const meetings: (Meeting | Section)[] =
+        group.meetings.length > 0 ? group.meetings : group.sections
+      for (const meeting of meetings) {
         if (!meeting.time) {
           continue
         }
         for (const day of meeting.time.days) {
-          const period = {
+          const period: Period = {
             day,
             start: meeting.time.start,
             end: meeting.time.end,
-            note: `${course.code} ${
-              'code' in meeting ? meeting.code : group.code
-            } ${meeting.type}`
+            course: course.code,
+            code: 'code' in meeting ? meeting.code : group.code,
+            type: meeting.type,
+            location: meeting.location
+              ? `${meeting.location.building} ${meeting.location.room}`
+              : 'TBA'
           }
           const overlap = findOverlap(profs[profName], period)
-          if (overlap) {
-            console.log(profName, period.note, 'overlaps with', overlap.note)
+          if (
+            overlap &&
+            period.location !== 'TBA' &&
+            period.location === overlap.location
+          ) {
+            console.log(
+              period.course,
+              overlap.course,
+              period.code === overlap.code
+                ? period.code
+                : [period.code, overlap.code],
+              period.type === overlap.type
+                ? period.type
+                : [period.type, overlap.type],
+              period.location === overlap.location
+                ? period.location
+                : [period.location, overlap.location],
+              period.start === overlap.start && period.end === overlap.end
+                ? ''
+                : [
+                    [period.start, period.end],
+                    [overlap.start, overlap.end]
+                  ]
+            )
           }
           profs[profName].push(period)
         }

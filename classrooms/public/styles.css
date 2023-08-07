@@ -8,9 +8,14 @@
   --card-line: #49513d;
   --button: #59501d;
   --field: #3c4838;
-  --shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  --shadow-press: 0 0 0 rgba(0, 0, 0, 0.6);
+  /* Cards refer to clickable buttons that contain rich content (eg a heading
+  and secondary text), rather than a typical plain text label. */
+  --card-shadow-hover: 0 2px 5px rgba(0, 0, 0, 0.3);
+  --card-shadow-active: 0 0 0 rgba(0, 0, 0, 0.6);
+  /* Modals refer to large surfaces that contain content and float above the map
+  but aren't clickable by themselves. */
   --modal: #232a21;
+  --modal-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
   --red: #ff4e84;
   --active: #41cf46;
   --soon: #f3d500;
@@ -32,8 +37,8 @@
     --secondary: rgba(0, 0, 0, 0.5);
     --line: rgba(0, 0, 0, 0.1);
     --button-hover: rgba(0, 0, 0, 0.03);
-    --shadow: rgba(0, 0, 0, 0.1);
-    --shadow-press: rgba(0, 0, 0, 0.3);
+    --card-shadow-hover: rgba(0, 0, 0, 0.1);
+    --card-shadow-active: rgba(0, 0, 0, 0.3);
     --modal: white;
     --red: #ff004e;
     --active: #09880d;
@@ -122,10 +127,7 @@ input[type='checkbox']:checked {
 }
 .notice {
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  inset: 0;
   z-index: 1;
   text-align: center;
   padding: 20px;
@@ -137,12 +139,20 @@ input[type='checkbox']:checked {
   backdrop-filter: grayscale(1) blur(5px);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s, visibility 0.5s;
+  transition: opacity 0.5s, visibility 0.5s, padding-right 0.2s;
   font-family: var(--normal);
 }
 .notice-visible {
   opacity: 1;
   visibility: visible;
+}
+.notice-date-open {
+  padding-right: 360px;
+}
+@media (max-width: 690px) {
+  .notice-date-open {
+    padding-right: 20px;
+  }
 }
 .notice-text {
   display: block;
@@ -172,12 +182,12 @@ input[type='checkbox']:checked {
   border-radius: 5px;
   background-image: linear-gradient(120deg, #00629b, #182b49);
   color: #ffcd00;
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow-hover);
   white-space: nowrap;
   transition: box-shadow 0.2s, visibility 0.2s, opacity 0.2s;
 }
 .building-btn:active {
-  box-shadow: var(--shadow-press);
+  box-shadow: var(--card-shadow-active);
 }
 .building-btn.selected {
   box-shadow: 0 0 0 3px var(--highlight);
@@ -196,7 +206,7 @@ input[type='checkbox']:checked {
   transform: translate(50%, -50%);
   border-radius: 50px;
   padding: 2px 5px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow-hover);
   font-family: var(--normal);
 }
 .in-use {
@@ -278,6 +288,7 @@ input[type='checkbox']:checked {
   gap: 15px;
   align-items: center;
   background-color: var(--modal);
+  box-shadow: var(--modal-shadow);
   z-index: 3;
   border-radius: 10px;
   padding: 10px 15px;
@@ -331,6 +342,7 @@ input[type='checkbox']:checked {
   right: 0;
   width: 320px;
   background-color: var(--modal);
+  box-shadow: var(--modal-shadow);
   margin: 20px;
   padding: 10px 0;
   border-radius: 15px;
@@ -345,7 +357,8 @@ input[type='checkbox']:checked {
   opacity: 0;
   visibility: hidden;
 }
-.date-time-panel-bottom-panel.date-time-panel-hidden {
+.date-time-panel-bottom-panel.date-time-panel-hidden,
+.date-time-panel-notice-visible.date-time-panel-hidden {
   transform: translateX(350px);
 }
 .calendar-open {
@@ -372,7 +385,8 @@ input[type='checkbox']:checked {
   }
   .date-time-panel-hidden,
   .date-time-panel-bottom-panel,
-  .date-time-panel-bottom-panel.date-time-panel-hidden {
+  .date-time-panel-bottom-panel.date-time-panel-hidden,
+  .date-time-panel-notice-visible.date-time-panel-hidden {
     transform: translateY(20px);
   }
   .calendar-open {
@@ -573,6 +587,7 @@ input[type='checkbox']:checked {
   display: flex;
   flex-direction: column;
   background-color: var(--modal);
+  box-shadow: var(--modal-shadow);
   border-radius: 15px;
   transition: transform 0.2s, opacity 0.2s, visibility 0.2s, right 0.2s;
   overflow: auto;
@@ -733,10 +748,10 @@ input[type='checkbox']:checked {
   transition: box-shadow 0.2s;
 }
 .room:hover {
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow-hover);
 }
 .room:active {
-  box-shadow: var(--shadow-press);
+  box-shadow: var(--card-shadow-active);
 }
 .current-meeting {
   color: var(--secondary);
@@ -781,7 +796,7 @@ input[type='checkbox']:checked {
   background-color: var(--text);
   color: var(--modal);
   border-radius: 5px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow-hover);
 }
 .meetings-wrapper {
   flex: auto;
@@ -874,6 +889,7 @@ input[type='checkbox']:checked {
   left: 0;
   margin: 20px;
   background-color: var(--modal);
+  box-shadow: var(--modal-shadow);
   display: flex;
   padding-left: 8px;
   height: 40px;

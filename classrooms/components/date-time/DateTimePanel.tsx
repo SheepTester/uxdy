@@ -17,7 +17,7 @@ export type DateTimePanelProps = {
   useNow: boolean
   onUseNow: (useNow: boolean) => void
   visible: boolean
-  bottomPanelOpen: boolean
+  class: string
   onClose: () => void
 }
 export function DateTimePanel ({
@@ -29,14 +29,14 @@ export function DateTimePanel ({
   useNow,
   onUseNow,
   visible,
-  bottomPanelOpen,
+  class: className,
   onClose
 }: DateTimePanelProps) {
   return (
     <form
-      class={`date-time-panel ${visible ? '' : 'date-time-panel-hidden'} ${
-        bottomPanelOpen ? 'date-time-panel-bottom-panel' : ''
-      } calendar-open`}
+      class={`date-time-panel ${
+        visible ? '' : 'date-time-panel-hidden'
+      } ${className} calendar-open`}
       onSubmit={e => {
         onClose()
         e.preventDefault()
