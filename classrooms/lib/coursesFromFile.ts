@@ -128,7 +128,8 @@ export function coursesFromFile (
             }),
           sections: [],
           meetings: [],
-          exams: []
+          exams: [],
+          coscheduled: [] // TODO
         })
         state = {
           type: 'sections',

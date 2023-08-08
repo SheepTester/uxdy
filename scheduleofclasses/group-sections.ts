@@ -14,7 +14,14 @@ export type MeetingTime<Time = number> = {
   /** In minutes since the start of the day. */
   end: Time
 }
+/**
+ * Represents a consistent and continuous block of time. If, say, a lecture
+ * normally meets at 10 am MWF but also has a Wednesday 6 pm meeting for a
+ * physics quiz, the 6 pm meeting will be represented as a separate lecture
+ * meeting.
+ */
 export type Meeting = {
+  /** eg LE, DI, LA, FI, MI, etc. */
   type: string
   /** Null if TBA. */
   time: MeetingTime | null
@@ -25,6 +32,7 @@ export type Meeting = {
   } | null
 }
 export type Section = Meeting & {
+  /** The section code of the enrollable section, eg A01, A02. */
   code: string
   capacity: number
 }
@@ -43,6 +51,13 @@ export type Group = {
   exams: Exam[]
   /** Empty if taught by Staff. */
   instructors: [firstName: string, lastName: string][]
+  /**
+   * Coscheduled groups are groups that share:
+   * - the same instructors,
+   * - the same non-TBA location (including RCLAS classrooms), and
+   * - the same meeting times.
+   */
+  coscheduled: Group | Group[]
 }
 export type Course = {
   /** The subject and number, joined by a space, eg "CSE 11." */
@@ -59,6 +74,9 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
     const groups: Record<string, Group> = {}
     let lastGroup: Group | null = null
     for (const section of course.sections) {
+      if (section.cancelled) {
+        continue
+      }
       const meeting: Meeting = {
         type: section.type,
         time: section.time,
@@ -87,7 +105,8 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
         sections: [],
         meetings: [],
         exams: [],
-        instructors: section.instructors
+        instructors: section.instructors,
+        coscheduled: []
       }
       lastGroup = groups[letter]
 
@@ -212,7 +231,9 @@ if (import.meta.main) {
       // DI sections can overlap. I guess we can assume that professors don't
       // attend sections unless it's the only meetings of the course?
       const meetings: (Meeting | Section)[] =
-        group.meetings.length > 0 ? group.meetings : group.sections
+        group.meetings.length > 0
+          ? [...group.meetings, ...group.sections]
+          : group.sections
       for (const meeting of meetings) {
         if (!meeting.time) {
           continue
@@ -242,18 +263,17 @@ if (import.meta.main) {
                 ? period.code
                 : [period.code, overlap.code],
               period.type === overlap.type
-                ? period.type
+                ? overlap.type
                 : [period.type, overlap.type],
-              period.location === overlap.location
-                ? period.location
-                : [period.location, overlap.location],
               period.start === overlap.start && period.end === overlap.end
                 ? ''
                 : [
                     [period.start, period.end],
                     [overlap.start, overlap.end]
-                  ]
+                  ],
+              period.location
             )
+            break
           }
           profs[profName].push(period)
         }

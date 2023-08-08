@@ -139,4 +139,21 @@ EDS 294B EDS 282 A00 SE TBA [ [ 480, 990 ], [ 540, 960 ] ]
 
 If TBA locations match, that doesn't mean they're co-scheduled I think.
 
-For matching non-TBA locations, their section types match too, so there's no need to check them.
+For matching non-TBA locations (including RCLAS), their section types match too, so there's no need to check them.
+
+Hmm, but are groups coscheduled, or are courses coscheduled? Matching coscheduled groups makes more sense because they share instructors. I think it's safe to say that groups within the same course won't be coscheduled.
+
+```
+BIMM 194 BGGN 283 A00  YORK 3010
+BIMM 194 BGGN 283 C00  YORK 3010
+BIMM 194 BGGN 283 D00  YORK 3010
+BIPN 144 BGGN 250 A00  CENTR 212
+BIPN 194 BGGN 284 A00  YORK 3010
+BIPN 194 BGGN 284 B00  YORK 3010
+BIPN 194 BGGN 284 C00  YORK 3010
+BIPN 194 BGGN 284 D00  YORK 3010
+BISP 194 BGGN 285 A00  YORK 3010
+BISP 194 BGGN 285 B00  YORK 3010
+```
+
+Note that, as seen above for A00, more than two courses/groups can be coscheduled together.

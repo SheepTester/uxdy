@@ -74,56 +74,76 @@ const fetchHtml = (url: string) =>
     )
 
 /** Represents a scheduled meeting time for a course. */
-export type ScrapedSection = {
-  /**
-   * Only defined if the section is selectable in WebReg (eg a discussion time
-   * as opposed to its lecture)
-   */
-  selectable: {
-    /**
-     * A 6-digit number.
-     */
-    id: number
-    /**
-     * If full, a negative number representing the length of the waitlist.
-     * If there is no limit, both `available` and `capacity` will be Infinity.
-     */
-    available: number
-    capacity: number
-  } | null
-  /** eg LE, DI, LA */
-  type: string
-  /**
-   * UTC Date if it's an exam (eg a final) that occurs on one day. Otherwise,
-   * it's a section code like A00 or 001.
-   */
-  section: string | Day
-  /** Null if TBA. */
-  time: {
-    /**
-     * Sorted array of numbers 0-6 representing days of the week. 0 is Sunday.
-     */
-    days: number[]
-    /** In minutes since the start of the day. */
-    start: number
-    /** In minutes since the start of the day. */
-    end: number
-  } | null
-  /** Null if TBA. */
-  location: {
-    building: string
-    room: string
-  } | null
-  /**
-   * Empty if taught by Staff.
-   *
-   * Note that for exams and courses with multiple lecture times,
-   * ScheduleOfClasses doesn't repeat the instructor, so this array will also be
-   * empty.
-   */
-  instructors: [firstName: string, lastName: string][]
-  note?: string
-}
+export type ScrapedSection =
+  | {
+      cancelled: false
+      /**
+       * Only defined if the section is selectable in WebReg (eg a discussion
+       * time as opposed to its lecture).
+       *
+       * For seats: https://registrar.ucsd.edu/StudentLink/avail_limit.html
+       */
+      selectable: {
+        /**
+         * A 6-digit number.
+         * https://registrar.ucsd.edu/StudentLink/id_crse_codes.html
+         */
+        id: number
+        /**
+         * If full, a negative number representing the length of the waitlist.
+         * If there is no limit, both `available` and `capacity` will be
+         * Infinity.
+         */
+        available: number
+        capacity: number
+      } | null
+      /**
+       * Normal meetings e.g. LE, DI, LA or exams e.g. FI, MI.
+       * https://registrar.ucsd.edu/StudentLink/instr_codes.html
+       */
+      type: string
+      /**
+       * UTC Date if it's an exam (eg a final) that occurs on one day.
+       * Otherwise, it's a section code like A00 or 001.
+       */
+      section: string | Day
+      /** Null if TBA. */
+      time: {
+        /**
+         * Sorted array of numbers 0-6 representing days of the week. 0 is
+         * Sunday.
+         */
+        days: number[]
+        /** In minutes since the start of the day. */
+        start: number
+        /** In minutes since the start of the day. */
+        end: number
+      } | null
+      /** Null if TBA. */
+      location: {
+        /** https://registrar.ucsd.edu/StudentLink/bldg_codes.html */
+        building: string
+        room: string
+      } | null
+      /**
+       * Empty if taught by Staff.
+       *
+       * Note that for exams and courses with multiple lecture times,
+       * ScheduleOfClasses doesn't repeat the instructor, so this array will
+       * also be empty.
+       */
+      instructors: [firstName: string, lastName: string][]
+      note?: string
+    }
+  | {
+      cancelled: true
+      selectable: {
+        id: number
+      } | null
+      type: string
+      section: string
+      note?: string
+    }
 
 /** `month` is 1-indexed. */
 export type DateTuple = [year: number, month: number, date: number]
@@ -144,6 +164,8 @@ export type ScrapedCourse = {
    * in the course catalog.
    */
   catalog?: string
+  /** https://students.ucsd.edu/_files/registrar/restriction-codes.html */
+  restriction: string[]
   note?: string
   /**
    * A range of selectable units from `from` to `to` (inclusive) in increments
@@ -373,6 +395,7 @@ export async function * getCourseIterator (
         const courseInfo = row.children[2].textContent
           .trim()
           .replaceAll(/\s+/g, ' ')
+        const restriction = row.children[0].textContent.trim()
         // ( 2 Units)
         // ( 2 /4 by 2 Units)
         // ( 1 -4 Units)
@@ -452,6 +475,7 @@ export async function * getCourseIterator (
             title,
             description: description || undefined,
             catalog,
+            restriction: restriction ? restriction.split(/\s+/) : [],
             note,
             units: { from, to: to ?? from, inc: inc ?? 1 },
             dateRange
@@ -518,8 +542,30 @@ export async function * getCourseIterator (
           seatsLimit
         ] = tds
         if (days === 'Cancelled') {
-          // Ignore cancelled sections (NOTE: this may produce courses with no
-          // sections)
+          if (sectionCodeOrDate.includes('/')) {
+            console.error(
+              'cancelled section is date',
+              subject,
+              lastNumber,
+              sectionCodeOrDate
+            )
+          }
+          yield {
+            page,
+            pages: pageCount,
+            item: {
+              cancelled: true,
+              selectable:
+                sectionId !== ''
+                  ? {
+                      id: parseNatural(sectionId)
+                    }
+                  : null,
+              type: meetingType,
+              section: sectionCodeOrDate,
+              note
+            }
+          }
           continue
         }
         if (!/^(?:(?:Sun|T[uh]|[MWFS])+|TBA)$/.test(days)) {
@@ -539,6 +585,7 @@ export async function * getCourseIterator (
           page,
           pages: pageCount,
           item: {
+            cancelled: false,
             selectable:
               sectionId !== ''
                 ? {
