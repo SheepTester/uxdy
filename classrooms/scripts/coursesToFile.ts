@@ -2,8 +2,8 @@
 
 import { writeAll } from 'std/streams/write_all.ts'
 import {
-  groupSections,
-  Meeting
+  BaseMeeting,
+  groupSections
 } from '../../scheduleofclasses/group-sections.ts'
 import { readCourses, ScrapedResult } from '../../scheduleofclasses/scrape.ts'
 
@@ -21,7 +21,7 @@ const printTime = (minutes?: number) =>
           .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
   )
 
-async function printMeeting (meeting: Meeting, days = true): Promise<void> {
+async function printMeeting (meeting: BaseMeeting, days = true): Promise<void> {
   await print((meeting.location?.building ?? 'TBA').padEnd(5, ' '))
   if (days) {
     await print((meeting.time?.days.join('') ?? 'TBA').padEnd(5, ' '))
@@ -36,7 +36,7 @@ async function printMeeting (meeting: Meeting, days = true): Promise<void> {
   await printTime(meeting.time?.end)
 }
 
-function inPerson (meeting: Meeting): boolean {
+function inPerson (meeting: BaseMeeting): boolean {
   return (
     meeting.time !== null &&
     meeting.location !== null &&
@@ -135,6 +135,9 @@ async function coursesToFile (
             continue
           }
           await printMeeting(meeting)
+          if (!buildingsOnly && meeting.code !== group.code) {
+            await print(meeting.code)
+          }
         }
         await print('\n')
       }

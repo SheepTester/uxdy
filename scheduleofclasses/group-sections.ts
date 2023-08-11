@@ -20,7 +20,7 @@ export type MeetingTime<Time = number> = {
  * physics quiz, the 6 pm meeting will be represented as a separate lecture
  * meeting.
  */
-export type Meeting = {
+export type BaseMeeting = {
   /** eg LE, DI, LA, FI, MI, etc. */
   type: string
   /** Null if TBA. */
@@ -31,17 +31,30 @@ export type Meeting = {
     room: string
   } | null
 }
-export type Section = Meeting & {
+export type Section = BaseMeeting & {
+  kind: 'section'
   /** The section code of the enrollable section, eg A01, A02. */
   code: string
   capacity: number
 }
-export type Exam = Meeting & {
+export type Meeting = BaseMeeting & {
+  kind: 'meeting'
+  /**
+   * The section code of the additional meeting, eg A00, A51, etc. Note that
+   * there may be multiple meetings with the same code.
+   */
+  code: string
+}
+export type Exam = BaseMeeting & {
+  kind: 'exam'
   /** UTC Date. */
   date: Day
 }
 export type Group = {
-  /** The section code for the lecture in charge of the group, eg A00 or 001. */
+  /**
+   * The section code for the lecture/seminar "in charge" of the group, eg A00
+   * or 001.
+   */
   code: string
   /** Individual sections where students have to select one to enroll in. */
   sections: Section[]
@@ -56,6 +69,7 @@ export type Group = {
    * - the same instructors,
    * - the same non-TBA location (including RCLAS classrooms), and
    * - the same meeting times.
+   * TODO
    */
   coscheduled: Group | Group[]
 }
@@ -77,7 +91,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
       if (section.cancelled) {
         continue
       }
-      const meeting: Meeting = {
+      const meeting: BaseMeeting = {
         type: section.type,
         time: section.time,
         location: section.location
@@ -90,6 +104,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
           continue
         }
         lastGroup.exams.push({
+          kind: 'exam',
           ...meeting,
           date: section.section
         })
@@ -112,12 +127,17 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
 
       if (section.selectable) {
         groups[letter].sections.push({
+          kind: 'section',
           ...meeting,
           code: section.section,
           capacity: section.selectable.capacity
         })
       } else {
-        groups[letter].meetings.push(meeting)
+        groups[letter].meetings.push({
+          kind: 'meeting',
+          ...meeting,
+          code: section.section
+        })
       }
     }
 

@@ -1,4 +1,4 @@
-import { Meeting, Course } from '../../scheduleofclasses/group-sections.ts'
+import { Course, BaseMeeting } from '../../scheduleofclasses/group-sections.ts'
 import { Day } from '../../util/Day.ts'
 
 class StringTaker {
@@ -36,7 +36,7 @@ class StringTaker {
   }
 
   /** IMPURE. */
-  takeMeeting (day: number | null = null): Meeting {
+  takeMeeting (day: number | null = null): BaseMeeting {
     const building = this.take(5)
     const days = day === null ? this.take(5) : String(day)
     return {
@@ -141,6 +141,7 @@ export function coursesFromFile (
       while (taker.hasMore()) {
         const capacity = taker.takeInt(4)
         group.sections.push({
+          kind: 'section',
           capacity: capacity === 9999 ? Infinity : capacity,
           ...taker.takeMeeting(),
           code: taker.take(3) || group.code
@@ -153,7 +154,11 @@ export function coursesFromFile (
         : { type: 'course-or-group' }
     } else if (state.type === 'meetings') {
       while (taker.hasMore()) {
-        group.meetings.push(taker.takeMeeting())
+        group.meetings.push({
+          kind: 'meeting',
+          ...taker.takeMeeting(),
+          code: taker.take(3) || group.code
+        })
       }
       state = state.hasExams ? { type: 'exams' } : { type: 'course-or-group' }
     } else if (state.type === 'exams') {
@@ -164,6 +169,7 @@ export function coursesFromFile (
           taker.takeInt(2)
         )
         group.exams.push({
+          kind: 'exam',
           date,
           ...taker.takeMeeting(date.day)
         })

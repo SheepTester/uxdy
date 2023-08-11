@@ -10,17 +10,13 @@ import { Time } from '../../util/Time.ts'
 
 // Omit<Meeting | Exam, 'time' | 'location'> does not work with type narrowing
 // with `'date' in meeting`
-export type RoomMeeting = (
-  | Omit<Meeting, 'time' | 'location'>
-  | Omit<Exam, 'time' | 'location'>
-) &
+export type RoomMeeting = Omit<Section | Meeting | Exam, 'time' | 'location'> &
   MeetingTime<Time> & {
     capacity: number
     course: string
     index: {
       group: number
       meeting: number
-      type: 'section' | 'meeting' | 'exam'
     }
   }
 
@@ -67,7 +63,7 @@ export function coursesToClassrooms (
         if (!time || !location || location.building === 'RCLAS') {
           continue
         }
-        if ('date' in meeting) {
+        if (meeting.kind === 'exam') {
           // Exam
           if (
             !monday ||
@@ -88,17 +84,12 @@ export function coursesToClassrooms (
           days: time.days,
           start: Time.from(time.start),
           end: Time.from(time.end),
-          capacity: 'capacity' in meeting ? meeting.capacity : groupCapacity,
+          capacity:
+            meeting.kind === 'section' ? meeting.capacity : groupCapacity,
           course: code,
           index: {
             group: i,
-            meeting: j,
-            type:
-              'capacity' in meeting
-                ? 'section'
-                : 'date' in meeting
-                ? 'exam'
-                : 'meeting'
+            meeting: j
           }
         })
       }
