@@ -1,20 +1,22 @@
 :root {
   color-scheme: dark;
-  --background: #212d1c;
-  --text: #d0d1ce;
-  --secondary: #899979;
+  --background: #182330;
+  --text: rgba(255, 255, 255, 0.9);
+  --secondary: rgba(255, 255, 255, 0.5);
   --exam: #c1d84d;
-  --line: #313c24;
-  --card-line: #49513d;
-  --button: #59501d;
-  --field: #3c4838;
+  /* Should be opaque. */
+  --line: #435060;
   /* Cards refer to clickable buttons that contain rich content (eg a heading
   and secondary text), rather than a typical plain text label. */
+  --card-line: rgba(255, 255, 255, 0.1);
+  --button: rgba(0, 184, 255, 0.3);
+  /* eg text inputs. */
+  --field: rgba(255, 255, 255, 0.1);
   --card-shadow-hover: 0 2px 5px rgba(0, 0, 0, 0.3);
   --card-shadow-active: 0 0 0 rgba(0, 0, 0, 0.6);
   /* Modals refer to large surfaces that contain content and float above the map
   but aren't clickable by themselves. */
-  --modal: #232a21;
+  --modal: #324153;
   --modal-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
   --red: #ff4e84;
   --active: #41cf46;
@@ -35,17 +37,18 @@
     --background: #f1f4f5;
     --text: rgba(0, 0, 0, 0.9);
     --secondary: rgba(0, 0, 0, 0.5);
-    --line: rgba(0, 0, 0, 0.1);
-    --button-hover: rgba(0, 0, 0, 0.03);
-    --card-shadow-hover: rgba(0, 0, 0, 0.1);
-    --card-shadow-active: rgba(0, 0, 0, 0.3);
+    --exam: #c1a20a;
+    --line: #e9eef1;
+    --card-line: rgba(0, 0, 0, 0.1);
+    --button: #2789f2;
+    --field: rgba(0, 0, 0, 0.05);
+    --card-shadow-hover: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --card-shadow-active: 0 0 0 rgba(0, 0, 0, 0.3);
     --modal: white;
+    --modal-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     --red: #ff004e;
     --active: #09880d;
     --soon: #966f01;
-    --meeting: #e1efff;
-    --meeting-active: #5783ff;
-    --meeting-active-text: rgba(255, 255, 255, 0.9);
     --highlight: rgba(0, 142, 255, 0.5);
     --dropdown: url('./material-arrow-drop-down-black.svg');
     --link: #2597ff;
@@ -292,10 +295,10 @@ input[type='checkbox']:checked {
   z-index: 3;
   border-radius: 10px;
   padding: 10px 15px;
-  transition: opacity 0.2s, visibility 0.2s;
+  transition: all 0.2s;
 }
 .date-time-button:disabled {
-  opacity: 0;
+  box-shadow: none;
 }
 @media (max-width: 950px) {
   .bottom-panel-open {
@@ -476,7 +479,7 @@ input[type='checkbox']:checked {
 }
 .calendar-selected {
   background-color: var(--button);
-  color: var(--text);
+  color: white;
 }
 .calendar-day.calendar-selected {
   border-radius: 30px;
