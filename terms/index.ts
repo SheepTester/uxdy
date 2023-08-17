@@ -1,6 +1,7 @@
 import { Day } from '../util/Day.ts'
 
 export type Season = 'FA' | 'WI' | 'SP' | 'S1' | 'S2'
+export type Quarter = Season | 'S3' | 'SU'
 
 /** When each quarter starts, in days from the start of winter quarter. */
 const offset: Record<Season, number> = {
@@ -30,12 +31,14 @@ const finalsOffset: Record<Season, number> = {
 }
 
 /** Names of each term, according to WebReg. */
-const names: Record<Season, string> = {
+const names: Record<Quarter, string> = {
   FA: 'Fall',
   WI: 'Winter',
   SP: 'Spring',
   S1: 'Summer Session I',
-  S2: 'Summer Session II'
+  S2: 'Summer Session II',
+  S3: 'Special Summer Session',
+  SU: 'Summer Med School'
 }
 
 /** Returns the day when winter quarter starts in the given year. */
@@ -112,11 +115,11 @@ export function getTerm (day: Day): CurrentTerm {
   }
 }
 
-export function termCode (year: number, season: Season): string {
+export function termCode (year: number, season: Quarter): string {
   return season + (year % 100).toString().padStart(2, '0')
 }
 
-export function termName (year: number, season: Season): string {
+export function termName (year: number, season: Quarter): string {
   return `${names[season]} ${year}`
 }
 

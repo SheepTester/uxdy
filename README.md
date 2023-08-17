@@ -108,7 +108,12 @@ Planned uses:
 
 Features to add:
 
-- Scrape data from schedule of classes rather than WebReg (so it doesn't require authentication)
-- Search by professor and course code
-- Set current time so can see what classrooms are available at a given date/time
-- Use Pacific Time regardless of browser time zone
+- [x] Scrape data from schedule of classes rather than WebReg (so it doesn't require authentication)
+- [ ] Search by professor and course code
+- [x] Set current time so can see what classrooms are available at a given date/time
+- [x] Use Pacific Time regardless of browser time zone
+
+- [ ] Load summer session 3 when needed
+- [ ] Handle co-scheduled courses
+- [ ] Show when the quarter's data was last refreshed
+- [ ] Show all images for building

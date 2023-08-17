@@ -4,18 +4,19 @@
 /// <reference lib="deno.ns" />
 
 import { useRef, useState } from 'preact/hooks'
-import { getTerm, termName } from '../../terms/index.ts'
+import { CurrentTerm, getTerm, Season, termName } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
 import { useAsyncEffect } from '../../util/useAsyncEffect.ts'
 import { buildings } from '../lib/buildings.ts'
+import { TermCourses } from '../lib/coursesFromFile.ts'
 import {
   TermBuildings,
   coursesToClassrooms
 } from '../lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { useNow } from '../lib/now.ts'
-import { QuarterCache } from '../lib/QuarterCache.ts'
+import { getTerms, QuarterCache } from '../lib/QuarterCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { ScrollMode } from './date-time/Calendar.tsx'
@@ -39,70 +40,78 @@ export function App () {
   const date = customDate ?? today
   const time = customTime ?? realTime
 
-  useAsyncEffect(async () => {
+  function handleDate (date: Day) {
     const { year, season, current, finals } = getTerm(date)
-    setNoticeVisible(true)
-    if (current) {
-      const promise = quarters.current.get(year, season)
-      const needToFetch = await Promise.race([
-        promise.then(() => false).catch(() => false),
-        // Probably for event loop reasons, I need to add some dummy .then's so
-        // that it doesn't resolve faster than an already fulfilled
-        // .then(.catch)
-        Promise.resolve()
-          .then(() => {})
-          .then(() => true)
-      ])
-      if (needToFetch) {
+    getTerms({
+      cache: quarters.current,
+      requests: [
+        current ? { year, quarter: season } : null,
+        season === 'S1' || season === 'S2' || (season === 'FA' && !current)
+          ? { year, quarter: 'S3' }
+          : null
+      ],
+      onStartFetch: () => {
+        setNoticeVisible(true)
         setNotice('Loading...')
-      }
-      try {
-        const result = await promise
-        if (result) {
-          setTermBuildings(
-            coursesToClassrooms(result.courses, {
-              monday: date.monday,
-              // Summer sessions' finals week overlaps with classes, it seems
-              // like?
-              finals: finals && season !== 'S1' && season !== 'S2'
-            })
-          )
-          setNoticeVisible(false)
-          return
-        } else {
-          setNotice(`Schedules aren't available for ${termName(year, season)}.`)
-        }
-      } catch (error) {
-        console.error(error)
+      },
+      onNoRequest: () => {
+        setNoticeVisible(true)
         setNotice(
-          needToFetch
-            ? `I couldn't load schedules for ${termName(
-                year,
-                season
-              )}. Is ResNet failing you again?`
-            : `For whatever reason, I couldn't load the schedules for ${termName(
-                year,
-                season
-              )}. Something weird happened. If you're a CSE major, can you check the console to see what's wrong?`
+          season === 'WI'
+            ? 'Winter break.'
+            : season === 'SP'
+            ? 'Spring break.'
+            : 'Summer break.'
         )
+        // If the overlay notice is showing, then de-select the current
+        // building.
+        setViewing(viewing => {
+          if (viewing) {
+            setLastViewing(viewing)
+          }
+          return null
+        })
+        // Have the date selector open for the user to select another day
+        setShowDate(true)
+      },
+      onError: errors => {
+        // TODO: This error message could be better
+        setNotice(
+          errors
+            .map(({ type, request: { year, quarter } }) =>
+              type === 'offline'
+                ? `I couldn't load schedules for ${termName(
+                    year,
+                    quarter
+                  )}. Is ResNet failing you again?`
+                : `Schedules aren't available for ${termName(year, quarter)}.`
+            )
+            .join(' ')
+        )
+        setViewing(viewing => {
+          if (viewing) {
+            setLastViewing(viewing)
+          }
+          return null
+        })
+        setShowDate(true)
+        setNoticeVisible(true)
+      },
+      onLoad: (results, errors) => {
+        // TODO: Show errors if any in a corner
+        const courses = results.flatMap(result => result.result.courses)
+        setTermBuildings(
+          coursesToClassrooms(courses, {
+            monday: date.monday,
+            // Summer sessions' finals week overlaps with classes, it seems
+            // like?
+            finals: finals && season !== 'S1' && season !== 'S2'
+          })
+        )
+        setNoticeVisible(false)
       }
-    } else {
-      setNotice(
-        season === 'WI'
-          ? 'Winter break.'
-          : season === 'SP'
-          ? 'Spring break.'
-          : 'Summer break.'
-      )
-    }
-    setViewing(viewing => {
-      if (viewing) {
-        setLastViewing(viewing)
-      }
-      return null
     })
-    setShowDate(true)
-  }, [date.id])
+  }
 
   return (
     <>

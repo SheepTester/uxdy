@@ -100,18 +100,11 @@ export function coursesFromFile (
       if (/^[A-Z]/.test(line)) {
         // Course
         const code = [taker.take(4), taker.take(5)].join(' ')
-        const dateRange: [Day, Day] | undefined = includeDateRange
-          ? [
-              Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2)),
-              Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2))
-            ]
-          : undefined
         const [title, catalog] = taker.takeRest().split('\t')
         courses.push({
           code,
           title,
           catalog,
-          dateRange,
           groups: []
         })
       } else {
@@ -119,6 +112,12 @@ export function coursesFromFile (
         const additionalMeetings = taker.take(1)
         course.groups.push({
           code: taker.take(3),
+          dateRange: includeDateRange
+            ? [
+                Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2)),
+                Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2))
+              ]
+            : undefined,
           instructors: taker
             .takeRest()
             .split('\t')

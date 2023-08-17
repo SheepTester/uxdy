@@ -2,7 +2,12 @@
 // Prints list of remote sections.
 
 import { Day } from '../util/Day.ts'
-import { getCourses, readCourses, ScrapedResult } from './scrape.ts'
+import {
+  getCourses,
+  readCourses,
+  ScrapedCourse,
+  ScrapedResult
+} from './scrape.ts'
 
 export type MeetingTime<Time = number> = {
   /**
@@ -64,6 +69,7 @@ export type Group = {
   exams: Exam[]
   /** Empty if taught by Staff. */
   instructors: [firstName: string, lastName: string][]
+  dateRange?: [Day, Day]
   /**
    * Coscheduled groups are groups that share:
    * - the same instructors,
@@ -78,10 +84,21 @@ export type Course = {
   code: string
   title: string
   catalog?: string
-  dateRange?: [Day, Day]
   groups: Group[]
 }
 
+function getDateRange (
+  course: ScrapedCourse,
+  letter: string
+): [Day, Day] | undefined {
+  // Assumes numeric group codes start at 001, so only NaN (for +'A' etc) will
+  // be falsy. TODO: Are groups guaranteed to be in order?
+  const dateRange =
+    course.dateRanges[(+letter || (letter.codePointAt(0) ?? 0) - 0x40) - 1]
+  return dateRange
+    ? [Day.from(...dateRange[0]), Day.from(...dateRange[1])]
+    : undefined
+}
 export function groupSections (result: ScrapedResult): Record<string, Course> {
   const courses: Record<string, Course> = {}
   for (const course of result.courses) {
@@ -121,6 +138,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
         meetings: [],
         exams: [],
         instructors: section.instructors,
+        dateRange: getDateRange(course, letter),
         coscheduled: []
       }
       lastGroup = groups[letter]
@@ -146,9 +164,6 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
       code,
       title: course.title,
       catalog: course.catalog,
-      dateRange: course.dateRange
-        ? [Day.from(...course.dateRange[0]), Day.from(...course.dateRange[1])]
-        : undefined,
       groups: Object.values(groups)
     }
   }

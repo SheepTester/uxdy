@@ -14,6 +14,8 @@ S323 (being for undergrads, I guess) doesn't overlap with SP23 or FA23, though i
 
 SU23 and SU18 overlap with spring quarter, unfortunately. However, all locations in SU23 are TBA, so it's fine omitting them from this website.
 
+NOTE: these start/end dates depend on the group, rather than the course. Example: S323 EDS 139. I'm not sure if unit count depends on section.
+
 ## When's the earliest summer final and latest lecture?
 
 Purpose: Finals and lectures may occur on the same day on week 5 Friday in S1 and S2. I want to know if they can overlap.

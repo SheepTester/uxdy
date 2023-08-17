@@ -70,15 +70,6 @@ async function coursesToFile (
     const [subject, number] = course.code.split(' ')
     await print(subject.padEnd(4, ' '))
     await print(number.padEnd(5, ' '))
-    if (includeDateRange) {
-      if (!course.dateRange) {
-        throw new TypeError(
-          `Summer session course ${course.code} does not have date range.`
-        )
-      }
-      await print(course.dateRange[0].toString().replaceAll('-', ''))
-      await print(course.dateRange[1].toString().replaceAll('-', ''))
-    }
     if (!buildingsOnly) {
       await print(course.title)
       if (course.catalog) {
@@ -110,6 +101,15 @@ async function coursesToFile (
           : ' '
       )
       await print(group.code)
+      if (includeDateRange) {
+        if (!group.dateRange) {
+          throw new TypeError(
+            `Summer session ${course.code} ${group.code} does not have date range.`
+          )
+        }
+        await print(group.dateRange[0].toString().replaceAll('-', ''))
+        await print(group.dateRange[1].toString().replaceAll('-', ''))
+      }
       if (!buildingsOnly) {
         await print(group.instructors.map(names => names.join(',')).join('\t'))
       }

@@ -174,8 +174,11 @@ export type ScrapedCourse = {
    * NOTE: `inc` may be 0.5.
    */
   units: { from: number; to: number; inc: number }
-  /** Guaranteed to be present for summer terms. */
-  dateRange?: [DateTuple, DateTuple]
+  /**
+   * Guaranteed to be populated for summer terms. Each date range corresponds to
+   * group.
+   */
+  dateRanges: [DateTuple, DateTuple][]
   sections: ScrapedSection[]
 }
 
@@ -227,8 +230,11 @@ export type ResultRow = {
   /** 1-indexed */
   page: number
   pages: number
-  item: Omit<ScrapedCourse, 'sections'> | ScrapedSection
-}
+} & (
+  | { type: 'course'; item: Omit<ScrapedCourse, 'sections' | 'dateRanges'> }
+  | { type: 'section'; item: ScrapedSection }
+  | { type: 'date-range'; item: [DateTuple, DateTuple] }
+)
 type NoteState =
   | { type: 'none' }
   | { type: 'expect-note'; number: string }
@@ -468,6 +474,7 @@ export async function * getCourseIterator (
         yield {
           page,
           pages: pageCount,
+          type: 'course',
           item: {
             subject,
             subjectName,
@@ -477,8 +484,7 @@ export async function * getCourseIterator (
             catalog,
             restriction: restriction ? restriction.split(/\s+/) : [],
             note,
-            units: { from, to: to ?? from, inc: inc ?? 1 },
-            dateRange
+            units: { from, to: to ?? from, inc: inc ?? 1 }
           }
         }
         lastNumber = number
@@ -553,6 +559,7 @@ export async function * getCourseIterator (
           yield {
             page,
             pages: pageCount,
+            type: 'section',
             item: {
               cancelled: true,
               selectable:
@@ -584,6 +591,7 @@ export async function * getCourseIterator (
         yield {
           page,
           pages: pageCount,
+          type: 'section',
           item: {
             cancelled: false,
             selectable:
@@ -660,11 +668,13 @@ export async function getCourses (
   progress = false
 ): Promise<ScrapedResult> {
   const courses: ScrapedCourse[] = []
-  for await (const { item } of getCourseIterator(term, { progress })) {
-    if ('subject' in item) {
-      courses.push({ ...item, sections: [] })
-    } else {
+  for await (const { type, item } of getCourseIterator(term, { progress })) {
+    if (type === 'course') {
+      courses.push({ ...item, sections: [], dateRanges: [] })
+    } else if (type === 'section') {
       courses[courses.length - 1].sections.push(item)
+    } else {
+      courses[courses.length - 1].dateRanges.push(item)
     }
   }
   return {
@@ -701,21 +711,32 @@ if (import.meta.main) {
     console.log(JSON.stringify(metadata).slice(0, -1))
     console.log(', "courses":')
   }
-  for await (const { item } of getCourseIterator(term, {
+  for await (const { type, item } of getCourseIterator(term, {
     start: +start,
     progress: true
   })) {
-    if ('subject' in item) {
+    if (type === 'course') {
       if (course) {
         console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
         first = false
       }
-      course = { ...item, sections: [] }
-    } else if (course) {
-      course.sections.push(item)
+      course = { ...item, sections: [], dateRanges: [] }
+    } else if (type === 'section') {
+      if (course) {
+        course.sections.push(item)
+      } else {
+        console.error('?? Received `section` before course')
+      }
     } else {
-      console.error('?? Received section before course')
+      if (course) {
+        course.dateRanges.push(item)
+      } else {
+        console.error('?? Received `date-range` before course')
+      }
     }
+  }
+  if (course) {
+    console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
   }
   console.log(']}')
 }
