@@ -36,19 +36,23 @@ export type CoursesToClassroomsOptions = {
   /**
    * The Monday of the current week. By WebReg convention, weeks start on
    * Mondays. This will include exams from the given Monday to the following
-   * Sunday. If omitted, exams will not be included.
+   * Sunday. If omitted, exams will not be included, and S3 is assumed to always
+   * occur.
    */
-  monday?: Day
+  monday: Day
 }
 
 export function coursesToClassrooms (
   courses: Course[],
-  { finals = false, monday }: CoursesToClassroomsOptions = {}
+  { finals = false, monday }: CoursesToClassroomsOptions
 ): TermBuildings {
-  const nextMonday = monday?.add(7)
+  const nextMonday = monday.add(7)
   const buildings: TermBuildings = {}
   for (const [i, { code, groups }] of courses.entries()) {
-    for (const [j, { sections, meetings, exams }] of groups.entries()) {
+    for (const [
+      j,
+      { sections, meetings, exams, dateRange }
+    ] of groups.entries()) {
       const groupCapacity = sections.reduce(
         (cum, curr) => cum + curr.capacity,
         0
@@ -65,23 +69,25 @@ export function coursesToClassrooms (
         }
         if (meeting.kind === 'exam') {
           // Exam
-          if (
-            !monday ||
-            !nextMonday ||
-            meeting.date < monday ||
-            meeting.date >= nextMonday
-          ) {
+          if (meeting.date < monday || meeting.date >= nextMonday) {
             continue
           }
         } else if (finals) {
           // Omit regular meetings during finals week
           continue
         }
+        const days =
+          dateRange && meeting.kind !== 'exam'
+            ? time.days.filter(weekday => {
+                const day = monday.add(weekday)
+                return dateRange.start <= day && day <= dateRange.end
+              })
+            : time.days
         buildings[location.building] ??= {}
         buildings[location.building][location.room] ??= []
         buildings[location.building][location.room].push({
           ...meeting,
-          days: time.days,
+          days,
           start: Time.from(time.start),
           end: Time.from(time.end),
           capacity:

@@ -113,17 +113,25 @@ export function coursesFromFile (
         course.groups.push({
           code: taker.take(3),
           dateRange: includeDateRange
-            ? [
-                Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2)),
-                Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2))
-              ]
+            ? {
+                start: Day.from(
+                  taker.takeInt(4),
+                  taker.takeInt(2),
+                  taker.takeInt(2)
+                ),
+                end: Day.from(
+                  taker.takeInt(4),
+                  taker.takeInt(2),
+                  taker.takeInt(2)
+                )
+              }
             : undefined,
           instructors: taker
             .takeRest()
             .split('\t')
             .map(name => {
               const [first, last] = name.split(',')
-              return [first, last]
+              return { first, last }
             }),
           sections: [],
           meetings: [],

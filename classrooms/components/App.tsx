@@ -3,33 +3,29 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useRef, useState } from 'preact/hooks'
-import { CurrentTerm, getTerm, Season, termName } from '../../terms/index.ts'
+import { useEffect, useRef, useState } from 'preact/hooks'
+import { getTerm, termName } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
-import { useAsyncEffect } from '../../util/useAsyncEffect.ts'
 import { buildings } from '../lib/buildings.ts'
-import { TermCourses } from '../lib/coursesFromFile.ts'
 import {
   TermBuildings,
   coursesToClassrooms
 } from '../lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { useNow } from '../lib/now.ts'
-import { getTerms, QuarterCache } from '../lib/QuarterCache.ts'
+import { getTerms, TermCache } from '../lib/TermCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
-import { ScrollMode } from './date-time/Calendar.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
 import { SearchIcon } from './icons/SearchIcon.tsx'
 
 export function App () {
-  const quarters = useRef(new QuarterCache())
+  const terms = useRef(new TermCache())
   const [showDate, setShowDate] = useState(false)
   const [customDate, setCustomDate] = useState<Day | null>(null)
   const [customTime, setCustomTime] = useState<Time | null>(null)
-  const [scrollMode, setScrollToDate] = useState<ScrollMode>('init')
   const [termBuildings, setTermBuildings] = useState<TermBuildings>({})
   const [viewing, setViewing] = useState<string | null>(null)
   const [lastViewing, setLastViewing] = useState('CENTR')
@@ -43,7 +39,7 @@ export function App () {
   function handleDate (date: Day) {
     const { year, season, current, finals } = getTerm(date)
     getTerms({
-      cache: quarters.current,
+      cache: terms.current,
       requests: [
         current ? { year, quarter: season } : null,
         season === 'S1' || season === 'S2' || (season === 'FA' && !current)
@@ -112,6 +108,9 @@ export function App () {
       }
     })
   }
+  useEffect(() => {
+    handleDate(today)
+  }, [])
 
   return (
     <>
@@ -132,11 +131,10 @@ export function App () {
       />
       <DateTimePanel
         date={date}
-        onDate={(date, source) => {
+        onDate={date => {
           setCustomDate(date)
-          setScrollToDate(source === 'input' ? 'date-edited' : 'none')
+          handleDate(date)
         }}
-        scrollMode={scrollMode}
         time={time}
         onTime={setCustomTime}
         useNow={customDate === null && customTime === null}
@@ -144,10 +142,10 @@ export function App () {
           if (useNow) {
             setCustomDate(null)
             setCustomTime(null)
-            setScrollToDate('date-edited')
           } else {
             setCustomDate(today)
             setCustomTime(realTime)
+            handleDate(today)
           }
         }}
         visible={showDate}

@@ -10,8 +10,7 @@ export type Term = {
   quarter: Quarter
 }
 
-// TODO: Rename to TermCache. Quarter refers to the season
-export class QuarterCache {
+export class TermCache {
   #cache: Record<string, TermCourses | 'unavailable'> = {}
 
   async #fetch (
@@ -78,7 +77,7 @@ export type TermResult = {
   result: TermCourses
 }
 export type GetTermsCallbacks = {
-  cache: QuarterCache
+  cache: TermCache
   requests: TermRequest[]
   full?: boolean
   /**

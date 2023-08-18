@@ -372,65 +372,13 @@ export async function * getCourseIterator (
         if (!subject) {
           throw new Error('No subject')
         }
-        const number = row.children[1].textContent
-        if (number === lastNumber) {
-          continue
-        }
-        const note =
-          noteState.type === 'note'
-            ? noteState.number === number
-              ? noteState.content
-              : unwrap(
-                  new TypeError(
-                    `The note was intended for ${noteState.number} but instead was received by ${number}.`
-                  )
-                )
-            : undefined
-        noteState = { type: 'none' }
-        const catalogUrl = row.children[2]
-          .querySelector('a')
-          ?.getAttribute('href')
-          ?.slice(26, -2)
-        const catalog =
-          !catalogUrl ||
-          catalogUrl === 'http://registrar.ucsd.edu/studentlink/cnd.html'
-            ? undefined
-            : catalogUrl?.startsWith('http://www.ucsd.edu/catalog/')
-            ? catalogUrl.replace('http://www.ucsd.edu/catalog', '')
-            : catalogUrl
         const courseInfo = row.children[2].textContent
           .trim()
           .replaceAll(/\s+/g, ' ')
-        const restriction = row.children[0].textContent.trim()
-        // ( 2 Units)
-        // ( 2 /4 by 2 Units)
-        // ( 1 -4 Units)
-        // ( 1 /5 by 0.5 Units) [SP23 BIOM 231]
-        // ( 2.5 Units) [SP23 LIAB 1C]
-        const unitMatch =
-          courseInfo.match(
-            /^(.+) \( (\d+)(\.5)?(?: [/-](\d+)(?: by (\d+)(\.5)?)?)? Units\) ?/
-          ) ?? unwrap(new SyntaxError('Missing "(N units)"\n' + courseInfo))
-        const title = unitMatch[1]
-        const from = parseNatural(unitMatch[2]) + (unitMatch[3] ? 0.5 : 0)
-        const to = unitMatch[4] ? parseNatural(unitMatch[4]) : null
-        const inc = unitMatch[5]
-          ? parseNatural(unitMatch[5]) + (unitMatch[6] ? 0.5 : 0)
-          : null
-        if (progress) {
-          print(
-            `\r${subject} ${number}`.padEnd(60, ' ') +
-              `${page}/${pageCount}`.padStart(20, ' ')
-          )
-        }
         const dateRangeMatch = courseInfo.match(
           / ?(?:(Sum Sess I|Sum Ses II|SpecSumSes|Summer Qtr) (\d+))?: ([A-Z][a-z]*) (\d+) (\d+) - ([A-Z][a-z]*) (\d+) (\d+)$/
         )
-        const description = courseInfo.slice(
-          unitMatch[0].length,
-          dateRangeMatch?.index
-        )
-        // If summer quarter
+        // Check that date only shows for summer quarters
         if (term[0] === 'S' && term[1] !== 'P') {
           if (dateRangeMatch) {
             if (
@@ -454,9 +402,79 @@ export async function * getCourseIterator (
           }
         } else if (dateRangeMatch) {
           throw new TypeError(
-            `Why does a non-summer quarter have a summer session date range?\n${description}`
+            'Why does a non-summer quarter have a summer session date range?'
           )
         }
+
+        const number = row.children[1].textContent
+        if (number !== lastNumber) {
+          const note =
+            noteState.type === 'note'
+              ? noteState.number === number
+                ? noteState.content
+                : unwrap(
+                    new TypeError(
+                      `The note was intended for ${noteState.number} but instead was received by ${number}.`
+                    )
+                  )
+              : undefined
+          noteState = { type: 'none' }
+          const catalogUrl = row.children[2]
+            .querySelector('a')
+            ?.getAttribute('href')
+            ?.slice(26, -2)
+          const catalog =
+            !catalogUrl ||
+            catalogUrl === 'http://registrar.ucsd.edu/studentlink/cnd.html'
+              ? undefined
+              : catalogUrl?.startsWith('http://www.ucsd.edu/catalog/')
+              ? catalogUrl.replace('http://www.ucsd.edu/catalog', '')
+              : catalogUrl
+          const restriction = row.children[0].textContent.trim()
+          // ( 2 Units)
+          // ( 2 /4 by 2 Units)
+          // ( 1 -4 Units)
+          // ( 1 /5 by 0.5 Units) [SP23 BIOM 231]
+          // ( 2.5 Units) [SP23 LIAB 1C]
+          const unitMatch =
+            courseInfo.match(
+              /^(.+) \( (\d+)(\.5)?(?: [/-](\d+)(?: by (\d+)(\.5)?)?)? Units\) ?/
+            ) ?? unwrap(new SyntaxError('Missing "(N units)"\n' + courseInfo))
+          const title = unitMatch[1]
+          const from = parseNatural(unitMatch[2]) + (unitMatch[3] ? 0.5 : 0)
+          const to = unitMatch[4] ? parseNatural(unitMatch[4]) : null
+          const inc = unitMatch[5]
+            ? parseNatural(unitMatch[5]) + (unitMatch[6] ? 0.5 : 0)
+            : null
+          if (progress) {
+            print(
+              `\r${subject} ${number}`.padEnd(60, ' ') +
+                `${page}/${pageCount}`.padStart(20, ' ')
+            )
+          }
+          const description = courseInfo.slice(
+            unitMatch[0].length,
+            dateRangeMatch?.index
+          )
+          yield {
+            page,
+            pages: pageCount,
+            type: 'course',
+            item: {
+              subject,
+              subjectName,
+              number,
+              title,
+              description: description || undefined,
+              catalog,
+              restriction: restriction ? restriction.split(/\s+/) : [],
+              note,
+              units: { from, to: to ?? from, inc: inc ?? 1 }
+            }
+          }
+          lastNumber = number
+        }
+
         const dateRange: [DateTuple, DateTuple] | undefined = dateRangeMatch
           ? [
               [
@@ -471,23 +489,15 @@ export async function * getCourseIterator (
               ]
             ]
           : undefined
-        yield {
-          page,
-          pages: pageCount,
-          type: 'course',
-          item: {
-            subject,
-            subjectName,
-            number,
-            title,
-            description: description || undefined,
-            catalog,
-            restriction: restriction ? restriction.split(/\s+/) : [],
-            note,
-            units: { from, to: to ?? from, inc: inc ?? 1 }
+        if (dateRange) {
+          yield {
+            page,
+            pages: pageCount,
+            type: 'date-range',
+            item: dateRange
           }
         }
-        lastNumber = number
+
         continue
       }
 

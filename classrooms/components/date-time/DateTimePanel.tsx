@@ -3,6 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
+import { useState } from 'preact/hooks'
 import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 import { inPT } from '../../lib/now.ts'
@@ -10,8 +11,7 @@ import { Calendar, ScrollMode } from './Calendar.tsx'
 
 export type DateTimePanelProps = {
   date: Day
-  onDate: (date: Day, source: 'calendar' | 'input') => void
-  scrollMode: ScrollMode
+  onDate: (date: Day) => void
   time: Time
   onTime: (customTime: Time | null) => void
   useNow: boolean
@@ -23,7 +23,6 @@ export type DateTimePanelProps = {
 export function DateTimePanel ({
   date,
   onDate,
-  scrollMode,
   time,
   onTime,
   useNow,
@@ -32,6 +31,8 @@ export function DateTimePanel ({
   class: className,
   onClose
 }: DateTimePanelProps) {
+  const [scrollMode, setScrollMode] = useState<ScrollMode>('init')
+
   return (
     <form
       class={`date-time-panel ${
@@ -47,7 +48,12 @@ export function DateTimePanel ({
           <input
             type='checkbox'
             checked={useNow}
-            onInput={e => onUseNow(e.currentTarget.checked)}
+            onInput={e => {
+              onUseNow(e.currentTarget.checked)
+              if (e.currentTarget.checked) {
+                setScrollMode('date-edited')
+              }
+            }}
           />
           <span>
             Use current time
@@ -58,7 +64,10 @@ export function DateTimePanel ({
           <button
             type='button'
             class='today-btn'
-            onClick={() => onDate(Day.today(), 'input')}
+            onClick={() => {
+              onDate(Day.today())
+              setScrollMode('date-edited')
+            }}
           >
             Today
           </button>
@@ -76,7 +85,8 @@ export function DateTimePanel ({
               if (useNow) {
                 onUseNow(false)
               }
-              onDate(date, 'input')
+              onDate(date)
+              setScrollMode('date-edited')
             }
           }}
           class='date-input'
@@ -102,9 +112,11 @@ export function DateTimePanel ({
           if (useNow) {
             onUseNow(false)
           }
-          onDate(date, 'calendar')
+          onDate(date)
+          setScrollMode('none')
         }}
         scrollMode={scrollMode}
+        freeScroll={() => setScrollMode('none')}
       />
     </form>
   )

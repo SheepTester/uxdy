@@ -1,20 +1,30 @@
 # Findings
 
-## How long could S3/SU be?
+## How long could S3/SU be? What days do they start/end on?
 
 Purpose: Determining when to additionally fetch S3/SU when displaying summer quarters in the classroom app.
 
-| Quarter | Earliest start | Latest end |
-| ------- | -------------- | ---------- |
-| S323    | 2023-06-19     | 2023-09-08 |
-| SU23    | 2023-05-09     | 2023-06-26 |
-| SU18    | 2018-05-14     | 2018-07-02 |
+Purpose: Determining if I can make any assumptions about when S3 courses start/end, or if they can start in the middle of a week.
 
-S323 (being for undergrads, I guess) doesn't overlap with SP23 or FA23, though it starts before S123.
+| Quarter | Earliest start | Latest end | Start days        | End days           |
+| ------- | -------------- | ---------- | ----------------- | ------------------ |
+| S323    | 2023-06-19     | 2023-09-22 | Mon x265, Fri x1  | Sat x259, Fri x7   |
+| S318    | 2018-06-18     | 2018-09-21 | Mon x242, Sun x2  | Sat x235, etc[^3]  |
+| S317    | 2017-06-19     | 2017-09-22 | Mon x224, etc[^1] | Sat x180, etc[^2]  |
+| SU23    | 2023-05-09     | 2023-09-22 | Tue x343, Mon x95 | Mon x330, Fri x108 |
+| SU18    | 2018-05-14     | 2018-09-28 | Mon x442          | Sun x345, Fri x97  |
 
-SU23 and SU18 overlap with spring quarter, unfortunately. However, all locations in SU23 are TBA, so it's fine omitting them from this website.
+[^1]: Tue x10, Wed x2
+[^2]: Fri x39, Thu x9, Wed x3, Tue x1
+[^3]: Fri x7, Tue x2
+
+S323 (being for undergrads, I guess) doesn't overlap with SP23 or FA23, though it starts before S123. The other S3's don't overlap with summer and fall, either.
+
+SU23 and SU18 overlap with spring and fall quarter, unfortunately. However, all locations in SU23 are TBA, so it's fine omitting them from this website.
 
 NOTE: these start/end dates depend on the group, rather than the course. Example: S323 EDS 139. I'm not sure if unit count depends on section.
+
+It appears that I cannot rely on the start/end dates being on a specific day, and they may occur in the middle of the week.
 
 ## When's the earliest summer final and latest lecture?
 

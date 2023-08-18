@@ -15,6 +15,15 @@ import {
   CalendarWeekRow
 } from './CalendarRow.tsx'
 
+/**
+ * - `none` means not to scroll to the date. This is if you're selecting the
+ *   date by clicking on the calendar, so that it doesn't force you to the date
+ *   while you're trying to scroll.
+ * - `init` means to instantly scroll to the date. This is only used when the
+ *   app starts, so the calendar opens with the current day in view.
+ * - `date-edited` means to smooth scroll to the date. When entering in the date
+ *   through the date input or today button, it will scroll to the date.
+ */
 export type ScrollMode = 'none' | 'init' | 'date-edited'
 
 /** Height of the calendar header. */
@@ -93,64 +102,30 @@ function TermCalendar (props: TermCalendarProps) {
   return <>{months}</>
 }
 
-type YearRange = {
-  start: number
-  end: number
-  setRange: (start: number, end: number) => void
-}
-function useYearRange (date: Day, inputtingDate: boolean): YearRange {
-  const { season } = getTerm(date)
-  const setRange = (start: number, end: number) => {
-    setStart(start)
-    setEnd(end)
-  }
-  const selectedRange = {
-    start: season === 'WI' || season === 'SP' ? date.year - 1 : date.year,
-    end: season === 'FA' ? date.year + 1 : date.year,
-    setRange
-  }
-  const [start, setStart] = useState(selectedRange.start)
-  const [end, setEnd] = useState(selectedRange.end)
-  useEffect(() => {
-    if (inputtingDate) {
-      setStart(selectedRange.start)
-      setEnd(selectedRange.end)
-    }
-  }, [inputtingDate, date.id])
-  // Return `selectedRange` early so it doesn't scroll to the month's old
-  // position
-  return inputtingDate ? selectedRange : { start, end, setRange }
-}
-
 const seasons: Season[] = ['WI', 'SP', 'S1', 'S2', 'FA']
 
 export type CalendarProps = {
   date: Day
   onDate: (date: Day, scrollToDate?: boolean) => void
   scrollMode: ScrollMode
+  freeScroll: () => void
 }
-export function Calendar (props: CalendarProps) {
+export function Calendar ({ freeScroll, ...props }: CalendarProps) {
   const { date, scrollMode } = props
   const selectedStart = date.month <= 6 ? date.year - 1 : date.year
   const selectedEnd = date.month >= 9 ? date.year + 1 : date.year
   const [start, setStart] = useState(selectedStart)
   const [end, setEnd] = useState(selectedEnd)
-  const [wasDateEdited, setWasDateEdited] = useState(false)
   // This implementation sucks, but useEffect isn't ideal because I also want to
   // render the new start/end immediately so the month can be scrolled to in the
   // correct position.
   if (scrollMode === 'date-edited') {
-    if (!wasDateEdited) {
-      if (start !== selectedStart) {
-        setStart(selectedStart)
-      }
-      if (end !== selectedEnd) {
-        setEnd(selectedEnd)
-      }
-      setWasDateEdited(true)
+    if (start !== selectedStart) {
+      setStart(selectedStart)
     }
-  } else if (wasDateEdited) {
-    setWasDateEdited(false)
+    if (end !== selectedEnd) {
+      setEnd(selectedEnd)
+    }
   }
 
   // Move focus to currently selected calendar day (this is still finicky)
@@ -201,6 +176,7 @@ export function Calendar (props: CalendarProps) {
           class='show-year-btn'
           onClick={e => {
             setStart(start - 1)
+            freeScroll()
 
             // Scroll down so it looks like the scroll area was extended upwards
             const target = e.currentTarget
@@ -224,7 +200,10 @@ export function Calendar (props: CalendarProps) {
         <button
           type='button'
           class='show-year-btn'
-          onClick={() => setEnd(end + 1)}
+          onClick={() => {
+            setEnd(end + 1)
+            freeScroll()
+          }}
         >
           Show {end + 1}
         </button>

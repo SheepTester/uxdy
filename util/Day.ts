@@ -41,6 +41,7 @@ export class Day {
     return this.#date.getUTCDate()
   }
 
+  /** Day of the week. */
   get day (): number {
     return this.#date.getUTCDay()
   }
@@ -135,7 +136,12 @@ export class Day {
 
   /** `month` is 1-indexed. */
   static from (year: number, month: number, date: number): Day {
-    return new Day(new Date(Date.UTC(year, month - 1, date)))
+    const dateObj = new Date(Date.UTC(year, month - 1, date))
+    if (year < 100) {
+      // Two-digit years are assumed to be in 1900
+      dateObj.setUTCFullYear(year)
+    }
+    return new Day(dateObj)
   }
 
   /** Creates a `Day` from a `Date` using the client's local time. */

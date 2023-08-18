@@ -68,8 +68,8 @@ export type Group = {
   /** Exams, such as finals, that meet on a specific day. */
   exams: Exam[]
   /** Empty if taught by Staff. */
-  instructors: [firstName: string, lastName: string][]
-  dateRange?: [Day, Day]
+  instructors: { first: string; last: string }[]
+  dateRange?: { start: Day; end: Day }
   /**
    * Coscheduled groups are groups that share:
    * - the same instructors,
@@ -90,13 +90,13 @@ export type Course = {
 function getDateRange (
   course: ScrapedCourse,
   letter: string
-): [Day, Day] | undefined {
+): { start: Day; end: Day } | undefined {
   // Assumes numeric group codes start at 001, so only NaN (for +'A' etc) will
   // be falsy. TODO: Are groups guaranteed to be in order?
   const dateRange =
     course.dateRanges[(+letter || (letter.codePointAt(0) ?? 0) - 0x40) - 1]
   return dateRange
-    ? [Day.from(...dateRange[0]), Day.from(...dateRange[1])]
+    ? { start: Day.from(...dateRange[0]), end: Day.from(...dateRange[1]) }
     : undefined
 }
 export function groupSections (result: ScrapedResult): Record<string, Course> {
@@ -137,7 +137,10 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
         sections: [],
         meetings: [],
         exams: [],
-        instructors: section.instructors,
+        instructors: section.instructors.map(([first, last]) => ({
+          first,
+          last
+        })),
         dateRange: getDateRange(course, letter),
         coscheduled: []
       }
@@ -213,17 +216,6 @@ if (import.meta.main) {
       : await readCourses(`./scheduleofclasses/terms/${term}.json`)
 
   // Please put findings in README.md
-
-  // const starts = Math.min(
-  //   ...result.courses.flatMap(course =>
-  //     course.dateRange ? [Day.from(...course.dateRange[0]).id] : []
-  //   )
-  // )
-  // const ends = Math.max(
-  //   ...result.courses.flatMap(course =>
-  //     course.dateRange ? [Day.from(...course.dateRange[0]).id] : []
-  //   )
-  // )
   // - S323: 2023-06-19 2023-09-08 -> no overlap with SP or FA (but it can start
   //   before S123)
   // - SU23: 2023-05-09 2023-06-26 -> overlap with SP !! but for some reason,
@@ -232,6 +224,33 @@ if (import.meta.main) {
   // console.log(Day.fromId(starts), Day.fromId(ends))
   const courses = groupSections(result)
 
+  const startMost = Day.min(
+    Object.values(courses).flatMap(course =>
+      course.groups.flatMap(group =>
+        group.dateRange ? [group.dateRange.start] : []
+      )
+    )
+  )
+  const endMost = Day.max(
+    Object.values(courses).flatMap(course =>
+      course.groups.flatMap(group =>
+        group.dateRange ? [group.dateRange.end] : []
+      )
+    )
+  )
+  const starts: Record<number, number> = {}
+  const ends: Record<number, number> = {}
+  for (const course of Object.values(courses)) {
+    for (const group of course.groups) {
+      if (group.dateRange) {
+        starts[group.dateRange.start.day] ??= 0
+        starts[group.dateRange.start.day]++
+        ends[group.dateRange.end.day] ??= 0
+        ends[group.dateRange.end.day]++
+      }
+    }
+  }
+  console.log(starts, ends, startMost, endMost)
   // printRemoteSections(courses)
 
   type Period = {
@@ -261,7 +280,9 @@ if (import.meta.main) {
       if (group.instructors.length === 0) {
         continue
       }
-      const profName = group.instructors.map(name => name.join(' ')).join(', ')
+      const profName = group.instructors
+        .map(({ first, last }) => `${first} ${last}`)
+        .join(', ')
       profs[profName] ??= []
       // DI sections can overlap. I guess we can assume that professors don't
       // attend sections unless it's the only meetings of the course?
@@ -291,23 +312,23 @@ if (import.meta.main) {
             period.location !== 'TBA' &&
             period.location === overlap.location
           ) {
-            console.log(
-              period.course,
-              overlap.course,
-              period.code === overlap.code
-                ? period.code
-                : [period.code, overlap.code],
-              period.type === overlap.type
-                ? overlap.type
-                : [period.type, overlap.type],
-              period.start === overlap.start && period.end === overlap.end
-                ? ''
-                : [
-                    [period.start, period.end],
-                    [overlap.start, overlap.end]
-                  ],
-              period.location
-            )
+            // console.log(
+            //   period.course,
+            //   overlap.course,
+            //   period.code === overlap.code
+            //     ? period.code
+            //     : [period.code, overlap.code],
+            //   period.type === overlap.type
+            //     ? overlap.type
+            //     : [period.type, overlap.type],
+            //   period.start === overlap.start && period.end === overlap.end
+            //     ? ''
+            //     : [
+            //         [period.start, period.end],
+            //         [overlap.start, overlap.end]
+            //       ],
+            //   period.location
+            // )
             break
           }
           profs[profName].push(period)

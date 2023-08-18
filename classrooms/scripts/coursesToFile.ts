@@ -107,11 +107,15 @@ async function coursesToFile (
             `Summer session ${course.code} ${group.code} does not have date range.`
           )
         }
-        await print(group.dateRange[0].toString().replaceAll('-', ''))
-        await print(group.dateRange[1].toString().replaceAll('-', ''))
+        await print(group.dateRange.start.toString().replaceAll('-', ''))
+        await print(group.dateRange.end.toString().replaceAll('-', ''))
       }
       if (!buildingsOnly) {
-        await print(group.instructors.map(names => names.join(',')).join('\t'))
+        await print(
+          group.instructors
+            .map(({ first, last }) => `${first},${last}`)
+            .join('\t')
+        )
       }
       await print('\n')
       for (const meeting of group.sections) {
