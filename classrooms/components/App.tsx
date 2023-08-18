@@ -36,8 +36,6 @@ export function App () {
   const date = customDate ?? today
   const time = customTime ?? realTime
 
-  console.log(notice, noticeVisible, termBuildings)
-
   function handleDate (date: Day, init = false) {
     const { year, season, current, finals } = getTerm(date)
     terms.current.getTerms({

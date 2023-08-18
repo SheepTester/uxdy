@@ -8,8 +8,6 @@ import {
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
 
-// Omit<Meeting | Exam, 'time' | 'location'> does not work with type narrowing
-// with `'date' in meeting`
 export type RoomMeeting = Omit<Section | Meeting | Exam, 'time' | 'location'> &
   MeetingTime<Time> & {
     capacity: number
@@ -18,6 +16,8 @@ export type RoomMeeting = Omit<Section | Meeting | Exam, 'time' | 'location'> &
       group: number
       meeting: number
     }
+    /** Whether the course is from Special Summer Session. */
+    special: boolean
   }
 
 export type TermBuildings = Record<string, Record<string, RoomMeeting[]>>
@@ -99,7 +99,8 @@ export function coursesToClassrooms (
           index: {
             group: i,
             meeting: j
-          }
+          },
+          special: dateRange !== undefined && meeting.kind !== 'exam'
         })
       }
     }

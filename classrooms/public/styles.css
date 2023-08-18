@@ -813,6 +813,15 @@ input[type='checkbox']:checked {
   right: 0;
   box-sizing: border-box;
 }
+.special-summer {
+  color: var(--exam);
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 0.8em;
+  cursor: help;
+  text-decoration: none;
+}
 .exam {
   border-color: var(--exam);
 }

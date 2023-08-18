@@ -300,7 +300,7 @@ if (import.meta.main) {
             start: meeting.time.start,
             end: meeting.time.end,
             course: course.code,
-            code: 'code' in meeting ? meeting.code : group.code,
+            code: meeting.code,
             type: meeting.type,
             location: meeting.location
               ? `${meeting.location.building} ${meeting.location.room}`

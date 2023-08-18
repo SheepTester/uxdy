@@ -76,7 +76,7 @@ export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
               .map(meeting => (
                 <div
                   class={`meeting ${inUse(meeting) ? 'current' : ''} ${
-                    'date' in meeting ? 'exam' : ''
+                    meeting.kind === 'exam' ? 'exam' : ''
                   }`}
                   style={{
                     top: `${(+meeting.start - earliest) / SCALE}px`,
@@ -93,6 +93,14 @@ export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
                   <div class='meeting-time'>
                     {meeting.start.toString()}–{meeting.end.toString()}
                   </div>
+                  {meeting.special && (
+                    <abbr
+                      class='special-summer'
+                      title='This meeting is from a Special Summer Session course.'
+                    >
+                      S3
+                    </abbr>
+                  )}
                 </div>
               ))}
             {weekday === day && earliest <= +time && +time < latest && (
