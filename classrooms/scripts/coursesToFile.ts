@@ -128,9 +128,7 @@ async function coursesToFile (
             : meeting.capacity.toString().padStart(4, '0')
         )
         await printMeeting(meeting)
-        if (meeting.code !== group.code || group.sections.length > 1) {
-          await print(meeting.code)
-        }
+        await print(meeting.code)
       }
       await print('\n')
       if (meetings.length > 0) {
@@ -139,9 +137,7 @@ async function coursesToFile (
             continue
           }
           await printMeeting(meeting)
-          if (!buildingsOnly && meeting.code !== group.code) {
-            await print(meeting.code)
-          }
+          await print(meeting.code)
         }
         await print('\n')
       }

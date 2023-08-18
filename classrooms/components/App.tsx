@@ -14,7 +14,7 @@ import {
 } from '../lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { useNow } from '../lib/now.ts'
-import { getTerms, TermCache } from '../lib/TermCache.ts'
+import { TermCache } from '../lib/TermCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
@@ -36,22 +36,18 @@ export function App () {
   const date = customDate ?? today
   const time = customTime ?? realTime
 
-  function handleDate (date: Day) {
+  console.log(notice, noticeVisible, termBuildings)
+
+  function handleDate (date: Day, init = false) {
     const { year, season, current, finals } = getTerm(date)
-    getTerms({
-      cache: terms.current,
+    terms.current.getTerms({
       requests: [
         current ? { year, quarter: season } : null,
         season === 'S1' || season === 'S2' || (season === 'FA' && !current)
           ? { year, quarter: 'S3' }
           : null
       ],
-      onStartFetch: () => {
-        setNoticeVisible(true)
-        setNotice('Loading...')
-      },
       onNoRequest: () => {
-        setNoticeVisible(true)
         setNotice(
           season === 'WI'
             ? 'Winter break.'
@@ -59,16 +55,26 @@ export function App () {
             ? 'Spring break.'
             : 'Summer break.'
         )
-        // If the overlay notice is showing, then de-select the current
-        // building.
-        setViewing(viewing => {
-          if (viewing) {
-            setLastViewing(viewing)
-          }
-          return null
-        })
+        if (!init) {
+          setNoticeVisible(true)
+          // If the overlay notice is showing, then de-select the current
+          // building.
+          setViewing(viewing => {
+            if (viewing) {
+              setLastViewing(viewing)
+            }
+            return null
+          })
+        }
         // Have the date selector open for the user to select another day
         setShowDate(true)
+      },
+      onStartFetch: terms => {
+        // TODO: Display terms loading
+        if (!init) {
+          setNoticeVisible(true)
+          setNotice('Loading...')
+        }
       },
       onError: errors => {
         // TODO: This error message could be better
@@ -108,8 +114,9 @@ export function App () {
       }
     })
   }
+  // TEMP?
   useEffect(() => {
-    handleDate(today)
+    handleDate(today, true)
   }, [])
 
   return (

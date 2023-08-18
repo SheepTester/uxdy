@@ -129,6 +129,7 @@ export function coursesFromFile (
           instructors: taker
             .takeRest()
             .split('\t')
+            .filter(name => name !== '')
             .map(name => {
               const [first, last] = name.split(',')
               return { first, last }
@@ -151,7 +152,7 @@ export function coursesFromFile (
           kind: 'section',
           capacity: capacity === 9999 ? Infinity : capacity,
           ...taker.takeMeeting(),
-          code: taker.take(3) || group.code
+          code: taker.take(3)
         })
       }
       state = state.hasMeetings
@@ -164,7 +165,7 @@ export function coursesFromFile (
         group.meetings.push({
           kind: 'meeting',
           ...taker.takeMeeting(),
-          code: taker.take(3) || group.code
+          code: taker.take(3)
         })
       }
       state = state.hasExams ? { type: 'exams' } : { type: 'course-or-group' }

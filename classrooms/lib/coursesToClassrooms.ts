@@ -83,6 +83,9 @@ export function coursesToClassrooms (
                 return dateRange.start <= day && day <= dateRange.end
               })
             : time.days
+        if (days.length === 0) {
+          continue
+        }
         buildings[location.building] ??= {}
         buildings[location.building][location.room] ??= []
         buildings[location.building][location.room].push({
