@@ -5,6 +5,7 @@
 
 import { useState } from 'preact/hooks'
 import { Time } from '../../../util/Time.ts'
+import { useLast } from '../../../util/useLast.ts'
 import { BuildingDatum, buildings } from '../../lib/buildings.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
@@ -28,7 +29,7 @@ function BuildingPanelContent ({
   onClose
 }: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
-  const [lastRoom, setLastRoom] = useState('')
+  const room = useLast('', selected)
   const [imageLoaded, setImageLoaded] = useState(false)
 
   // Make Imgur compress the image.
@@ -58,12 +59,7 @@ function BuildingPanelContent ({
         <button
           class='back'
           onClick={() => {
-            setSelected(selected => {
-              if (selected) {
-                setLastRoom(selected)
-              }
-              return null
-            })
+            setSelected(null)
           }}
           disabled={!selected}
         >
@@ -73,8 +69,7 @@ function BuildingPanelContent ({
           heading='h2'
           abbrev={
             <span>
-              {building.code}{' '}
-              <span class='room-number'>{selected || lastRoom}</span>
+              {building.code} <span class='room-number'>{room}</span>
             </span>
           }
         >

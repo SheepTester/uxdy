@@ -115,12 +115,12 @@ export function getTerm (day: Day): CurrentTerm {
   }
 }
 
-export function termCode (year: number, season: Quarter): string {
-  return season + (year % 100).toString().padStart(2, '0')
+export function termCode (year: number, quarter: Quarter): string {
+  return quarter + (year % 100).toString().padStart(2, '0')
 }
 
-export function termName (year: number, season: Quarter): string {
-  return `${names[season]} ${year}`
+export function termName (year: number, quarter: Quarter): string {
+  return `${names[quarter]} ${year}`
 }
 
 if (import.meta.main) {

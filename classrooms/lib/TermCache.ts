@@ -85,64 +85,26 @@ export class TermCache {
     return full ? `${termCode(year, quarter)}-full` : termCode(year, quarter)
   }
 
-  async getTerms ({
-    requests,
-    full = false,
-    onNoRequest,
-    onStartFetch,
-    onError,
-    onLoad
-  }: GetTermsCallbacks): Promise<void> {
-    if (requests.every(request => request === null)) {
-      onNoRequest()
-      return
-    }
-    const terms = requests.filter(
-      (request): request is Term => request !== null
-    )
-    const results = terms.map(
-      (request): TermResult | TermError | Promise<TermResult | TermError> => {
-        const termId = this.#term(request, full)
-        const cached = this.#cache[termId]
-        if (cached === 'unavailable') {
-          return { type: 'unavailable', request }
-        } else if (cached) {
-          return { request, result: cached }
-        } else {
-          // Only S3 has relevant date ranges (well, and SU I guess)
-          return this.#fetch(termId, request.quarter === 'S3')
-            .then((result): TermResult | TermError =>
-              result === 'unavailable'
-                ? { type: 'unavailable', request }
-                : { request, result }
-            )
-            .catch(() => ({ type: 'offline', request }))
-        }
-      }
-    )
-    let fetchedResults: (TermResult | TermError)[]
-    const allCached = results.every(
-      (result): result is TermResult | TermError => !(result instanceof Promise)
-    )
-    if (allCached) {
-      fetchedResults = results
+  request (
+    request: Term,
+    full = false
+  ): TermResult | TermError | Promise<TermResult | TermError> {
+    const termId = this.#term(request, full)
+    const cached = this.#cache[termId]
+    if (cached === 'unavailable') {
+      return { type: 'unavailable', request }
+    } else if (cached) {
+      return { request, result: cached }
     } else {
-      onStartFetch(terms)
-      fetchedResults = await Promise.all(results)
-    }
-    const successes: TermResult[] = []
-    const failures: TermError[] = []
-    for (const result of fetchedResults) {
-      if ('result' in result) {
-        successes.push(result)
-      } else {
-        failures.push(result)
-      }
-    }
-    if (successes.length > 0) {
-      onLoad(successes, failures, !allCached)
-    } else {
-      onError(failures, !allCached)
+      // Only S3 has relevant date ranges (well, and SU I guess)
+      return this.#fetch(termId, request.quarter === 'S3')
+        .then((result): TermResult | TermError => {
+          this.#cache[termId] = result
+          return result === 'unavailable'
+            ? { type: 'unavailable', request }
+            : { request, result }
+        })
+        .catch(() => ({ type: 'offline', request }))
     }
   }
 }

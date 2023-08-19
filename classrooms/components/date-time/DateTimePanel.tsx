@@ -13,7 +13,7 @@ export type DateTimePanelProps = {
   date: Day
   onDate: (date: Day) => void
   time: Time
-  onTime: (customTime: Time | null) => void
+  onTime: (customTime: Time) => void
   useNow: boolean
   onUseNow: (useNow: boolean) => void
   visible: boolean

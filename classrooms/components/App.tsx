@@ -4,117 +4,173 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { getTerm, termName } from '../../terms/index.ts'
+import { getTerm, Season, termName } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
+import { useLast } from '../../util/useLast.ts'
 import { buildings } from '../lib/buildings.ts'
 import {
   TermBuildings,
   coursesToClassrooms
 } from '../lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
-import { useNow } from '../lib/now.ts'
-import { TermCache } from '../lib/TermCache.ts'
+import { now } from '../lib/now.ts'
+import {
+  Term,
+  TermCache,
+  TermError,
+  TermRequest,
+  TermResult
+} from '../lib/TermCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
 import { SearchIcon } from './icons/SearchIcon.tsx'
 
-export function App () {
-  const terms = useRef(new TermCache())
-  const [showDate, setShowDate] = useState(false)
-  const [customDate, setCustomDate] = useState<Day | null>(null)
-  const [customTime, setCustomTime] = useState<Time | null>(null)
-  const [termBuildings, setTermBuildings] = useState<TermBuildings>({})
-  const [viewing, setViewing] = useState<string | null>(null)
-  const [lastViewing, setLastViewing] = useState('CENTR')
-  const [scrollWrapper, setScrollWrapper] = useState<HTMLElement | null>(null)
-  const [notice, setNotice] = useState('Loading...')
-  const [noticeVisible, setNoticeVisible] = useState(true)
-  const { date: today, time: realTime } = useNow()
-  const date = customDate ?? today
-  const time = customTime ?? realTime
+function getRequest (date: Day): TermRequest[] {
+  const { year, season, current } = getTerm(date)
+  return [
+    current ? { year, quarter: season } : null,
+    season === 'S1' || season === 'S2' || (season === 'FA' && !current)
+      ? { year, quarter: 'S3' }
+      : null
+  ]
+}
 
-  function handleDate (date: Day, init = false) {
-    const { year, season, current, finals } = getTerm(date)
-    terms.current.getTerms({
-      requests: [
-        current ? { year, quarter: season } : null,
-        season === 'S1' || season === 'S2' || (season === 'FA' && !current)
-          ? { year, quarter: 'S3' }
-          : null
-      ],
-      onNoRequest: () => {
-        setNotice(
-          season === 'WI'
-            ? 'Winter break.'
-            : season === 'SP'
-            ? 'Spring break.'
-            : 'Summer break.'
-        )
-        if (!init) {
-          setNoticeVisible(true)
-          // If the overlay notice is showing, then de-select the current
-          // building.
-          setViewing(viewing => {
-            if (viewing) {
-              setLastViewing(viewing)
-            }
-            return null
-          })
-        }
-        // Have the date selector open for the user to select another day
-        setShowDate(true)
-      },
-      onStartFetch: terms => {
-        // TODO: Display terms loading
-        if (!init) {
-          setNoticeVisible(true)
-          setNotice('Loading...')
-        }
-      },
-      onError: errors => {
-        // TODO: This error message could be better
-        setNotice(
-          errors
-            .map(({ type, request: { year, quarter } }) =>
-              type === 'offline'
-                ? `I couldn't load schedules for ${termName(
-                    year,
-                    quarter
-                  )}. Is ResNet failing you again?`
-                : `Schedules aren't available for ${termName(year, quarter)}.`
-            )
-            .join(' ')
-        )
-        setViewing(viewing => {
-          if (viewing) {
-            setLastViewing(viewing)
-          }
-          return null
-        })
-        setShowDate(true)
-        setNoticeVisible(true)
-      },
-      onLoad: (results, errors) => {
-        // TODO: Show errors if any in a corner
-        const courses = results.flatMap(result => result.result.courses)
-        setTermBuildings(
-          coursesToClassrooms(courses, {
-            monday: date.monday,
-            // Summer sessions' finals week overlaps with classes, it seems
-            // like?
-            finals: finals && season !== 'S1' && season !== 'S2'
-          })
-        )
-        setNoticeVisible(false)
-      }
-    })
-  }
-  // TEMP?
+/**
+ * Represents the state of the app:
+ * - If the object is `null`, then the app is fetching classroom data.
+ * - If `buildings` is defined, the object should not be empty. Show the
+ *   classrooms, and display the errors in a corner if any.
+ * - If there are no classes, show the errors in an overlay message.
+ * - If there are no classes and no errors, then show that school is on break.
+ */
+type AppState = {
+  /** If undefined, then that means there are no classes for this time. */
+  buildings?: TermBuildings
+  errors: TermError[]
+  season: Season
+}
+
+export function App () {
+  const [realTime, setRealTime] = useState(true)
+  const [date, setDate] = useState<Day>(() => now().date)
+  const [time, setTime] = useState<Time>(() => now().time)
   useEffect(() => {
-    handleDate(today, true)
+    if (realTime) {
+      const intervalId = setInterval(() => {
+        const { date, time } = now()
+        // Avoid unnecessary rerenders by returning original object if they have
+        // the same values
+        setTime(oldTime => (+oldTime === +time ? oldTime : time))
+        setDate(oldDate => {
+          if (+oldDate === +date) {
+            return oldDate
+          } else {
+            handleDate(date)
+            return date
+          }
+        })
+      }, 1000)
+      return () => {
+        clearInterval(intervalId)
+      }
+    }
+  }, [realTime])
+
+  const termCache = useRef(new TermCache())
+  const [state, setState] = useState<AppState | null>(null)
+
+  // TODO: This error message could be better
+  // TODO: Show errors if any in a corner
+  const error =
+    state && state.errors.length > 0
+      ? state.errors
+          .map(({ type, request: { year, quarter } }) =>
+            type === 'offline'
+              ? `I couldn't load schedules for ${termName(
+                  year,
+                  quarter
+                )}. Is ResNet failing you again?`
+              : `Schedules aren't available for ${termName(year, quarter)}.`
+          )
+          .join(' ')
+      : null
+  const noticeVisible = !state?.buildings
+  const notice = useLast(
+    '',
+    state === null
+      ? // TODO: Display terms loading
+        `Loading ${getRequest(date)
+          .filter((request): request is Term => request !== null)
+          .map(({ year, quarter }) => termName(year, quarter))
+          .join(' and ')}...`
+      : state.buildings
+      ? null
+      : error ??
+        (state.season === 'WI'
+          ? 'Winter break.'
+          : state.season === 'SP'
+          ? 'Spring break.'
+          : 'Summer break.')
+  )
+
+  const [showDatePanel, setShowDatePanel] = useState(false)
+  const [viewing, setViewing] = useState<string | null>(null)
+  const building = useLast('CENTR', viewing)
+
+  async function handleDate (date: Day) {
+    const requests = getRequest(date)
+    if (requests.every(request => request === null)) {
+      // Have the date selector open for the user to select another day
+      setShowDatePanel(true)
+      return
+    }
+    const terms = requests.filter(
+      (request): request is Term => request !== null
+    )
+    const rawResults = terms.map(request => termCache.current.request(request))
+    let fetchedResults: (TermResult | TermError)[]
+    const allCached = rawResults.every(
+      (result): result is TermResult | TermError => !(result instanceof Promise)
+    )
+    if (allCached) {
+      fetchedResults = rawResults
+    } else {
+      setState(null)
+      fetchedResults = await Promise.all(rawResults)
+    }
+    const successes: TermResult[] = []
+    const errors: TermError[] = []
+    for (const result of fetchedResults) {
+      if ('result' in result) {
+        successes.push(result)
+      } else {
+        errors.push(result)
+      }
+    }
+    const { season, finals } = getTerm(date)
+    const courses = successes.flatMap(result => result.result.courses)
+    const classrooms = coursesToClassrooms(courses, {
+      monday: date.monday,
+      // Summer sessions' finals week overlaps with classes, it seems
+      // like?
+      finals: finals && season !== 'S1' && season !== 'S2'
+    })
+    const empty = Object.keys(classrooms).length === 0
+    setState({
+      buildings: empty ? undefined : classrooms,
+      errors,
+      season
+    })
+    if (empty) {
+      setViewing(null)
+      setShowDatePanel(true)
+    }
+  }
+  useEffect(() => {
+    handleDate(date)
   }, [])
 
   return (
@@ -130,47 +186,48 @@ export function App () {
       <DateTimeButton
         date={date}
         time={time}
-        onClick={() => setShowDate(true)}
+        onClick={() => setShowDatePanel(true)}
         bottomPanelOpen={!!viewing}
-        disabled={showDate}
+        disabled={showDatePanel}
       />
       <DateTimePanel
         date={date}
         onDate={date => {
-          setCustomDate(date)
+          setRealTime(false)
+          setDate(date)
           handleDate(date)
         }}
         time={time}
-        onTime={setCustomTime}
-        useNow={customDate === null && customTime === null}
+        onTime={time => {
+          setRealTime(false)
+          setTime(time)
+        }}
+        useNow={date === null && time === null}
         onUseNow={useNow => {
           if (useNow) {
-            setCustomDate(null)
-            setCustomTime(null)
+            const { date, time } = now()
+            setRealTime(false)
+            setDate(date)
+            setTime(time)
           } else {
-            setCustomDate(today)
-            setCustomTime(realTime)
-            handleDate(today)
+            setRealTime(true)
           }
         }}
-        visible={showDate}
+        visible={showDatePanel}
         class={`${viewing ? 'date-time-panel-bottom-panel' : ''} ${
           noticeVisible ? 'date-time-panel-notice-visible' : ''
         }`}
-        onClose={() => setShowDate(false)}
+        onClose={() => setShowDatePanel(false)}
       />
       <div class='buildings-wrapper'>
         <p
           class={`notice ${noticeVisible ? 'notice-visible' : ''} ${
-            showDate ? 'notice-date-open' : ''
+            showDatePanel ? 'notice-date-open' : ''
           }`}
         >
           <span class='notice-text'>{notice}</span>
         </p>
-        <div
-          class='buildings'
-          ref={scrollWrapper ? undefined : setScrollWrapper}
-        >
+        <div class='buildings'>
           <div
             class='scroll-area'
             style={{
@@ -180,40 +237,29 @@ export function App () {
               backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`
             }}
           />
-          {scrollWrapper &&
-            Object.values(buildings).map(building => (
-              <BuildingButton
-                key={building.code}
-                weekday={date.day}
-                time={time}
-                building={building}
-                rooms={Object.values(termBuildings[building.code] ?? {})}
-                onSelect={setViewing}
-                scrollWrapper={scrollWrapper}
-                selected={building.code === viewing}
-                visible={building.code in termBuildings}
-              />
-            ))}
+          {Object.values(buildings).map(building => (
+            <BuildingButton
+              key={building.code}
+              weekday={date.day}
+              time={time}
+              building={building}
+              rooms={Object.values(state?.buildings?.[building.code] ?? {})}
+              onSelect={setViewing}
+              selected={building.code === viewing}
+              visible={!!state?.buildings && building.code in state.buildings}
+            />
+          ))}
         </div>
       </div>
-      {buildings && (
-        <BuildingPanel
-          weekday={date.day}
-          time={time}
-          building={buildings[viewing || lastViewing]}
-          rooms={termBuildings[viewing || lastViewing] ?? {}}
-          onClose={() => {
-            setViewing(viewing => {
-              if (viewing) {
-                setLastViewing(viewing)
-              }
-              return null
-            })
-          }}
-          visible={!!viewing}
-          rightPanelOpen={showDate}
-        />
-      )}
+      <BuildingPanel
+        weekday={date.day}
+        time={time}
+        building={buildings[building]}
+        rooms={state?.buildings?.[building] ?? {}}
+        onClose={() => setViewing(null)}
+        visible={viewing !== null}
+        rightPanelOpen={showDatePanel}
+      />
     </>
   )
 }

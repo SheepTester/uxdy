@@ -48,7 +48,7 @@ function toPT (date: Date): Moment {
   }
 }
 
-function getNow (): Moment {
+export function now (): Moment {
   return toPT(new Date())
 }
 
@@ -70,23 +70,4 @@ export function used (
       time < meeting.end
     )
   }
-}
-
-export function useNow (): Moment {
-  const [now, setNow] = useState(() => getNow())
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNow(now => {
-        const newNow = getNow()
-        // Return old object if time hasn't changed to avoid rerender
-        return +now.date === +newNow.date && +now.time === +newNow.time
-          ? now
-          : newNow
-      })
-    }, 1000)
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [])
-  return now
 }

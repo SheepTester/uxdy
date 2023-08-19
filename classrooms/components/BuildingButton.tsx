@@ -21,7 +21,6 @@ type BuildingButtonProps = {
   building: BuildingDatum
   rooms: RoomMeeting[][]
   onSelect: (building: string) => void
-  scrollWrapper: Element
   selected: boolean
   visible: boolean
 }
@@ -32,7 +31,6 @@ export function BuildingButton ({
   building,
   rooms,
   onSelect,
-  scrollWrapper,
   selected,
   visible
 }: BuildingButtonProps) {
@@ -42,10 +40,12 @@ export function BuildingButton ({
     if (building.code === 'CENTR' && button) {
       window.requestAnimationFrame(() => {
         const { left, top, width, height } = button.getBoundingClientRect()
-        scrollWrapper.scrollBy(
-          left + (-window.innerWidth + width) / 2,
-          top + (-window.innerHeight + height) / 2
-        )
+        button
+          .closest('.buildings')
+          ?.scrollBy(
+            left + (-window.innerWidth + width) / 2,
+            top + (-window.innerHeight + height) / 2
+          )
       })
     }
   }, [])
