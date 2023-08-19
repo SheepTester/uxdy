@@ -16,6 +16,14 @@ type RawTerms2 = {
   [season in Season]?: [number, number, number]
 }
 
+type RawTerms3 = {
+  [season in Season]?: {
+    start: [number, number]
+    classesEnd?: [number, number]
+    end: [number, number]
+  }
+}
+
 export type Term = {
   year: number
   season: Season
@@ -70,6 +78,26 @@ function transform2 (year: number, seasonDays: RawTerms2): Term[] {
           season,
           start: toDay(start),
           end: toDay(end)
+        }
+      ]
+    } else {
+      return []
+    }
+  })
+}
+
+function transform3 (winterYear: number, seasonDays: RawTerms3): Term[] {
+  return SEASONS.flatMap(season => {
+    const year = season === 'FA' ? winterYear - 1 : winterYear
+    const days = seasonDays[season]
+    if (days) {
+      const { start, end } = days
+      return [
+        {
+          year,
+          season,
+          start: Day.from(year, ...start),
+          end: Day.from(year, ...end)
         }
       ]
     } else {
@@ -210,5 +238,70 @@ export const data: Term[] = [
     start: [38253, 38355, 38439],
     classesEnd: [38324, 38422, 38506],
     end: [38332, 38430, 38513]
+  }),
+  // https://registrar.ucsd.edu/studentlink/AcademicCalendar03-04.pdf
+  ...transform3(2004, {
+    FA: { start: [9, 25], classesEnd: [12, 5], end: [12, 13] },
+    WI: { start: [1, 5], classesEnd: [3, 12], end: [3, 20] },
+    SP: { start: [3, 29], classesEnd: [6, 4], end: [6, 11] }
+  }),
+  ...transform3(2003, {
+    FA: { start: [9, 26], classesEnd: [12, 6], end: [12, 14] },
+    WI: { start: [1, 6], classesEnd: [3, 14], end: [3, 22] },
+    SP: { start: [3, 31], classesEnd: [6, 6], end: [6, 13] }
+  }),
+  // https://registrar.ucsd.edu/catalog/01-02/pdfs/accalen.pdf
+  ...transform3(2002, {
+    FA: { start: [9, 20], classesEnd: [11, 30], end: [12, 8] },
+    WI: { start: [1, 7], classesEnd: [3, 15], end: [3, 23] },
+    SP: { start: [4, 1], classesEnd: [6, 7], end: [6, 14] },
+    S1: { start: [7, 1], end: [8, 3] },
+    S2: { start: [8, 5], end: [9, 7] }
+  }),
+  // https://library.ucsd.edu/dc/object/bb54633762/_1.pdf
+  ...transform3(2001, {
+    FA: { start: [9, 21], classesEnd: [12, 1], end: [12, 9] },
+    WI: { start: [1, 8], classesEnd: [3, 16], end: [3, 24] },
+    SP: { start: [4, 2], classesEnd: [6, 8], end: [6, 15] },
+    S1: { start: [7, 3], end: [8, 4] },
+    S2: { start: [8, 6], end: [9, 8] }
+  }),
+  // https://library.ucsd.edu/dc/object/bb1982115k/_1.pdf
+  ...transform3(2000, {
+    FA: { start: [9, 30], classesEnd: [12, 10], end: [12, 18] },
+    WI: { start: [1, 10], classesEnd: [3, 17], end: [3, 25] },
+    SP: { start: [4, 3], classesEnd: [6, 9], end: [6, 16] },
+    // NOTE: These summer session end dates are on Friday, unlike later summer
+    // sessions
+    S1: { start: [7, 3], end: [8, 4] },
+    S2: { start: [8, 7], end: [9, 8] }
+  }),
+  // https://library.ucsd.edu/dc/object/bb86374644/_1.pdf
+  ...transform3(1999, {
+    FA: { start: [9, 24], classesEnd: [12, 4], end: [12, 12] },
+    WI: { start: [1, 4], classesEnd: [3, 12], end: [3, 20] },
+    SP: { start: [3, 29], classesEnd: [6, 4], end: [6, 11] }
+  }),
+  // https://library.ucsd.edu/dc/object/bb4610178f/_1.pdf
+  ...transform3(1998, {
+    FA: { start: [9, 25], classesEnd: [12, 5], end: [12, 13] },
+    WI: { start: [1, 5], classesEnd: [3, 13], end: [3, 21] },
+    SP: { start: [3, 30], classesEnd: [6, 5], end: [6, 12] }
+  }),
+  ...transform3(1997, {
+    FA: { start: [9, 26], classesEnd: [12, 6], end: [12, 14] },
+    WI: { start: [1, 6], classesEnd: [3, 14], end: [3, 22] },
+    SP: { start: [3, 31], classesEnd: [6, 6], end: [6, 13] }
+  }),
+  ...transform3(1996, {
+    FA: { start: [9, 27], classesEnd: [12, 1], end: [12, 9] },
+    WI: { start: [1, 8], classesEnd: [3, 15], end: [3, 23] },
+    SP: { start: [4, 1], classesEnd: [6, 5], end: [6, 14] }
+  }),
+  ...transform3(1995, {
+    FA: { start: [9, 22], classesEnd: [12, 2], end: [12, 10] },
+    WI: { start: [1, 9], classesEnd: [3, 17], end: [3, 25] },
+    SP: { start: [4, 3], classesEnd: [6, 9], end: [6, 17] }
   })
+  // ScheduleOfClasses only has courses back to WI95
 ]

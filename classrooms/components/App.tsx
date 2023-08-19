@@ -28,16 +28,6 @@ import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
 import { SearchIcon } from './icons/SearchIcon.tsx'
 
-function getRequest (date: Day): TermRequest[] {
-  const { year, season, current } = getTerm(date)
-  return [
-    current ? { year, quarter: season } : null,
-    season === 'S1' || season === 'S2' || (season === 'FA' && !current)
-      ? { year, quarter: 'S3' }
-      : null
-  ]
-}
-
 /**
  * Represents the state of the app:
  * - If the object is `null`, then the app is fetching classroom data.
@@ -51,6 +41,26 @@ type AppState = {
   buildings?: TermBuildings
   errors: TermError[]
   season: Season
+}
+
+/**
+ * Displays errors. This won't mention if a term is unavailable if the other
+ * term failed to load.
+ * @param errors - Guaranteed to be nonempty.
+ */
+function displayError (errors: TermError[]): string {
+  const offlineErrors = errors
+    .filter(({ type }) => type === 'offline')
+    .map(({ request: { year, quarter } }) => termName(year, quarter))
+  if (offlineErrors.length > 0) {
+    return `I couldn't load schedules for ${offlineErrors.join(
+      ' and '
+    )}. Is ResNet failing you again?`
+  } else {
+    return `Schedules aren't available for ${errors
+      .map(({ request: { year, quarter } }) => termName(year, quarter))
+      .join(' and ')}.`
+  }
 }
 
 export function App () {
@@ -82,30 +92,14 @@ export function App () {
   const termCache = useRef(new TermCache())
   const [state, setState] = useState<AppState | null>(null)
 
-  // TODO: This error message could be better
   // TODO: Show errors if any in a corner
   const error =
-    state && state.errors.length > 0
-      ? state.errors
-          .map(({ type, request: { year, quarter } }) =>
-            type === 'offline'
-              ? `I couldn't load schedules for ${termName(
-                  year,
-                  quarter
-                )}. Is ResNet failing you again?`
-              : `Schedules aren't available for ${termName(year, quarter)}.`
-          )
-          .join(' ')
-      : null
+    state && state.errors.length > 0 ? displayError(state.errors) : null
   const noticeVisible = !state?.buildings
   const notice = useLast(
     '',
     state === null
-      ? // TODO: Display terms loading
-        `Loading ${getRequest(date)
-          .filter((request): request is Term => request !== null)
-          .map(({ year, quarter }) => termName(year, quarter))
-          .join(' and ')}...`
+      ? 'Loading...'
       : state.buildings
       ? null
       : error ??
@@ -121,9 +115,17 @@ export function App () {
   const building = useLast('CENTR', viewing)
 
   async function handleDate (date: Day) {
-    const requests = getRequest(date)
+    const { year, season, current, finals } = getTerm(date)
+    const requests = [
+      current ? { year, quarter: season } : null,
+      season === 'S1' || season === 'S2' || (season === 'FA' && !current)
+        ? { year, quarter: 'S3' }
+        : null
+    ]
     if (requests.every(request => request === null)) {
       // Have the date selector open for the user to select another day
+      setState({ errors: [], season })
+      setViewing(null)
       setShowDatePanel(true)
       return
     }
@@ -150,15 +152,16 @@ export function App () {
         errors.push(result)
       }
     }
-    const { season, finals } = getTerm(date)
     const courses = successes.flatMap(result => result.result.courses)
+    // Summer sessions' finals week overlaps with classes, it seems like?
+    const finalsWeek = finals && season !== 'S1' && season !== 'S2'
     const classrooms = coursesToClassrooms(courses, {
       monday: date.monday,
-      // Summer sessions' finals week overlaps with classes, it seems
-      // like?
-      finals: finals && season !== 'S1' && season !== 'S2'
+      finals: finalsWeek
     })
-    const empty = Object.keys(classrooms).length === 0
+    // For future quarters, all finals are TBA, but that doesn't mean the week
+    // is on break.
+    const empty = Object.keys(classrooms).length === 0 && !finalsWeek
     setState({
       buildings: empty ? undefined : classrooms,
       errors,
