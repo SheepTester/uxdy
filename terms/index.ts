@@ -56,36 +56,6 @@ function winterStart (year: number): Day {
   }
 }
 
-/**
- * Calculates the date of Rosh Hashanah in the given year. Rosh Hashanah starts
- * the evening the day before and ends at sundown the day after. Yom Kippur
- * starts sunset 8 days later and ends nightfall 9 days later on 10 Tishri.
- * https://quasar.as.utexas.edu/BillInfo/ReligiousCalendars.html
- *
- * The Jewish New Year affects when fall starts; fall move-in and the beginning
- * of the quarter cannot coincide with the Jewish New Year.
- */
-function roshHashanah (year: number): Day {
-  const golden = (year % 19) + 1
-  const rem12g19 = (12 * golden) % 19
-  const n =
-    (Math.floor(year / 100) - Math.floor(year / 400) - 2) * 492480 +
-    765433 * rem12g19 +
-    123120 * (year % 4) -
-    (313 * year + 89081) * 5
-  const date = Day.from(year, 9, Math.floor(n / 492480))
-  const fraction = n % 492480
-  if (date.day === 0 || date.day === 3 || date.day === 5) {
-    return date.add(1)
-  } else if (date.day === 1 && fraction >= 442111 && rem12g19 > 11) {
-    return date.add(1)
-  } else if (date.day === 2 && fraction >= 311676 && rem12g19 > 6) {
-    return date.add(2)
-  } else {
-    return date
-  }
-}
-
 export type TermDays = {
   start: Day
   finals: Day

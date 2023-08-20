@@ -5,6 +5,7 @@ import {
   Section,
   MeetingTime
 } from '../../scheduleofclasses/group-sections.ts'
+import { getHolidays } from '../../terms/holidays.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
 
@@ -46,6 +47,7 @@ export function coursesToClassrooms (
   courses: Course[],
   { finals = false, monday }: CoursesToClassroomsOptions
 ): TermBuildings {
+  const holidays = getHolidays(monday.year)
   const nextMonday = monday.add(7)
   const buildings: TermBuildings = {}
   for (const [i, { code, groups }] of courses.entries()) {
@@ -76,13 +78,16 @@ export function coursesToClassrooms (
           // Omit regular meetings during finals week
           continue
         }
-        const days =
-          dateRange && meeting.kind !== 'exam'
-            ? time.days.filter(weekday => {
-                const day = monday.add(weekday)
-                return dateRange.start <= day && day <= dateRange.end
-              })
-            : time.days
+        const days = time.days.filter(weekday => {
+          const day = monday.add(weekday)
+          if (holidays.includes(day.id)) {
+            return false
+          }
+          if (dateRange && meeting.kind !== 'exam') {
+            return dateRange.start <= day && day <= dateRange.end
+          }
+          return true
+        })
         if (days.length === 0) {
           continue
         }

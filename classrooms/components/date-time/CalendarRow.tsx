@@ -4,6 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { ComponentChildren } from 'preact'
+import { getHolidays } from '../../../terms/holidays.ts'
 import { Season, termCode, TermDays, termName } from '../../../terms/index.ts'
 import { Day, DAY_NUMS } from '../../../util/Day.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
@@ -93,6 +94,7 @@ export function CalendarWeekRow ({
 }: CalendarWeekRowProps) {
   const endDay = monday.add(7)
   const week = Math.floor((monday.id - termDays.start.id) / 7) + 1
+  const holidays = getHolidays(Math.max(monday.year, start.year))
 
   return (
     <div class='calendar-row calendar-date-row'>
@@ -115,7 +117,9 @@ export function CalendarWeekRow ({
                 ? 'calendar-finals-day'
                 : ''
             } ${day.id === date.id ? 'calendar-selected' : ''} ${
-              day >= termDays.start && day <= termDays.end
+              day >= termDays.start &&
+              day <= termDays.end &&
+              !holidays.includes(day.id)
                 ? ''
                 : 'calendar-break-day'
             }`}

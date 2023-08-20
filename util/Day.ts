@@ -70,7 +70,7 @@ export class Day {
    * Sunday), which can be used to get a unique ID for a week.
    */
   get sunday (): Day {
-    return this.add(-this.day)
+    return this.last(0)
   }
 
   /**
@@ -78,7 +78,7 @@ export class Day {
    * last Monday).
    */
   get monday (): Day {
-    return this.day === 0 ? this.add(-6) : this.add(1 - this.day)
+    return this.last(1)
   }
 
   get valid (): boolean {
@@ -92,6 +92,24 @@ export class Day {
     const clone = new Date(this.#date)
     clone.setUTCDate(this.date + days)
     return new Day(clone)
+  }
+
+  /**
+   * Returns the last day that falls on the given day of the week. For example,
+   * `last(3)` returns the last Wednesday. If `this` is Wednesday, then `last`
+   * returns `this`.
+   */
+  last (day: number): Day {
+    const offset = day - this.day
+    if (offset === 0) {
+      return this
+    } else if (offset < 0) {
+      // Earlier in the week
+      return this.add(offset)
+    } else {
+      // Last week
+      return this.add(offset - 7)
+    }
   }
 
   /**
