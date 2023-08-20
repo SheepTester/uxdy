@@ -258,31 +258,28 @@ export const data: Term[] = [
     S1: { start: [7, 1], end: [8, 3] },
     S2: { start: [8, 5], end: [9, 7] }
   }),
-  // https://library.ucsd.edu/dc/object/bb54633762/_1.pdf
+  // https://library.ucsd.edu/dc/search?f[collection_sim][]=UC+San+Diego+General+Catalog&sort=title_ssi+asc
   ...transform3(2001, {
     FA: { start: [9, 21], classesEnd: [12, 1], end: [12, 9] },
     WI: { start: [1, 8], classesEnd: [3, 16], end: [3, 24] },
     SP: { start: [4, 2], classesEnd: [6, 8], end: [6, 15] },
-    S1: { start: [7, 3], end: [8, 4] },
+    S1: { start: [7, 2], end: [8, 4] },
     S2: { start: [8, 6], end: [9, 8] }
   }),
-  // https://library.ucsd.edu/dc/object/bb1982115k/_1.pdf
   ...transform3(2000, {
     FA: { start: [9, 30], classesEnd: [12, 10], end: [12, 18] },
     WI: { start: [1, 10], classesEnd: [3, 17], end: [3, 25] },
     SP: { start: [4, 3], classesEnd: [6, 9], end: [6, 16] },
-    // NOTE: These summer session end dates are on Friday, unlike later summer
-    // sessions
-    S1: { start: [7, 3], end: [8, 4] },
-    S2: { start: [8, 7], end: [9, 8] }
+    // NOTE: The catalog lists the end dates on Friday, but ScheduleOfClasses
+    // has it for Saturday, and there are still Saturday finals in S100.
+    S1: { start: [7, 3], end: [8, 5] },
+    S2: { start: [8, 7], end: [9, 9] }
   }),
-  // https://library.ucsd.edu/dc/object/bb86374644/_1.pdf
   ...transform3(1999, {
     FA: { start: [9, 24], classesEnd: [12, 4], end: [12, 12] },
     WI: { start: [1, 4], classesEnd: [3, 12], end: [3, 20] },
     SP: { start: [3, 29], classesEnd: [6, 4], end: [6, 11] }
   }),
-  // https://library.ucsd.edu/dc/object/bb4610178f/_1.pdf
   ...transform3(1998, {
     FA: { start: [9, 25], classesEnd: [12, 5], end: [12, 13] },
     WI: { start: [1, 5], classesEnd: [3, 13], end: [3, 21] },
@@ -294,14 +291,21 @@ export const data: Term[] = [
     SP: { start: [3, 31], classesEnd: [6, 6], end: [6, 13] }
   }),
   ...transform3(1996, {
-    FA: { start: [9, 27], classesEnd: [12, 1], end: [12, 9] },
+    FA: { start: [9, 21], classesEnd: [12, 1], end: [12, 9] },
     WI: { start: [1, 8], classesEnd: [3, 15], end: [3, 23] },
     SP: { start: [4, 1], classesEnd: [6, 5], end: [6, 14] }
   }),
   ...transform3(1995, {
     FA: { start: [9, 22], classesEnd: [12, 2], end: [12, 10] },
     WI: { start: [1, 9], classesEnd: [3, 17], end: [3, 25] },
+    // This seems to be the last year where they ended spring on Saturday
+    // (overlapping with commencement) rather than Friday.
     SP: { start: [4, 3], classesEnd: [6, 9], end: [6, 17] }
+  }),
+  ...transform3(1994, {
+    FA: { start: [9, 23], classesEnd: [12, 3], end: [12, 11] },
+    WI: { start: [1, 3], classesEnd: [3, 11], end: [3, 19] },
+    SP: { start: [3, 28], classesEnd: [6, 11], end: [6, 11] }
   })
   // ScheduleOfClasses only has courses back to WI95
 ]

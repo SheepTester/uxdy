@@ -4,7 +4,7 @@ export type Season = 'FA' | 'WI' | 'SP' | 'S1' | 'S2'
 export type Quarter = Season | 'S3' | 'SU'
 
 /** When each quarter starts, in days from the start of winter quarter. */
-const offset: Record<Season, number> = {
+const offsets: Record<Season, number> = {
   WI: 0,
   SP: 84,
   S1: 175,
@@ -13,7 +13,7 @@ const offset: Record<Season, number> = {
 }
 
 /** How long each quarter is, in days. */
-const length: Record<Season, number> = {
+const lengths: Record<Season, number> = {
   FA: 79,
   WI: 75,
   SP: 74,
@@ -22,7 +22,7 @@ const length: Record<Season, number> = {
 }
 
 /** When finals start, in days from the end of the quarter. */
-const finalsOffset: Record<Season, number> = {
+const finalsOffsets: Record<Season, number> = {
   FA: 7,
   WI: 7,
   SP: 6, // Spring ends on a Friday, unlike FA/WI
@@ -43,8 +43,47 @@ const names: Record<Quarter, string> = {
 
 /** Returns the day when winter quarter starts in the given year. */
 function winterStart (year: number): Day {
-  const jan1 = Day.from(year, 1, 1)
-  return Day.from(year, 1, 9 - jan1.day)
+  if (year < 2028) {
+    // Quarter begins the first Monday not before January 3
+    const jan1 = Day.from(year, 1, 1)
+    return Day.from(year, 1, 9 - jan1.day)
+  } else {
+    // Quarter begins starting in 2028 is on a Wednesday presumably not before
+    // January 3, and instruction begins the following Monday, so the earliest
+    // the quarter can begin is January 8.
+    const dec30 = Day.from(year, 1, -1)
+    return Day.from(year, 1, 14 - dec30.day)
+  }
+}
+
+/**
+ * Calculates the date of Rosh Hashanah in the given year. Rosh Hashanah starts
+ * the evening the day before and ends at sundown the day after. Yom Kippur
+ * starts sunset 8 days later and ends nightfall 9 days later on 10 Tishri.
+ * https://quasar.as.utexas.edu/BillInfo/ReligiousCalendars.html
+ *
+ * The Jewish New Year affects when fall starts; fall move-in and the beginning
+ * of the quarter cannot coincide with the Jewish New Year.
+ */
+function roshHashanah (year: number): Day {
+  const golden = (year % 19) + 1
+  const rem12g19 = (12 * golden) % 19
+  const n =
+    (Math.floor(year / 100) - Math.floor(year / 400) - 2) * 492480 +
+    765433 * rem12g19 +
+    123120 * (year % 4) -
+    (313 * year + 89081) * 5
+  const date = Day.from(year, 9, Math.floor(n / 492480))
+  const fraction = n % 492480
+  if (date.day === 0 || date.day === 3 || date.day === 5) {
+    return date.add(1)
+  } else if (date.day === 1 && fraction >= 442111 && rem12g19 > 11) {
+    return date.add(1)
+  } else if (date.day === 2 && fraction >= 311676 && rem12g19 > 6) {
+    return date.add(2)
+  } else {
+    return date
+  }
 }
 
 export type TermDays = {
@@ -54,11 +93,29 @@ export type TermDays = {
 }
 
 export function getTermDays (year: number, season: Season): TermDays {
-  const start = winterStart(year).add(offset[season])
+  let offset = offsets[season]
+  if ((season === 'FA' ? year + 1 : year) === 2000) {
+    // Academic year 1999–2000 was delayed by a year, affecting FA99 to S200.
+    // Was this due to Y2K?
+    offset += 7
+  }
+  if (season === 'FA' && [1995, 2001, 2006, 2014, 2020].includes(year)) {
+    // All of these years overlap with Rosh Hashanah, but many others do too,
+    // but they aren't shifted, which is strange. I'm hardcoding these for now.
+    if (year < 2010) {
+      offset -= 7
+    } else {
+      offset += 7
+    }
+  }
+  const start = winterStart(year).add(offset)
   return {
     start,
-    finals: start.add(length[season] - finalsOffset[season]),
-    end: start.add(length[season])
+    finals: start.add(lengths[season] - finalsOffsets[season]),
+    end: start.add(
+      // It seems spring ended on a Saturday before 1995
+      year <= 1995 && season === 'SP' ? lengths[season] + 1 : lengths[season]
+    )
   }
 }
 
@@ -90,25 +147,29 @@ export type CurrentTerm =
  * during a break.
  */
 export function getTerm (day: Day): CurrentTerm {
-  const winterStartDay = winterStart(day.year).id
-  const daysSinceWinter = day.id - winterStartDay
+  let termDays: TermDays | null = null
   let season: Season | null = null
   let current = false
   for (const term of ['WI', 'SP', 'S1', 'S2', 'FA'] as const) {
-    if (daysSinceWinter <= offset[term] + length[term]) {
+    termDays = getTermDays(day.year, term)
+    if (day <= termDays.end) {
       season = term
-      current = daysSinceWinter >= offset[term]
+      current = day >= termDays.start
       break
     }
   }
+  if (termDays === null) {
+    // Just to satisfy TypeScript
+    throw new Error('Unreachable.')
+  }
   const year = season === null ? day.year + 1 : day.year
-  season ??= 'WI'
+  if (season === null) {
+    season = 'WI'
+    termDays = getTermDays(year, season)
+  }
   if (current) {
-    const finals =
-      current &&
-      daysSinceWinter >= offset[season] + length[season] - finalsOffset[season]
-    const week =
-      Math.floor((day.monday.id - (winterStartDay + offset[season])) / 7) + 1
+    const finals = current && day >= termDays.finals
+    const week = Math.floor((+day.monday - +termDays.start) / 7) + 1
     return { year, season, current, week, finals }
   } else {
     return { year, season, current, week: -1, finals: false }

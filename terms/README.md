@@ -65,3 +65,12 @@ Exceptions:
 [2027]: https://blink.ucsd.edu/instructors/resources/academic/calendars/2027.html
 [conflict-policy]: https://www.ucop.edu/institutional-research-academic-planning/_files/policy-religious-holiday-conflict-residence-hall-movein-2007.pdf
 [2020-v2016]: https://web.archive.org/web/20160228052634/https://blink.ucsd.edu/instructors/resources/academic/calendars/2020.html
+
+Current test failure categories:
+
+- 2028 winter quarter begins change (WI28, SP28, FA28 a week later than predicted)
+- Post-2010 Jewish holiday adjustment (FA14, FA20 a week later than predicted)
+- Unexplained week differences:
+  - FA06, FA01, FA95 a week earlier than predicted
+  - FA99, WI00, SP00, S100, S200 a week later than expected
+- 1995 spring quarter end day change (SP94, SP95 end Saturday not Friday)
