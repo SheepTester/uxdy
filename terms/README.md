@@ -59,6 +59,8 @@ Exceptions:
   - It might be because fall 2028 would otherwise September 21, which is earlier than all quarters except for 2006, which itself appears to be an oddball.
     - And Rosh Hashanah 2028 will be from Sept 21 to 22.
   - Curiously, "Winter Quarter begins" is on a Wednesday (Jan 5) before instruction begins. This is a change starting with [2027–2028][2027].
+- According to ScheduleOfClasses, before 2000 summer sessions ended on a Friday, not Saturday.
+  - Note that some classes (eg S195 CSE 12) had different time periods for Summer Session I vs Summer Session II.
 
 [2014]: https://blink.ucsd.edu/instructors/resources/academic/calendars/2014.html
 [2020]: https://blink.ucsd.edu/instructors/resources/academic/calendars/2020.html

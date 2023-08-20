@@ -26,7 +26,7 @@ const months = [
 async function getYear (term: string): Promise<[Day, Day]> {
   // From scheduleofclasses/scrape.ts
   const html = await fetch(
-    `https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=${term}&selectedSubjects=CSE`
+    `https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=${term}&selectedSubjects=MATH`
   ).then(r => r.text())
   const dateRangeMatch = html.match(
     /:&nbsp;([A-Z][a-z]*) (\d+) (\d+)&nbsp;-&nbsp;([A-Z][a-z]*) (\d+) (\d+)/
