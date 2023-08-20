@@ -10,7 +10,6 @@ export type Term = {
   quarter: Quarter
 }
 
-export type TermRequest = Term | null
 /**
  * Represents a term result that was unintentionally not retrieved.
  * - `unavailable` means the term data successfully loaded.
@@ -23,36 +22,6 @@ export type TermError = {
 export type TermResult = {
   request: Term
   result: TermCourses
-}
-export type GetTermsCallbacks = {
-  requests: TermRequest[]
-  full?: boolean
-  onNoRequest: () => void
-  /**
-   * Called only when a term needs to be fetched. Called synchronously with
-   * `getTerms`. Used to show a loading screen.
-   *
-   * @param terms - Contains the terms that need to be fetched.
-   */
-  onStartFetch: (terms: Term[]) => void
-  /**
-   * Called immediately if all `requests` are `null`. Called synchronously with
-   * `getTerms`. Used to show that UCSD is on break.
-   */
-  /**
-   * Called if all of the non-`null` requests gave errors. May be called
-   * asynchronously after `getTerms`.
-   *
-   * @param fetched - True if a term had to be fetched.
-   */
-  onError: (errors: TermError[], fetched: boolean) => void
-  /**
-   * Called once all the terms are ready, and at least one term has loaded
-   * successfully. May be called asynchronously after `getTerms`.
-   *
-   * @param fetched - True if a term had to be fetched.
-   */
-  onLoad: (results: TermResult[], errors: TermError[], fetched: boolean) => void
 }
 
 export class TermCache {

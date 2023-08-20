@@ -79,8 +79,8 @@ export function coursesToClassrooms (
           continue
         }
         const days = time.days.filter(weekday => {
-          const day = monday.add(weekday)
-          if (holidays.includes(day.id)) {
+          const day = monday.add((weekday + 6) % 7)
+          if (holidays[day.id]) {
             return false
           }
           if (dateRange && meeting.kind !== 'exam') {

@@ -117,9 +117,7 @@ export function CalendarWeekRow ({
                 ? 'calendar-finals-day'
                 : ''
             } ${day.id === date.id ? 'calendar-selected' : ''} ${
-              day >= termDays.start &&
-              day <= termDays.end &&
-              !holidays.includes(day.id)
+              day >= termDays.start && day <= termDays.end && !holidays[day.id]
                 ? ''
                 : 'calendar-break-day'
             }`}

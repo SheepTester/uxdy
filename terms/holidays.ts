@@ -1,43 +1,35 @@
 import { Day } from '../util/Day.ts'
 
-const holidayCache: Record<number, number[]> = {}
+const holidayCache: Record<number, Record<number, string>> = {}
 
 /**
- * Returns a list of holidays that occur during the given year. Memoized. For
- * your convenience, the array contains day IDs rather than `Day` objects so you
- * can do `holidays.includes(day.id)`.
+ * Returns an objecting mapping the day IDs of holidays that occur during the
+ * given year to their names. Memoized.
  * https://blink.ucsd.edu/HR/benefits/time-off/holidays.html
  */
-export function getHolidays (year: number): number[] {
-  holidayCache[year] ??= [
-    // New Year's Day
-    Day.from(year, 1, 1),
-    // Martin Luther King Jr. Day, observed on the third Monday in January
-    Day.from(year, 1, 7).monday.add(14),
-    // Presidents' Day, observed on the third Monday in February
-    Day.from(year, 2, 7).monday.add(14),
-    // César Chávez Day: observed on the last Friday in March
-    Day.from(year, 3, 31).last(5),
-    // Memorial Day, observed on the last Monday in May
-    Day.from(year, 5, 31).monday,
-    // Juneteenth National Independence Day, June
-    Day.from(year, 6, 19),
-    // Independence Day
-    Day.from(year, 7, 4),
-    // Labor Day (first Monday in September)
-    Day.from(year, 9, 7).monday,
-    // Veterans Day
-    Day.from(year, 9, 11),
-    // Thanksgiving Day (fourth Thursday of November)
-    Day.from(year, 11, 7).last(4).add(21),
-    // Friday after Thanksgiving
-    Day.from(year, 11, 7).last(4).add(22),
-    // Winter Break (2 days)
-    Day.from(year, 12, 24),
-    Day.from(year, 12, 25),
-    // New Year's Eve (or equivalent)
-    Day.from(year, 12, 31)
-  ].map(day => day.id)
+export function getHolidays (year: number): Record<number, string> {
+  holidayCache[year] ??= {
+    [Day.from(year, 1, 1).id]: "New Year's Day",
+    // third Monday in January
+    [Day.from(year, 1, 7).monday.add(14).id]: 'Martin Luther King Jr. Day',
+    // third Monday in February
+    [Day.from(year, 2, 7).monday.add(14).id]: "Presidents' Day",
+    // last Friday in March
+    [Day.from(year, 3, 31).last(5).id]: 'César Chávez Day',
+    // last Monday in May
+    [Day.from(year, 5, 31).monday.id]: 'Memorial Day',
+    [Day.from(year, 6, 19).id]: 'Juneteenth',
+    [Day.from(year, 7, 4).id]: 'Independence Day',
+    // first Monday in September
+    [Day.from(year, 9, 7).monday.id]: 'Labor Day',
+    [Day.from(year, 9, 11).id]: 'Veterans Day',
+    // fourth Thursday of November
+    [Day.from(year, 11, 7).last(4).add(21).id]: 'Thanksgiving',
+    [Day.from(year, 11, 7).last(4).add(22).id]: 'Day after Thanksgiving',
+    [Day.from(year, 12, 24).id]: 'Christmas Eve',
+    [Day.from(year, 12, 25).id]: 'Christmas',
+    [Day.from(year, 12, 31).id]: "New Year's Eve"
+  }
   return holidayCache[year]
 }
 

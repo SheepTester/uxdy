@@ -4,6 +4,7 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { getHolidays } from '../../terms/holidays.ts'
 import { getTerm, Season, termName } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
@@ -15,13 +16,7 @@ import {
 } from '../lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { now } from '../lib/now.ts'
-import {
-  Term,
-  TermCache,
-  TermError,
-  TermRequest,
-  TermResult
-} from '../lib/TermCache.ts'
+import { Term, TermCache, TermError, TermResult } from '../lib/TermCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
@@ -41,6 +36,7 @@ type AppState = {
   buildings?: TermBuildings
   errors: TermError[]
   season: Season
+  holiday?: string
 }
 
 /**
@@ -102,12 +98,13 @@ export function App () {
       ? 'Loading...'
       : state.buildings
       ? null
-      : error ??
-        (state.season === 'WI'
-          ? 'Winter break.'
-          : state.season === 'SP'
-          ? 'Spring break.'
-          : 'Summer break.')
+      : error ?? state.holiday
+      ? `${state.holiday}!`
+      : state.season === 'WI'
+      ? 'Winter break.'
+      : state.season === 'SP'
+      ? 'Spring break.'
+      : 'Summer break.'
   )
 
   const [showDatePanel, setShowDatePanel] = useState(false)
@@ -122,9 +119,10 @@ export function App () {
         ? { year, quarter: 'S3' }
         : null
     ]
-    if (requests.every(request => request === null)) {
+    const holiday = getHolidays(date.year)[date.id]
+    if (holiday || requests.every(request => request === null)) {
       // Have the date selector open for the user to select another day
-      setState({ errors: [], season })
+      setState({ errors: [], season, holiday })
       setViewing(null)
       setShowDatePanel(true)
       return
