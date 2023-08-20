@@ -7,6 +7,7 @@ type DisplayProgressOptions = {
   lineLength: number
   barLength: number
   label: string
+  stderr: boolean
 }
 
 const encoder = new TextEncoder()
@@ -15,11 +16,12 @@ export async function displayProgress (
   {
     lineLength = LINE_LENGTH,
     barLength = BAR_LENGTH,
-    label = ''
+    label = '',
+    stderr = false
   }: Partial<DisplayProgressOptions> = {}
 ) {
   await writeAll(
-    Deno.stdout,
+    stderr ? Deno.stderr : Deno.stdout,
     encoder.encode(
       `\r[${'='.repeat(Math.floor(progress * barLength))}${' '.repeat(
         barLength - Math.floor(progress * barLength)

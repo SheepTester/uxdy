@@ -1,13 +1,14 @@
 import { assertEquals } from 'std/testing/asserts.ts'
 import { Day } from '../util/Day.ts'
-import { getTerm, getTermDays } from './index.ts'
+import { getTerm, getTermDays, termCode } from './index.ts'
+import summerDates from './summer-dates.json' assert { type: 'json' }
 import { data } from './test-data.ts'
 
-Deno.test('getTermDays', async t => {
+Deno.test("getTermDays (from UCSD's calendars)", async t => {
   for (const { year, season, start, end } of data.sort(
     (a, b) => +a.start - +b.start
   )) {
-    const name = `${season}${((year % 100) + '').padStart(2, '0')}`
+    const name = termCode(year, season)
     await t.step(name, () => {
       const term = getTermDays(year, season)
       assertEquals(
@@ -22,7 +23,30 @@ Deno.test('getTermDays', async t => {
   }
 })
 
-Deno.test('getTerm', async t => {
+Deno.test("getTermDays (from ScheduleOfClasses' summer sessions)", async t => {
+  for (const [year, session, startStr, endStr] of summerDates) {
+    const quarter = session === 1 ? 'S1' : 'S2'
+    const name = termCode(+year, quarter)
+    const start = Day.parse(String(startStr))
+    const end = Day.parse(String(endStr))
+    await t.step(name, () => {
+      if (!start || !end) {
+        throw new TypeError(`Failed to parse ${startStr} or ${endStr}.`)
+      }
+      const term = getTermDays(+year, quarter)
+      assertEquals(
+        `start ${term.start} (${term.start.dayName('short')})`,
+        `start ${start} (${start.dayName('short')})`
+      )
+      assertEquals(
+        `end ${term.end} (${term.end.dayName('short')})`,
+        `end ${end} (${end.dayName('short')})`
+      )
+    })
+  }
+})
+
+Deno.test('getTerm', async () => {
   // Start of FA21
   assertEquals(getTerm(Day.from(2021, 9, 22)), {
     year: 2021,

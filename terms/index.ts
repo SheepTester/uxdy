@@ -113,8 +113,14 @@ export function getTermDays (year: number, season: Season): TermDays {
     start,
     finals: start.add(lengths[season] - finalsOffsets[season]),
     end: start.add(
-      // It seems spring ended on a Saturday before 1995
-      year <= 1995 && season === 'SP' ? lengths[season] + 1 : lengths[season]
+      lengths[season] +
+        // It seems spring ended on a Saturday before 1995
+        (year <= 1995 && season === 'SP'
+          ? 1
+          : // Summer session in the 20th century ended on a Friday
+          year < 2000 && (season === 'S1' || season === 'S2')
+          ? -1
+          : 0)
     )
   }
 }
