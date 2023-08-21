@@ -80,6 +80,9 @@ import(
 ```sh
 # In the repo root directory
 $ TERM=FA23 deno task classrooms:scrape-to-file
+# Deploy classroom data files
+$ ./scripts/deploy.sh ./classrooms/data/ data
+
 # Develop (does not minify)
 $ deno task classrooms:watch
 # Build
@@ -115,5 +118,5 @@ Features to add:
 
 - [x] Load summer session 3 when needed
 - [ ] Handle co-scheduled courses
-- [ ] Show when the quarter's data was last refreshed
+- [x] Show when the quarter's data was last refreshed
 - [ ] Show all images for building
