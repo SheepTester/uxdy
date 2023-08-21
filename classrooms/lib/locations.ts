@@ -41,7 +41,12 @@ export const northeast = latLongToPixel([
   getExtremeCoord(0, true),
   getExtremeCoord(1, true)
 ])
-export const PADDING = 50 // px
+/** In px. */
+export const PADDING = {
+  top: 60,
+  horizontal: 50,
+  bottom: 168
+}
 
 const MAP_TILE_SIZE = TILE_SIZE * MAP_ZOOM
 /** Center of map. */
@@ -49,9 +54,9 @@ const center = latLongToPixel([32.877341347399, -117.23531663418])
 export const mapPosition = {
   x:
     Math.floor(center.x / MAP_TILE_SIZE + TILE_LEFT) * MAP_TILE_SIZE -
-    (southwest.x - PADDING),
+    (southwest.x - PADDING.horizontal),
   y:
     Math.floor(center.y / MAP_TILE_SIZE - TILE_TOP) * MAP_TILE_SIZE -
-    (northeast.y - PADDING),
+    (northeast.y - PADDING.top),
   width: (TILE_RIGHT - TILE_LEFT + 1) * MAP_TILE_SIZE
 }

@@ -58,8 +58,8 @@ export function BuildingButton ({
         visible ? '' : 'building-btn-hidden'
       }`}
       style={{
-        left: `${x - southwest.x + PADDING}px`,
-        top: `${y - northeast.y + PADDING}px`
+        left: `${x - southwest.x + PADDING.horizontal}px`,
+        top: `${y - northeast.y + PADDING.top}px`
       }}
       ref={ref}
       onClick={() => onSelect(building.code)}

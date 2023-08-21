@@ -244,8 +244,10 @@ export function App () {
           <div
             class='scroll-area'
             style={{
-              width: `${northeast.x - southwest.x + PADDING * 2}px`,
-              height: `${southwest.y - northeast.y + PADDING * 2}px`,
+              width: `${northeast.x - southwest.x + PADDING.horizontal * 2}px`,
+              height: `${
+                southwest.y - northeast.y + PADDING.top + PADDING.bottom
+              }px`,
               backgroundSize: `${mapPosition.width}px`,
               backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`
             }}
