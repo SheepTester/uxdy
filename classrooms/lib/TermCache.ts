@@ -59,7 +59,7 @@ export class TermCache {
     full = false
   ): TermResult | TermError | Promise<TermResult | TermError> {
     const termId = this.#term(request, full)
-    const cached = this.#cache[termId]
+    const cached = this.#cache[termId] ?? this.#cache[this.#term(request, true)]
     if (cached === 'unavailable') {
       return { type: 'unavailable', request }
     } else if (cached) {

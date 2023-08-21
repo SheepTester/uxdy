@@ -22,6 +22,7 @@ import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
 import { SearchIcon } from './icons/SearchIcon.tsx'
+import { TermStatus } from './TermStatus.tsx'
 
 /**
  * Represents the state of the app:
@@ -34,6 +35,7 @@ import { SearchIcon } from './icons/SearchIcon.tsx'
 type AppState = {
   /** If undefined, then that means there are no classes for this time. */
   buildings?: TermBuildings
+  status: TermStatus[]
   errors: TermError[]
   season: Season
   holiday?: string
@@ -89,8 +91,6 @@ export function App () {
   const [state, setState] = useState<AppState | null>(null)
 
   // TODO: Show errors if any in a corner
-  const error =
-    state && state.errors.length > 0 ? displayError(state.errors) : null
   const noticeVisible = !state?.buildings
   const notice = useLast(
     '',
@@ -98,7 +98,9 @@ export function App () {
       ? 'Loading...'
       : state.buildings
       ? null
-      : error ?? state.holiday
+      : state && state.errors.length > 0
+      ? displayError(state.errors)
+      : state.holiday
       ? `${state.holiday}!`
       : state.season === 'WI'
       ? 'Winter break.'
@@ -122,7 +124,7 @@ export function App () {
     const holiday = getHolidays(date.year)[date.id]
     if (holiday || requests.every(request => request === null)) {
       // Have the date selector open for the user to select another day
-      setState({ errors: [], season, holiday })
+      setState({ errors: [], status: [], season, holiday })
       setViewing(null)
       setShowDatePanel(true)
       return
@@ -159,9 +161,17 @@ export function App () {
     })
     // For future quarters, all finals are TBA, but that doesn't mean the week
     // is on break.
-    const empty = Object.keys(classrooms).length === 0 && !finalsWeek
+    const empty =
+      Object.keys(classrooms).length === 0 &&
+      !(finalsWeek && courses.length > 0)
     setState({
       buildings: empty ? undefined : classrooms,
+      status: [
+        ...successes.map(
+          (result): TermStatus => [result.request, result.result.scraped]
+        ),
+        ...errors.map((error): TermStatus => [error.request, error.type])
+      ],
       errors,
       season
     })
@@ -203,15 +213,16 @@ export function App () {
           setRealTime(false)
           setTime(time)
         }}
-        useNow={date === null && time === null}
+        useNow={realTime}
         onUseNow={useNow => {
           if (useNow) {
             const { date, time } = now()
-            setRealTime(false)
+            setRealTime(true)
             setDate(date)
             setTime(time)
+            handleDate(date)
           } else {
-            setRealTime(true)
+            setRealTime(false)
           }
         }}
         visible={showDatePanel}
@@ -220,6 +231,7 @@ export function App () {
         }`}
         onClose={() => setShowDatePanel(false)}
       />
+      <TermStatus status={state?.status} visible={!noticeVisible} />
       <div class='buildings-wrapper'>
         <p
           class={`notice ${noticeVisible ? 'notice-visible' : ''} ${

@@ -7,6 +7,14 @@ import { getTerm, termCode } from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 
+const dateFormat = new Intl.DateTimeFormat([], {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric'
+})
+
 export type DateTimeButtonProps = {
   date: Day
   time: Time
@@ -31,8 +39,9 @@ export function DateTimeButton ({
       <p class='showing-schedule-wrapper'>
         <span class='showing-schedule-text'>Showing schedule for</span>
         <div class='date-time'>
-          <span class='date'>{date.toString()}</span>
-          <span class='time'>{time.toString()}</span>
+          {dateFormat.format(
+            new Date(date.year, date.month, date.date, time.hour, time.minute)
+          )}
         </div>
         {current && (
           <span class='quarter-week'>
