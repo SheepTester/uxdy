@@ -21,6 +21,7 @@ export type RoomMeeting = Omit<Section | Meeting | Exam, 'time' | 'location'> &
     special: boolean
   }
 
+/** Maps building code -> room number -> meetings. */
 export type TermBuildings = Record<string, Record<string, RoomMeeting[]>>
 
 /**

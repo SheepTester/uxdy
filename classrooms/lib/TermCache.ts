@@ -19,9 +19,13 @@ export type TermError = {
   type: 'unavailable' | 'offline'
   request: Term
 }
-export type TermResult = {
+export type TermSuccess = {
   request: Term
   result: TermCourses
+}
+export type TermResults = {
+  successes: TermSuccess[]
+  errors: TermError[]
 }
 
 export class TermCache {
@@ -54,10 +58,10 @@ export class TermCache {
     return full ? `${termCode(year, quarter)}-full` : termCode(year, quarter)
   }
 
-  request (
+  #request (
     request: Term,
     full = false
-  ): TermResult | TermError | Promise<TermResult | TermError> {
+  ): TermSuccess | TermError | Promise<TermSuccess | TermError> {
     const termId = this.#term(request, full)
     const cached = this.#cache[termId] ?? this.#cache[this.#term(request, true)]
     if (cached === 'unavailable') {
@@ -67,13 +71,42 @@ export class TermCache {
     } else {
       // Only S3 has relevant date ranges (well, and SU I guess)
       return this.#fetch(termId, request.quarter === 'S3')
-        .then((result): TermResult | TermError => {
+        .then((result): TermSuccess | TermError => {
           this.#cache[termId] = result
           return result === 'unavailable'
             ? { type: 'unavailable', request }
             : { request, result }
         })
         .catch(() => ({ type: 'offline', request }))
+    }
+  }
+
+  #partition (results: (TermSuccess | TermError)[]): TermResults {
+    const successes: TermSuccess[] = []
+    const errors: TermError[] = []
+    for (const result of results) {
+      if ('result' in result) {
+        successes.push(result)
+      } else {
+        errors.push(result)
+      }
+    }
+    return { successes, errors }
+  }
+
+  requestTerms (
+    requests: Term[],
+    full = false
+  ): TermResults | Promise<TermResults> {
+    const rawResults = requests.map(request => this.#request(request, full))
+    const allCached = rawResults.every(
+      (result): result is TermSuccess | TermError =>
+        !(result instanceof Promise)
+    )
+    if (allCached) {
+      return this.#partition(rawResults)
+    } else {
+      return Promise.all(rawResults).then(results => this.#partition(results))
     }
   }
 }

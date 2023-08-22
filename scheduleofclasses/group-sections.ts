@@ -186,6 +186,7 @@ function printRemoteSections (
     S3: 'Special Summer Session',
     SU: 'Summer Med School'
   }
+  // This is vulnerable to the Y2.1K glitch
   console.log(`## ${term}: ${seasons[term.slice(0, 2)]} 20${term.slice(2)}`)
   console.log()
   for (const course of Object.values(courses)) {
@@ -250,8 +251,8 @@ if (import.meta.main) {
       }
     }
   }
-  console.log(starts, ends, startMost, endMost)
-  // printRemoteSections(courses)
+  // console.log(starts, ends, startMost, endMost)
+  printRemoteSections(term, courses)
 
   type Period = {
     day: number

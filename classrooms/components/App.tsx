@@ -16,12 +16,12 @@ import {
 } from '../lib/coursesToClassrooms.ts'
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { now } from '../lib/now.ts'
-import { Term, TermCache, TermError, TermResult } from '../lib/TermCache.ts'
+import { Term, TermCache, TermError } from '../lib/TermCache.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
-import { SearchIcon } from './icons/SearchIcon.tsx'
+import { SearchBar } from './search/SearchBar.tsx'
 import { TermStatus } from './TermStatus.tsx'
 
 /**
@@ -132,26 +132,13 @@ export function App () {
     const terms = requests.filter(
       (request): request is Term => request !== null
     )
-    const rawResults = terms.map(request => termCache.current.request(request))
-    let fetchedResults: (TermResult | TermError)[]
-    const allCached = rawResults.every(
-      (result): result is TermResult | TermError => !(result instanceof Promise)
-    )
-    if (allCached) {
-      fetchedResults = rawResults
-    } else {
+    const maybePromise = termCache.current.requestTerms(terms)
+    if (maybePromise instanceof Promise) {
+      // Show "Loading..."
       setState(null)
-      fetchedResults = await Promise.all(rawResults)
     }
-    const successes: TermResult[] = []
-    const errors: TermError[] = []
-    for (const result of fetchedResults) {
-      if ('result' in result) {
-        successes.push(result)
-      } else {
-        errors.push(result)
-      }
-    }
+    const { successes, errors } =
+      maybePromise instanceof Promise ? await maybePromise : maybePromise
     const courses = successes.flatMap(result => result.result.courses)
     // Summer sessions' finals week overlaps with classes, it seems like?
     const finalsWeek = finals && season !== 'S1' && season !== 'S2'
@@ -159,6 +146,11 @@ export function App () {
       monday: date.monday,
       finals: finalsWeek
     })
+    for (const building of Object.keys(classrooms)) {
+      if (!buildings[building]) {
+        console.warn(`${building} does not exist.`)
+      }
+    }
     // For future quarters, all finals are TBA, but that doesn't mean the week
     // is on break.
     const empty =
@@ -186,14 +178,11 @@ export function App () {
 
   return (
     <>
-      <label class={`search-wrapper ${noticeVisible ? 'hide-search' : ''}`}>
-        <SearchIcon />
-        <input
-          type='search'
-          placeholder='Coming soon...'
-          class='search-input'
-        />
-      </label>
+      <SearchBar
+        termCache={termCache.current}
+        terms={state?.status.map(([term]) => term) ?? []}
+        visible={!noticeVisible}
+      />
       <DateTimeButton
         date={date}
         time={time}

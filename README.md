@@ -96,18 +96,28 @@ Map image was made with [this tool](https://sheeptester.github.io/words-go-here/
 Current uses:
 
 - **Checking when a classroom is available.** Does RWAC 0935 have classes in it? When are they?
+  - Feature: schedule for each room.
 - **Finding ongoing lectures nearby to crash.** I'm sitting in the Jeannie studying as the next lecture comes in. What course is it for?
+  - Feature: map of buildings.
+- **Finding available classrooms during a specific time.** Spencer is available to teach juggling at 3 pm. What classroom can he teach it in?
+  - Feature: changing the "current" time.
+- **Getting the start and end dates of each quarter.** The internship application asks when I'm available to start. When does spring end? I'm too lazy to find that enrollment calendar website.
+  - Feature: calendar view with quarters marked out.
+- **Converting between month/day dates and quarter weeks.** May 15, what week is that?
+  - Feature: calendar view with week numbers.
 
 Planned uses:
 
-- **Finding available classrooms during a specific time.** Spencer is available to teach juggling at 3 pm. What classroom can he teach it in? (Feature: changing the "current" time.)
-- **Finding buildings by their code on the map.** Where is RECGM? (Feature: search buildings by code.)
-- **Guiding students to buildings.** Where is Mosaic? It's next to Wolftown. (Feature: link to buildings directly, include photos of buildings.)
-- **Finding what classes are taught by a professor this quarter.** What classes is Sworder teaching next quarter? (Feature: search sections by professor.)
-- **Looking up the lecture location for a class.** I'll crash ECE 100. Where is it? I'm too lazy to sign into WebReg, and searching up courses on there is slow. (Feature: search courses by course code, list meeting times/locations for a course.)
-- **Getting the start and end dates of each quarter.** The internship application asks when I'm available to start. When does spring end? I'm too lazy to find that enrollment calendar website. (Feature: calendar view with quarters marked out.)
-- **Converting between month/day dates and quarter weeks.** May 15, what week is that? (Feature: calendar view with week numbers.)
-- **Determining when a professor is free.** I want to schedule a meeting with my professor. When might they be free? (Feature: calendar view for a professor. Note: this might have privacy implications, tread carefully.)
+- **Looking up the lecture location for a class.** I'll crash ECE 100. Where is it? I'm too lazy to sign into WebReg, and searching up courses on there is slow.
+  - Feature: search courses by course code, list meeting times/locations for a course.
+- **Finding buildings by their code on the map.** Where is RECGM?
+  - Feature: search buildings by code.
+- **Finding what classes are taught by a professor this quarter.** What classes is Sworder teaching next quarter?
+  - Feature: search sections by professor.
+- **Determining when a professor is free.** I want to schedule a meeting with my professor. When might they be free?
+  - Feature: calendar view for a professor. Note: this might have privacy implications, tread carefully.
+- **Guiding students to buildings.** Where is Mosaic? It's next to Wolftown.
+  - Feature: link to buildings directly, include photos of buildings.
 
 Features to add:
 
