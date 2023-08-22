@@ -4,29 +4,33 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
-import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { termCode } from '../../../terms/index.ts'
 import { Term, TermCache } from '../../lib/TermCache.ts'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
-import { SearchResults } from './SearchResults.tsx'
-
-type CourseData = {
-  courses: Course[]
-  professors: string[]
-}
+import { SearchData, SearchResults } from './SearchResults.tsx'
 
 type State =
   | { type: 'unloaded' }
   | { type: 'loading' }
-  | { type: 'loaded'; terms: string; data: CourseData }
-  | { type: 'error' }
+  | {
+      type: 'loaded'
+      terms: string
+      data: Omit<SearchData, 'buildings'>
+      offline: Term[]
+    }
 
 export type SearchBarProps = {
   termCache: TermCache
   terms: Term[]
+  buildings: string[]
   visible: boolean
 }
-export function SearchBar ({ termCache, terms, visible }: SearchBarProps) {
+export function SearchBar ({
+  termCache,
+  terms,
+  buildings,
+  visible
+}: SearchBarProps) {
   const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const [query, setQuery] = useState('')
   const [state, setState] = useState<State>({ type: 'unloaded' })
@@ -40,17 +44,31 @@ export function SearchBar ({ termCache, terms, visible }: SearchBarProps) {
     }
     const { successes, errors } =
       maybePromise instanceof Promise ? await maybePromise : maybePromise
-    if (successes.length > 0) {
-      setState({
-        type: 'loaded',
-        terms: termsId,
-        data: { courses: [], professors: [] }
-      })
-    } else {
-      setState({ type: 'error' })
-    }
+    const courses = successes.flatMap(result => result.result.courses)
+    setState({
+      type: 'loaded',
+      terms: termsId,
+      data: {
+        courses,
+        professors: Array.from(
+          new Set(
+            courses.flatMap(course =>
+              course.groups.flatMap(group =>
+                group.instructors.map(({ first, last }) => `${last}, ${first}`)
+              )
+            )
+          )
+        )
+      },
+      // Don't show `unavailable` errors since it's already shown by the term
+      // status
+      offline: errors
+        .filter(error => error.type === 'offline')
+        .map(error => error.request)
+    })
   }
 
+  // TODO: show loading, offline errors with retry button
   return (
     <div class={`search-wrapper ${visible ? '' : 'hide-search'}`}>
       <label class='search-bar'>
@@ -60,15 +78,26 @@ export function SearchBar ({ termCache, terms, visible }: SearchBarProps) {
           placeholder='Coming soon...'
           class='search-input'
           value={query}
-          onInput={e => {
-            setQuery(e.currentTarget.value)
-            if (!loaded && state.type !== 'loading') {
+          onInput={e => setQuery(e.currentTarget.value)}
+          onFocus={() => {
+            if (
+              state.type === 'unloaded' ||
+              (state.type === 'loaded' && state.terms !== termsId)
+            ) {
               loadTerms()
             }
           }}
         />
       </label>
-      {loaded && <SearchResults query={query} />}
+      {loaded && (
+        <SearchResults
+          query={query}
+          data={{ ...state.data, buildings }}
+          onSelect={view => {
+            console.log(view)
+          }}
+        />
+      )}
     </div>
   )
 }

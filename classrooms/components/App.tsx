@@ -181,6 +181,7 @@ export function App () {
       <SearchBar
         termCache={termCache.current}
         terms={state?.status.map(([term]) => term) ?? []}
+        buildings={state?.buildings ? Object.keys(state?.buildings) : []}
         visible={!noticeVisible}
       />
       <DateTimeButton
