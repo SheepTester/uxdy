@@ -947,6 +947,9 @@ input[type='checkbox']:checked {
   border-radius: 10px;
   width: 360px;
   transition: opacity 0.4s, visibility 0.4s;
+  max-height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
 }
 @media (max-width: 690px) {
   .search-wrapper {
@@ -964,6 +967,7 @@ input[type='checkbox']:checked {
   padding-left: 8px;
   height: 40px;
   font-family: var(--normal);
+  flex: none;
 }
 .search-input {
   padding: 0 8px;
@@ -971,10 +975,38 @@ input[type='checkbox']:checked {
   border-bottom-right-radius: 10px;
   flex: auto;
 }
+.no-results {
+  font-family: var(--normal);
+  padding: 10px;
+  color: var(--secondary);
+  margin: 0;
+}
 .results {
   margin: 0;
-  padding: 0;
+  padding: 5px 0;
   list-style: none;
+  overflow: auto;
+  flex: auto;
+}
+.result-heading {
+  color: var(--secondary);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  font-family: var(--normal);
+}
+.result {
+  padding: 5px 10px;
+}
+.result-primary {
+  margin: 0;
+}
+.result-secondary {
+  font-size: 0.8em;
+  margin: 0;
+}
+.result-name {
+  font-family: var(--normal);
 }
 
 .college-revelle {

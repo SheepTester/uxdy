@@ -3,9 +3,10 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useMemo, useState } from 'preact/hooks'
+import { useMemo } from 'preact/hooks'
 import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { buildings } from '../../lib/buildings.ts'
+import { SearchResult } from './SearchResult.tsx'
 
 export type SearchData = {
   courses: Course[]
@@ -31,6 +32,9 @@ type SearchResults = {
 }
 
 function score (string: string, query: string): ResultScore {
+  if (string === '') {
+    return { score: 0 }
+  }
   string = string.toLocaleLowerCase()
   if (string === query) {
     return { score: 3 }
@@ -72,7 +76,7 @@ function search (data: SearchData, query: string): SearchResults {
     buildings: sortResults(
       data.buildings.flatMap(code => [
         { code, in: 'code', ...score(code, query) },
-        { code, in: 'name', ...score(buildings[code].name, query) }
+        { code, in: 'name', ...score(buildings[code]?.name ?? '', query) }
       ])
     )
   }
@@ -98,24 +102,43 @@ export function SearchResults ({ query, data }: SearchResultsProps) {
     results.professors.length +
     results.buildings.length
   if (length === 0) {
-    return null
+    if (query === '') {
+      return null
+    } else {
+      return <p class='no-results'>No results.</p>
+    }
   }
   return (
     <ul class='results'>
+      {results.courses.length > 0 && <li class='result-heading'>Courses</li>}
       {results.courses.map(course => (
-        <li key={`course\t${course.code}\t${course.in}`}>{course.code}</li>
+        <SearchResult
+          name={course.title}
+          code={course.code}
+          primary={course.in === 'code' ? 'code' : 'name'}
+          key={`course\t${course.code}\t${course.in}`}
+        />
       ))}
+      {results.professors.length > 0 && (
+        <li class='result-heading'>Professors</li>
+      )}
       {results.professors.map(professor => (
-        <li
-          key={`course\t${professor.first}, ${professor.last}\t${professor.order}`}
-        >
-          {professor.first} {professor.last}
-        </li>
+        <SearchResult
+          name={`${professor.last}, ${professor.first}`}
+          primary='name'
+          key={`course\t${professor.last}, ${professor.first}\t${professor.order}`}
+        />
       ))}
+      {results.buildings.length > 0 && (
+        <li class='result-heading'>Buildings</li>
+      )}
       {results.buildings.map(building => (
-        <li key={`course\t${building.code}\t${building.in}`}>
-          {building.code}
-        </li>
+        <SearchResult
+          name={buildings[building.code].name}
+          code={building.code}
+          primary={building.in === 'code' ? 'code' : 'name'}
+          key={`course\t${building.code}\t${building.in}`}
+        />
       ))}
     </ul>
   )
