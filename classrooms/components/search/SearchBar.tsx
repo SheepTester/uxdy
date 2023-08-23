@@ -57,7 +57,11 @@ export function SearchBar ({
                 group.instructors.map(({ first, last }) => `${last}, ${first}`)
               )
             )
-          )
+          ),
+          name => {
+            const [last, first] = name.split(', ')
+            return { first, last }
+          }
         )
       },
       // Don't show `unavailable` errors since it's already shown by the term
@@ -75,7 +79,7 @@ export function SearchBar ({
         <SearchIcon />
         <input
           type='search'
-          placeholder='Coming soon...'
+          placeholder='Search courses, people, buildings...'
           class='search-input'
           value={query}
           onInput={e => setQuery(e.currentTarget.value)}

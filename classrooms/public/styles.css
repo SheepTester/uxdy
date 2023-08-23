@@ -942,6 +942,10 @@ input[type='checkbox']:checked {
   top: 0;
   left: 0;
   margin: 20px;
+  background-color: var(--modal);
+  box-shadow: var(--modal-shadow);
+  border-radius: 10px;
+  width: 360px;
   transition: opacity 0.4s, visibility 0.4s;
 }
 @media (max-width: 690px) {
@@ -956,19 +960,21 @@ input[type='checkbox']:checked {
   opacity: 0;
 }
 .search-bar {
-  background-color: var(--modal);
-  box-shadow: var(--modal-shadow);
   display: flex;
   padding-left: 8px;
   height: 40px;
-  /* width: 320px; */
-  border-radius: 10px;
+  font-family: var(--normal);
 }
 .search-input {
   padding: 0 8px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   flex: auto;
+}
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .college-revelle {
