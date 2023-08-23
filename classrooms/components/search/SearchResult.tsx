@@ -7,11 +7,16 @@ export type SearchResultProps = {
   name?: string
   code?: string
   primary: 'name' | 'code'
+  match?: {
+    start: number
+    end: number
+  }
 }
 export function SearchResult ({
   name,
   code,
-  primary: primaryField
+  primary: primaryField,
+  match
 }: SearchResultProps) {
   const nameFirst = primaryField === 'name'
   const primary = nameFirst ? name : code
@@ -22,7 +27,17 @@ export function SearchResult ({
         <p
           class={`result-primary ${nameFirst ? 'result-name' : 'result-code'}`}
         >
-          {primary}
+          {match ? (
+            <>
+              {primary.slice(0, match.start)}
+              <span class='result-match'>
+                {primary.slice(match.start, match.end)}
+              </span>
+              {primary.slice(match.end)}
+            </>
+          ) : (
+            primary
+          )}
         </p>
       )}
       {secondary !== undefined && (

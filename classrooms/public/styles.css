@@ -1008,6 +1008,10 @@ input[type='checkbox']:checked {
 .result-name {
   font-family: var(--normal);
 }
+.result-match {
+  background-color: var(--button);
+  color: white;
+}
 
 .college-revelle {
   background-image: linear-gradient(120deg, #2045c5, #273b80);

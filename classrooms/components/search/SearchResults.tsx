@@ -16,8 +16,11 @@ export type SearchData = {
 
 type ResultScore = {
   score: number
+  match?: {
+    start: number
+    end: number
+  }
 }
-
 type CourseResult = Course & { in: 'code' | 'title' } & ResultScore
 type ProfessorResult = {
   first: string
@@ -37,13 +40,14 @@ function score (string: string, query: string): ResultScore {
   }
   string = string.toLocaleLowerCase()
   if (string === query) {
-    return { score: 3 }
+    return { score: 3, match: { start: 0, end: string.length } }
   }
   if (string.startsWith(query)) {
-    return { score: 2 }
+    return { score: 2, match: { start: 0, end: query.length } }
   }
-  if (string.includes(query)) {
-    return { score: 1 }
+  const index = string.indexOf(query)
+  if (index !== -1) {
+    return { score: 1, match: { start: index, end: index + query.length } }
   }
   return { score: 0 }
 }
@@ -116,6 +120,7 @@ export function SearchResults ({ query, data }: SearchResultsProps) {
           name={course.title}
           code={course.code}
           primary={course.in === 'code' ? 'code' : 'name'}
+          match={course.match}
           key={`course\t${course.code}\t${course.in}`}
         />
       ))}
@@ -124,8 +129,13 @@ export function SearchResults ({ query, data }: SearchResultsProps) {
       )}
       {results.professors.map(professor => (
         <SearchResult
-          name={`${professor.last}, ${professor.first}`}
+          name={
+            professor.order === 'forward'
+              ? `${professor.first} ${professor.last}`
+              : `${professor.last}, ${professor.first}`
+          }
           primary='name'
+          match={professor.match}
           key={`course\t${professor.last}, ${professor.first}\t${professor.order}`}
         />
       ))}
@@ -137,6 +147,7 @@ export function SearchResults ({ query, data }: SearchResultsProps) {
           name={buildings[building.code].name}
           code={building.code}
           primary={building.in === 'code' ? 'code' : 'name'}
+          match={building.match}
           key={`course\t${building.code}\t${building.in}`}
         />
       ))}
