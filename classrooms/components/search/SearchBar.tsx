@@ -23,12 +23,14 @@ export type SearchBarProps = {
   termCache: TermCache
   terms: Term[]
   buildings: string[]
+  onBuilding: (building: string) => void
   visible: boolean
 }
 export function SearchBar ({
   termCache,
   terms,
   buildings,
+  onBuilding,
   visible
 }: SearchBarProps) {
   const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
@@ -102,6 +104,14 @@ export function SearchBar ({
               e.preventDefault()
             }
             if (e.key === 'Enter') {
+              // This sucks but I'm too lazy to think of a good React way to do
+              // this
+              const selected = e.currentTarget
+                .closest('.search-wrapper')
+                ?.querySelector('.result-selected')
+              if (selected instanceof HTMLElement) {
+                selected.click()
+              }
               e.preventDefault()
             }
           }}
@@ -122,6 +132,9 @@ export function SearchBar ({
           data={{ ...state.data, buildings }}
           index={index}
           onSelect={view => {
+            if (view.type === 'building') {
+              onBuilding(view.id)
+            }
             console.log(view)
           }}
         />

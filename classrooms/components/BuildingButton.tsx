@@ -22,6 +22,7 @@ type BuildingButtonProps = {
   rooms: RoomMeeting[][]
   onSelect: (building: string) => void
   selected: boolean
+  scrollTarget: { init: boolean } | null
   visible: boolean
 }
 
@@ -32,23 +33,31 @@ export function BuildingButton ({
   rooms,
   onSelect,
   selected,
+  scrollTarget,
   visible
 }: BuildingButtonProps) {
   const college = building.college
 
-  const ref = useCallback((button: HTMLButtonElement | null) => {
-    if (building.code === 'CENTR' && button) {
-      window.requestAnimationFrame(() => {
-        const { left, top, width, height } = button.getBoundingClientRect()
-        button
-          .closest('.buildings')
-          ?.scrollBy(
-            left + (-window.innerWidth + width) / 2,
-            top + (-window.innerHeight + height) / 2
-          )
-      })
-    }
-  }, [])
+  const ref = useCallback(
+    (button: HTMLButtonElement | null) => {
+      if (scrollTarget && button) {
+        window.requestAnimationFrame(() => {
+          const windowWidth = window.innerWidth
+          const windowHeight = window.innerHeight
+          const panelHeight = scrollTarget.init
+            ? 0
+            : windowHeight * (windowWidth <= 690 ? 0.7 : 0.6)
+          const { left, top, width, height } = button.getBoundingClientRect()
+          button.closest('.buildings')?.scrollBy({
+            left: left + (-windowWidth + width) / 2,
+            top: top + (-(windowHeight - panelHeight) + height) / 2,
+            behavior: scrollTarget.init ? 'auto' : 'smooth'
+          })
+        })
+      }
+    },
+    [scrollTarget]
+  )
 
   const { x, y } = latLongToPixel(building.location)
 

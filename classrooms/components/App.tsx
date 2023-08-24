@@ -112,6 +112,7 @@ export function App () {
   const [showDatePanel, setShowDatePanel] = useState(false)
   const [viewing, setViewing] = useState<string | null>(null)
   const building = useLast('CENTR', viewing)
+  const [scrollTo, setScrollTo] = useState({ building: 'CENTR', init: true })
 
   async function handleDate (date: Day) {
     const { year, season, current, finals } = getTerm(date)
@@ -182,6 +183,10 @@ export function App () {
         termCache={termCache.current}
         terms={state?.status.map(([term]) => term) ?? []}
         buildings={state?.buildings ? Object.keys(state?.buildings) : []}
+        onBuilding={building => {
+          setScrollTo({ building, init: false })
+          setViewing(building)
+        }}
         visible={!noticeVisible}
       />
       <DateTimeButton
@@ -251,6 +256,9 @@ export function App () {
               rooms={Object.values(state?.buildings?.[building.code] ?? {})}
               onSelect={setViewing}
               selected={building.code === viewing}
+              scrollTarget={
+                building.code === scrollTo.building ? scrollTo : null
+              }
               visible={!!state?.buildings && building.code in state.buildings}
             />
           ))}
