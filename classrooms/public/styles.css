@@ -951,19 +951,6 @@ input[type='checkbox']:checked {
   display: flex;
   flex-direction: column;
 }
-@media (max-width: 690px) {
-  .search-wrapper {
-    right: 0;
-    width: unset;
-    margin: 10px;
-    max-height: calc(100% - 20px);
-  }
-  .showing-results {
-    margin: 0;
-    padding: 10px;
-    border-radius: 0;
-  }
-}
 .hide-search {
   visibility: hidden;
   opacity: 0;
@@ -1028,6 +1015,27 @@ input[type='checkbox']:checked {
   background-color: var(--button);
   color: white;
 }
+@media (max-width: 690px) {
+  .search-wrapper {
+    right: 0;
+    width: unset;
+    margin: 10px;
+    max-height: calc(100% - 20px);
+  }
+  .showing-results {
+    margin: 0;
+    padding: 10px 0;
+    border-radius: 0;
+  }
+  .showing-results .search-bar,
+  .result-heading,
+  .no-results {
+    margin: 0 10px;
+  }
+  .result {
+    padding: 5px 20px;
+  }
+}
 
 .modal {
   display: block;
@@ -1045,10 +1053,11 @@ input[type='checkbox']:checked {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
   opacity: 0;
   pointer-events: none;
   user-select: none;
-  transition: visibility 0.5s, opacity 0.5s;
+  transition: visibility 0.2s, opacity 0.2s;
 }
 .modal[open] {
   visibility: visible;
@@ -1064,12 +1073,14 @@ input[type='checkbox']:checked {
   background: none;
 }
 .modal-body {
+  width: 100%;
+  max-width: 1000px;
   background-color: var(--modal);
   box-shadow: var(--modal-shadow);
   border-radius: 20px;
-  padding: 20px;
-  transform: scale(0.9);
-  transition: transform 0.5s;
+  padding: 40px;
+  transform: scale(0.95);
+  transition: transform 0.2s;
 }
 .modal[open] .modal-body {
   transform: none;
@@ -1077,6 +1088,7 @@ input[type='checkbox']:checked {
 .modal-title-course-code {
   font-size: 120px;
   margin: 0;
+  font-weight: normal;
 }
 
 .college-revelle {

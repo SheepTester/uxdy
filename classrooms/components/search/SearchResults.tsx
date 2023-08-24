@@ -69,14 +69,14 @@ function sortResults<T extends ResultScore> (results: T[]): T[] {
   return results
     .filter(result => result.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5)
+    .slice(0, 15)
 }
 
 function search (data: SearchData, query: string): SearchResults {
   if (query === '') {
     return { courses: [], buildings: [], professors: [] }
   }
-  return {
+  const results: SearchResults = {
     courses: sortResults(
       data.courses.map(course =>
         maxResult(
@@ -108,6 +108,17 @@ function search (data: SearchData, query: string): SearchResults {
         )
       )
     )
+  }
+
+  const sections =
+    (results.courses.length > 0 ? 1 : 0) +
+    (results.professors.length > 0 ? 1 : 0) +
+    (results.buildings.length > 0 ? 1 : 0)
+  const maxSectionLength = sections === 3 ? 5 : sections === 2 ? 7 : 12
+  return {
+    courses: results.courses.slice(0, maxSectionLength),
+    professors: results.professors.slice(0, maxSectionLength),
+    buildings: results.buildings.slice(0, maxSectionLength)
   }
 }
 

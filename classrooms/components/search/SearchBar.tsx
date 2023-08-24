@@ -4,7 +4,6 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
-import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { termCode } from '../../../terms/index.ts'
 import { useLast } from '../../../util/useLast.ts'
 import { Term, TermCache } from '../../lib/TermCache.ts'
