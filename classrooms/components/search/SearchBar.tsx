@@ -11,7 +11,7 @@ import { SearchIcon } from '../icons/SearchIcon.tsx'
 import { ModalView, ResultModal } from './ResultModal.tsx'
 import { SearchData, SearchResults, View } from './SearchResults.tsx'
 
-type State =
+export type State =
   | { type: 'unloaded' }
   | { type: 'loading' }
   | {
@@ -22,81 +22,27 @@ type State =
     }
 
 export type SearchBarProps = {
-  termCache: TermCache
+  state: State
   terms: Term[]
   buildings: string[]
-  onBuilding: (building: string) => void
   visible: boolean
+  onRequestTerms: (terms: Term[]) => void
+  onView: (view: View) => void
 }
 export function SearchBar ({
-  termCache,
+  state,
   terms,
   buildings,
-  onBuilding,
-  visible
+  visible,
+  onRequestTerms,
+  onView
 }: SearchBarProps) {
-  const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
   const [showResults, setShowResults] = useState(true)
-  const [state, setState] = useState<State>({ type: 'unloaded' })
+
+  const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const loaded = state.type === 'loaded' && state.terms === termsId
-  const [viewing, setViewing] = useState<ModalView | null>(null)
-  const modalView = useLast<ModalView>(
-    { type: 'course', course: { code: '', title: '', groups: [] } },
-    viewing
-  )
-
-  async function loadTerms (): Promise<void> {
-    const maybePromise = termCache.requestTerms(terms, true)
-    if (maybePromise instanceof Promise) {
-      // Show "Loading..."
-      setState({ type: 'loading' })
-    }
-    const { successes, errors } =
-      maybePromise instanceof Promise ? await maybePromise : maybePromise
-    const courses = successes.flatMap(result => result.result.courses)
-    setState({
-      type: 'loaded',
-      terms: termsId,
-      data: {
-        courses,
-        professors: Array.from(
-          new Set(
-            courses.flatMap(course =>
-              course.groups.flatMap(group =>
-                group.instructors.map(({ first, last }) => `${last}, ${first}`)
-              )
-            )
-          ),
-          name => {
-            const [last, first] = name.split(', ')
-            return { first, last }
-          }
-        )
-      },
-      // Don't show `unavailable` errors since it's already shown by the term
-      // status
-      offline: errors
-        .filter(error => error.type === 'offline')
-        .map(error => error.request)
-    })
-  }
-
-  function handleView (view: View) {
-    if (view.type === 'building') {
-      onBuilding(view.id)
-    } else if (view.type === 'course') {
-      if (state.type === 'loaded') {
-        const course = state.data.courses.find(
-          course => course.code === view.id
-        )
-        if (course) {
-          setViewing({ type: 'course', course })
-        }
-      }
-    }
-  }
 
   // TODO: show loading, offline errors with retry button
   return (
@@ -149,7 +95,7 @@ export function SearchBar ({
               state.type === 'unloaded' ||
               (state.type === 'loaded' && state.terms !== termsId)
             ) {
-              loadTerms()
+              onRequestTerms(terms)
             }
           }}
         />
@@ -162,15 +108,10 @@ export function SearchBar ({
           index={index}
           onSelect={view => {
             setShowResults(false)
-            handleView(view)
+            onView(view)
           }}
         />
       )}
-      <ResultModal
-        view={modalView}
-        open={viewing !== null}
-        onClose={() => setViewing(null)}
-      />
     </div>
   )
 }

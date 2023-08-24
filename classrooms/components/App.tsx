@@ -5,7 +5,7 @@
 
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { getHolidays } from '../../terms/holidays.ts'
-import { getTerm, Season, termName } from '../../terms/index.ts'
+import { getTerm, Season, termCode, termName } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
 import { useLast } from '../../util/useLast.ts'
@@ -21,7 +21,8 @@ import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
-import { SearchBar } from './search/SearchBar.tsx'
+import { ModalView, ResultModal } from './search/ResultModal.tsx'
+import { SearchBar, State } from './search/SearchBar.tsx'
 import { TermStatus } from './TermStatus.tsx'
 
 /**
@@ -114,6 +115,13 @@ export function App () {
   const building = useLast('CENTR', viewing)
   const [scrollTo, setScrollTo] = useState({ building: 'CENTR', init: true })
 
+  const [searchState, setSearchState] = useState<State>({ type: 'unloaded' })
+  const [modalViewing, setModalViewing] = useState<ModalView | null>(null)
+  const modalView = useLast<ModalView>(
+    { type: 'course', course: { code: '', title: '', groups: [] } },
+    modalViewing
+  )
+
   async function handleDate (date: Day) {
     const { year, season, current, finals } = getTerm(date)
     const requests = [
@@ -177,17 +185,72 @@ export function App () {
     handleDate(date)
   }, [])
 
+  async function loadTerms (terms: Term[]): Promise<void> {
+    const maybePromise = termCache.current.requestTerms(terms, true)
+    if (maybePromise instanceof Promise) {
+      // Show "Loading..."
+      setSearchState({ type: 'loading' })
+    }
+    const { successes, errors } =
+      maybePromise instanceof Promise ? await maybePromise : maybePromise
+    const courses = successes.flatMap(result => result.result.courses)
+    setSearchState({
+      type: 'loaded',
+      terms: terms.map(term => termCode(term.year, term.quarter)).join(' '),
+      data: {
+        courses,
+        professors: Array.from(
+          new Set(
+            courses.flatMap(course =>
+              course.groups.flatMap(group =>
+                group.instructors.map(({ first, last }) => `${last}, ${first}`)
+              )
+            )
+          ),
+          name => {
+            const [last, first] = name.split(', ')
+            return { first, last }
+          }
+        )
+      },
+      // Don't show `unavailable` errors since it's already shown by the term
+      // status
+      offline: errors
+        .filter(error => error.type === 'offline')
+        .map(error => error.request)
+    })
+  }
+
   return (
     <>
       <SearchBar
-        termCache={termCache.current}
+        state={searchState}
         terms={state?.status.map(([term]) => term) ?? []}
         buildings={state?.buildings ? Object.keys(state?.buildings) : []}
-        onBuilding={building => {
-          setScrollTo({ building, init: false })
-          setViewing(building)
-        }}
         visible={!noticeVisible}
+        onRequestTerms={loadTerms}
+        onView={view => {
+          if (view.type === 'building') {
+            setScrollTo({ building: view.id, init: false })
+            setViewing(view.id)
+          } else if (view.type === 'course') {
+            if (searchState.type === 'loaded') {
+              const course = searchState.data.courses.find(
+                course => course.code === view.id
+              )
+              if (course) {
+                setModalViewing({ type: 'course', course })
+              }
+            }
+          } else {
+            setModalViewing({ type: 'professor' })
+          }
+        }}
+      />
+      <ResultModal
+        view={modalView}
+        open={modalViewing !== null}
+        onClose={() => setModalViewing(null)}
       />
       <DateTimeButton
         date={date}
