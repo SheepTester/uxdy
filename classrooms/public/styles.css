@@ -956,6 +956,12 @@ input[type='checkbox']:checked {
     right: 0;
     width: unset;
     margin: 10px;
+    max-height: calc(100% - 20px);
+  }
+  .showing-results {
+    margin: 0;
+    padding: 10px;
+    border-radius: 0;
   }
 }
 .hide-search {
@@ -1021,6 +1027,56 @@ input[type='checkbox']:checked {
 .result-match {
   background-color: var(--button);
   color: white;
+}
+
+.modal {
+  display: block;
+  visibility: hidden;
+  border: none;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: visibility 0.5s, opacity 0.5s;
+}
+.modal[open] {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: unset;
+  user-select: text;
+}
+.modal:modal {
+  max-width: unset;
+  max-height: unset;
+}
+.modal::backdrop {
+  background: none;
+}
+.modal-body {
+  background-color: var(--modal);
+  box-shadow: var(--modal-shadow);
+  border-radius: 20px;
+  padding: 20px;
+  transform: scale(0.9);
+  transition: transform 0.5s;
+}
+.modal[open] .modal-body {
+  transform: none;
+}
+.modal-title-course-code {
+  font-size: 120px;
+  margin: 0;
 }
 
 .college-revelle {

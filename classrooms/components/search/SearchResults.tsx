@@ -4,13 +4,14 @@
 /// <reference lib="deno.ns" />
 
 import { useMemo } from 'preact/hooks'
+import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { termName } from '../../../terms/index.ts'
 import { buildings } from '../../lib/buildings.ts'
 import { Term } from '../../lib/TermCache.ts'
 import { SearchResult } from './SearchResult.tsx'
 
 export type SearchData = {
-  courses: { code: string; title: string }[]
+  courses: Course[]
   professors: { first: string; last: string }[]
   buildings: string[]
 }

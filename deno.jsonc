@@ -1,8 +1,8 @@
 {
   "imports": {
     "deno_dom/": "https://deno.land/x/deno_dom@v0.1.36-alpha/",
-    "preact": "https://esm.sh/preact@10.13.1",
-    "preact/": "https://esm.sh/preact@10.13.1/",
+    "preact": "https://esm.sh/preact@10.17.1",
+    "preact/": "https://esm.sh/preact@10.17.1/",
     "std/": "https://deno.land/std@0.180.0/"
   },
   "tasks": {

@@ -4,10 +4,13 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
+import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { termCode } from '../../../terms/index.ts'
+import { useLast } from '../../../util/useLast.ts'
 import { Term, TermCache } from '../../lib/TermCache.ts'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
-import { SearchData, SearchResults } from './SearchResults.tsx'
+import { ModalView, ResultModal } from './ResultModal.tsx'
+import { SearchData, SearchResults, View } from './SearchResults.tsx'
 
 type State =
   | { type: 'unloaded' }
@@ -35,9 +38,15 @@ export function SearchBar ({
 }: SearchBarProps) {
   const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const [query, setQuery] = useState('')
-  const [index, setIndex] = useState<number | null>(null)
+  const [index, setIndex] = useState(0)
+  const [showResults, setShowResults] = useState(true)
   const [state, setState] = useState<State>({ type: 'unloaded' })
   const loaded = state.type === 'loaded' && state.terms === termsId
+  const [viewing, setViewing] = useState<ModalView | null>(null)
+  const modalView = useLast<ModalView>(
+    { type: 'course', course: { code: '', title: '', groups: [] } },
+    viewing
+  )
 
   async function loadTerms (): Promise<void> {
     const maybePromise = termCache.requestTerms(terms, true)
@@ -75,9 +84,28 @@ export function SearchBar ({
     })
   }
 
+  function handleView (view: View) {
+    if (view.type === 'building') {
+      onBuilding(view.id)
+    } else if (view.type === 'course') {
+      if (state.type === 'loaded') {
+        const course = state.data.courses.find(
+          course => course.code === view.id
+        )
+        if (course) {
+          setViewing({ type: 'course', course })
+        }
+      }
+    }
+  }
+
   // TODO: show loading, offline errors with retry button
   return (
-    <div class={`search-wrapper ${visible ? '' : 'hide-search'}`}>
+    <div
+      class={`search-wrapper ${visible ? '' : 'hide-search'} ${
+        loaded && showResults && query !== '' ? 'showing-results' : ''
+      }`}
+    >
       <label class='search-bar'>
         <SearchIcon />
         <input
@@ -87,7 +115,8 @@ export function SearchBar ({
           value={query}
           onInput={e => {
             setQuery(e.currentTarget.value)
-            setIndex(null)
+            setIndex(0)
+            setShowResults(true)
           }}
           onKeyDown={e => {
             if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) {
@@ -116,6 +145,7 @@ export function SearchBar ({
             }
           }}
           onFocus={() => {
+            setShowResults(true)
             if (
               state.type === 'unloaded' ||
               (state.type === 'loaded' && state.terms !== termsId)
@@ -125,20 +155,23 @@ export function SearchBar ({
           }}
         />
       </label>
-      {loaded && (
+      {loaded && showResults && (
         <SearchResults
           terms={terms}
           query={query}
           data={{ ...state.data, buildings }}
           index={index}
           onSelect={view => {
-            if (view.type === 'building') {
-              onBuilding(view.id)
-            }
-            console.log(view)
+            setShowResults(false)
+            handleView(view)
           }}
         />
       )}
+      <ResultModal
+        view={modalView}
+        open={viewing !== null}
+        onClose={() => setViewing(null)}
+      />
     </div>
   )
 }
