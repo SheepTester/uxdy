@@ -994,9 +994,19 @@ input[type='checkbox']:checked {
   text-transform: uppercase;
   padding: 5px 10px;
   font-family: var(--normal);
+  font-weight: normal;
+  margin: 0;
 }
 .result {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   padding: 5px 10px;
+  text-align: left;
+}
+.result:hover,
+.result-selected {
+  background-color: rgba(255, 255, 255, 0.1); /* TEMP */
 }
 .result-primary {
   margin: 0;

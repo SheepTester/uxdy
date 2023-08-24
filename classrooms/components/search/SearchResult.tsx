@@ -3,6 +3,8 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
+import { useEffect, useRef } from 'preact/hooks'
+
 export type SearchResultProps = {
   name?: string
   code?: string
@@ -11,18 +13,34 @@ export type SearchResultProps = {
     start: number
     end: number
   }
+  selected: boolean
+  onSelect: () => void
 }
 export function SearchResult ({
   name,
   code,
   primary: primaryField,
-  match
+  match,
+  selected,
+  onSelect
 }: SearchResultProps) {
+  const ref = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    if (selected) {
+      ref.current?.scrollIntoView({ block: 'nearest' })
+    }
+  }, [selected])
+
   const nameFirst = primaryField === 'name'
   const primary = nameFirst ? name : code
   const secondary = nameFirst ? code : name
+
   return (
-    <li class='result'>
+    <button
+      class={`result ${selected ? 'result-selected' : ''}`}
+      onClick={onSelect}
+      ref={ref}
+    >
       {primary !== undefined && (
         <p
           class={`result-primary ${nameFirst ? 'result-name' : 'result-code'}`}
@@ -49,6 +67,6 @@ export function SearchResult ({
           {secondary}
         </p>
       )}
-    </li>
+    </button>
   )
 }

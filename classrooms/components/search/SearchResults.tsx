@@ -4,12 +4,13 @@
 /// <reference lib="deno.ns" />
 
 import { useMemo } from 'preact/hooks'
-import { Course } from '../../../scheduleofclasses/group-sections.ts'
+import { termName } from '../../../terms/index.ts'
 import { buildings } from '../../lib/buildings.ts'
+import { Term } from '../../lib/TermCache.ts'
 import { SearchResult } from './SearchResult.tsx'
 
 export type SearchData = {
-  courses: Course[]
+  courses: { code: string; title: string }[]
   professors: { first: string; last: string }[]
   buildings: string[]
 }
@@ -21,11 +22,17 @@ type ResultScore = {
     end: number
   }
 }
-type CourseResult = Course & { in: 'code' | 'title' } & ResultScore
+type CourseResult = {
+  code: string
+  title: string
+  in: 'code' | 'title'
+} & ResultScore
 type ProfessorResult = {
   first: string
   last: string
   order: 'forward' | 'reverse'
+  /** The name displayed as `Last, First`. */
+  id: string
 } & ResultScore
 type BuildingResult = { code: string; in: 'code' | 'name' } & ResultScore
 type SearchResults = {
@@ -52,8 +59,12 @@ function score (string: string, query: string): ResultScore {
   return { score: 0 }
 }
 
+/** The first parameter wins ties. */
+function maxResult<T extends ResultScore> (a: T, b: T): T {
+  return a.score >= b.score ? a : b
+}
+
 function sortResults<T extends ResultScore> (results: T[]): T[] {
-  // TODO: Remove duplicates
   return results
     .filter(result => result.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -66,22 +77,35 @@ function search (data: SearchData, query: string): SearchResults {
   }
   return {
     courses: sortResults(
-      data.courses.flatMap(course => [
-        { ...course, in: 'code', ...score(course.code, query) },
-        { ...course, in: 'title', ...score(course.title, query) }
-      ])
+      data.courses.map(course =>
+        maxResult(
+          { ...course, in: 'title', ...score(course.title, query) },
+          { ...course, in: 'code', ...score(course.code, query) }
+        )
+      )
     ),
     professors: sortResults(
-      data.professors.flatMap(({ first, last }) => [
-        { first, last, order: 'forward', ...score(`${first} ${last}`, query) },
-        { first, last, order: 'reverse', ...score(`${last}, ${first}`, query) }
-      ])
+      data.professors.map(({ first, last }) => {
+        const id = `${last}, ${first}`
+        return maxResult(
+          {
+            first,
+            last,
+            id,
+            order: 'forward',
+            ...score(`${first} ${last}`, query)
+          },
+          { first, last, id, order: 'reverse', ...score(id, query) }
+        )
+      })
     ),
     buildings: sortResults(
-      data.buildings.flatMap(code => [
-        { code, in: 'code', ...score(code, query) },
-        { code, in: 'name', ...score(buildings[code]?.name ?? '', query) }
-      ])
+      data.buildings.map(code =>
+        maxResult(
+          { code, in: 'name', ...score(buildings[code]?.name ?? '', query) },
+          { code, in: 'code', ...score(code, query) }
+        )
+      )
     )
   }
 }
@@ -92,11 +116,19 @@ export type View = {
 }
 
 export type SearchResultsProps = {
+  terms: Term[]
   query: string
   data: SearchData
+  index: number | null
   onSelect: (view: View) => void
 }
-export function SearchResults ({ query, data }: SearchResultsProps) {
+export function SearchResults ({
+  terms,
+  query,
+  data,
+  index,
+  onSelect
+}: SearchResultsProps) {
   const results = useMemo(
     () => search(data, query.toLowerCase()),
     [query, data]
@@ -105,52 +137,69 @@ export function SearchResults ({ query, data }: SearchResultsProps) {
     results.courses.length +
     results.professors.length +
     results.buildings.length
+  index = index === null ? -1 : ((index % length) + length) % length
   if (length === 0) {
     if (query === '') {
       return null
     } else {
-      return <p class='no-results'>No results.</p>
+      return (
+        <p class='no-results'>
+          No results from&nbsp;
+          {terms
+            .map(({ year, quarter }) => termName(year, quarter))
+            .join(' nor ')}
+          .
+        </p>
+      )
     }
   }
   return (
-    <ul class='results'>
-      {results.courses.length > 0 && <li class='result-heading'>Courses</li>}
-      {results.courses.map(course => (
+    <div class='results'>
+      {results.courses.length > 0 && <h2 class='result-heading'>Courses</h2>}
+      {results.courses.map((course, i) => (
         <SearchResult
           name={course.title}
           code={course.code}
           primary={course.in === 'code' ? 'code' : 'name'}
           match={course.match}
+          selected={i === index}
+          onSelect={() => onSelect({ type: 'course', id: course.code })}
           key={`course\t${course.code}\t${course.in}`}
         />
       ))}
       {results.professors.length > 0 && (
-        <li class='result-heading'>Professors</li>
+        <h2 class='result-heading'>Professors</h2>
       )}
-      {results.professors.map(professor => (
+      {results.professors.map((professor, i) => (
         <SearchResult
           name={
             professor.order === 'forward'
               ? `${professor.first} ${professor.last}`
-              : `${professor.last}, ${professor.first}`
+              : professor.id
           }
           primary='name'
           match={professor.match}
-          key={`course\t${professor.last}, ${professor.first}\t${professor.order}`}
+          selected={i + results.courses.length === index}
+          onSelect={() => onSelect({ type: 'professor', id: professor.id })}
+          key={`course\t${professor.id}\t${professor.order}`}
         />
       ))}
       {results.buildings.length > 0 && (
-        <li class='result-heading'>Buildings</li>
+        <h2 class='result-heading'>Buildings</h2>
       )}
-      {results.buildings.map(building => (
+      {results.buildings.map((building, i) => (
         <SearchResult
           name={buildings[building.code].name}
           code={building.code}
           primary={building.in === 'code' ? 'code' : 'name'}
           match={building.match}
+          selected={
+            i + results.courses.length + results.professors.length === index
+          }
+          onSelect={() => onSelect({ type: 'building', id: building.code })}
           key={`course\t${building.code}\t${building.in}`}
         />
       ))}
-    </ul>
+    </div>
   )
 }

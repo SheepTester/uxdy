@@ -33,6 +33,7 @@ export function SearchBar ({
 }: SearchBarProps) {
   const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const [query, setQuery] = useState('')
+  const [index, setIndex] = useState<number | null>(null)
   const [state, setState] = useState<State>({ type: 'unloaded' })
   const loaded = state.type === 'loaded' && state.terms === termsId
 
@@ -82,7 +83,28 @@ export function SearchBar ({
           placeholder='Search courses, people, buildings...'
           class='search-input'
           value={query}
-          onInput={e => setQuery(e.currentTarget.value)}
+          onInput={e => {
+            setQuery(e.currentTarget.value)
+            setIndex(null)
+          }}
+          onKeyDown={e => {
+            if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) {
+              return
+            }
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+              setIndex(index =>
+                index === null
+                  ? e.key === 'ArrowUp'
+                    ? -1
+                    : 0
+                  : index + (e.key === 'ArrowUp' ? -1 : 1)
+              )
+              e.preventDefault()
+            }
+            if (e.key === 'Enter') {
+              e.preventDefault()
+            }
+          }}
           onFocus={() => {
             if (
               state.type === 'unloaded' ||
@@ -95,8 +117,10 @@ export function SearchBar ({
       </label>
       {loaded && (
         <SearchResults
+          terms={terms}
           query={query}
           data={{ ...state.data, buildings }}
+          index={index}
           onSelect={view => {
             console.log(view)
           }}
