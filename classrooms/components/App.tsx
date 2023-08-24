@@ -138,6 +138,9 @@ export function App () {
   const terms = getTerms(year, season, current)
   const termId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
 
+  const datePanelVisible = showDatePanel || (noticeVisible && state !== null)
+  const buildingPanelVisible = viewing !== null && !noticeVisible
+
   async function handleDate (date: Day) {
     const { year, season, current, finals } = getTerm(date)
     const terms = getTerms(year, season, current)
@@ -145,8 +148,6 @@ export function App () {
     if (holiday || terms.length === 0) {
       // Have the date selector open for the user to select another day
       setState({ errors: [], status: [], season, holiday })
-      setViewing(null)
-      setShowDatePanel(true)
       return
     }
     const maybePromise = termCache.current.requestTerms(terms)
@@ -184,10 +185,6 @@ export function App () {
       errors,
       season
     })
-    if (empty) {
-      setViewing(null)
-      setShowDatePanel(true)
-    }
   }
   useEffect(() => {
     handleDate(date)
@@ -231,7 +228,7 @@ export function App () {
   }
 
   async function handleView (view: View) {
-    if (view.type === 'building') {
+    if (view.type === 'building' || view.type === 'room') {
       setScrollTo({ building: view.id, init: false })
       setViewing(view.id)
       setModalViewing(null)
@@ -251,6 +248,10 @@ export function App () {
       setModalViewing({ type: 'professor', professor: { first, last } })
     }
   }
+
+  useEffect(() => {
+    //
+  }, [modalView, viewing])
 
   return (
     <>
@@ -273,8 +274,8 @@ export function App () {
         date={date}
         time={time}
         onClick={() => setShowDatePanel(true)}
-        bottomPanelOpen={!!viewing}
-        disabled={showDatePanel}
+        bottomPanelOpen={buildingPanelVisible}
+        disabled={datePanelVisible}
       />
       <DateTimePanel
         date={date}
@@ -300,8 +301,8 @@ export function App () {
             setRealTime(false)
           }
         }}
-        visible={showDatePanel}
-        class={`${viewing ? 'date-time-panel-bottom-panel' : ''} ${
+        visible={datePanelVisible}
+        class={`${buildingPanelVisible ? 'date-time-panel-bottom-panel' : ''} ${
           noticeVisible ? 'date-time-panel-notice-visible' : ''
         }`}
         onClose={() => setShowDatePanel(false)}
@@ -310,7 +311,7 @@ export function App () {
       <div class='buildings-wrapper'>
         <p
           class={`notice ${noticeVisible ? 'notice-visible' : ''} ${
-            showDatePanel ? 'notice-date-open' : ''
+            datePanelVisible ? 'notice-date-open' : ''
           }`}
         >
           <span class='notice-text'>{notice}</span>
@@ -351,8 +352,8 @@ export function App () {
         rooms={state?.buildings?.[building] ?? {}}
         onClose={() => setViewing(null)}
         onView={handleView}
-        visible={viewing !== null}
-        rightPanelOpen={showDatePanel}
+        visible={buildingPanelVisible}
+        rightPanelOpen={datePanelVisible}
       />
     </>
   )

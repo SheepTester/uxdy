@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'preact/hooks'
 import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
+import { CourseInfo } from './CourseInfo.tsx'
 import { View } from './SearchResults.tsx'
 
 export type Professor = {
@@ -33,8 +34,10 @@ export function ResultModal ({
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
-    if (ref.current && open) {
-      ref.current.showModal()
+    if (open) {
+      ref.current?.showModal()
+    } else {
+      ref.current?.close()
     }
   }, [open])
 
@@ -69,6 +72,9 @@ export function ResultModal ({
             <CloseIcon />
           </button>
         </header>
+        {view.type === 'course' ? (
+          <CourseInfo course={view.course} onView={onView} />
+        ) : null}
       </form>
     </dialog>
   )

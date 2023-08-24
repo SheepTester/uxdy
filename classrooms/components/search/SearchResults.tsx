@@ -51,11 +51,23 @@ function score (string: string, query: string): ResultScore {
     return { score: 3, match: { start: 0, end: string.length } }
   }
   if (string.startsWith(query)) {
-    return { score: 2, match: { start: 0, end: query.length } }
+    return {
+      score: 2 + (/\W/.test(string[query.length]) ? 0.5 : 0),
+      match: { start: 0, end: query.length }
+    }
   }
   const index = string.indexOf(query)
   if (index !== -1) {
-    return { score: 1, match: { start: index, end: index + query.length } }
+    return {
+      score:
+        1 +
+        (/\W/.test(string[index - 1]) &&
+        (index + query.length === string.length ||
+          /\W/.test(string[index + query.length]))
+          ? 0.5
+          : 0),
+      match: { start: index, end: index + query.length }
+    }
   }
   return { score: 0 }
 }
@@ -122,10 +134,16 @@ function search (data: SearchData, query: string): SearchResults {
   }
 }
 
-export type View = {
-  type: 'course' | 'professor' | 'building'
-  id: string
-}
+export type View =
+  | {
+      type: 'course' | 'professor' | 'building'
+      id: string
+    }
+  | {
+      type: 'room'
+      id: string
+      room: string
+    }
 
 export type SearchResultsProps = {
   terms: Term[]

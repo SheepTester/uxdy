@@ -15,13 +15,18 @@ const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
 const SCALE = 1 // px per min
 
-export type ScheduleProps = {
+export type RoomScheduleProps = {
   weekday: number
   time: Time
   meetings: RoomMeeting[]
   onView: (view: View) => void
 }
-export function Schedule ({ weekday, time, meetings, onView }: ScheduleProps) {
+export function RoomSchedule ({
+  weekday,
+  time,
+  meetings,
+  onView
+}: RoomScheduleProps) {
   const [day, setDay] = useState<number | null>(null)
 
   if (meetings.length === 0) {

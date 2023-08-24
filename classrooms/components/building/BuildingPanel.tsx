@@ -13,7 +13,7 @@ import { BackIcon } from '../icons/BackIcon.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
 import { View } from '../search/SearchResults.tsx'
 import { RoomList } from './RoomList.tsx'
-import { Schedule } from './Schedule.tsx'
+import { RoomSchedule } from './RoomSchedule.tsx'
 
 type BuildingPanelContentProps = {
   weekday: number
@@ -83,7 +83,7 @@ function BuildingPanelContent ({
         </button>
       </header>
       {selected ? (
-        <Schedule
+        <RoomSchedule
           weekday={weekday}
           time={time}
           meetings={rooms[selected] ?? []}
