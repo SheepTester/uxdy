@@ -749,10 +749,12 @@ input[type='checkbox']:checked {
   border: 1px solid var(--card-line);
   transition: box-shadow 0.2s;
 }
-.room:hover {
+.room:hover,
+.meeting:hover {
   box-shadow: var(--card-shadow-hover);
 }
-.room:active {
+.room:active,
+.meeting:active {
   box-shadow: var(--card-shadow-active);
 }
 .current-meeting {
@@ -804,13 +806,17 @@ input[type='checkbox']:checked {
   flex: auto;
 }
 .meeting {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 10px;
   border: 1px solid var(--card-line);
   position: absolute;
   left: 0;
   right: 0;
   box-sizing: border-box;
+  transition: box-shadow 0.2s;
 }
 .special-summer {
   color: var(--exam);
@@ -1043,6 +1049,7 @@ input[type='checkbox']:checked {
   border: none;
   padding: 0;
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   width: 100%;
@@ -1078,17 +1085,38 @@ input[type='checkbox']:checked {
   background-color: var(--modal);
   box-shadow: var(--modal-shadow);
   border-radius: 20px;
-  padding: 40px;
   transform: scale(0.95);
   transition: transform 0.2s;
 }
 .modal[open] .modal-body {
   transform: none;
 }
-.modal-title-course-code {
-  font-size: 120px;
+.modal-title {
   margin: 0;
   font-weight: normal;
+}
+.modal-title-course-code {
+  font-size: 120px;
+}
+.modal-title-professor {
+  font-family: var(--normal);
+  font-size: 36px;
+}
+.last-name {
+  font-weight: bold;
+}
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+}
+.modal-header h1 {
+  flex: auto;
+  margin: 40px;
+}
+.modal-header .close {
+  margin: 28px;
+  margin-left: 0;
+  border-radius: 50%;
 }
 
 .college-revelle {

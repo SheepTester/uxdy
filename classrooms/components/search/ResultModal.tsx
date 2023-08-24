@@ -6,17 +6,30 @@
 import { useEffect, useRef } from 'preact/hooks'
 import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
+import { CloseIcon } from '../icons/CloseIcon.tsx'
+import { View } from './SearchResults.tsx'
+
+export type Professor = {
+  first: string
+  last: string
+}
 
 export type ModalView =
   | { type: 'course'; course: Course }
-  | { type: 'professor' }
+  | { type: 'professor'; professor: Professor }
 
 export type ResultModalProps = {
   view: ModalView
   open: boolean
   onClose: () => void
+  onView: (view: View) => void
 }
-export function ResultModal ({ view, open, onClose }: ResultModalProps) {
+export function ResultModal ({
+  view,
+  open,
+  onClose,
+  onView
+}: ResultModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -37,17 +50,25 @@ export function ResultModal ({ view, open, onClose }: ResultModalProps) {
       onClose={onClose}
     >
       <form method='dialog' class='modal-body'>
-        {view.type === 'course' ? (
-          <AbbrevHeading
-            heading='h1'
-            abbrev={view.course.code}
-            class='modal-title-course-code'
-          >
-            {view.course.title}
-          </AbbrevHeading>
-        ) : (
-          'Professor Name'
-        )}
+        <header class='modal-header'>
+          {view.type === 'course' ? (
+            <AbbrevHeading
+              heading='h1'
+              abbrev={view.course.code}
+              class='modal-title modal-title-course-code'
+            >
+              {view.course.title}
+            </AbbrevHeading>
+          ) : (
+            <h1 class='modal-title modal-title-professor'>
+              {view.professor.first}{' '}
+              <span class='last-name'>{view.professor.last}</span>
+            </h1>
+          )}
+          <button class='close' type='submit'>
+            <CloseIcon />
+          </button>
+        </header>
       </form>
     </dialog>
   )

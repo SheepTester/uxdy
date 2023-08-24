@@ -16,7 +16,7 @@ export type State =
   | { type: 'loading' }
   | {
       type: 'loaded'
-      terms: string
+      termId: string
       data: Omit<SearchData, 'buildings'>
       offline: Term[]
     }
@@ -24,17 +24,19 @@ export type State =
 export type SearchBarProps = {
   state: State
   terms: Term[]
+  termId: string
   buildings: string[]
   visible: boolean
-  onRequestTerms: (terms: Term[]) => void
+  onLoadTerms: () => void
   onView: (view: View) => void
 }
 export function SearchBar ({
   state,
   terms,
+  termId,
   buildings,
   visible,
-  onRequestTerms,
+  onLoadTerms,
   onView
 }: SearchBarProps) {
   const [query, setQuery] = useState('')
@@ -42,7 +44,7 @@ export function SearchBar ({
   const [showResults, setShowResults] = useState(true)
 
   const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
-  const loaded = state.type === 'loaded' && state.terms === termsId
+  const loaded = state.type === 'loaded' && state.termId === termId
 
   // TODO: show loading, offline errors with retry button
   return (
@@ -93,9 +95,9 @@ export function SearchBar ({
             setShowResults(true)
             if (
               state.type === 'unloaded' ||
-              (state.type === 'loaded' && state.terms !== termsId)
+              (state.type === 'loaded' && state.termId !== termsId)
             ) {
-              onRequestTerms(terms)
+              onLoadTerms()
             }
           }}
         />

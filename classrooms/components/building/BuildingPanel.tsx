@@ -11,6 +11,7 @@ import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { BackIcon } from '../icons/BackIcon.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
+import { View } from '../search/SearchResults.tsx'
 import { RoomList } from './RoomList.tsx'
 import { Schedule } from './Schedule.tsx'
 
@@ -20,13 +21,15 @@ type BuildingPanelContentProps = {
   building: BuildingDatum
   rooms: Record<string, RoomMeeting[]>
   onClose: () => void
+  onView: (view: View) => void
 }
 function BuildingPanelContent ({
   weekday,
   time,
   building,
   rooms,
-  onClose
+  onClose,
+  onView
 }: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const room = useLast('', selected)
@@ -41,7 +44,7 @@ function BuildingPanelContent ({
 
   return (
     <>
-      <div
+      <header
         class={`building-name ${
           selected ? 'schedule-view' : 'list-view'
         } college-${buildings[building.code].college}`}
@@ -78,12 +81,13 @@ function BuildingPanelContent ({
         <button class='close' onClick={onClose}>
           <CloseIcon />
         </button>
-      </div>
+      </header>
       {selected ? (
         <Schedule
           weekday={weekday}
           time={time}
           meetings={rooms[selected] ?? []}
+          onView={onView}
         />
       ) : (
         <RoomList
@@ -98,23 +102,14 @@ function BuildingPanelContent ({
   )
 }
 
-export type BuildingPanelProps = {
-  weekday: number
-  time: Time
-  building: BuildingDatum
-  rooms: Record<string, RoomMeeting[]>
-  onClose: () => void
+export type BuildingPanelProps = BuildingPanelContentProps & {
   visible: boolean
   rightPanelOpen: boolean
 }
 export function BuildingPanel ({
-  weekday,
-  time,
-  building,
-  rooms,
-  onClose,
   visible,
-  rightPanelOpen
+  rightPanelOpen,
+  ...props
 }: BuildingPanelProps) {
   return (
     <div
@@ -123,13 +118,11 @@ export function BuildingPanel ({
       }`}
     >
       <BuildingPanelContent
-        weekday={weekday}
-        time={time}
-        building={building}
-        rooms={rooms}
-        onClose={onClose}
         // Force new elements (disable transition) when building changes
-        key={building}
+        key={props.building}
+        // For some reason this needs to be after `key` or then Deno gets pissed
+        // about `react` not existing.
+        {...props}
       />
     </div>
   )

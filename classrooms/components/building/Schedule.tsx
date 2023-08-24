@@ -9,6 +9,7 @@ import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { used } from '../../lib/now.ts'
+import { View } from '../search/SearchResults.tsx'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
@@ -18,8 +19,9 @@ export type ScheduleProps = {
   weekday: number
   time: Time
   meetings: RoomMeeting[]
+  onView: (view: View) => void
 }
-export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
+export function Schedule ({ weekday, time, meetings, onView }: ScheduleProps) {
   const [day, setDay] = useState<number | null>(null)
 
   if (meetings.length === 0) {
@@ -74,7 +76,7 @@ export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
               .filter(meeting => meeting.days.includes(day))
               .sort((a, b) => +a.start - +b.start)
               .map(meeting => (
-                <div
+                <button
                   class={`meeting ${inUse(meeting) ? 'current' : ''} ${
                     meeting.kind === 'exam' ? 'exam' : ''
                   }`}
@@ -82,6 +84,7 @@ export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
                     top: `${(+meeting.start - earliest) / SCALE}px`,
                     height: `${(+meeting.end - +meeting.start) / SCALE}px`
                   }}
+                  onClick={() => onView({ type: 'course', id: meeting.course })}
                 >
                   <div class='meeting-name'>
                     {meeting.course} (
@@ -101,7 +104,7 @@ export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
                       S3
                     </abbr>
                   )}
-                </div>
+                </button>
               ))}
             {weekday === day && earliest <= +time && +time < latest && (
               <div
@@ -114,10 +117,10 @@ export function Schedule ({ weekday, time, meetings }: ScheduleProps) {
           </div>
         ))}
       </div>
-      <div class='disclaimer-wrapper'>
+      <footer class='disclaimer-wrapper'>
         <div class='gradient gradient-bg gradient-bottom' />
         <p class='disclaimer'>Note: some classes book rooms but don't meet.</p>
-      </div>
+      </footer>
     </div>
   )
 }
