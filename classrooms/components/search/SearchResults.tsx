@@ -136,13 +136,13 @@ function search (data: SearchData, query: string): SearchResults {
 
 export type View =
   | {
-      type: 'course' | 'professor' | 'building'
+      type: 'course' | 'professor'
       id: string
     }
   | {
-      type: 'room'
+      type: 'building'
       id: string
-      room: string
+      room?: string
     }
 
 export type SearchResultsProps = {

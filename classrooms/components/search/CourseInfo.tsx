@@ -23,20 +23,31 @@ function MeetingCard ({ meeting, code, onView }: MeetingCardProps) {
     <section class='meeting-card'>
       <p class='meeting-type'>
         {meetingTypes[meeting.type] ?? meeting.type}
-        {meeting.kind !== 'exam' && (
+        {code && (
           <>
-            : <span class='meeting-code'>{meeting.code}</span>
+            <span class='colon'>: </span>
+            <span class='meeting-code'>{code}</span>
           </>
         )}
       </p>
+      {meeting.kind === 'section' && (
+        <p class='meeting-column section-capacity'>{meeting.capacity}</p>
+      )}
+      <p class='meeting-column meeting-date'>
+        {meeting.kind === 'exam'
+          ? meeting.date.toString()
+          : meeting.time?.days.join('')}
+      </p>
       <button
-        class={`location ${physicalRoom ? '' : 'location-not-room'}`}
+        class={`meeting-column location ${
+          physicalRoom ? '' : 'location-not-room'
+        }`}
         type='button'
         disabled={!physicalRoom}
         onClick={() => {
           if (meeting.location) {
             onView({
-              type: 'room',
+              type: 'building',
               id: meeting.location.building,
               room: meeting.location.room
             })
@@ -80,6 +91,9 @@ export function CourseInfo ({ course, onView }: CourseInfoProps) {
               key={section.code}
             />
           ))}
+          {(group.meetings.length > 0 || group.exams.length > 0) && (
+            <hr class='additional-meetings-divider' />
+          )}
           {group.meetings.map((meeting, i) => (
             <MeetingCard
               meeting={meeting}

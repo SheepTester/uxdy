@@ -228,10 +228,13 @@ export function App () {
   }
 
   async function handleView (view: View) {
-    if (view.type === 'building' || view.type === 'room') {
+    if (view.type === 'building') {
       setScrollTo({ building: view.id, init: false })
       setViewing(view.id)
       setModalViewing(null)
+      if (view.room) {
+        // TODO: select room
+      }
       return
     }
     const courses =

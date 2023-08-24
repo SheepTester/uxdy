@@ -1134,7 +1134,7 @@ input[type='checkbox']:checked {
 .group {
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.05); /* TEMP */
+  border: 1px solid var(--card-line);
   border-radius: 10px;
   gap: 5px;
   padding-bottom: 5px;
@@ -1161,10 +1161,17 @@ input[type='checkbox']:checked {
   text-align: right;
   margin: 10px;
   margin-left: auto;
+  gap: 5px;
 }
 .instructor {
   margin: 0;
   font-family: var(--normal);
+}
+.additional-meetings-divider {
+  border: none;
+  border-top: 1px solid var(--card-line);
+  margin: 0;
+  width: 100%;
 }
 .meeting-card {
   display: flex;
@@ -1176,12 +1183,19 @@ input[type='checkbox']:checked {
   font-family: var(--narrow);
 }
 .meeting-type {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--normal);
   margin: 0;
   margin-right: auto;
 }
+.meeting-column {
+  width: 100px;
+}
 .location {
   padding: 0;
+  text-align: left;
 }
 .location-not-room {
   font-family: var(--normal);
