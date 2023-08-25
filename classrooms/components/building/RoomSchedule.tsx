@@ -65,7 +65,7 @@ export function RoomSchedule ({
               key={weekDay}
               onClick={() => setDay(day => (weekDay === day ? null : weekDay))}
             >
-              {Day.dayName(weekDay, 'short', 'en-US')}
+              {Day.dayName(weekDay, 'short')}
             </button>
           ))}
         </div>
@@ -99,7 +99,7 @@ export function RoomSchedule ({
                     )
                   </div>
                   <div class='meeting-time'>
-                    {meeting.start.toString()}–{meeting.end.toString()}
+                    {meeting.start.toString([])}–{meeting.end.toString([])}
                   </div>
                   {meeting.special && (
                     <abbr

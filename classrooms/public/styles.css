@@ -1164,7 +1164,6 @@ input[type='checkbox']:checked {
   gap: 5px;
 }
 .instructor {
-  margin: 0;
   font-family: var(--normal);
 }
 .additional-meetings-divider {
@@ -1190,15 +1189,28 @@ input[type='checkbox']:checked {
   margin: 0;
   margin-right: auto;
 }
-.meeting-column {
-  width: 100px;
+.section-capacity {
+  width: 120px;
+  font-family: var(--normal);
+}
+.meeting-date {
+  width: 180px;
 }
 .location {
+  width: 80px;
   padding: 0;
   text-align: left;
 }
 .location-not-room {
   font-family: var(--normal);
+}
+.instructor,
+.location:not(:disabled) {
+  color: var(--link);
+}
+.instructor:hover,
+.location:not(:disabled):hover {
+  text-decoration: underline;
 }
 
 .college-revelle {

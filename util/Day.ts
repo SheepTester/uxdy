@@ -27,8 +27,9 @@ export class Day {
     return this.#date.getUTCMonth() + 1
   }
 
+  /** @param length - Defaults to `long`. */
   monthName (
-    length: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' = 'long',
+    length: Intl.DateTimeFormatOptions['month'] = 'long',
     locales?: string | string[]
   ): string {
     return new Intl.DateTimeFormat(locales, {
@@ -46,8 +47,9 @@ export class Day {
     return this.#date.getUTCDay()
   }
 
+  /** @param length - Defaults to `long`. */
   dayName (
-    length: 'long' | 'short' | 'narrow' = 'long',
+    length: Intl.DateTimeFormatOptions['weekday'] = 'long',
     locales?: string | string[]
   ): string {
     return new Intl.DateTimeFormat(locales, {
@@ -120,10 +122,15 @@ export class Day {
   }
 
   /**
-   * Returns the ISO 8601 representation of the date: YYYY-MM-DD.
+   * Formats the date with `toLocaleDateString` according to `args`. The
+   * `timeZone` option is ignored because the internal `Date` object is in UTC.
+   * If no arguments are given, it defaults to the ISO 8601 representation of
+   * the date: `YYYY-MM-DD`.
    */
-  toString (): string {
-    return this.valid
+  toString (...args: Parameters<Date['toLocaleDateString']>): string {
+    return args.length > 0
+      ? this.#date.toLocaleDateString(args[0], { ...args[1], timeZone: 'UTC' })
+      : this.valid
       ? [
           this.year.toString().padStart(4, '0'),
           this.month.toString().padStart(2, '0'),
@@ -181,19 +188,24 @@ export class Day {
     return Day.EPOCH.add(dayId)
   }
 
-  /** `month` is 1-indexed. */
+  /**
+   * @param month - 1-indexed.
+   * @param length - Defaults to `long`.
+   */
   static monthName (
     month: number,
-    length: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' = 'long',
+    length: Intl.DateTimeFormatOptions['month'] = 'long',
     locales?: string | string[]
   ): string {
     return this.from(1970, month, 1).monthName(length, locales)
   }
 
-  /** If `day` >= 7, then it will be modulo'd by 7. */
+  /**
+   * @param day - If over 7, then the value will be modulo'd by 7.
+   */
   static dayName (
     day: number,
-    length: 'long' | 'short' | 'narrow' = 'long',
+    length: Intl.DateTimeFormatOptions['weekday'] = 'long',
     locales?: string | string[]
   ): string {
     // 1970-01-04 is a Sunday

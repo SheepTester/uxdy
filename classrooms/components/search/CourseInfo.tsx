@@ -9,6 +9,8 @@ import {
   Meeting,
   Section
 } from '../../../scheduleofclasses/group-sections.ts'
+import { Day } from '../../../util/Day.ts'
+import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { View } from './SearchResults.tsx'
 
@@ -31,12 +33,28 @@ function MeetingCard ({ meeting, code, onView }: MeetingCardProps) {
         )}
       </p>
       {meeting.kind === 'section' && (
-        <p class='meeting-column section-capacity'>{meeting.capacity}</p>
+        <p class='meeting-column section-capacity'>
+          Capacity: <strong>{meeting.capacity}</strong>
+        </p>
       )}
       <p class='meeting-column meeting-date'>
         {meeting.kind === 'exam'
-          ? meeting.date.toString()
-          : meeting.time?.days.join('')}
+          ? meeting.date.toString([], { month: 'long', day: 'numeric' })
+          : meeting.time && (
+              <>
+                <abbr
+                  title={meeting.time.days
+                    .map(day => Day.dayName(day, 'long'))
+                    .join(', ')}
+                >
+                  {meeting.time.days
+                    .map(day => Day.dayName(day, 'narrow'))
+                    .join('')}
+                </abbr>{' '}
+                {Time.from(meeting.time.start).toString([])}–
+                {Time.from(meeting.time.end).toString([])}
+              </>
+            )}
       </p>
       <button
         class={`meeting-column location ${
@@ -77,9 +95,15 @@ export function CourseInfo ({ course, onView }: CourseInfoProps) {
             <span class='group-code'>{group.code}</span>
             <div class='instructors'>
               {group.instructors.map(({ first, last }) => (
-                <p class='instructor' key={`${last}, ${first}`}>
+                <button
+                  class='instructor'
+                  key={`${last}, ${first}`}
+                  onClick={() =>
+                    onView({ type: 'professor', id: `${last}, ${first}` })
+                  }
+                >
                   {first} <span class='last-name'>{last}</span>
-                </p>
+                </button>
               ))}
             </div>
           </header>

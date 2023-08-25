@@ -32,7 +32,7 @@ export function CalendarHeaderRow () {
     <CalendarRow class='calendar-header-row' week={<span>Wk</span>}>
       {DAY_NUMS.map(day => (
         <div class={`calendar-item calendar-week-day`}>
-          {Day.dayName(day + 1, 'short', 'en-US')}
+          {Day.dayName(day + 1, 'short')}
         </div>
       ))}
     </CalendarRow>

@@ -45,8 +45,7 @@ export function DateTimeButton ({
         </div>
         {current && (
           <span class='quarter-week'>
-            {termCode(year, season)} Week {week}{' '}
-            {date.dayName('short', 'en-US')}
+            {termCode(year, season)} Week {week} {date.dayName('short')}
           </span>
         )}
       </p>

@@ -1,7 +1,8 @@
-import { Day, DAY_NUMS } from './Day.ts'
+import { Day } from './Day.ts'
 
 /**
- * A time.
+ * A time during a day. Only stores hours and minutes. The represented time may
+ * not always exist, such as during a daylight savings switch.
  */
 export class Time {
   /** The hour (24-hour). */
@@ -15,12 +16,38 @@ export class Time {
   }
 
   /**
-   * Displays the time in a 12-hour format Americans are familiar with.
+   * Displays the time in a 12-hour format Americans are familiar with. Pass
+   * `true` to use 24-hour instead, or pass arguments to `toLocaleTimeString`
+   * for more formatting options.
+   *
+   * When using `toLocaleTimeString`, the time zone is set to UTC to avoid any
+   * daylight savings jankiness. Since this object doesn't store seconds, `hour`
+   * and `minute` are set to `numeric` by default to hide the seconds; this can
+   * be overridden.
+   *
+   * Pass a boolean (or omit all parameters) to avoid relying on the Intl API if
+   * you need the output to be predictable (such as for an HTML time input).
+   *
+   * @example
+   * const time = new Time(3, 1)
+   * time.toString() // '3:01 am'
+   * time.toString(true) // '03:01'
+   * // Use Intl API
+   * time.toString([]) // (depends on runtime's default locale)
+   * time.toString(['ja-JP']) // '3:01'
+   * time.toString(['en-UK'], { hour: 'numeric', minute: 'numeric' }) // '03:01'
    */
-  toString (hour24 = false): string {
+  toString (
+    ...args: Parameters<Date['toLocaleTimeString']> | [boolean]
+  ): string {
     const minute = this.minute.toString().padStart(2, '0')
-    return hour24
+    return typeof args[0] === 'boolean' && args[0]
       ? `${this.hour.toString().padStart(2, '0')}:${minute}`
+      : args.length > 0 && typeof args[0] !== 'boolean'
+      ? new Date(2000, 0, 1, this.hour, this.minute).toLocaleTimeString(
+          args[0],
+          { hour: 'numeric', minute: 'numeric', ...args[1], timeZone: 'UTC' }
+        )
       : `${((this.hour + 11) % 12) + 1}:${minute} ${
           this.hour < 12 ? 'a' : 'p'
         }m`
@@ -94,8 +121,8 @@ export class Period {
   /**
    * Returns the name of the day the time period is on.
    */
-  dayName () {
-    return Day.dayName(this.day, 'long', 'en-US')
+  dayName (locales?: string | string[]) {
+    return Day.dayName(this.day, 'long', locales)
   }
 
   /**
