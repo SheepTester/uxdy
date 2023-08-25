@@ -99,7 +99,7 @@ export function RoomSchedule ({
                     )
                   </div>
                   <div class='meeting-time'>
-                    {meeting.start.toString([])}–{meeting.end.toString([])}
+                    {meeting.start.formatRange(meeting.end)}
                   </div>
                   {meeting.special && (
                     <abbr

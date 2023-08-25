@@ -51,8 +51,9 @@ function MeetingCard ({ meeting, code, onView }: MeetingCardProps) {
                     .map(day => Day.dayName(day, 'narrow'))
                     .join('')}
                 </abbr>{' '}
-                {Time.from(meeting.time.start).toString([])}–
-                {Time.from(meeting.time.end).toString([])}
+                {Time.from(meeting.time.start).formatRange(
+                  Time.from(meeting.time.end)
+                )}
               </>
             )}
       </p>
