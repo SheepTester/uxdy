@@ -3,12 +3,10 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { termCode } from '../../../terms/index.ts'
-import { useLast } from '../../../util/useLast.ts'
-import { Term, TermCache } from '../../lib/TermCache.ts'
+import { Term } from '../../lib/TermCache.ts'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
-import { ModalView, ResultModal } from './ResultModal.tsx'
 import { SearchData, SearchResults, View } from './SearchResults.tsx'
 
 export type State =
@@ -42,9 +40,26 @@ export function SearchBar ({
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
   const [showResults, setShowResults] = useState(true)
+  const ref = useRef<HTMLInputElement>(null)
 
   const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const loaded = state.type === 'loaded' && state.termId === termId
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) {
+        return
+      }
+      if ((e.key === '/' || e.key === 's') && e.target === document.body) {
+        ref.current?.focus()
+        e.preventDefault()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 
   // TODO: show loading, offline errors with retry button
   return (
@@ -57,6 +72,7 @@ export function SearchBar ({
         <SearchIcon />
         <input
           type='search'
+          title="Press '/' to jump to the search box."
           placeholder='Search courses, people, buildings...'
           class='search-input'
           value={query}
@@ -100,6 +116,7 @@ export function SearchBar ({
               onLoadTerms()
             }
           }}
+          ref={ref}
         />
       </label>
       {loaded && showResults && (

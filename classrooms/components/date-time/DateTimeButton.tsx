@@ -8,11 +8,8 @@ import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 
 const dateFormat = new Intl.DateTimeFormat([], {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric'
+  dateStyle: 'short',
+  timeStyle: 'short'
 })
 
 export type DateTimeButtonProps = {
@@ -45,7 +42,8 @@ export function DateTimeButton ({
         </div>
         {current && (
           <span class='quarter-week'>
-            {termCode(year, season)} Week {week} {date.dayName('short')}
+            {termCode(year, season)} {week < 10 ? `Week ${week}` : 'Finals'}{' '}
+            {date.dayName('short')}
           </span>
         )}
       </p>

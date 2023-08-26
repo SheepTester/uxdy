@@ -17,6 +17,7 @@ export type DateTimePanelProps = {
   useNow: boolean
   onUseNow: (useNow: boolean) => void
   visible: boolean
+  closeable: boolean
   class: string
   onClose: () => void
 }
@@ -28,6 +29,7 @@ export function DateTimePanel ({
   useNow,
   onUseNow,
   visible,
+  closeable,
   class: className,
   onClose
 }: DateTimePanelProps) {
@@ -72,7 +74,7 @@ export function DateTimePanel ({
             Today
           </button>
         )}
-        <button class='icon-btn close-date-btn'>Close</button>
+        {closeable && <button class='icon-btn close-date-btn'>Close</button>}
       </div>
       <div class='date-time-flex'>
         <input

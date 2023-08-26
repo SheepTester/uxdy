@@ -6,7 +6,13 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { Course } from '../../scheduleofclasses/group-sections.ts'
 import { getHolidays } from '../../terms/holidays.ts'
-import { getTerm, Season, termCode, termName } from '../../terms/index.ts'
+import {
+  CurrentTerm,
+  getTerm,
+  Season,
+  termCode,
+  termName
+} from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
 import { useLast } from '../../util/useLast.ts'
@@ -64,7 +70,7 @@ function displayError (errors: TermError[]): string {
   }
 }
 
-function getTerms (year: number, season: Season, current: boolean): Term[] {
+function getTerms ({ year, season, current }: CurrentTerm): Term[] {
   const terms: Term[][] = [
     current ? [{ year, quarter: season }] : [],
     season === 'S1' || season === 'S2' || (season === 'FA' && !current)
@@ -134,16 +140,16 @@ export function App () {
     modalViewing
   )
 
-  const { year, season, current } = getTerm(date)
-  const terms = getTerms(year, season, current)
+  const terms = getTerms(getTerm(date))
   const termId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
 
   const datePanelVisible = showDatePanel || (noticeVisible && state !== null)
   const buildingPanelVisible = viewing !== null && !noticeVisible
 
   async function handleDate (date: Day) {
-    const { year, season, current, finals } = getTerm(date)
-    const terms = getTerms(year, season, current)
+    const currentTerm = getTerm(date)
+    const { season, finals } = currentTerm
+    const terms = getTerms(currentTerm)
     const holiday = getHolidays(date.year)[date.id]
     if (holiday || terms.length === 0) {
       // Have the date selector open for the user to select another day
@@ -273,13 +279,16 @@ export function App () {
         onClose={() => setModalViewing(null)}
         onView={handleView}
       />
-      <DateTimeButton
-        date={date}
-        time={time}
-        onClick={() => setShowDatePanel(true)}
-        bottomPanelOpen={buildingPanelVisible}
-        disabled={datePanelVisible}
-      />
+      <div class='corner'>
+        <DateTimeButton
+          date={date}
+          time={time}
+          onClick={() => setShowDatePanel(true)}
+          bottomPanelOpen={buildingPanelVisible}
+          disabled={datePanelVisible}
+        />
+        <TermStatus status={state?.status} visible={!noticeVisible} />
+      </div>
       <DateTimePanel
         date={date}
         onDate={date => {
@@ -305,12 +314,12 @@ export function App () {
           }
         }}
         visible={datePanelVisible}
+        closeable={!noticeVisible || state === null}
         class={`${buildingPanelVisible ? 'date-time-panel-bottom-panel' : ''} ${
           noticeVisible ? 'date-time-panel-notice-visible' : ''
         }`}
         onClose={() => setShowDatePanel(false)}
       />
-      <TermStatus status={state?.status} visible={!noticeVisible} />
       <div class='buildings-wrapper'>
         <p
           class={`notice ${noticeVisible ? 'notice-visible' : ''} ${
