@@ -254,7 +254,21 @@ export function App () {
       }
     } else {
       const [last, first] = view.id.split(', ')
-      setModalViewing({ type: 'professor', professor: { first, last } })
+      setModalViewing({
+        type: 'professor',
+        professor: {
+          first,
+          last,
+          courses: courses.flatMap(course => {
+            const groups = course.groups.filter(group =>
+              group.instructors.some(
+                prof => prof.first === first && prof.last === last
+              )
+            )
+            return groups.length > 0 ? [{ ...course, groups }] : []
+          })
+        }
+      })
     }
   }
 

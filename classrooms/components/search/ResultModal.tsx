@@ -8,12 +8,8 @@ import { Course } from '../../../scheduleofclasses/group-sections.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
 import { CourseInfo } from './CourseInfo.tsx'
+import { Professor, ProfInfo } from './ProfInfo.tsx'
 import { View } from './SearchResults.tsx'
-
-export type Professor = {
-  first: string
-  last: string
-}
 
 export type ModalView =
   | { type: 'course'; course: Course }
@@ -74,7 +70,9 @@ export function ResultModal ({
         </header>
         {view.type === 'course' ? (
           <CourseInfo course={view.course} onView={onView} />
-        ) : null}
+        ) : (
+          <ProfInfo professor={view.professor} onView={onView} />
+        )}
       </form>
     </dialog>
   )

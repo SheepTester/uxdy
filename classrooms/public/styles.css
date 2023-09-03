@@ -75,6 +75,7 @@ select {
   appearance: none;
   background: none;
   border: none;
+  padding: 0;
   color: inherit;
   font: inherit;
 }
@@ -1184,7 +1185,8 @@ input[type='checkbox']:checked:hover {
   margin-left: auto;
   gap: 5px;
 }
-.instructor {
+.instructor,
+.staff {
   font-family: var(--normal);
 }
 .additional-meetings-divider {
@@ -1219,7 +1221,6 @@ input[type='checkbox']:checked:hover {
 }
 .location {
   width: 80px;
-  padding: 0;
   text-align: left;
 }
 .location-not-room {

@@ -34,7 +34,13 @@ function MeetingCard ({ meeting, code, onView }: MeetingCardProps) {
       </p>
       {meeting.kind === 'section' && (
         <p class='meeting-column section-capacity'>
-          Capacity: <strong>{meeting.capacity}</strong>
+          {meeting.capacity === Infinity ? (
+            'No limit'
+          ) : (
+            <>
+              Capacity: <strong>{meeting.capacity}</strong>
+            </>
+          )}
         </p>
       )}
       <p class='meeting-column meeting-date'>
@@ -106,6 +112,9 @@ export function CourseInfo ({ course, onView }: CourseInfoProps) {
                   {first} <span class='last-name'>{last}</span>
                 </button>
               ))}
+              {group.instructors.length === 0 && (
+                <span class='staff'>Instructor TBA</span>
+              )}
             </div>
           </header>
           {group.sections.map(section => (
