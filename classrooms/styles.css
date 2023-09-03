@@ -10,6 +10,7 @@
   and secondary text), rather than a typical plain text label. */
   --card-line: rgba(255, 255, 255, 0.1);
   --button: rgba(0, 184, 255, 0.3);
+  --button-hover: rgba(0, 184, 255, 0.5);
   /* eg text inputs. */
   --field: rgba(255, 255, 255, 0.1);
   --card-shadow-hover: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -25,7 +26,7 @@
   --dropdown: url('./material-arrow-drop-down-white.svg');
   --link: #9acfff;
 
-  --button-hover: rgba(255, 255, 255, 0.05);
+  --icon-button-hover: rgba(255, 255, 255, 0.05);
   --normal: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
@@ -74,6 +75,7 @@ select {
   appearance: none;
   background: none;
   border: none;
+  padding: 0;
   color: inherit;
   font: inherit;
 }
@@ -108,12 +110,18 @@ input[type='checkbox'] {
   height: 1.2em;
   margin: 0;
 }
+input[type='checkbox']:hover {
+  background-color: var(--field);
+}
 input[type='checkbox']:checked {
   border-color: transparent;
   background-color: var(--button);
   background-image: url('./material-check-white.svg');
   background-position: center;
   background-size: cover;
+}
+input[type='checkbox']:checked:hover {
+  background-color: var(--button-hover);
 }
 
 #root {
@@ -156,6 +164,7 @@ input[type='checkbox']:checked {
 @media (max-width: 690px) {
   .notice-date-open {
     padding-right: 20px;
+    padding-bottom: calc(70vh + 20px);
   }
 }
 .notice-text {
@@ -283,37 +292,47 @@ input[type='checkbox']:checked {
   font-weight: bold;
 }
 
-.date-time-button {
+.corner {
   position: fixed;
+  z-index: 3;
   top: 0;
   right: 0;
   margin: 20px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+@media (max-width: 690px) {
+  .corner {
+    top: unset;
+    right: unset;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    gap: 10px;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+}
+.date-time-button {
   display: flex;
   gap: 15px;
   align-items: center;
   background-color: var(--modal);
   box-shadow: var(--modal-shadow);
-  z-index: 3;
   border-radius: 10px;
   padding: 10px 15px;
   transition: all 0.2s;
 }
 .date-time-button:disabled {
   box-shadow: none;
+  border-radius: 15px;
 }
 @media (max-width: 950px) {
   .bottom-panel-open {
     opacity: 0;
     visibility: hidden;
-  }
-}
-@media (max-width: 690px) {
-  .date-time-button {
-    top: unset;
-    right: unset;
-    bottom: 0;
-    left: 0;
-    margin: 10px;
   }
 }
 .showing-schedule-wrapper {
@@ -518,6 +537,9 @@ input[type='checkbox']:checked {
   border-radius: 5px;
   height: 100%;
 }
+.show-year-btn:hover {
+  background-color: var(--button-hover);
+}
 .show-year-btn-top {
   position: relative;
   z-index: 4;
@@ -557,6 +579,11 @@ input[type='checkbox']:checked {
 .today-btn,
 .icon-btn {
   background-color: var(--button);
+}
+.today-btn:hover,
+.icon-btn:hover,
+.date-time-button:hover .icon-btn {
+  background-color: var(--button-hover);
 }
 .checkbox-label,
 .date-input {
@@ -700,7 +727,7 @@ input[type='checkbox']:checked {
 }
 .close:hover,
 .back:hover {
-  background-color: var(--button-hover);
+  background-color: var(--icon-button-hover);
 }
 .close {
   margin-left: auto;
@@ -900,10 +927,6 @@ input[type='checkbox']:checked {
 }
 
 .term-statuses {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 2;
   background-color: var(--modal);
   box-shadow: var(--modal-shadow);
   border-radius: 10px;
@@ -919,7 +942,12 @@ input[type='checkbox']:checked {
 .hide-status {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
+  transform: translateX(10px);
+}
+@media (max-width: 690px) {
+  .hide-status {
+    transform: translateX(-10px);
+  }
 }
 .term-updated {
   margin: 0;
@@ -934,12 +962,6 @@ input[type='checkbox']:checked {
 }
 .term-unavailable {
   color: var(--soon);
-}
-@media (max-width: 690px) {
-  .term-statuses {
-    left: 10px;
-    bottom: 96px;
-  }
 }
 
 .search-wrapper {
@@ -1163,8 +1185,8 @@ input[type='checkbox']:checked {
   margin-left: auto;
   gap: 5px;
 }
-.instructor {
-  margin: 0;
+.instructor,
+.staff {
   font-family: var(--normal);
 }
 .additional-meetings-divider {
@@ -1190,15 +1212,27 @@ input[type='checkbox']:checked {
   margin: 0;
   margin-right: auto;
 }
-.meeting-column {
-  width: 100px;
+.section-capacity {
+  width: 120px;
+  font-family: var(--normal);
+}
+.meeting-date {
+  width: 180px;
 }
 .location {
-  padding: 0;
+  width: 80px;
   text-align: left;
 }
 .location-not-room {
   font-family: var(--normal);
+}
+.instructor,
+.location:not(:disabled) {
+  color: var(--link);
+}
+.instructor:hover,
+.location:not(:disabled):hover {
+  text-decoration: underline;
 }
 
 .college-revelle {
