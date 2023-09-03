@@ -1,4 +1,4 @@
-V31692314231177
+V31693751141001
 AIP 97   Academic Internship	/courses/AIP.html#aip97
  0012023070320230909Keefe,Reuther
 9999TBA  TBA  ITTBA  TBA TBA 001
@@ -406,8 +406,6 @@ EDS 289C Dissertation Writing Seminar	/courses/EDS.html#eds289c
 0018TBA  TBA  PRTBA  TBA TBA A01
 TBA  6    SETBA  09001600A00
 EDS 290  Research Practicum	/courses/EDS.html#eds290
- A002023081420230922Kathrina Mendoza,Mendez
-0030TBA  TBA  PRTBA  TBA TBA A00
  B002023061920230819Carolyn,Hofstetter
 0018RWAC 3    PR0622 18002100B00
 EDS 295  M. A. Thesis	/courses/EDS.html#eds295
