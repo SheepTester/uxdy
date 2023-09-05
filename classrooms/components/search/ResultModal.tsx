@@ -9,7 +9,6 @@ import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
 import { CourseInfo } from './CourseInfo.tsx'
 import { Professor, ProfInfo } from './ProfInfo.tsx'
-import { View } from './SearchResults.tsx'
 
 export type ModalView =
   | { type: 'course'; course: Course }
@@ -19,14 +18,8 @@ export type ResultModalProps = {
   view: ModalView
   open: boolean
   onClose: () => void
-  onView: (view: View) => void
 }
-export function ResultModal ({
-  view,
-  open,
-  onClose,
-  onView
-}: ResultModalProps) {
+export function ResultModal ({ view, open, onClose }: ResultModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -69,9 +62,9 @@ export function ResultModal ({
           </button>
         </header>
         {view.type === 'course' ? (
-          <CourseInfo course={view.course} onView={onView} />
+          <CourseInfo course={view.course} />
         ) : (
-          <ProfInfo professor={view.professor} onView={onView} />
+          <ProfInfo professor={view.professor} />
         )}
       </form>
     </dialog>

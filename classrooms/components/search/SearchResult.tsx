@@ -4,6 +4,8 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef } from 'preact/hooks'
+import { View } from '../../View.ts'
+import { Link } from '../Link.tsx'
 
 export type SearchResultProps = {
   name?: string
@@ -14,7 +16,7 @@ export type SearchResultProps = {
     end: number
   }
   selected: boolean
-  onSelect: () => void
+  view: View
 }
 export function SearchResult ({
   name,
@@ -22,9 +24,9 @@ export function SearchResult ({
   primary: primaryField,
   match,
   selected,
-  onSelect
+  view
 }: SearchResultProps) {
-  const ref = useRef<HTMLButtonElement>(null)
+  const ref = useRef<HTMLAnchorElement>(null)
   useEffect(() => {
     if (selected) {
       ref.current?.scrollIntoView({ block: 'nearest' })
@@ -36,9 +38,9 @@ export function SearchResult ({
   const secondary = nameFirst ? code : name
 
   return (
-    <button
+    <Link
+      view={view}
       class={`result ${selected ? 'result-selected' : ''}`}
-      onClick={onSelect}
       ref={ref}
     >
       {primary !== undefined && (
@@ -67,6 +69,6 @@ export function SearchResult ({
           {secondary}
         </p>
       )}
-    </button>
+    </Link>
   )
 }

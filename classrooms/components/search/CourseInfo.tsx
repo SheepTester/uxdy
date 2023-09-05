@@ -12,14 +12,13 @@ import {
 import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
-import { View } from './SearchResults.tsx'
+import { Link } from '../Link.tsx'
 
 type MeetingCardProps = {
   meeting: Section | Meeting | Exam
   code?: string | null
-  onView: (view: View) => void
 }
-function MeetingCard ({ meeting, code, onView }: MeetingCardProps) {
+function MeetingCard ({ meeting, code }: MeetingCardProps) {
   const physicalRoom = meeting.location && meeting.location.building !== 'RCLAS'
   return (
     <section class='meeting-card'>
@@ -63,37 +62,34 @@ function MeetingCard ({ meeting, code, onView }: MeetingCardProps) {
               </>
             )}
       </p>
-      <button
+      <Link
+        view={
+          physicalRoom && meeting.location
+            ? {
+                type: 'building',
+                id: meeting.location.building,
+                room: meeting.location.room
+              }
+            : null
+        }
         class={`meeting-column location ${
           physicalRoom ? '' : 'location-not-room'
         }`}
-        type='button'
-        disabled={!physicalRoom}
-        onClick={() => {
-          if (meeting.location) {
-            onView({
-              type: 'building',
-              id: meeting.location.building,
-              room: meeting.location.room
-            })
-          }
-        }}
       >
         {meeting.location
           ? meeting.location.building === 'RCLAS'
             ? 'Remote'
             : `${meeting.location.building} ${meeting.location.room}`
           : 'TBA'}
-      </button>
+      </Link>
     </section>
   )
 }
 
 export type CourseInfoProps = {
   course: Course
-  onView: (view: View) => void
 }
-export function CourseInfo ({ course, onView }: CourseInfoProps) {
+export function CourseInfo ({ course }: CourseInfoProps) {
   return (
     <div class='course-info'>
       {course.groups.map(group => (
@@ -102,15 +98,13 @@ export function CourseInfo ({ course, onView }: CourseInfoProps) {
             <span class='group-code'>{group.code}</span>
             <div class='instructors'>
               {group.instructors.map(({ first, last }) => (
-                <button
+                <Link
+                  view={{ type: 'professor', id: `${last}, ${first}` }}
                   class='instructor'
                   key={`${last}, ${first}`}
-                  onClick={() =>
-                    onView({ type: 'professor', id: `${last}, ${first}` })
-                  }
                 >
                   {first} <span class='last-name'>{last}</span>
-                </button>
+                </Link>
               ))}
               {group.instructors.length === 0 && (
                 <span class='staff'>Instructor TBA</span>
@@ -121,7 +115,6 @@ export function CourseInfo ({ course, onView }: CourseInfoProps) {
             <MeetingCard
               meeting={section}
               code={section.code !== group.code ? section.code : null}
-              onView={onView}
               key={section.code}
             />
           ))}
@@ -132,12 +125,11 @@ export function CourseInfo ({ course, onView }: CourseInfoProps) {
             <MeetingCard
               meeting={meeting}
               code={meeting.code !== group.code ? meeting.code : null}
-              onView={onView}
               key={i}
             />
           ))}
           {group.exams.map((exam, i) => (
-            <MeetingCard meeting={exam} onView={onView} key={i} />
+            <MeetingCard meeting={exam} key={i} />
           ))}
         </article>
       ))}

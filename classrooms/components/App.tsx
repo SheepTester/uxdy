@@ -24,13 +24,13 @@ import {
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { now } from '../lib/now.ts'
 import { Term, TermCache, TermError } from '../lib/TermCache.ts'
+import { OnView, View, viewFromUrl } from '../View.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
 import { ModalView, ResultModal } from './search/ResultModal.tsx'
 import { SearchBar, State } from './search/SearchBar.tsx'
-import { View } from './search/SearchResults.tsx'
 import { TermStatus } from './TermStatus.tsx'
 
 /**
@@ -273,11 +273,14 @@ export function App () {
   }
 
   useEffect(() => {
-    //
-  }, [modalView, viewing])
+    const initView = viewFromUrl(window.location.href)
+    if (initView) {
+      handleView(initView)
+    }
+  }, [])
 
   return (
-    <>
+    <OnView.Provider value={handleView}>
       <SearchBar
         state={searchState}
         terms={terms}
@@ -285,13 +288,11 @@ export function App () {
         buildings={state?.buildings ? Object.keys(state?.buildings) : []}
         visible={!noticeVisible}
         onLoadTerms={loadTerms}
-        onView={handleView}
       />
       <ResultModal
         view={modalView}
         open={modalViewing !== null}
         onClose={() => setModalViewing(null)}
-        onView={handleView}
       />
       <div class='corner'>
         <DateTimeButton
@@ -377,10 +378,9 @@ export function App () {
         building={buildings[building]}
         rooms={state?.buildings?.[building] ?? {}}
         onClose={() => setViewing(null)}
-        onView={handleView}
         visible={buildingPanelVisible}
         rightPanelOpen={datePanelVisible}
       />
-    </>
+    </OnView.Provider>
   )
 }

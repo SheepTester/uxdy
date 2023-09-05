@@ -3,8 +3,8 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { Course, Group } from '../../../scheduleofclasses/group-sections.ts'
-import { View } from './SearchResults.tsx'
+import { Course } from '../../../scheduleofclasses/group-sections.ts'
+import { Link } from '../Link.tsx'
 
 export type Professor = {
   first: string
@@ -14,19 +14,18 @@ export type Professor = {
 
 export type ProfInfoProps = {
   professor: Professor
-  onView: (view: View) => void
 }
-export function ProfInfo ({ professor, onView }: ProfInfoProps) {
+export function ProfInfo ({ professor }: ProfInfoProps) {
   return (
     <div class='prof-info'>
       {professor.courses.map(course => (
-        <button
+        <Link
+          view={{ type: 'course', id: course.code }}
           class='prof-course'
           key={course.code}
-          onClick={() => onView({ type: 'course', id: course.code })}
         >
           {course.code}
-        </button>
+        </Link>
       ))}
     </div>
   )

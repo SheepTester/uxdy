@@ -11,7 +11,6 @@ import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { BackIcon } from '../icons/BackIcon.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
-import { View } from '../search/SearchResults.tsx'
 import { RoomList } from './RoomList.tsx'
 import { RoomSchedule } from './RoomSchedule.tsx'
 
@@ -21,15 +20,13 @@ type BuildingPanelContentProps = {
   building: BuildingDatum
   rooms: Record<string, RoomMeeting[]>
   onClose: () => void
-  onView: (view: View) => void
 }
 function BuildingPanelContent ({
   weekday,
   time,
   building,
   rooms,
-  onClose,
-  onView
+  onClose
 }: BuildingPanelContentProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const room = useLast('', selected)
@@ -87,7 +84,6 @@ function BuildingPanelContent ({
           weekday={weekday}
           time={time}
           meetings={rooms[selected] ?? []}
-          onView={onView}
         />
       ) : (
         <RoomList

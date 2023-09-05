@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import { termCode } from '../../../terms/index.ts'
 import { Term } from '../../lib/TermCache.ts'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
-import { SearchData, SearchResults, View } from './SearchResults.tsx'
+import { SearchData, SearchResults } from './SearchResults.tsx'
 
 export type State =
   | { type: 'unloaded' }
@@ -26,7 +26,6 @@ export type SearchBarProps = {
   buildings: string[]
   visible: boolean
   onLoadTerms: () => void
-  onView: (view: View) => void
 }
 export function SearchBar ({
   state,
@@ -34,8 +33,7 @@ export function SearchBar ({
   termId,
   buildings,
   visible,
-  onLoadTerms,
-  onView
+  onLoadTerms
 }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
@@ -125,10 +123,6 @@ export function SearchBar ({
           query={query}
           data={{ ...state.data, buildings }}
           index={index}
-          onSelect={view => {
-            setShowResults(false)
-            onView(view)
-          }}
         />
       )}
     </div>

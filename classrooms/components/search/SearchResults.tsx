@@ -134,30 +134,17 @@ function search (data: SearchData, query: string): SearchResults {
   }
 }
 
-export type View =
-  | {
-      type: 'course' | 'professor'
-      id: string
-    }
-  | {
-      type: 'building'
-      id: string
-      room?: string
-    }
-
 export type SearchResultsProps = {
   terms: Term[]
   query: string
   data: SearchData
   index: number | null
-  onSelect: (view: View) => void
 }
 export function SearchResults ({
   terms,
   query,
   data,
-  index,
-  onSelect
+  index
 }: SearchResultsProps) {
   const results = useMemo(
     () => search(data, query.toLowerCase()),
@@ -193,7 +180,7 @@ export function SearchResults ({
           primary={course.in === 'code' ? 'code' : 'name'}
           match={course.match}
           selected={i === index}
-          onSelect={() => onSelect({ type: 'course', id: course.code })}
+          view={{ type: 'course', id: course.code }}
           key={`course\t${course.code}\t${course.in}`}
         />
       ))}
@@ -210,7 +197,7 @@ export function SearchResults ({
           primary='name'
           match={professor.match}
           selected={i + results.courses.length === index}
-          onSelect={() => onSelect({ type: 'professor', id: professor.id })}
+          view={{ type: 'professor', id: professor.id }}
           key={`course\t${professor.id}\t${professor.order}`}
         />
       ))}
@@ -226,7 +213,7 @@ export function SearchResults ({
           selected={
             i + results.courses.length + results.professors.length === index
           }
-          onSelect={() => onSelect({ type: 'building', id: building.code })}
+          view={{ type: 'building', id: building.code }}
           key={`course\t${building.code}\t${building.in}`}
         />
       ))}

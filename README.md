@@ -105,15 +105,15 @@ Current uses:
   - Feature: calendar view with quarters marked out.
 - **Converting between month/day dates and quarter weeks.** May 15, what week is that?
   - Feature: calendar view with week numbers.
-
-Planned uses:
-
 - **Looking up the lecture location for a class.** I'll crash ECE 100. Where is it? I'm too lazy to sign into WebReg, and searching up courses on there is slow.
   - Feature: search courses by course code, list meeting times/locations for a course.
 - **Finding buildings by their code on the map.** Where is RECGM?
   - Feature: search buildings by code.
 - **Finding what classes are taught by a professor this quarter.** What classes is Sworder teaching next quarter?
   - Feature: search sections by professor.
+
+Planned uses:
+
 - **Determining when a professor is free.** I want to schedule a meeting with my professor. When might they be free?
   - Feature: calendar view for a professor. Note: this might have privacy implications, tread carefully.
 - **Guiding students to buildings.** Where is Mosaic? It's next to Wolftown.
@@ -122,7 +122,7 @@ Planned uses:
 Features to add:
 
 - [x] Scrape data from schedule of classes rather than WebReg (so it doesn't require authentication)
-- [ ] Search by professor and course code
+- [x] Search by professor and course code
 - [x] Set current time so can see what classrooms are available at a given date/time
 - [x] Use Pacific Time regardless of browser time zone
 
@@ -130,3 +130,7 @@ Features to add:
 - [ ] Handle co-scheduled courses
 - [x] Show when the quarter's data was last refreshed
 - [ ] Show all images for building
+
+- [ ] Support using back/forward for modals
+- [ ] Permalink dates, buildings, courses, and professors
+- [ ] Simplify term selection
