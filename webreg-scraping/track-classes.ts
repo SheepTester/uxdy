@@ -1,5 +1,5 @@
 // Create a Git-friendly set of files summarizing WebReg data
-// deno run --allow-all track-classes.ts <UqZBpD3n> <jlinksessionidx>
+// deno run --allow-all track-classes.ts <cookie>
 
 import { ensureDir } from 'std/fs/ensure_dir.ts'
 import { writeAll } from 'std/streams/write_all.ts'
@@ -105,8 +105,7 @@ export async function main (
   source:
     | {
         type: 'fetch'
-        jlinksessionidx: string
-        UqZBpD3n: string
+        cookie: string
       }
     | {
         type: 'cache'
@@ -275,8 +274,7 @@ export async function main (
 }
 
 if (import.meta.main) {
-  // The UqZBpD3n cookie doesn't seem to expire as often, so I put it first
-  const [UqZBpD3n, jlinksessionidx] = Deno.args
+  const [cookie] = Deno.args
   const today = new Date()
   await main(
     'FA22',
@@ -285,6 +283,6 @@ if (import.meta.main) {
       (today.getMonth() + 1).toString().padStart(2, '0'),
       today.getDate().toString().padStart(2, '0')
     ].join(''),
-    { type: 'fetch', jlinksessionidx, UqZBpD3n }
+    { type: 'fetch', cookie }
   )
 }

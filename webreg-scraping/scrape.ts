@@ -1,4 +1,4 @@
-// deno run --allow-all scrape.ts <UqZBpD3n> <jlinksessionidx> <quarter>
+// deno run --allow-all scrape.ts <quarter> <jlinksessionidx> <itscookie>
 
 import { join as joinPath } from 'std/path/mod.ts'
 import { ExamCodes, InstructionCodes } from './meeting-types.ts'
@@ -74,10 +74,8 @@ export interface RawGetClassResult extends CommonRawSectionResult {
 }
 
 type ScraperOptions = {
-  /** The `jlinksessionidx` cookie */
-  jlinksessionidx?: string
-  /** The `UqZBpD3n` cookie */
-  UqZBpD3n?: string
+  /** The cookie header used to authenticate WebReg requests. */
+  cookie?: string
   /** The path to cache WebReg response data in */
   cachePath?: string | null
 }
@@ -85,17 +83,15 @@ type ScraperOptions = {
 /** Scrapes courses and sections from WebReg. */
 export class Scraper {
   #term: string
-  #sessionIndex?: string
-  #uqz?: string
+  #cookie?: string
   #cachePath: string | null
 
   constructor (
     term: string,
-    { jlinksessionidx, UqZBpD3n, cachePath = null }: ScraperOptions = {}
+    { cookie, cachePath = null }: ScraperOptions = {}
   ) {
     this.#term = term
-    this.#sessionIndex = jlinksessionidx
-    this.#uqz = UqZBpD3n
+    this.#cookie = cookie
     this.#cachePath = cachePath
   }
 
@@ -122,11 +118,7 @@ export class Scraper {
       `https://act.ucsd.edu/webreg2/svc/wradapter/secure/${path}?${new URLSearchParams(
         query
       )}`,
-      {
-        headers: {
-          Cookie: `jlinksessionidx=${this.#sessionIndex}; UqZBpD3n=${this.#uqz}`
-        }
-      }
+      { headers: { Cookie: this.#cookie ?? '' } }
     ).then(response =>
       response.ok
         ? response.json()
@@ -507,6 +499,11 @@ export class Group extends BaseGroup<RawSearchLoadGroupDataResult> {
    * Whether the section can be enrolled directly. This should reflect whether
    * the button says "Enroll" (true) or "Waitlist" (false) on WebReg. False if
    * `plannable` is false.
+   *
+   * NOTE: `waitlist` can be greater than 0 even when `enrollable` is true. This
+   * can happen if the course capacity was just increased, so students haven't
+   * been let off the waitlist yet, but there would still be seats available
+   * after everyone is off the waitlist.
    */
   enrollable: boolean
 
@@ -703,16 +700,17 @@ export class ScheduleSection extends BaseGroup<RawGetClassResult> {
 }
 
 if (import.meta.main) {
-  const [UqZBpD3n, jlinksessionidx, quarter] = Deno.args
+  // There might be multiple itscookies; try the last one first
+  const [quarter, jlinksessionidx, itscookie] = Deno.args
   const getter = new Scraper(quarter, {
-    jlinksessionidx,
-    UqZBpD3n,
+    cookie: `jlinksessionidx=${jlinksessionidx}; itscookie=${itscookie};`,
     cachePath: 'cache-' + quarter.toLowerCase()
   })
   const courses = []
   // const freq: Record<number, number> = {}
   const examples: Record<number, string> = {}
   // let count = 0
+  console.log('## Lower division (0xx)\n')
   for await (const course of getter.allCourses()) {
     courses.push(course)
     // if (course.hundred <= 1) {
@@ -727,6 +725,27 @@ if (import.meta.main) {
     //     }
     //   }
     // }
+    if (course.hundred !== 0) {
+      continue
+    }
+    const enrollable = course.groups.filter(
+      group =>
+        group.enrollable &&
+        group.capacity !== Infinity &&
+        group.enrolled + group.waitlist < group.capacity
+    )
+    if (enrollable.length > 0) {
+      console.log(
+        `- **${course.code}**: ${enrollable
+          .map(
+            group =>
+              `${group.code} (${group.enrolled + group.waitlist}/${
+                group.capacity === Infinity ? '∞' : group.capacity
+              })`
+          )
+          .join(' · ')}`
+      )
+    }
     for (const group of course.groups) {
       // freq[group.raw.DAY_CODE.length] ??= 0
       // freq[group.raw.DAY_CODE.length]++
@@ -735,23 +754,38 @@ if (import.meta.main) {
       // }
       // Get list of lectures that meet on Friday
       if (group.time?.days.includes(5) && !group.isExam()) {
-        console.log(
-          `${course.code} ${group.code} ${group.type} on ${group.time.days}`
-        )
-      }
-      if (
-        !group.isExam() &&
-        group.plannable &&
-        group.time?.location?.building === 'RCLAS'
-      ) {
-        // count++
         // console.log(
-        //   `${course.code} ${group.code} ${group.enrolled}/${
-        //     group.capacity
-        //   } WL ${group.waitlist} ${group.enrollable ? '✔️' : '❌'}`
+        //   `${course.code} ${group.code} ${group.type} on ${group.time.days}`
         // )
+      }
+      if (group.enrollable) {
+        // count++
       }
     }
   }
-  console.log(examples)
+  // console.log(examples)
+  console.log('\n## Upper division (1xx)\n')
+  for (const course of courses) {
+    if (course.hundred !== 1) {
+      continue
+    }
+    const enrollable = course.groups.filter(
+      group =>
+        group.enrollable &&
+        group.capacity !== Infinity &&
+        group.enrolled + group.waitlist < group.capacity
+    )
+    if (enrollable.length > 0) {
+      console.log(
+        `- **${course.code}**: ${enrollable
+          .map(
+            group =>
+              `${group.code} (${group.enrolled + group.waitlist}/${
+                group.capacity === Infinity ? '∞' : group.capacity
+              })`
+          )
+          .join(' · ')}`
+      )
+    }
+  }
 }
