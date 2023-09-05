@@ -11,21 +11,21 @@ export type LinkProps = {
   view: View | null
   class?: string
   style?: JSX.CSSProperties | string
-  ref?: Ref<HTMLAnchorElement>
+  elemRef?: Ref<HTMLAnchorElement>
   children?: ComponentChildren
 }
 export function Link ({
   view,
   class: className = '',
   children,
-  ref
+  elemRef
 }: LinkProps) {
   const onView = useContext(OnView)
   return (
     <a
       href={view ? '?' : undefined}
-      class={className}
-      ref={ref}
+      class={`internal-link ${className}`}
+      ref={elemRef}
       onClick={e => {
         e.preventDefault()
         if (view) {

@@ -3,15 +3,15 @@ import { createContext } from 'preact'
 export type View =
   | {
       type: 'course'
-      id: string
+      course: string
     }
   | {
       type: 'professor'
-      id: string
+      name: string
     }
   | {
       type: 'building'
-      id: string
+      building: string
       room?: string | null
     }
 
@@ -21,11 +21,11 @@ export function viewFromUrl (url: string): View | null {
   const course = params.get('course')
   const professor = params.get('professor')
   if (building) {
-    return { type: 'building', id: building, room: params.get('room') }
+    return { type: 'building', building, room: params.get('room') }
   } else if (course) {
-    return { type: 'course', id: course }
+    return { type: 'course', course }
   } else if (professor) {
-    return { type: 'professor', id: professor }
+    return { type: 'professor', name: professor }
   } else {
     return null
   }

@@ -20,7 +20,7 @@ export function ProfInfo ({ professor }: ProfInfoProps) {
     <div class='prof-info'>
       {professor.courses.map(course => (
         <Link
-          view={{ type: 'course', id: course.code }}
+          view={{ type: 'course', course: course.code }}
           class='prof-course'
           key={course.code}
         >

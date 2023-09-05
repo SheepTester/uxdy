@@ -180,7 +180,7 @@ export function SearchResults ({
           primary={course.in === 'code' ? 'code' : 'name'}
           match={course.match}
           selected={i === index}
-          view={{ type: 'course', id: course.code }}
+          view={{ type: 'course', course: course.code }}
           key={`course\t${course.code}\t${course.in}`}
         />
       ))}
@@ -197,7 +197,7 @@ export function SearchResults ({
           primary='name'
           match={professor.match}
           selected={i + results.courses.length === index}
-          view={{ type: 'professor', id: professor.id }}
+          view={{ type: 'professor', name: professor.id }}
           key={`course\t${professor.id}\t${professor.order}`}
         />
       ))}
@@ -213,7 +213,7 @@ export function SearchResults ({
           selected={
             i + results.courses.length + results.professors.length === index
           }
-          view={{ type: 'building', id: building.code }}
+          view={{ type: 'building', building: building.code }}
           key={`course\t${building.code}\t${building.in}`}
         />
       ))}

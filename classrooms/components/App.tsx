@@ -235,8 +235,8 @@ export function App () {
 
   async function handleView (view: View) {
     if (view.type === 'building') {
-      setScrollTo({ building: view.id, init: false })
-      setViewing(view.id)
+      setScrollTo({ building: view.building, init: false })
+      setViewing(view.building)
       setModalViewing(null)
       if (view.room) {
         // TODO: select room
@@ -248,12 +248,12 @@ export function App () {
         ? searchState.data.courses
         : await loadTerms()
     if (view.type === 'course') {
-      const course = courses.find(course => course.code === view.id)
+      const course = courses.find(course => course.code === view.course)
       if (course) {
         setModalViewing({ type: 'course', course })
       }
     } else {
-      const [last, first] = view.id.split(', ')
+      const [last, first] = view.name.split(', ')
       setModalViewing({
         type: 'professor',
         professor: {

@@ -67,7 +67,7 @@ function MeetingCard ({ meeting, code }: MeetingCardProps) {
           physicalRoom && meeting.location
             ? {
                 type: 'building',
-                id: meeting.location.building,
+                building: meeting.location.building,
                 room: meeting.location.room
               }
             : null
@@ -99,7 +99,7 @@ export function CourseInfo ({ course }: CourseInfoProps) {
             <div class='instructors'>
               {group.instructors.map(({ first, last }) => (
                 <Link
-                  view={{ type: 'professor', id: `${last}, ${first}` }}
+                  view={{ type: 'professor', name: `${last}, ${first}` }}
                   class='instructor'
                   key={`${last}, ${first}`}
                 >

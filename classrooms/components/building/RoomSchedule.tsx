@@ -76,7 +76,7 @@ export function RoomSchedule ({ weekday, time, meetings }: RoomScheduleProps) {
               .sort((a, b) => +a.start - +b.start)
               .map(meeting => (
                 <Link
-                  view={{ type: 'course', id: meeting.course }}
+                  view={{ type: 'course', course: meeting.course }}
                   class={`meeting ${inUse(meeting) ? 'current' : ''} ${
                     meeting.kind === 'exam' ? 'exam' : ''
                   }`}

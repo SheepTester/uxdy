@@ -41,7 +41,7 @@ export function SearchResult ({
     <Link
       view={view}
       class={`result ${selected ? 'result-selected' : ''}`}
-      ref={ref}
+      elemRef={ref}
     >
       {primary !== undefined && (
         <p
