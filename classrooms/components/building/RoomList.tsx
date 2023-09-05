@@ -8,21 +8,15 @@ import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { compareRoomNums } from '../../lib/compareRoomNums.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { used } from '../../lib/now.ts'
+import { Link } from '../Link.tsx'
 
 export type RoomListProps = {
   weekday: number
   time: Time
-  buildingCode: string
+  building: string
   rooms: Record<string, RoomMeeting[]>
-  onSelect: (room: string) => void
 }
-export function RoomList ({
-  weekday,
-  time,
-  buildingCode,
-  rooms,
-  onSelect
-}: RoomListProps) {
+export function RoomList ({ weekday, time, building, rooms }: RoomListProps) {
   if (Object.keys(rooms).length === 0) {
     return (
       <div class='empty'>
@@ -46,14 +40,14 @@ export function RoomList ({
             const activeMeeting = meetings.find(used(weekday, time, 10))
             const soon = activeMeeting && time < activeMeeting.start
             return (
-              <button
+              <Link
+                view={{ type: 'building', building, room }}
                 class={`room ${
                   activeMeeting ? (soon ? 'soon' : 'active') : 'inactive'
                 }`}
-                onClick={() => onSelect(room)}
               >
                 <div className='room-name'>
-                  {buildingCode} {room}
+                  {building} {room}
                 </div>
                 <div className='current-meeting'>
                   {activeMeeting ? (
@@ -75,7 +69,7 @@ export function RoomList ({
                     'Not in use'
                   )}
                 </div>
-              </button>
+              </Link>
             )
           })}
       </div>

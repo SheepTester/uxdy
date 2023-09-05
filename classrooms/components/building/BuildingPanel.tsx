@@ -11,6 +11,7 @@ import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { BackIcon } from '../icons/BackIcon.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
+import { Link } from '../Link.tsx'
 import { RoomList } from './RoomList.tsx'
 import { RoomSchedule } from './RoomSchedule.tsx'
 
@@ -18,18 +19,17 @@ type BuildingPanelContentProps = {
   weekday: number
   time: Time
   building: BuildingDatum
+  room: string | null
   rooms: Record<string, RoomMeeting[]>
-  onClose: () => void
 }
 function BuildingPanelContent ({
   weekday,
   time,
   building,
-  rooms,
-  onClose
+  room,
+  rooms
 }: BuildingPanelContentProps) {
-  const [selected, setSelected] = useState<string | null>(null)
-  const room = useLast('', selected)
+  const lastRoom = useLast('', room)
   const [imageLoaded, setImageLoaded] = useState(false)
 
   // Make Imgur compress the image.
@@ -42,9 +42,9 @@ function BuildingPanelContent ({
   return (
     <>
       <header
-        class={`building-name ${
-          selected ? 'schedule-view' : 'list-view'
-        } college-${buildings[building.code].college}`}
+        class={`building-name ${room ? 'schedule-view' : 'list-view'} college-${
+          buildings[building.code].college
+        }`}
       >
         {buildings[building.code].images.length > 0 && (
           <img
@@ -56,42 +56,39 @@ function BuildingPanelContent ({
             key={imageUrl}
           />
         )}
-        <button
+        <Link
+          view={room ? { type: 'building', building: building.code } : null}
           class='back'
-          onClick={() => {
-            setSelected(null)
-          }}
-          disabled={!selected}
+          back
         >
           <BackIcon />
-        </button>
+        </Link>
         <AbbrevHeading
           heading='h2'
           abbrev={
             <span>
-              {building.code} <span class='room-number'>{room}</span>
+              {building.code} <span class='room-number'>{lastRoom}</span>
             </span>
           }
         >
           {buildings[building.code].name}
         </AbbrevHeading>
-        <button class='close' onClick={onClose}>
+        <Link view={{ type: 'default' }} class='close' back>
           <CloseIcon />
-        </button>
+        </Link>
       </header>
-      {selected ? (
+      {room ? (
         <RoomSchedule
           weekday={weekday}
           time={time}
-          meetings={rooms[selected] ?? []}
+          meetings={rooms[room] ?? []}
         />
       ) : (
         <RoomList
           weekday={weekday}
           time={time}
-          buildingCode={building.code}
+          building={building.code}
           rooms={rooms}
-          onSelect={setSelected}
         />
       )}
     </>

@@ -3,10 +3,12 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useEffect, useRef } from 'preact/hooks'
+import { useContext, useEffect, useRef } from 'preact/hooks'
 import { Course } from '../../../scheduleofclasses/group-sections.ts'
+import { OnView } from '../../View.ts'
 import { AbbrevHeading } from '../AbbrevHeading.tsx'
 import { CloseIcon } from '../icons/CloseIcon.tsx'
+import { navigate } from '../Link.tsx'
 import { CourseInfo } from './CourseInfo.tsx'
 import { Professor, ProfInfo } from './ProfInfo.tsx'
 
@@ -17,16 +19,16 @@ export type ModalView =
 export type ResultModalProps = {
   view: ModalView
   open: boolean
-  onClose: () => void
 }
-export function ResultModal ({ view, open, onClose }: ResultModalProps) {
+export function ResultModal ({ view, open }: ResultModalProps) {
+  const onView = useContext(OnView)
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
     if (open) {
       ref.current?.showModal()
     } else {
-      ref.current?.close()
+      ref.current?.close('force-closed')
     }
   }, [open])
 
@@ -36,10 +38,15 @@ export function ResultModal ({ view, open, onClose }: ResultModalProps) {
       ref={ref}
       onClick={e => {
         if (e.target === e.currentTarget) {
-          e.currentTarget.close()
+          e.currentTarget.close('shaded-area')
         }
       }}
-      onClose={onClose}
+      onClose={e => {
+        if (e.currentTarget.returnValue !== 'force-closed') {
+          onView({ type: 'default' })
+          navigate({ type: 'default' }, true)
+        }
+      }}
     >
       <form method='dialog' class='modal-body'>
         <header class='modal-header'>
@@ -57,7 +64,7 @@ export function ResultModal ({ view, open, onClose }: ResultModalProps) {
               <span class='last-name'>{view.professor.last}</span>
             </h1>
           )}
-          <button class='close' type='submit'>
+          <button class='close' type='submit' value='close-btn'>
             <CloseIcon />
           </button>
         </header>

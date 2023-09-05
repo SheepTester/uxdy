@@ -14,13 +14,13 @@ import {
   northeast
 } from '../lib/locations.ts'
 import { used } from '../lib/now.ts'
+import { Link } from './Link.tsx'
 
 type BuildingButtonProps = {
   weekday: number
   time: Time
   building: BuildingDatum
   rooms: RoomMeeting[][]
-  onSelect: (building: string) => void
   selected: boolean
   scrollTarget: { init: boolean } | null
   visible: boolean
@@ -31,7 +31,6 @@ export function BuildingButton ({
   time,
   building,
   rooms,
-  onSelect,
   selected,
   scrollTarget,
   visible
@@ -39,7 +38,7 @@ export function BuildingButton ({
   const college = building.college
 
   const ref = useCallback(
-    (button: HTMLButtonElement | null) => {
+    (button: HTMLAnchorElement | null) => {
       if (scrollTarget && button) {
         window.requestAnimationFrame(() => {
           const windowWidth = window.innerWidth
@@ -62,7 +61,8 @@ export function BuildingButton ({
   const { x, y } = latLongToPixel(building.location)
 
   return (
-    <button
+    <Link
+      view={{ type: 'building', building: building.code }}
       class={`building-btn college-${college} ${selected ? 'selected' : ''} ${
         visible ? '' : 'building-btn-hidden'
       }`}
@@ -70,8 +70,7 @@ export function BuildingButton ({
         left: `${x - southwest.x + PADDING.horizontal}px`,
         top: `${y - northeast.y + PADDING.top}px`
       }}
-      ref={ref}
-      onClick={() => onSelect(building.code)}
+      elemRef={ref}
     >
       {building.code}
       <span class='room-count'>
@@ -80,6 +79,6 @@ export function BuildingButton ({
         </span>
         /{rooms.length}
       </span>
-    </button>
+    </Link>
   )
 }

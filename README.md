@@ -131,6 +131,7 @@ Features to add:
 - [x] Show when the quarter's data was last refreshed
 - [ ] Show all images for building
 
-- [ ] Support using back/forward for modals
-- [ ] Permalink dates, buildings, courses, and professors
+- [x] Support using back/forward for modals
+- [x] Permalink buildings, courses, and professors
+- [ ] Permalink dates
 - [ ] Simplify term selection

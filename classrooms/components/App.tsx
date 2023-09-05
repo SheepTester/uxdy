@@ -129,22 +129,23 @@ export function App () {
   )
 
   const [showDatePanel, setShowDatePanel] = useState(false)
-  const [viewing, setViewing] = useState<string | null>(null)
-  const building = useLast('CENTR', viewing)
+  const [buildingCode, setBuildingCode] = useState<string | null>(null)
+  const lastBuilding = useLast('CENTR', buildingCode)
   const [scrollTo, setScrollTo] = useState({ building: 'CENTR', init: true })
+  const [room, setRoom] = useState<string | null>(null)
 
   const [searchState, setSearchState] = useState<State>({ type: 'unloaded' })
-  const [modalViewing, setModalViewing] = useState<ModalView | null>(null)
+  const [modal, setModal] = useState<ModalView | null>(null)
   const modalView = useLast<ModalView>(
     { type: 'course', course: { code: '', title: '', groups: [] } },
-    modalViewing
+    modal
   )
 
   const terms = getTerms(getTerm(date))
   const termId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
 
   const datePanelVisible = showDatePanel || (noticeVisible && state !== null)
-  const buildingPanelVisible = viewing !== null && !noticeVisible
+  const buildingPanelVisible = buildingCode !== null && !noticeVisible
 
   async function handleDate (date: Day) {
     const currentTerm = getTerm(date)
@@ -234,13 +235,16 @@ export function App () {
   }
 
   async function handleView (view: View) {
+    if (view.type === 'default') {
+      setBuildingCode(null)
+      setModal(null)
+      return
+    }
     if (view.type === 'building') {
       setScrollTo({ building: view.building, init: false })
-      setViewing(view.building)
-      setModalViewing(null)
-      if (view.room) {
-        // TODO: select room
-      }
+      setBuildingCode(view.building)
+      setModal(null)
+      setRoom(view.room ?? null)
       return
     }
     const courses =
@@ -250,11 +254,11 @@ export function App () {
     if (view.type === 'course') {
       const course = courses.find(course => course.code === view.course)
       if (course) {
-        setModalViewing({ type: 'course', course })
+        setModal({ type: 'course', course })
       }
     } else {
       const [last, first] = view.name.split(', ')
-      setModalViewing({
+      setModal({
         type: 'professor',
         professor: {
           first,
@@ -274,8 +278,15 @@ export function App () {
 
   useEffect(() => {
     const initView = viewFromUrl(window.location.href)
-    if (initView) {
+    if (initView.type !== 'default') {
       handleView(initView)
+    }
+    const handlePopstate = () => {
+      handleView(viewFromUrl(window.location.href))
+    }
+    window.addEventListener('popstate', handlePopstate)
+    return () => {
+      window.removeEventListener('popstate', handlePopstate)
     }
   }, [])
 
@@ -289,11 +300,7 @@ export function App () {
         visible={!noticeVisible}
         onLoadTerms={loadTerms}
       />
-      <ResultModal
-        view={modalView}
-        open={modalViewing !== null}
-        onClose={() => setModalViewing(null)}
-      />
+      <ResultModal view={modalView} open={modal !== null} />
       <div class='corner'>
         <DateTimeButton
           date={date}
@@ -362,8 +369,7 @@ export function App () {
               time={time}
               building={building}
               rooms={Object.values(state?.buildings?.[building.code] ?? {})}
-              onSelect={setViewing}
-              selected={building.code === viewing}
+              selected={building.code === buildingCode}
               scrollTarget={
                 building.code === scrollTo.building ? scrollTo : null
               }
@@ -375,9 +381,9 @@ export function App () {
       <BuildingPanel
         weekday={date.day}
         time={time}
-        building={buildings[building]}
-        rooms={state?.buildings?.[building] ?? {}}
-        onClose={() => setViewing(null)}
+        building={buildings[lastBuilding]}
+        room={room}
+        rooms={state?.buildings?.[lastBuilding] ?? {}}
         visible={buildingPanelVisible}
         rightPanelOpen={datePanelVisible}
       />

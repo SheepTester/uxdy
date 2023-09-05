@@ -418,6 +418,7 @@ input[type='checkbox']:checked:hover {
 }
 .calendar-scroll-area {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   height: 0;
   flex: auto;
   /* Needed for offsetTop; see CalendarRow */
@@ -622,6 +623,7 @@ input[type='checkbox']:checked:hover {
   border-radius: 15px;
   transition: transform 0.2s, opacity 0.2s, visibility 0.2s, right 0.2s;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .building-panel-invisible {
   opacity: 0;
@@ -1011,6 +1013,7 @@ input[type='checkbox']:checked:hover {
   padding: 5px 0;
   list-style: none;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   flex: auto;
 }
 .result-heading {
@@ -1114,6 +1117,7 @@ input[type='checkbox']:checked:hover {
   max-width: 1000px;
   max-height: 100%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   background-color: var(--modal);
   box-shadow: var(--modal-shadow);
   border-radius: 20px;
@@ -1232,11 +1236,11 @@ input[type='checkbox']:checked:hover {
   font-family: var(--normal);
 }
 .instructor,
-.location:not(:disabled) {
+.location[href] {
   color: var(--link);
 }
 .instructor:hover,
-.location:not(:disabled):hover {
+.location[href]:hover {
   text-decoration: underline;
 }
 
