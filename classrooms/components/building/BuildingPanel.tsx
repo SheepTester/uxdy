@@ -58,7 +58,7 @@ function BuildingPanelContent ({
         )}
         <Link
           view={room ? { type: 'building', building: building.code } : null}
-          class='back'
+          class='icon-btn back'
           back={([previous]) => {
             // If the user just came from a room list then go back to it
             if (previous && previous.type === 'building' && !previous.room) {
@@ -82,7 +82,7 @@ function BuildingPanelContent ({
         </AbbrevHeading>
         <Link
           view={{ type: 'default' }}
-          class='close'
+          class='icon-btn close'
           back={([previous, before]) => {
             if (!previous) {
               return null

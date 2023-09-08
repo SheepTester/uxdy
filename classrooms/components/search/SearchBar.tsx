@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { termCode } from '../../../terms/index.ts'
 import { Term } from '../../lib/TermCache.ts'
+import { ClearIcon } from '../icons/CloseIcon.tsx'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
 import { SearchData, SearchResults } from './SearchResults.tsx'
 
@@ -61,7 +62,19 @@ export function SearchBar ({
 
   // TODO: show loading, offline errors with retry button
   return (
-    <div
+    <form
+      role='search'
+      action='javascript:'
+      onSubmit={e => {
+        // This sucks but I'm too lazy to think of a good React way to do
+        // this
+        const selected = e.currentTarget
+          .closest('.search-wrapper')
+          ?.querySelector('.result-selected')
+        if (selected instanceof HTMLElement) {
+          selected.click()
+        }
+      }}
       class={`search-wrapper ${visible ? '' : 'hide-search'} ${
         loaded && showResults && query !== '' ? 'showing-results' : ''
       }`}
@@ -69,8 +82,12 @@ export function SearchBar ({
       <label class='search-bar'>
         <SearchIcon />
         <input
-          type='search'
+          type='text'
           id='search'
+          autocomplete='off'
+          autocapitalize='none'
+          autocorrect='off'
+          aria-label='Search courses, people, and buildings.'
           title="Press '/' to jump to the search box."
           placeholder='Search courses, people, buildings...'
           class='search-input'
@@ -94,23 +111,21 @@ export function SearchBar ({
               )
               e.preventDefault()
             }
-            if (e.key === 'Enter') {
-              // This sucks but I'm too lazy to think of a good React way to do
-              // this
-              const selected = e.currentTarget
-                .closest('.search-wrapper')
-                ?.querySelector('.result-selected')
-              if (selected instanceof HTMLElement) {
-                selected.click()
-              }
-              e.preventDefault()
-            }
           }}
           onFocus={e => {
             onSearch(e.currentTarget.value.length > 0)
           }}
           ref={ref}
         />
+        {query.length > 0 && (
+          <button
+            class='icon-btn clear-btn'
+            type='reset'
+            onClick={() => setQuery('')}
+          >
+            <ClearIcon />
+          </button>
+        )}
       </label>
       {loaded && showResults && (
         <SearchResults
@@ -120,6 +135,6 @@ export function SearchBar ({
           index={index}
         />
       )}
-    </div>
+    </form>
   )
 }

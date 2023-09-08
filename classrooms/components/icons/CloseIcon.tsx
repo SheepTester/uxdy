@@ -8,3 +8,6 @@ export function CloseIcon () {
     </svg>
   )
 }
+
+/** The clear icon is the same as the close icon. */
+export const ClearIcon = CloseIcon

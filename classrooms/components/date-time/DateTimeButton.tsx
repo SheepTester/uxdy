@@ -47,7 +47,7 @@ export function DateTimeButton ({
           </span>
         )}
       </p>
-      <div class='icon-btn edit-icon'>Edit</div>
+      <div class='filled-icon-btn edit-icon'>Edit</div>
     </button>
   )
 }

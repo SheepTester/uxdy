@@ -74,7 +74,9 @@ export function DateTimePanel ({
             Today
           </button>
         )}
-        {closeable && <button class='icon-btn close-date-btn'>Close</button>}
+        {closeable && (
+          <button class='filled-icon-btn close-date-btn'>Close</button>
+        )}
       </div>
       <div class='date-time-flex'>
         <input
