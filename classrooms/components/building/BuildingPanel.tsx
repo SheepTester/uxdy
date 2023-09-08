@@ -59,7 +59,14 @@ function BuildingPanelContent ({
         <Link
           view={room ? { type: 'building', building: building.code } : null}
           class='back'
-          back
+          back={([previous]) => {
+            // If the user just came from a room list then go back to it
+            if (previous && previous.type === 'building' && !previous.room) {
+              return 0
+            } else {
+              return null
+            }
+          }}
         >
           <BackIcon />
         </Link>
@@ -73,7 +80,28 @@ function BuildingPanelContent ({
         >
           {buildings[building.code].name}
         </AbbrevHeading>
-        <Link view={{ type: 'default' }} class='close' back>
+        <Link
+          view={{ type: 'default' }}
+          class='close'
+          back={([previous, before]) => {
+            if (!previous) {
+              return null
+            }
+            // If the building panel was directly opened, go back
+            if (previous.type === 'default') {
+              return 0
+            }
+            // If the building panel was opened two pages ago, and this is a
+            // room schedule,
+            if (room && before && before.type === 'default') {
+              // Ensure that the direct previous entry was a room list
+              if (previous.type === 'building' && !previous.room) {
+                return 1
+              }
+            }
+            return null
+          }}
+        >
           <CloseIcon />
         </Link>
       </header>

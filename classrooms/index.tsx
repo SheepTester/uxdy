@@ -6,4 +6,4 @@
 import { render } from 'preact'
 import { App } from './components/App.tsx'
 
-render(<App />, document.getElementById('root')!)
+render(<App title={document.title} />, document.getElementById('root')!)

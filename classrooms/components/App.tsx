@@ -80,7 +80,10 @@ function getTerms ({ year, season, current }: CurrentTerm): Term[] {
   return terms.flat()
 }
 
-export function App () {
+export type AppProps = {
+  title: string
+}
+export function App ({ title }: AppProps) {
   const [realTime, setRealTime] = useState(true)
   const [date, setDate] = useState<Day>(() => now().date)
   const [time, setTime] = useState<Time>(() => now().time)
@@ -236,8 +239,9 @@ export function App () {
 
   async function handleView (view: View) {
     if (view.type === 'default') {
-      setBuildingCode(null)
       setModal(null)
+      setBuildingCode(null)
+      document.title = title
       return
     }
     if (view.type === 'building') {
@@ -245,6 +249,11 @@ export function App () {
       setBuildingCode(view.building)
       setModal(null)
       setRoom(view.room ?? null)
+      document.title = `${
+        view.room
+          ? `${view.building} ${view.room}`
+          : buildings[view.building].name
+      } · ${title}`
       return
     }
     const courses =
@@ -255,6 +264,7 @@ export function App () {
       const course = courses.find(course => course.code === view.course)
       if (course) {
         setModal({ type: 'course', course })
+        document.title = `${view.course} · ${title}`
       }
     } else {
       const [last, first] = view.name.split(', ')
@@ -273,6 +283,7 @@ export function App () {
           })
         }
       })
+      document.title = `${first} ${last} · ${title}`
     }
   }
 

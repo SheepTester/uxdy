@@ -1,7 +1,9 @@
 import { createContext } from 'preact'
 
 export type View =
-  | { type: 'default' }
+  | {
+      type: 'default'
+    }
   | {
       type: 'course'
       course: string
@@ -53,4 +55,9 @@ export function viewToUrl (view: View) {
   )
 }
 
-export const OnView = createContext((_: View) => {})
+export type ViewHandler = (view: View) => void
+
+export const OnView = createContext<ViewHandler>((_: View) => {})
+
+/** @param history - In reverse chronological order, newest first. */
+export type BackHandler = (history: View[]) => number | null

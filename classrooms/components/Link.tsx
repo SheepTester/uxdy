@@ -5,7 +5,14 @@
 
 import { JSX, ComponentChildren, Ref } from 'preact'
 import { useContext } from 'preact/hooks'
-import { OnView, View, viewFromUrl, viewToUrl } from '../View.ts'
+import {
+  BackHandler,
+  OnView,
+  View,
+  viewFromUrl,
+  ViewHandler,
+  viewToUrl
+} from '../View.ts'
 
 /**
  * Only look back two entries. This allows for exiting `/building/room` with the
@@ -15,19 +22,23 @@ import { OnView, View, viewFromUrl, viewToUrl } from '../View.ts'
  */
 const MAX_BACK = 2
 
-export function navigate (view: View, back = false): void {
+export function navigate (
+  onView: ViewHandler,
+  view: View,
+  back?: BackHandler
+): void {
   const destination = viewToUrl(view)
-  const previous = Array.isArray(window.history.state?.previous)
+  const previous: string[] = Array.isArray(window.history.state?.previous)
     ? window.history.state?.previous
     : []
   if (back) {
-    for (let i = 0; i < MAX_BACK; i++) {
-      if (viewToUrl(viewFromUrl(previous[i])) === destination) {
-        window.history.go(-(i + 1))
-        return
-      }
+    const index = back(previous.map(url => viewFromUrl(url)))
+    if (index !== null) {
+      window.history.go(-(index + 1))
+      return
     }
   }
+  onView(view)
   window.history.pushState(
     {
       previous: [window.location.href, ...previous]
@@ -39,7 +50,7 @@ export function navigate (view: View, back = false): void {
 
 export type LinkProps = {
   view: View | null
-  back?: boolean
+  back?: BackHandler
   class?: string
   style?: JSX.CSSProperties | string
   elemRef?: Ref<HTMLAnchorElement>
@@ -63,8 +74,7 @@ export function Link ({
       onClick={e => {
         e.preventDefault()
         if (view) {
-          onView(view)
-          navigate(view, back)
+          navigate(onView, view, back)
         }
       }}
     >
