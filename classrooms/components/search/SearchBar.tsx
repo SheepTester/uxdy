@@ -121,7 +121,10 @@ export function SearchBar ({
           <button
             class='icon-btn clear-btn'
             type='reset'
-            onClick={() => setQuery('')}
+            onClick={() => {
+              setQuery('')
+              onSearch(false)
+            }}
           >
             <ClearIcon />
           </button>
