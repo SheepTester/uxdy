@@ -14,18 +14,14 @@ import {
   viewToUrl
 } from '../View.ts'
 
-/**
- * Only look back two entries. This allows for exiting `/building/room` with the
- * close button. But if, say, the history is quirked up and the default view is
- * much further back in history, then this won't jump all the way back (which
- * might be confusing).
- */
-const MAX_BACK = 2
+export type NavigateOptions = {
+  view: View
+  back: BackHandler
+}
 
 export function navigate (
   onView: ViewHandler,
-  view: View,
-  back?: BackHandler
+  { view = { type: 'default' }, back }: Partial<NavigateOptions> = {}
 ): void {
   const destination = viewToUrl(view)
   const previous: string[] = Array.isArray(window.history.state?.previous)
@@ -39,13 +35,15 @@ export function navigate (
     }
   }
   onView(view)
-  window.history.pushState(
-    {
-      previous: [window.location.href, ...previous]
-    },
+  if (window.location.href === destination.href) {
+    return
+  }
+  const args: Parameters<History['pushState']> = [
+    { previous: [window.location.href, ...previous] },
     '',
     destination
-  )
+  ]
+  window.history.pushState(...args)
 }
 
 export type LinkProps = {
@@ -74,7 +72,7 @@ export function Link ({
       onClick={e => {
         e.preventDefault()
         if (view) {
-          navigate(onView, view, back)
+          navigate(onView, { view, back })
         }
       }}
     >

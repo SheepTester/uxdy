@@ -3,7 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useContext, useEffect, useRef, useState } from 'preact/hooks'
 import { Course } from '../../scheduleofclasses/group-sections.ts'
 import { getHolidays } from '../../terms/holidays.ts'
 import {
@@ -29,6 +29,7 @@ import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
 import { DateTimePanel } from './date-time/DateTimePanel.tsx'
+import { navigate } from './Link.tsx'
 import { ModalView, ResultModal } from './search/ResultModal.tsx'
 import { SearchBar, State } from './search/SearchBar.tsx'
 import { TermStatus } from './TermStatus.tsx'
@@ -84,6 +85,8 @@ export type AppProps = {
   title: string
 }
 export function App ({ title }: AppProps) {
+  const onView = useContext(OnView)
+
   const [realTime, setRealTime] = useState(true)
   const [date, setDate] = useState<Day>(() => now().date)
   const [time, setTime] = useState<Time>(() => now().time)
@@ -137,6 +140,7 @@ export function App ({ title }: AppProps) {
   const [scrollTo, setScrollTo] = useState({ building: 'CENTR', init: true })
   const [room, setRoom] = useState<string | null>(null)
 
+  const [showResults, setShowResults] = useState(false)
   const [searchState, setSearchState] = useState<State>({ type: 'unloaded' })
   const [modal, setModal] = useState<ModalView | null>(null)
   const modalView = useLast<ModalView>(
@@ -241,9 +245,11 @@ export function App ({ title }: AppProps) {
     if (view.type === 'default') {
       setModal(null)
       setBuildingCode(null)
+      setShowResults(!!view.searching)
       document.title = title
       return
     }
+    setShowResults(false)
     if (view.type === 'building') {
       setScrollTo({ building: view.building, init: false })
       setBuildingCode(view.building)
@@ -256,6 +262,7 @@ export function App ({ title }: AppProps) {
       } · ${title}`
       return
     }
+    setBuildingCode(null)
     const courses =
       searchState.type === 'loaded' && searchState.termId === termId
         ? searchState.data.courses
@@ -308,8 +315,30 @@ export function App ({ title }: AppProps) {
         terms={terms}
         termId={termId}
         buildings={state?.buildings ? Object.keys(state?.buildings) : []}
+        showResults={showResults}
+        onSearch={showResults => {
+          setShowResults(showResults)
+          navigate(onView, {
+            view: { type: 'default', searching: showResults },
+            back: ([previous]) => {
+              if (showResults || !previous) {
+                return null
+              }
+              if (previous.type === 'default' && !previous.searching) {
+                return 0
+              } else {
+                return null
+              }
+            }
+          })
+          if (
+            searchState.type === 'unloaded' ||
+            (searchState.type === 'loaded' && searchState.termId !== termId)
+          ) {
+            loadTerms()
+          }
+        }}
         visible={!noticeVisible}
-        onLoadTerms={loadTerms}
       />
       <ResultModal view={modalView} open={modal !== null} />
       <div class='corner'>

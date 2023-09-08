@@ -24,23 +24,23 @@ export type SearchBarProps = {
   terms: Term[]
   termId: string
   buildings: string[]
+  showResults: boolean
+  onSearch: (showResults: boolean) => void
   visible: boolean
-  onLoadTerms: () => void
 }
 export function SearchBar ({
   state,
   terms,
   termId,
   buildings,
-  visible,
-  onLoadTerms
+  showResults,
+  onSearch,
+  visible
 }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
-  const [showResults, setShowResults] = useState(true)
   const ref = useRef<HTMLInputElement>(null)
 
-  const termsId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
   const loaded = state.type === 'loaded' && state.termId === termId
 
   useEffect(() => {
@@ -70,6 +70,7 @@ export function SearchBar ({
         <SearchIcon />
         <input
           type='search'
+          id='search'
           title="Press '/' to jump to the search box."
           placeholder='Search courses, people, buildings...'
           class='search-input'
@@ -77,7 +78,7 @@ export function SearchBar ({
           onInput={e => {
             setQuery(e.currentTarget.value)
             setIndex(0)
-            setShowResults(true)
+            onSearch(e.currentTarget.value.length > 0)
           }}
           onKeyDown={e => {
             if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) {
@@ -105,14 +106,8 @@ export function SearchBar ({
               e.preventDefault()
             }
           }}
-          onFocus={() => {
-            setShowResults(true)
-            if (
-              state.type === 'unloaded' ||
-              (state.type === 'loaded' && state.termId !== termsId)
-            ) {
-              onLoadTerms()
-            }
+          onFocus={e => {
+            onSearch(e.currentTarget.value.length > 0)
           }}
           ref={ref}
         />

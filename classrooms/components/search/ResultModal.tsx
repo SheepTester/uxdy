@@ -43,15 +43,18 @@ export function ResultModal ({ view, open }: ResultModalProps) {
       }}
       onClose={e => {
         if (e.currentTarget.returnValue !== 'force-closed') {
-          navigate(onView, { type: 'default' }, ([previous]) => {
-            if (
-              previous &&
-              previous.type !== 'course' &&
-              previous.type !== 'professor'
-            ) {
-              return 0
-            } else {
-              return null
+          navigate(onView, {
+            view: { type: 'default' },
+            back: ([previous]) => {
+              if (
+                previous &&
+                previous.type !== 'course' &&
+                previous.type !== 'professor'
+              ) {
+                return 0
+              } else {
+                return null
+              }
             }
           })
         }

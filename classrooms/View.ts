@@ -3,6 +3,7 @@ import { createContext } from 'preact'
 export type View =
   | {
       type: 'default'
+      searching?: boolean
     }
   | {
       type: 'course'
@@ -19,40 +20,38 @@ export type View =
     }
 
 export function viewFromUrl (url: string): View {
-  const params = new URL(url).searchParams
-  const building = params.get('building')
-  const course = params.get('course')
-  const professor = params.get('professor')
+  const { searchParams, hash } = new URL(url)
+  const building = searchParams.get('building')
+  const course = searchParams.get('course')
+  const professor = searchParams.get('professor')
   if (building) {
-    return { type: 'building', building, room: params.get('room') }
+    return { type: 'building', building, room: searchParams.get('room') }
   } else if (course) {
     return { type: 'course', course }
   } else if (professor) {
     return { type: 'professor', name: professor }
   } else {
-    return { type: 'default' }
+    return { type: 'default', searching: hash === '#search' }
   }
 }
 
-export function viewToUrl (view: View) {
+export function viewToUrl (view: View): URL {
+  const url = new URL(window.location.pathname, window.location.href)
   if (view.type === 'default') {
-    return window.location.pathname
+    if (view.searching) {
+      url.hash = 'search'
+    }
+  } else if (view.type === 'building') {
+    url.searchParams.append('building', view.building)
+    if (view.room) {
+      url.searchParams.append('room', view.room)
+    }
+  } else if (view.type === 'course') {
+    url.searchParams.append('course', view.course)
+  } else if (view.type === 'professor') {
+    url.searchParams.append('professor', view.name)
   }
-  return (
-    window.location.pathname +
-    '?' +
-    new URLSearchParams(
-      view.type === 'building'
-        ? view.room
-          ? { building: view.building, room: view.room }
-          : { building: view.building }
-        : view.type === 'course'
-        ? { course: view.course }
-        : view.type === 'professor'
-        ? { professor: view.name }
-        : {}
-    )
-  )
+  return url
 }
 
 export type ViewHandler = (view: View) => void
