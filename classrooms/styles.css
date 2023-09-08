@@ -84,6 +84,10 @@ select:not(:disabled),
 input[type='checkbox']:not(:disabled) {
   cursor: pointer;
 }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 ::placeholder {
   color: inherit;
   opacity: 0.3;
@@ -414,6 +418,7 @@ input[type='checkbox']:checked:hover {
 }
 .calendar-scroll-area {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   height: 0;
   flex: auto;
   /* Needed for offsetTop; see CalendarRow */
@@ -577,19 +582,19 @@ input[type='checkbox']:checked:hover {
   font-family: var(--normal);
 }
 .today-btn,
-.icon-btn {
+.filled-icon-btn {
   background-color: var(--button);
 }
 .today-btn:hover,
-.icon-btn:hover,
-.date-time-button:hover .icon-btn {
+.filled-icon-btn:hover,
+.date-time-button:hover .filled-icon-btn {
   background-color: var(--button-hover);
 }
 .checkbox-label,
 .date-input {
   flex: auto;
 }
-.icon-btn {
+.filled-icon-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -618,6 +623,7 @@ input[type='checkbox']:checked:hover {
   border-radius: 15px;
   transition: transform 0.2s, opacity 0.2s, visibility 0.2s, right 0.2s;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .building-panel-invisible {
   opacity: 0;
@@ -684,7 +690,7 @@ input[type='checkbox']:checked:hover {
 }
 .building-name .abbrev,
 .building-name .long {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s, visibility 0.5s;
 }
 .building-name .abbrev {
   opacity: 0.3;
@@ -694,6 +700,7 @@ input[type='checkbox']:checked:hover {
 }
 .schedule-view .long {
   opacity: 0;
+  visibility: hidden;
 }
 .room-number {
   transition: opacity 0.5s;
@@ -718,15 +725,13 @@ input[type='checkbox']:checked:hover {
   opacity: 0;
   transition: none;
 }
-.close,
-.back {
+.icon-btn {
   font-size: 0;
   padding: 12px;
   position: relative;
   z-index: 1;
 }
-.close:hover,
-.back:hover {
+.icon-btn:hover {
   background-color: var(--icon-button-hover);
 }
 .close {
@@ -992,9 +997,16 @@ input[type='checkbox']:checked:hover {
 }
 .search-input {
   padding: 0 8px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   flex: auto;
+}
+.clear-btn {
+  width: 40px;
+  padding: 0;
+  border-top-right-radius: 10px;
+}
+.no-results,
+.results {
+  border-top: 1px solid var(--line);
 }
 .no-results {
   font-family: var(--normal);
@@ -1003,10 +1015,12 @@ input[type='checkbox']:checked:hover {
   margin: 0;
 }
 .results {
+  padding-top: 0;
   margin: 0;
   padding: 5px 0;
   list-style: none;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   flex: auto;
 }
 .result-heading {
@@ -1022,6 +1036,7 @@ input[type='checkbox']:checked:hover {
   display: flex;
   flex-direction: column;
   width: 100%;
+  box-sizing: border-box;
   padding: 5px 10px;
   text-align: left;
 }
@@ -1049,6 +1064,9 @@ input[type='checkbox']:checked:hover {
     width: unset;
     margin: 10px;
     max-height: calc(100% - 20px);
+  }
+  .clear-btn {
+    border-radius: 50%;
   }
   .showing-results {
     margin: 0;
@@ -1109,6 +1127,7 @@ input[type='checkbox']:checked:hover {
   max-width: 1000px;
   max-height: 100%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   background-color: var(--modal);
   box-shadow: var(--modal-shadow);
   border-radius: 20px;
@@ -1227,11 +1246,11 @@ input[type='checkbox']:checked:hover {
   font-family: var(--normal);
 }
 .instructor,
-.location:not(:disabled) {
+.location[href] {
   color: var(--link);
 }
 .instructor:hover,
-.location:not(:disabled):hover {
+.location[href]:hover {
   text-decoration: underline;
 }
 
