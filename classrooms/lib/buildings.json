@@ -105,6 +105,11 @@
           "I think Garner is part of this"
         ]
       },
+      "SDSC": {
+        "location": [32.88445992833245, -117.2393967518539],
+        "name": "San Diego Supercomputer Center",
+        "images": []
+      },
       "SSB": {
         "location": [32.88391338508008, -117.24045720071513],
         "name": "Social Sciences Building",

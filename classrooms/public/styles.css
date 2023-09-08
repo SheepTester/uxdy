@@ -690,7 +690,7 @@ input[type='checkbox']:checked:hover {
 }
 .building-name .abbrev,
 .building-name .long {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s, visibility 0.5s;
 }
 .building-name .abbrev {
   opacity: 0.3;
@@ -700,6 +700,7 @@ input[type='checkbox']:checked:hover {
 }
 .schedule-view .long {
   opacity: 0;
+  visibility: hidden;
 }
 .room-number {
   transition: opacity 0.5s;

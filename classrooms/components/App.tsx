@@ -272,6 +272,12 @@ export function App ({ title }: AppProps) {
       if (course) {
         setModal({ type: 'course', course })
         document.title = `${view.course} · ${title}`
+      } else {
+        setModal({
+          type: 'course',
+          course: { code: view.course, title: view.course, groups: [] }
+        })
+        document.title = `Course not found · ${title}`
       }
     } else {
       const [last, first] = view.name.split(', ')
@@ -306,7 +312,9 @@ export function App ({ title }: AppProps) {
     return () => {
       window.removeEventListener('popstate', handlePopstate)
     }
-  }, [])
+    // Unintuitively, searchState is a dependency in handleView. Otherwise,
+    // going back/forth will use courses from the wrong term
+  }, [searchState])
 
   return (
     <OnView.Provider value={handleView}>
