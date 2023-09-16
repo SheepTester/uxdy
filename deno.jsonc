@@ -7,10 +7,10 @@
   },
   "tasks": {
     "bookmarklet:build": "deno bundle ./webreg-scraping/bookmarklet/index.tsx | terser --module > ./webreg-scraping/bookmarklet/dist/bookmarklet.min.js",
-    "scheduleofclasses:scrape": "deno run --allow-net=act.ucsd.edu ./scheduleofclasses/scrape.ts $TERM > ./scheduleofclasses/terms/$TERM.json",
+    "scheduleofclasses:scrape": "deno run --allow-net=act.ucsd.edu ./scheduleofclasses/scrape.ts $ICLTERM > ./scheduleofclasses/terms/$ICLTERM.json",
     "classrooms:build": "deno bundle ./classrooms/index.tsx | terser --module > ./classrooms/public/index.min.js",
     "classrooms:watch": "echo \"\n>>> http://localhost:8080/public/ <<<\n\" && http-server ./classrooms/ -c-1 -s & deno bundle --watch ./classrooms/index.tsx ./classrooms/public/index.min.js",
-    "classrooms:to-file": "deno run --allow-read=./scheduleofclasses/terms/$TERM.json classrooms/scripts/coursesToFile.ts $TERM abridged > classrooms/data/classrooms-$TERM.txt && deno run --allow-read=./scheduleofclasses/terms/$TERM.json classrooms/scripts/coursesToFile.ts $TERM > classrooms/data/classrooms-$TERM-full.txt",
+    "classrooms:to-file": "deno run --allow-read=./scheduleofclasses/terms/$ICLTERM.json classrooms/scripts/coursesToFile.ts $ICLTERM abridged > classrooms/data/classrooms-$ICLTERM.txt && deno run --allow-read=./scheduleofclasses/terms/$ICLTERM.json classrooms/scripts/coursesToFile.ts $ICLTERM > classrooms/data/classrooms-$ICLTERM-full.txt",
     "classrooms:scrape-to-file": "deno task scheduleofclasses:scrape && deno task classrooms:to-file"
   }
 }
