@@ -1272,6 +1272,9 @@ input[type='checkbox']:checked:hover {
 .meeting-date {
   width: 180px;
 }
+.meeting-date-specific {
+  font-family: var(--normal);
+}
 .location {
   width: 80px;
   text-align: left;
@@ -1287,6 +1290,9 @@ input[type='checkbox']:checked:hover {
 .location[href]:hover {
   text-decoration: underline;
 }
+.mobile-break {
+  display: none;
+}
 @media (max-width: 700px) {
   .course-info {
     margin: 20px;
@@ -1295,11 +1301,18 @@ input[type='checkbox']:checked:hover {
 }
 @media (max-width: 570px) {
   .meeting-card {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0 10px;
   }
-  .meeting-card > :not(:first-child) {
-    margin-left: 20px;
+  .section-capacity,
+  .meeting-date,
+  .location {
+    width: auto;
+  }
+  .mobile-break {
+    display: block;
+    width: 100%;
   }
 }
 

@@ -14,6 +14,8 @@ import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { Link } from '../Link.tsx'
 
+const webregDays = ['Sun', 'M', 'Tu', 'W', 'Th', 'F', 'S', 'Sun']
+
 type MeetingCardProps = {
   meeting: Section | Meeting | Exam
   code?: string | null
@@ -42,7 +44,12 @@ function MeetingCard ({ meeting, code }: MeetingCardProps) {
           )}
         </p>
       )}
-      <p class='meeting-column meeting-date'>
+      <div class='mobile-break' />
+      <p
+        class={`meeting-column meeting-date ${
+          meeting.kind === 'exam' ? 'meeting-date-specific' : ''
+        }`}
+      >
         {meeting.kind === 'exam'
           ? meeting.date.toString([], { month: 'long', day: 'numeric' })
           : meeting.time && (
@@ -52,9 +59,7 @@ function MeetingCard ({ meeting, code }: MeetingCardProps) {
                     .map(day => Day.dayName(day, 'long'))
                     .join(', ')}
                 >
-                  {meeting.time.days
-                    .map(day => Day.dayName(day, 'narrow'))
-                    .join('')}
+                  {meeting.time.days.map(day => webregDays[day]).join('')}
                 </abbr>{' '}
                 {Time.from(meeting.time.start).formatRange(
                   Time.from(meeting.time.end)
