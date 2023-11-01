@@ -76,7 +76,7 @@ export function ResultModal ({ view, open }: ResultModalProps) {
               <span class='last-name'>{view.professor.last}</span>
             </h1>
           )}
-          <button class='close' type='submit' value='close-btn'>
+          <button class='close icon-btn' type='submit' value='close-btn'>
             <CloseIcon />
           </button>
         </header>

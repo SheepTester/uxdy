@@ -111,16 +111,6 @@ export function CourseInfo ({ course }: CourseInfoProps) {
               )}
             </div>
           </header>
-          {group.sections.map(section => (
-            <MeetingCard
-              meeting={section}
-              code={section.code !== group.code ? section.code : null}
-              key={section.code}
-            />
-          ))}
-          {(group.meetings.length > 0 || group.exams.length > 0) && (
-            <hr class='additional-meetings-divider' />
-          )}
           {group.meetings.map((meeting, i) => (
             <MeetingCard
               meeting={meeting}
@@ -128,6 +118,19 @@ export function CourseInfo ({ course }: CourseInfoProps) {
               key={i}
             />
           ))}
+          {group.sections.length > 0 && group.meetings.length > 0 && (
+            <hr class='additional-meetings-divider' />
+          )}
+          {group.sections.map(section => (
+            <MeetingCard
+              meeting={section}
+              code={section.code !== group.code ? section.code : null}
+              key={section.code}
+            />
+          ))}
+          {group.meetings.length > 0 && group.exams.length > 0 && (
+            <hr class='additional-meetings-divider' />
+          )}
           {group.exams.map((exam, i) => (
             <MeetingCard meeting={exam} key={i} />
           ))}

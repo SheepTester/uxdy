@@ -489,6 +489,11 @@
       }
     },
     "warren": {
+      "CMRR": {
+        "location": [32.88061652328027, -117.23531336416724],
+        "name": "Center for Memory and Recording Research",
+        "images": []
+      },
       "EBU1": {
         "location": [32.88168612813114, -117.2352758424052],
         "name": "Jacobs Hall",
