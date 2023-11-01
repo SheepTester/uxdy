@@ -294,6 +294,7 @@ input[type='checkbox']:checked:hover {
   font-size: 0.3em;
   font-family: var(--normal);
   font-weight: bold;
+  word-break: break-word;
 }
 
 .corner {
@@ -1094,6 +1095,7 @@ input[type='checkbox']:checked:hover {
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   box-sizing: border-box;
   padding: 40px;
   display: flex;
@@ -1132,7 +1134,7 @@ input[type='checkbox']:checked:hover {
   box-shadow: var(--modal-shadow);
   border-radius: 20px;
   transform: scale(0.95);
-  transition: transform 0.2s;
+  transition: transform 0.2s, border-radius 0.2s;
 }
 .modal[open] .modal-body {
   transform: none;
@@ -1157,12 +1159,39 @@ input[type='checkbox']:checked:hover {
 }
 .modal-header h1 {
   flex: auto;
+  width: 0;
+  padding: 40px;
+  overflow: hidden;
+}
+.modal-header .long {
   margin: 40px;
 }
 .modal-header .close {
   margin: 28px;
   margin-left: 0;
   border-radius: 50%;
+}
+@media (max-width: 700px) {
+  .modal {
+    padding: 0;
+    backdrop-filter: none;
+    align-items: flex-start;
+    overflow: auto;
+  }
+  .modal-body {
+    min-height: 100%;
+    max-height: unset;
+  }
+  .modal[open] .modal-body {
+    transform: none;
+    border-radius: 0;
+  }
+  .modal-header h1 {
+    padding: 20px;
+  }
+  .modal-header .long {
+    margin: 20px;
+  }
 }
 
 .course-info {
@@ -1216,16 +1245,21 @@ input[type='checkbox']:checked:hover {
 }
 .meeting-card {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   padding: 0 10px;
-  height: 25px;
+}
+.meeting-code,
+.section-capacity,
+.meeting-date,
+.location {
+  margin: 0;
 }
 .meeting-code {
   font-family: var(--narrow);
 }
 .meeting-type {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 5px;
   font-family: var(--normal);
   margin: 0;
@@ -1237,6 +1271,9 @@ input[type='checkbox']:checked:hover {
 }
 .meeting-date {
   width: 180px;
+}
+.meeting-date-specific {
+  font-family: var(--normal);
 }
 .location {
   width: 80px;
@@ -1252,6 +1289,31 @@ input[type='checkbox']:checked:hover {
 .instructor:hover,
 .location[href]:hover {
   text-decoration: underline;
+}
+.mobile-break {
+  display: none;
+}
+@media (max-width: 700px) {
+  .course-info {
+    margin: 20px;
+    margin-top: 0;
+  }
+}
+@media (max-width: 570px) {
+  .meeting-card {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0 10px;
+  }
+  .section-capacity,
+  .meeting-date,
+  .location {
+    width: auto;
+  }
+  .mobile-break {
+    display: block;
+    width: 100%;
+  }
 }
 
 .college-revelle {
