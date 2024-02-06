@@ -206,7 +206,7 @@ export function SearchResults ({
       )}
       {results.buildings.map((building, i) => (
         <SearchResult
-          name={buildings[building.code].name}
+          name={buildings[building.code]?.name ?? building.code}
           code={building.code}
           primary={building.in === 'code' ? 'code' : 'name'}
           match={building.match}

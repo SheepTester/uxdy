@@ -25,7 +25,7 @@ type BuildingPanelContentProps = {
 function BuildingPanelContent ({
   weekday,
   time,
-  building,
+  building: { code, images, college, name },
   room,
   rooms
 }: BuildingPanelContentProps) {
@@ -34,19 +34,16 @@ function BuildingPanelContent ({
 
   // Make Imgur compress the image.
   // https://thomas.vanhoutte.be/miniblog/imgur-thumbnail-trick/
-  const imageUrl = buildings[building.code].images[0]?.replace(
-    /\.jpeg$/,
-    'l.jpeg'
-  )
+  const imageUrl = images[0]?.replace(/\.jpeg$/, 'l.jpeg')
 
   return (
     <>
       <header
-        class={`building-name ${room ? 'schedule-view' : 'list-view'} college-${
-          buildings[building.code].college
-        }`}
+        class={`building-name ${
+          room ? 'schedule-view' : 'list-view'
+        } college-${college}`}
       >
-        {buildings[building.code].images.length > 0 && (
+        {images.length > 0 && (
           <img
             class={`building-image ${
               imageLoaded ? '' : 'building-image-loading'
@@ -57,7 +54,7 @@ function BuildingPanelContent ({
           />
         )}
         <Link
-          view={room ? { type: 'building', building: building.code } : null}
+          view={room ? { type: 'building', building: code } : null}
           class='icon-btn back'
           back={([previous]) => {
             // If the user just came from a room list then go back to it
@@ -74,11 +71,11 @@ function BuildingPanelContent ({
           heading='h2'
           abbrev={
             <span>
-              {building.code} <span class='room-number'>{lastRoom}</span>
+              {code} <span class='room-number'>{lastRoom}</span>
             </span>
           }
         >
-          {buildings[building.code].name}
+          {name}
         </AbbrevHeading>
         <Link
           view={{ type: 'default' }}
@@ -112,12 +109,7 @@ function BuildingPanelContent ({
           meetings={rooms[room] ?? []}
         />
       ) : (
-        <RoomList
-          weekday={weekday}
-          time={time}
-          building={building.code}
-          rooms={rooms}
-        />
+        <RoomList weekday={weekday} time={time} building={code} rooms={rooms} />
       )}
     </>
   )
@@ -140,7 +132,7 @@ export function BuildingPanel ({
     >
       <BuildingPanelContent
         // Force new elements (disable transition) when building changes
-        key={props.building}
+        key={props.building.code}
         // For some reason this needs to be after `key` or then Deno gets pissed
         // about `react` not existing.
         {...props}

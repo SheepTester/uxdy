@@ -258,7 +258,7 @@ export function App ({ title }: AppProps) {
       document.title = `${
         view.room
           ? `${view.building} ${view.room}`
-          : buildings[view.building].name
+          : buildings[view.building]?.name ?? view.building
       } · ${title}`
       return
     }
@@ -429,7 +429,15 @@ export function App ({ title }: AppProps) {
       <BuildingPanel
         weekday={date.day}
         time={time}
-        building={buildings[lastBuilding]}
+        building={
+          buildings[lastBuilding] ?? {
+            code: lastBuilding,
+            college: '',
+            images: '',
+            location: [0, 0],
+            name: lastBuilding
+          }
+        }
         room={room}
         rooms={state?.buildings?.[lastBuilding] ?? {}}
         visible={buildingPanelVisible}
