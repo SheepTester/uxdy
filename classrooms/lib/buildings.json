@@ -329,6 +329,14 @@
         "location": [32.87672837413399, -117.24124478552716],
         "name": "Recreation Gym",
         "images": ["https://i.imgur.com/qRSwZXl.jpeg"]
+      },
+      "STCTR": {
+        "location": [32.87752027586717, -117.23974942056223],
+        "name": "Old Student Center",
+        "images": [],
+        "comment": [
+          "https://ugseminars.ucsd.edu/listing.aspx?qtr=SP16&c=f STCTR E209 is LGBT RC, Conference Room"
+        ]
       }
     },
     "revelle": {
@@ -531,6 +539,12 @@
           "https://i.imgur.com/dMr7V2X.jpeg",
           "https://i.imgur.com/TbzWfMa.jpeg"
         ]
+      },
+      "HDSI": {
+        "location": [32.880614100775574, -117.23378883326575],
+        "name": "Halıcıoğlu Data Science Institute Building",
+        "images": [],
+        "comment": ["https://datascience.ucsd.edu/venue/hdsi-building/"]
       },
       "PFBH": {
         "location": [32.88173836638747, -117.2343791731388],
