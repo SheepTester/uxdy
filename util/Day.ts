@@ -23,6 +23,7 @@ export class Day {
     return this.#date.getUTCFullYear()
   }
 
+  /** 1-indexed. */
   get month (): number {
     return this.#date.getUTCMonth() + 1
   }
@@ -115,10 +116,11 @@ export class Day {
   }
 
   /**
-   * Converts the Date to the date in local time at the start of the day.
+   * Converts the Date to the date in local time. If time is not specified, it
+   * defaults to midnight at the start of the day.
    */
-  toLocal (): Date {
-    return new Date(this.year, this.month - 1, this.date)
+  toLocal (hour = 0, minute = 0): Date {
+    return new Date(this.year, this.month - 1, this.date, hour, minute)
   }
 
   /**

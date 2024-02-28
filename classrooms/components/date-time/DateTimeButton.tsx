@@ -36,9 +36,7 @@ export function DateTimeButton ({
       <p class='showing-schedule-wrapper'>
         <span class='showing-schedule-text'>Showing schedule for</span>
         <div class='date-time'>
-          {dateFormat.format(
-            new Date(date.year, date.month, date.date, time.hour, time.minute)
-          )}
+          {dateFormat.format(date.toLocal(time.hour, time.minute))}
         </div>
         {current && (
           <span class='quarter-week'>
