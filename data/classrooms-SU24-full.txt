@@ -1,4 +1,4 @@
-V31715645736649
+V31717966725999
 ANES296  Independent Study
  001Preetham John,Suresh
 0010TBA  TBA  INTBA  TBA TBA 001
@@ -7,9 +7,9 @@ ANES296  Independent Study
  003
 0010TBA  TBA  INTBA  TBA TBA 003
 ANES299  Anes/Independent Study Project
- 001
+ 001Imanuel Ruvin,Lerman
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002Preetham John,Suresh
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
@@ -51,7 +51,17 @@ SPPS402  Community Pharmacy APPE
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS402E Community APPE Elective
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
 SPPS403  Hospital Practice APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS406  Academia APPE
  A00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
@@ -66,6 +76,26 @@ SPPS409  Cardiology APPE
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS410  Discharge Pharmacy APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS411  Drug Information APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS412  Emergency Medicine APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS413  Food&Drug Administration APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
 SPPS414  Geriatric Pharmacotherpy APPE
  A00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA A00
@@ -76,7 +106,47 @@ SPPS416  Home Infusion APPE
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS418  Infectious Disease APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS421  Investigational Drug Serv APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
 SPPS422  Managed Care APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS423  Medical ICU APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS424  Medication Safety APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS425  Medication Therapy Mgmt APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS426  Neonatal ICU APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS427  Nuclear Pharmacy APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS428  Pain and Palliative Care APPE
  A00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
@@ -86,7 +156,22 @@ SPPS429  Pediatrics APPE
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS430  Pharmacy Admin/Leadership APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS431  Pharmacy Benefits Mgmt APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
 SPPS432  Pharmaceutical Industry APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS433  Poison Control APPE
  A00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
@@ -96,7 +181,22 @@ SPPS434  Psychiatry APPE
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS437  Transitions of Care APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
 SPPS438  Transplant APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS440  Veterinary Pharmacy APPE
+ A00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS447  Compounding Pharmacy APPE
  A00Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00Ila Maewal,Saunders
@@ -123,14 +223,14 @@ DERM436  Pediatric Dermatology
  A00Dawn Zhang,Eichenfield
 0050TBA  TBA  CLTBA  TBA TBA A00
 DERM496  Clinical Independent Study
- 001
+ 001George Kimet,Hightower
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
 EMED296  Independent Reseach
- 001
+ 001Binh T.,Ly
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
@@ -168,7 +268,7 @@ EMED496  Clinical Independent Study
 0010TBA  TBA  INTBA  TBA TBA 003
  004Binh T.,Ly
 0010TBA  TBA  INTBA  TBA TBA 004
-FPM 286  Free Clinic II
+FPM 286  Free Clinic II	/courses/FMPH.html#fpm286
  A00Michelle Lee,Johnson
 0010TBA  TBA  CLTBA  TBA TBA A00
 FPM 296  Community Med Independnt Rsrch
@@ -227,6 +327,9 @@ FPM 496  Clinical Independent Study
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
+MED 199  Independent Study
+ 001Jejo David,Koola
+0010TBA  TBA  INTBA  TBA TBA 001
 MED 296  Independent Research
  001Neil C.,Chi
 0010TBA  TBA  INTBA  TBA TBA 001
@@ -247,7 +350,7 @@ MED 296  Independent Research
 MED 299  Medicine Independnt Study Proj
  001Ah-Reum,Jeong
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002Annette,Von Drygalski
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
@@ -329,7 +432,7 @@ MED 468  Med Act Intnsp/Scrps/Mercy/Grn
 MED 496  Clinical Independent Study
  001Megha,Shankar
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002Hatim,Husain
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
@@ -337,14 +440,14 @@ MED 496  Clinical Independent Study
 0010TBA  TBA  INTBA  TBA TBA 004
  005
 0010TBA  TBA  INTBA  TBA TBA 005
-NEU 296  Neurosciences Resrch Rotation
+NEU 296  Neurosciences Resrch Rotation	/courses/NEU.html#neu296
  001Sean Jeffrey,Evans
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002Sean Jeffrey,Evans
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
-NEU 299  Neurosciences Research
+NEU 299  Neurosciences Research	/courses/NEU.html#neu299
  001Jennifer Sharon Ol,Graves
 0010TBA  TBA  INTBA  TBA TBA 001
  002
@@ -363,7 +466,7 @@ NEU 427  Neurology Out-Patient
 NEU 496  Clinical Independent Study
  001Martin Huy,Pham
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002Jamie Nicole,LaBuzetta
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
@@ -391,7 +494,7 @@ OBG 496  Clinical Independent Study
 0010TBA  TBA  INTBA  TBA TBA 001
  002Lindsey,Burnett
 0010TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003Gina Elaine,Reggiardo
 0010TBA  TBA  INTBA  TBA TBA 003
 OPTH296  Independent Study
  001Sally Liu,Baxter
@@ -401,7 +504,7 @@ OPTH296  Independent Study
  003
 0010TBA  TBA  INTBA  TBA TBA 003
 OPTH299  Ophthalmology Indepndnt Resrch
- 001
+ 001Doran Bott,Spencer
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
@@ -419,9 +522,9 @@ OPTH426  Ophthalmic Plast & Reconst Sur
 OPTH496  Clinical Independent Study
  001Natalie,Afshari
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002Sasan,Moghimi Araghi
 0010TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003Sally Liu,Baxter
 0010TBA  TBA  INTBA  TBA TBA 003
 ORTH296  Orthopaedics Independent Rsrch
  001
@@ -483,14 +586,39 @@ ORTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 008
  009Frank,Chiarappa
 0005TBA  TBA  INTBA  TBA TBA 009
-PATH296  Pathology Independent Research
+ 010Reid,Abrams
+0005TBA  TBA  INTBA  TBA TBA 010
+PAE 210  Professional Practice I
+ A00Elias,Villarreal Jr.
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 211  The PA Profession
+ A00Elias,Villarreal Jr.
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 212  The Physical Exam
+.A00Elias,Villarreal Jr.
+0030TBA  TBA  LATBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+PAE 213  Human Anatomy
+.A00Elias,Villarreal Jr.
+0030TBA  TBA  LATBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+PAE 214  Human Phys & Pathophys I
+ A00Elias,Villarreal Jr.
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 215  The Medical Interview
+ A00Elias,Villarreal Jr.
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 216  EBM in Practice
+ A00Elias,Villarreal Jr.
+0030TBA  TBA  LETBA  TBA TBA A00
+PATH296  Pathology Independent Research	/courses/PATH.html#path296
  001
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
-PATH299  Path/Independent Study Project
+PATH299  Path/Independent Study Project	/courses/PATH.html#path299
  001
 0010TBA  TBA  INTBA  TBA TBA 001
  002
@@ -591,14 +719,14 @@ PEDS438  Peds Allergy Immuno Subintern
  A00Cathleen Ann,Collins
 0050TBA  TBA  CLTBA  TBA TBA A00
 PEDS496  Clinical Independent Study
- 001
+ 001Natalie Christine,Laub
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
 PSY 296  Independnt Readngs/Stdy in Psy
- 001
+ 001Danielle Lynn,Fettes
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
@@ -648,6 +776,10 @@ PSY 496  Clinical Independent Study
 0010TBA  TBA  INTBA  TBA TBA 003
  004Alana,Iglewicz
 0005TBA  TBA  INTBA  TBA TBA 004
+ 005Ekta Himanshu,Patel
+0005TBA  TBA  INTBA  TBA TBA 005
+ 006Alan,Hsu
+0005TBA  TBA  INTBA  TBA TBA 006
 RAD 296  Radiology Independent Research
  001
 0010TBA  TBA  INTBA  TBA TBA 001
@@ -698,7 +830,7 @@ RMAS296  Independent Study
  003
 0010TBA  TBA  INTBA  TBA TBA 003
 RMAS299  Independent Research Project
- 001
+ 001Jona,Hattangadi-Gluth
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
@@ -822,13 +954,15 @@ SURG496  Clinical Independent Study
 0010TBA  TBA  INTBA  TBA TBA 004
  005Christopher,Reid
 0010TBA  TBA  INTBA  TBA TBA 005
+ 006Joel M,Baumgartner
+0005TBA  TBA  INTBA  TBA TBA 006
 UROL296  Independent Study
  001
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
 UROL299  Independent Study Project
- 001
+ 001Yahir Ami,Santiago-Lastra
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
