@@ -75,7 +75,7 @@ jobs:
           path: ~/data/
       - name: Push scraped data to gh-pages
         env:
-          TERM: ${{ inputs.quarter == 'Summer' && format('Summer {0}', inputs.year) || format('{0}{1}', inputs.quarter, inputs.year) }}
+          TERM: ${{ inputs.quarter == 'Summer' && format('summer 20{0}', inputs.year) || format('{0}{1}', inputs.quarter, inputs.year) }}
         run: |
           cp -v ~/data/* ./data/
           git config user.name "github-actions[bot]"
