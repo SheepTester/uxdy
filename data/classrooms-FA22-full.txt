@@ -1,10 +1,10 @@
-V31688300133983
+V31724055817649
 AAS 10   Intro/African-American Studies	/courses/AASM.html#aas10
 :A00Elizabeth Annette,Butler
 0038WLH  1    DI2112 15001550A010036HSS  3    DI1128A16001650A02
 MANDE24   LEB150 14001520A00
 20221208MANDEFIB150 15001759
-AAS 170  Legacies of Research
+AAS 170  Legacies of Research	/courses/AASM.html#aas170
 'A00Elizabeth Annette,Butler
 0032HSS  2    SE2154 17001950A00
 20221209HSS  FI2154 19002159
@@ -21,16 +21,12 @@ AIP 97   Academic Internship	/courses/AIP.html#aip97
 AIP 197  Academic Internship Program	/courses/AIP.html#aip197
  001Caroline Sarah,Jack
 0100TBA  TBA  ITTBA  TBA TBA 001
- 002Ramesh R,Rao
-0050TBA  TBA  ITTBA  TBA TBA 002
  003Alexis Akira,Toda
 9999TBA  TBA  ITTBA  TBA TBA 003
  004John T,Wixted
 9999TBA  TBA  ITTBA  TBA TBA 004
  005Anastasia,Kiyonaga
 9999TBA  TBA  ITTBA  TBA TBA 005
- 006Mark H.,Ellisman
-9999TBA  TBA  ITTBA  TBA TBA 006
  007Gail D.,Heyman
 9999TBA  TBA  ITTBA  TBA TBA 007
  008Goran,Bozinovic
@@ -112,10 +108,6 @@ ANES296  Independent Study
 ANES299  Anes/Independent Study Project
  001Preetham John,Suresh
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
-0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
 ANES401  Anesthesiology Clerkship
  A00Mark,Greenberg
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -220,7 +212,7 @@ ANTH4    Words/Worlds/Intro to AN/Lang	/courses/ANTH.html#anth4
 0032CENTR2    DI220  17001750A010034HSS  1    DI2154 11001150A04
 WLH  24   LE2111 12301350A00
 20221209WLH  FI2111 11301429
-ANTH10   Climate Justice
+ANTH10   Climate Justice	/courses/ANTH.html#anth10
 'B00Alexander B,Stewart
 0220MOS  135  LE0114 08000850B00
 20221205MOS  FI0114 08001059
@@ -400,16 +392,12 @@ ANTH299  Dissertation Research	/courses/ANTH.html#anth299
 0004TBA  TBA  INTBA  TBA TBA 005
  006Thomas J.,Csordas
 0004TBA  TBA  INTBA  TBA TBA 006
- 007Patrick Keolu Ozer,Fox
-0004TBA  TBA  INTBA  TBA TBA 007
  008Ekaterini,Semendeferi
 0004TBA  TBA  INTBA  TBA TBA 008
  009Paul S,Goldstein
 0004TBA  TBA  INTBA  TBA TBA 009
  010Nancy Grey,Postero
 0004TBA  TBA  INTBA  TBA TBA 010
- 011David,Pedersen
-0004TBA  TBA  INTBA  TBA TBA 011
  012Isabel C,Rivera-Collazo
 0004TBA  TBA  INTBA  TBA TBA 012
  013Jade A,D'Alpoim Guedes
@@ -464,8 +452,6 @@ AUD 298  Independent Research	/courses/AUDL.html#aud298
 AUD 299  Doctoral Project	/courses/AUDL.html#aud299
  A00Erika,Zettner
 0012TBA  TBA  INTBA  TBA TBA A00
- B00Jeffrey Paul,Harris
-0012TBA  TBA  INTBA  TBA TBA B00
  C00Allen F.,Ryan
 0012TBA  TBA  INTBA  TBA TBA C00
 AWP 3    Analytical Writing	/courses/AWP.html#awp3
@@ -768,54 +754,18 @@ BENG196  Bioeng Industrial Internship	/courses/BENG.html#beng196
 BENG199  Independent Study/Undergrads	/courses/BENG.html#beng199
  001Pedro,Cabrales
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Gert,Cauwenberghs
-9999TBA  TBA  INTBA  TBA TBA 002
- 003Shu,Chien
-9999TBA  TBA  INTBA  TBA TBA 003
- 004Karen,Christman
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Adam J.,Engler
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Stephanie I.,Fraley
-9999TBA  TBA  INTBA  TBA TBA 006
- 007Theresa,Gaasterland
-9999TBA  TBA  INTBA  TBA TBA 007
  008Jeff M,Hasty
 9999TBA  TBA  INTBA  TBA TBA 008
- 009Xiaohua,Huang
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Trey,Ideker
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Marcos,Intaglietta
-9999TBA  TBA  INTBA  TBA TBA 011
  012Ester Jihae,Kwon
 9999TBA  TBA  INTBA  TBA TBA 012
  013Ratnesh,Lal
 9999TBA  TBA  INTBA  TBA TBA 013
- 014Prashant Gulab Ram,Mali
-9999TBA  TBA  INTBA  TBA TBA 014
- 015Andrew Douglas,Mc Culloch
-9999TBA  TBA  INTBA  TBA TBA 015
- 016Jeffrey Howard,Omens
-9999TBA  TBA  INTBA  TBA TBA 016
  017Bernhard O.,Palsson
 9999TBA  TBA  INTBA  TBA TBA 017
- 018Robert Lie-Yuan,Sah
-9999TBA  TBA  INTBA  TBA TBA 018
- 019Geert W,Schmid-Schoenbein
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Gabriel,Silva
-9999TBA  TBA  INTBA  TBA TBA 020
  021Shankar,Subramaniam
 9999TBA  TBA  INTBA  TBA TBA 021
  022Yingxiao,Wang
 9999TBA  TBA  INTBA  TBA TBA 022
- 023Kun,Zhang
-9999TBA  TBA  INTBA  TBA TBA 023
- 024Sheng,Zhong
-9999TBA  TBA  INTBA  TBA TBA 024
- 025Benjamin,Smarr
-9999TBA  TBA  INTBA  TBA TBA 025
  026Daniela,Valdez-Jasso
 9999TBA  TBA  INTBA  TBA TBA 026
  027Brian Alberto,Aguado
@@ -913,8 +863,6 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 002
  003Gert,Cauwenberghs
 9999TBA  TBA  INTBA  TBA TBA 003
- 004Shu,Chien
-9999TBA  TBA  INTBA  TBA TBA 004
  005Karen,Christman
 9999TBA  TBA  INTBA  TBA TBA 005
  006Francisco,Contijoch
@@ -933,8 +881,6 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 012
  013Shaochen,Chen
 9999TBA  TBA  INTBA  TBA TBA 013
- 014Xiaohua,Huang
-9999TBA  TBA  INTBA  TBA TBA 014
  015Trey,Ideker
 9999TBA  TBA  INTBA  TBA TBA 015
  016Samuel,Pfaff
@@ -943,8 +889,6 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 017
  018Ratnesh,Lal
 9999TBA  TBA  INTBA  TBA TBA 018
- 019Eva-Maria Schoetz,Collins
-9999TBA  TBA  INTBA  TBA TBA 019
  020Nathan E,Lewis
 9999TBA  TBA  INTBA  TBA TBA 020
  021Shadi Ahmad,Dayeh
@@ -961,44 +905,30 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 026
  027Sanjay K,Nigam
 9999TBA  TBA  INTBA  TBA TBA 027
- 028Jeffrey Howard,Omens
-9999TBA  TBA  INTBA  TBA TBA 028
  029Bernhard O.,Palsson
 9999TBA  TBA  INTBA  TBA TBA 029
  030Robert Lie-Yuan,Sah
 9999TBA  TBA  INTBA  TBA TBA 030
- 031Geert W,Schmid-Schoenbein
-9999TBA  TBA  INTBA  TBA TBA 031
  032Sameer B,Shah
 9999TBA  TBA  INTBA  TBA TBA 032
  033Gabriel,Silva
 9999TBA  TBA  INTBA  TBA TBA 033
  034Shankar,Subramaniam
 9999TBA  TBA  INTBA  TBA TBA 034
- 035Mark Henry,Tuszynski
-9999TBA  TBA  INTBA  TBA TBA 035
  036Yingxiao,Wang
 9999TBA  TBA  INTBA  TBA TBA 036
  037Samuel R.,Ward
 9999TBA  TBA  INTBA  TBA TBA 037
- 038Christopher,Glass
-9999TBA  TBA  INTBA  TBA TBA 038
  039Kun,Zhang
 9999TBA  TBA  INTBA  TBA TBA 039
  040Drew A.,Hall
 9999TBA  TBA  INTBA  TBA TBA 040
  041Sheng,Zhong
 9999TBA  TBA  INTBA  TBA TBA 041
- 042Thomas Tao-Ming,Liu
-9999TBA  TBA  INTBA  TBA TBA 042
  043Eugene Wei-Ming,Yeo
 9999TBA  TBA  INTBA  TBA TBA 043
  044Christopher William,Benner
 9999TBA  TBA  INTBA  TBA TBA 044
- 045Terence T.,Hwa
-9999TBA  TBA  INTBA  TBA TBA 045
- 046Alan,Hargens
-9999TBA  TBA  INTBA  TBA TBA 046
  047Jesse Vincent,Jokerst
 9999TBA  TBA  INTBA  TBA TBA 047
  048Kevin R,King
@@ -1007,18 +937,12 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 049
  050Anjana,Rao
 9999TBA  TBA  INTBA  TBA TBA 050
- 051Jeremy Naftali,Rich
-9999TBA  TBA  INTBA  TBA TBA 051
  052Nicole F,Steinmetz
 9999TBA  TBA  INTBA  TBA TBA 052
  053Matthew,Shtrahman
 9999TBA  TBA  INTBA  TBA TBA 053
  054Daniela,Valdez-Jasso
 9999TBA  TBA  INTBA  TBA TBA 054
- 055Wei,Wang
-9999TBA  TBA  INTBA  TBA TBA 055
- 056Nadir,Weibel
-9999TBA  TBA  INTBA  TBA TBA 056
  057Karsten B,Zengler
 9999TBA  TBA  INTBA  TBA TBA 057
  058Erik Bruce,Kistler
@@ -1029,16 +953,10 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 060
  061Vikash,Gilja
 9999TBA  TBA  INTBA  TBA TBA 061
- 062Tania,Morimoto
-9999TBA  TBA  INTBA  TBA TBA 062
  063Liangfang,Zhang
 9999TBA  TBA  INTBA  TBA TBA 063
  064Joseph,Wang
 9999TBA  TBA  INTBA  TBA TBA 064
- 065Lonnie Grove,Petersen
-9999TBA  TBA  INTBA  TBA TBA 065
- 066Marcelo G,Mattar
-9999TBA  TBA  INTBA  TBA TBA 066
  067Yeun-Jund,Shyy
 9999TBA  TBA  INTBA  TBA TBA 067
  068Thomas Tao-Ming,Liu
@@ -1053,12 +971,8 @@ BENG299  Graduate Research	/courses/BENG.html#beng299
 9999TBA  TBA  INTBA  TBA TBA 072
  073Lingyan,Shi
 9999TBA  TBA  INTBA  TBA TBA 073
- 074Hannah Kathryn,Carter
-9999TBA  TBA  INTBA  TBA TBA 074
  075Yuan,Chen
 9999TBA  TBA  INTBA  TBA TBA 075
- 076Nathan Joseph,Delson
-9999TBA  TBA  INTBA  TBA TBA 076
  077Sujit,Dey
 9999TBA  TBA  INTBA  TBA TBA 077
  078Ronald M,Evans
@@ -1160,96 +1074,52 @@ BNFO298  Research Rotation	/courses/BIOI.html#bnfo298
  A00Theresa,Gaasterland
 9999TBA  TBA  INTBA  TBA TBA A00
 BNFO299  Graduate Research	/courses/BIOI.html#bnfo299
- 001Ruben,Abagyan
-9999TBA  TBA  INTBA  TBA TBA 001
  002Ludmil B,Alexandrov
 9999TBA  TBA  INTBA  TBA TBA 002
- 003Andrew Ellis,Allen
-9999TBA  TBA  INTBA  TBA TBA 003
  004Ferhat,Ay
 9999TBA  TBA  INTBA  TBA TBA 004
  005Vineet,Bafna
 9999TBA  TBA  INTBA  TBA TBA 005
- 006Vikas,Bansal
-9999TBA  TBA  INTBA  TBA TBA 006
  007Christopher William,Benner
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Steven,Briggs
-9999TBA  TBA  INTBA  TBA TBA 008
  009Hannah Kathryn,Carter
 9999TBA  TBA  INTBA  TBA TBA 009
- 010Lukas,Chavez
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Chi-Hua,Chen
-9999TBA  TBA  INTBA  TBA TBA 011
  012Kathleen Mary,Curtius
 9999TBA  TBA  INTBA  TBA TBA 012
  013Pieter,Dorrestein
 9999TBA  TBA  INTBA  TBA TBA 013
  014Joseph R,Ecker
 9999TBA  TBA  INTBA  TBA TBA 014
- 015Robert E,El-Kareh
-9999TBA  TBA  INTBA  TBA TBA 015
  016Emma Kristen,Farley
 9999TBA  TBA  INTBA  TBA TBA 016
  017Kelly A.,Frazer
 9999TBA  TBA  INTBA  TBA TBA 017
- 018Theresa,Gaasterland
-9999TBA  TBA  INTBA  TBA TBA 018
  019Rodney A,Gabriel
 9999TBA  TBA  INTBA  TBA TBA 019
  020Kyle J,Gaulton
 9999TBA  TBA  INTBA  TBA TBA 020
- 021Michael K.,Gilson
-9999TBA  TBA  INTBA  TBA TBA 021
  022Christopher,Glass
 9999TBA  TBA  INTBA  TBA TBA 022
- 023Joseph Gerard,Gleeson
-9999TBA  TBA  INTBA  TBA TBA 023
  024Alon M,Goren
 9999TBA  TBA  INTBA  TBA TBA 024
  025Melissa Ann,Gymrek
 9999TBA  TBA  INTBA  TBA TBA 025
- 026Nan,Hao
-9999TBA  TBA  INTBA  TBA TBA 026
- 027Olivier,Harismendy
-9999TBA  TBA  INTBA  TBA TBA 027
- 028Jeff M,Hasty
-9999TBA  TBA  INTBA  TBA TBA 028
- 029Sven W.,Heinz
-9999TBA  TBA  INTBA  TBA TBA 029
- 030Albert,Hsiao
-9999TBA  TBA  INTBA  TBA TBA 030
- 031Wendy Jia Men,Huang
-9999TBA  TBA  INTBA  TBA TBA 031
- 032Terence T.,Hwa
-9999TBA  TBA  INTBA  TBA TBA 032
- 033Lilia Mikhailovna,Sebat
-9999TBA  TBA  INTBA  TBA TBA 033
  034Trey,Ideker
 9999TBA  TBA  INTBA  TBA TBA 034
  035Mohit,Jain
 9999TBA  TBA  INTBA  TBA TBA 035
- 036Suckjoon,Jun
-9999TBA  TBA  INTBA  TBA TBA 036
  037Robin,Knight
 9999TBA  TBA  INTBA  TBA TBA 037
  038Tsung-Ting,Kuo
 9999TBA  TBA  INTBA  TBA TBA 038
- 039Louise,Laurent
-9999TBA  TBA  INTBA  TBA TBA 039
  040Nathan E,Lewis
 9999TBA  TBA  INTBA  TBA TBA 040
  041Amit Rajendra,Majithia
 9999TBA  TBA  INTBA  TBA TBA 041
- 042Prashant Gulab Ram,Mali
-9999TBA  TBA  INTBA  TBA TBA 042
  043Graham P,McVicker
 9999TBA  TBA  INTBA  TBA TBA 043
  044Jill P.,Mesirov
 9999TBA  TBA  INTBA  TBA TBA 044
- 045Christian Michael,Metallo
-9999TBA  TBA  INTBA  TBA TBA 045
  046Siavash,Mir Arabbaygi
 9999TBA  TBA  INTBA  TBA TBA 046
  047Shamim,Nemati
@@ -1262,28 +1132,14 @@ BNFO299  Graduate Research	/courses/BIOI.html#bnfo299
 9999TBA  TBA  INTBA  TBA TBA 050
  051Pavel Arkadjevich,Pevzner
 9999TBA  TBA  INTBA  TBA TBA 051
- 052Anjana,Rao
-9999TBA  TBA  INTBA  TBA TBA 052
  053Bing,Ren
 9999TBA  TBA  INTBA  TBA TBA 053
- 054Scott,Rifkin
-9999TBA  TBA  INTBA  TBA TBA 054
- 055Michael G,Rosenfeld
-9999TBA  TBA  INTBA  TBA TBA 055
  056Debashis,Sahoo
 9999TBA  TBA  INTBA  TBA TBA 056
- 057Nicholas,Schork
-9999TBA  TBA  INTBA  TBA TBA 057
- 058Julian I,Schroeder
-9999TBA  TBA  INTBA  TBA TBA 058
  059Jonathan,Sebat
 9999TBA  TBA  INTBA  TBA TBA 059
  060Benjamin,Smarr
 9999TBA  TBA  INTBA  TBA TBA 060
- 061Shankar,Subramaniam
-9999TBA  TBA  INTBA  TBA TBA 061
- 062Gurol Mehmet,Suel
-9999TBA  TBA  INTBA  TBA TBA 062
  063Wei,Wang
 9999TBA  TBA  INTBA  TBA TBA 063
  064Joel Okrent,Wertheim
@@ -1300,14 +1156,10 @@ BNFO299  Graduate Research	/courses/BIOI.html#bnfo299
 9999TBA  TBA  INTBA  TBA TBA 069
  070Pandurangan,Vijayanand
 9999TBA  TBA  INTBA  TBA TBA 070
- 071Fred H,Gage
-9999TBA  TBA  INTBA  TBA TBA 071
  072Pablo,Tamayo
 9999TBA  TBA  INTBA  TBA TBA 072
  073Ruth J,Williams
 9999TBA  TBA  INTBA  TBA TBA 073
- 074Huilin,Zhou
-9999TBA  TBA  INTBA  TBA TBA 074
  075Fred H,Gage
 9999TBA  TBA  INTBA  TBA TBA 075
 BNFO500  Teaching Assistanship	/courses/BIOI.html#bnfo500
@@ -1713,8 +1565,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 102
  103Dong-Er,Zhang
 9999TBA  TBA  INTBA  TBA TBA 103
- 104Kun,Zhang
-9999TBA  TBA  INTBA  TBA TBA 104
  105Yunde,Zhao
 9999TBA  TBA  INTBA  TBA TBA 105
  106Binhai,Zheng
@@ -1745,8 +1595,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 006
  007Matthew Ryan,Banghart
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Andrew David,Barton
-9999TBA  TBA  INTBA  TBA TBA 008
  009Marcus K,Benna
 9999TBA  TBA  INTBA  TBA TBA 009
  010Eric J,Bennett
@@ -1755,8 +1603,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 011
  012Steven,Briggs
 9999TBA  TBA  INTBA  TBA TBA 012
- 013Sreekanth,Chalasani
-9999TBA  TBA  INTBA  TBA TBA 013
  014Elsa Eleanor,Cleland
 9999TBA  TBA  INTBA  TBA TBA 014
  015Heidi Leigh,Cook-Andersen
@@ -1779,8 +1625,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 023
  024Emma Kristen,Farley
 9999TBA  TBA  INTBA  TBA TBA 024
- 025Gen-Sheng,Feng
-9999TBA  TBA  INTBA  TBA TBA 025
  026Fred H,Gage
 9999TBA  TBA  INTBA  TBA TBA 026
  027Susan S.,Golden
@@ -1789,8 +1633,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 028
  029Jorge Silvio,Gutkind
 9999TBA  TBA  INTBA  TBA TBA 029
- 030Shelley,Halpain
-9999TBA  TBA  INTBA  TBA TBA 030
  031Randolph Y.,Hampton
 9999TBA  TBA  INTBA  TBA TBA 031
  032Nan,Hao
@@ -1899,8 +1741,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 083
  084Alistair B,Russell
 9999TBA  TBA  INTBA  TBA TBA 084
- 085Alan,Saghatelian
-9999TBA  TBA  INTBA  TBA TBA 085
  086Erica Ollmann,Saphire
 9999TBA  TBA  INTBA  TBA TBA 086
  087Julian I,Schroeder
@@ -1913,8 +1753,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 090
  091Francesca,Soncin
 9999TBA  TBA  INTBA  TBA TBA 091
- 092Chih-Ying,Su
-9999TBA  TBA  INTBA  TBA TBA 092
  093Gurol Mehmet,Suel
 9999TBA  TBA  INTBA  TBA TBA 093
  094Xin,Sun
@@ -1923,8 +1761,6 @@ BGGN299  Thesis Research in Biology	/courses/BIOL.html#bggn299
 9999TBA  TBA  INTBA  TBA TBA 095
  096Elizabeth,Villa Rodriguez
 9999TBA  TBA  INTBA  TBA TBA 096
- 097Jing,Wang
-9999TBA  TBA  INTBA  TBA TBA 097
  098Jill Cathleen,Wildonger
 9999TBA  TBA  INTBA  TBA TBA 098
  099Elizabeth A,Winzeler
@@ -3482,30 +3318,16 @@ BIOM298  Directed Study	/courses/BIOM.html#biom298
  091John Rice Jr,Kelsoe
 9999TBA  TBA  INTBA  TBA TBA 091
 BIOM299  Independent Study	/courses/BIOM.html#biom299
- 001Ruben,Abagyan
-9999TBA  TBA  INTBA  TBA TBA 001
  002Susan,Ackerman
 9999TBA  TBA  INTBA  TBA TBA 002
  003Ludmil B,Alexandrov
 9999TBA  TBA  INTBA  TBA TBA 003
- 004Rommie E,Amaro
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Christopher William,Benner
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Nunzio,Bottini
-9999TBA  TBA  INTBA  TBA TBA 006
- 007Aaron Foster,Carlin
-9999TBA  TBA  INTBA  TBA TBA 007
- 008Geoffrey A.,Chang
-9999TBA  TBA  INTBA  TBA TBA 008
  009John Tzu-yu,Chang
 9999TBA  TBA  INTBA  TBA TBA 009
  010David A.,Cheresh
 9999TBA  TBA  INTBA  TBA TBA 010
  011Neil C.,Chi
 9999TBA  TBA  INTBA  TBA TBA 011
- 012Hiutung,Chu
-9999TBA  TBA  INTBA  TBA TBA 012
  013Jerold,Chun
 9999TBA  TBA  INTBA  TBA TBA 013
  014Don W.,Cleveland
@@ -3514,34 +3336,18 @@ BIOM299  Independent Study	/courses/BIOM.html#biom299
 9999TBA  TBA  INTBA  TBA TBA 015
  016Shane,Crotty
 9999TBA  TBA  INTBA  TBA TBA 016
- 017Richard,Daneman
-9999TBA  TBA  INTBA  TBA TBA 017
  018Arshad,Desai
 9999TBA  TBA  INTBA  TBA TBA 018
- 019Neal Krishna,Devaraj
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Steven F.,Dowdy
-9999TBA  TBA  INTBA  TBA TBA 020
- 021Jeffrey D.,Esko
-9999TBA  TBA  INTBA  TBA TBA 021
- 022Gen-Sheng,Feng
-9999TBA  TBA  INTBA  TBA TBA 022
  023Kelly A.,Frazer
 9999TBA  TBA  INTBA  TBA TBA 023
  024Frank,Furnari
 9999TBA  TBA  INTBA  TBA TBA 024
- 025Richard L.,Gallo
-9999TBA  TBA  INTBA  TBA TBA 025
  026Kyle J,Gaulton
 9999TBA  TBA  INTBA  TBA TBA 026
- 027Christopher,Glass
-9999TBA  TBA  INTBA  TBA TBA 027
  028Ananda,Goldrath
 9999TBA  TBA  INTBA  TBA TBA 028
  029David J,Gonzalez
 9999TBA  TBA  INTBA  TBA TBA 029
- 030John C,Guatelli
-9999TBA  TBA  INTBA  TBA TBA 030
  031Asa Birgitta,Gustafsson
 9999TBA  TBA  INTBA  TBA TBA 031
  032Jorge Silvio,Gutkind
@@ -3560,82 +3366,38 @@ BIOM299  Independent Study	/courses/BIOM.html#biom299
 9999TBA  TBA  INTBA  TBA TBA 038
  039Wendy Jia Men,Huang
 9999TBA  TBA  INTBA  TBA TBA 039
- 040Trey,Ideker
-9999TBA  TBA  INTBA  TBA TBA 040
  041Yishi,Jin
 9999TBA  TBA  INTBA  TBA TBA 041
- 042William J.,Joiner
-9999TBA  TBA  INTBA  TBA TBA 042
  043Robin,Knight
 9999TBA  TBA  INTBA  TBA TBA 043
  044Mitchell E.,Kronenberg
 9999TBA  TBA  INTBA  TBA TBA 044
- 045Li-Fan,Lu
-9999TBA  TBA  INTBA  TBA TBA 045
  046Amit Rajendra,Majithia
 9999TBA  TBA  INTBA  TBA TBA 046
- 047James Hobson,Mc Kerrow
-9999TBA  TBA  INTBA  TBA TBA 047
- 048Jill P.,Mesirov
-9999TBA  TBA  INTBA  TBA TBA 048
- 049Anthony Joseph,Molina
-9999TBA  TBA  INTBA  TBA TBA 049
  050Alysson,Muotri
 9999TBA  TBA  INTBA  TBA TBA 050
  051Alexandra C.,Newton
 9999TBA  TBA  INTBA  TBA TBA 051
- 052Victor F.,Nizet
-9999TBA  TBA  INTBA  TBA TBA 052
- 053Abraham Amos,Palmer
-9999TBA  TBA  INTBA  TBA TBA 053
  054Mana,Parast
 9999TBA  TBA  INTBA  TBA TBA 054
- 055Manuela,Raffatellu
-9999TBA  TBA  INTBA  TBA TBA 055
- 056Anjana,Rao
-9999TBA  TBA  INTBA  TBA TBA 056
- 057Bing,Ren
-9999TBA  TBA  INTBA  TBA TBA 057
  058Tannishtha,Reya
 9999TBA  TBA  INTBA  TBA TBA 058
- 059Michael G,Rosenfeld
-9999TBA  TBA  INTBA  TBA TBA 059
- 060Maike,Sander
-9999TBA  TBA  INTBA  TBA TBA 060
  061Reuben,Shaw
 9999TBA  TBA  INTBA  TBA TBA 061
- 062Farah,Sheikh
-9999TBA  TBA  INTBA  TBA TBA 062
  063Robert,Signer
 9999TBA  TBA  INTBA  TBA TBA 063
- 064Tatum Sasha Summ,Simonson
-9999TBA  TBA  INTBA  TBA TBA 064
  065Xin,Sun
 9999TBA  TBA  INTBA  TBA TBA 065
  066Joann,Trejo
 9999TBA  TBA  INTBA  TBA TBA 066
- 067Emily Ruth,Troemel
-9999TBA  TBA  INTBA  TBA TBA 067
- 068Robert J,Wechsler-Reya
-9999TBA  TBA  INTBA  TBA TBA 068
- 069Elizabeth A,Winzeler
-9999TBA  TBA  INTBA  TBA TBA 069
- 070Joseph Lee,Witztum
-9999TBA  TBA  INTBA  TBA TBA 070
- 071Jing,Yang
-9999TBA  TBA  INTBA  TBA TBA 071
  072Eugene Wei-Ming,Yeo
 9999TBA  TBA  INTBA  TBA TBA 072
  073Amir,Zarrinpar
 9999TBA  TBA  INTBA  TBA TBA 073
- 074Karsten B,Zengler
-9999TBA  TBA  INTBA  TBA TBA 074
  075Jin,Zhang
 9999TBA  TBA  INTBA  TBA TBA 075
  076Stephen M,Hedrick
 9999TBA  TBA  INTBA  TBA TBA 076
- 077Peter,Zage
-9999TBA  TBA  INTBA  TBA TBA 077
  078Paul S,Mischel
 9999TBA  TBA  INTBA  TBA TBA 078
 CAT 1    Culture, Art & Technology 1	/courses/CAT.html#cat1
@@ -4242,14 +4004,8 @@ CHEM298  Special Study in Chemistry	/courses/CHEM.html#chem298
  008Brian,Leigh
 9999TBA  TBA  INTBA  TBA TBA 008
 CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
- 001Ruben,Abagyan
-9999TBA  TBA  INTBA  TBA TBA 001
- 002Joseph A.,Adams
-9999TBA  TBA  INTBA  TBA TBA 002
  003Omar Sultan,Akbari
 9999TBA  TBA  INTBA  TBA TBA 003
- 004Adah,Almutairi
-9999TBA  TBA  INTBA  TBA TBA 004
  005Rommie E,Amaro
 9999TBA  TBA  INTBA  TBA TBA 005
  006Carlo,Ballatore
@@ -4282,16 +4038,10 @@ CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
 9999TBA  TBA  INTBA  TBA TBA 019
  020Joshua,Figueroa
 9999TBA  TBA  INTBA  TBA TBA 020
- 021Xiang-Dong,Fu
-9999TBA  TBA  INTBA  TBA TBA 021
  022Michael,Galperin
 9999TBA  TBA  INTBA  TBA TBA 022
- 023William Henry,Gerwick
-9999TBA  TBA  INTBA  TBA TBA 023
  024Gourisankar,Ghosh
 9999TBA  TBA  INTBA  TBA TBA 024
- 025Partho,Ghosh
-9999TBA  TBA  INTBA  TBA TBA 025
  026Michael K.,Gilson
 9999TBA  TBA  INTBA  TBA TBA 026
  027Kamil,Godula
@@ -4304,10 +4054,6 @@ CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
 9999TBA  TBA  INTBA  TBA TBA 030
  031Mark Anthony,Herzik
 9999TBA  TBA  INTBA  TBA TBA 031
- 032Xiaohua,Huang
-9999TBA  TBA  INTBA  TBA TBA 032
- 033Enfu,Hui
-9999TBA  TBA  INTBA  TBA TBA 033
  034Patricia A.,Jennings
 9999TBA  TBA  INTBA  TBA TBA 034
  035Simpson,Joseph
@@ -4326,26 +4072,16 @@ CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
 9999TBA  TBA  INTBA  TBA TBA 041
  042Shaowei,Li
 9999TBA  TBA  INTBA  TBA TBA 042
- 043Stephen P.,Mayfield
-9999TBA  TBA  INTBA  TBA TBA 043
  044James Andrew,McCammon
 9999TBA  TBA  INTBA  TBA TBA 044
  045Colleen A,McHugh
 9999TBA  TBA  INTBA  TBA TBA 045
  046Tatiana V,Mishanina
 9999TBA  TBA  INTBA  TBA TBA 046
- 047Tadeusz,Molinski
-9999TBA  TBA  INTBA  TBA TBA 047
  048Bradley S.,Moore
 9999TBA  TBA  INTBA  TBA TBA 048
  049Ulrich K.,Muller
 9999TBA  TBA  INTBA  TBA TBA 049
- 050Joseph M.,Oconnor
-9999TBA  TBA  INTBA  TBA TBA 050
- 051Anthony John,O'Donoghue
-9999TBA  TBA  INTBA  TBA TBA 051
- 052Shyue Ping,Ong
-9999TBA  TBA  INTBA  TBA TBA 052
  053Francesco,Paesani
 9999TBA  TBA  INTBA  TBA TBA 053
  054Bjoern,Peters
@@ -4382,8 +4118,6 @@ CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
 9999TBA  TBA  INTBA  TBA TBA 069
  070Emmanuel,Theodorakis
 9999TBA  TBA  INTBA  TBA TBA 070
- 071Mark H,Thiemens
-9999TBA  TBA  INTBA  TBA TBA 071
  072Navtej,Toor
 9999TBA  TBA  INTBA  TBA TBA 072
  073Yitzhak,Tor
@@ -4406,16 +4140,12 @@ CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
 9999TBA  TBA  INTBA  TBA TBA 081
  082Brian M,Zid
 9999TBA  TBA  INTBA  TBA TBA 082
- 083Alexandra Jazz,Dickinson
-9999TBA  TBA  INTBA  TBA TBA 083
  084Yuan,Chen
 9999TBA  TBA  INTBA  TBA TBA 084
  085Robert S.,Pomeroy
 9999TBA  TBA  INTBA  TBA TBA 085
  086Dong,Wang
 9999TBA  TBA  INTBA  TBA TBA 086
- 087Yuan,Chen
-9999TBA  TBA  INTBA  TBA TBA 087
 CHEM500  Apprentice Teaching	/courses/CHEM.html#chem500
  001Kim F.,Albizati
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -5506,44 +5236,22 @@ COGR299  Graduate Research	/courses/COMM.html#cogr299
 9999TBA  TBA  INTBA  TBA TBA 006
  007Zeinabu I.,Davis
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Andrew Michael,Dewaard
-9999TBA  TBA  INTBA  TBA TBA 008
  009Fernando,Dominguez Rubio
 9999TBA  TBA  INTBA  TBA TBA 009
- 010Alexander Leor,Fattal
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Gary,Fields
-9999TBA  TBA  INTBA  TBA TBA 011
  012Kelly,Gates
 9999TBA  TBA  INTBA  TBA TBA 012
  013Richard Stuart,Geiger
 9999TBA  TBA  INTBA  TBA TBA 013
- 014Brian,Goldfarb
-9999TBA  TBA  INTBA  TBA TBA 014
  015Daniel C,Hallin
 9999TBA  TBA  INTBA  TBA TBA 015
- 016Erin Truesdell,Hill
-9999TBA  TBA  INTBA  TBA TBA 016
  017Robert B,Horwitz
 9999TBA  TBA  INTBA  TBA TBA 017
  018Lilly C,Irani
 9999TBA  TBA  INTBA  TBA TBA 018
- 019Caroline Sarah,Jack
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Shawna F,Kidman
-9999TBA  TBA  INTBA  TBA TBA 020
- 021Daniel J,Martinico
-9999TBA  TBA  INTBA  TBA TBA 021
- 022Thomas Rainer,Schmidt
-9999TBA  TBA  INTBA  TBA TBA 022
  023David,Serlin
 9999TBA  TBA  INTBA  TBA TBA 023
  024Christopher O,Sims
 9999TBA  TBA  INTBA  TBA TBA 024
- 025Stefan A.,Tanaka
-9999TBA  TBA  INTBA  TBA TBA 025
- 026Lillian B,Walkover
-9999TBA  TBA  INTBA  TBA TBA 026
  027Elana,Zilberg
 9999TBA  TBA  INTBA  TBA TBA 027
 COGR500  Practice Teaching/Communicatn	/courses/COMM.html#cogr500
@@ -5670,112 +5378,9 @@ COMM194  Research Seminar/Washington DC	/courses/COMM.html#comm194
 COMM196A Honors Seminar/CommunicationI	/courses/COMM.html#comm196a
  A00Thomas Rainer,Schmidt
 0000MCC  2    SE133  10001250A00
-COMM198  Directed Group Study/Comm	/courses/COMM.html#comm198
- 001Patricia Jeehyun,Ahn
-9999TBA  TBA  INTBA  TBA TBA 001
- 002Morana,Alac
-9999TBA  TBA  INTBA  TBA TBA 002
- 003Patrick W.,Anderson
-9999TBA  TBA  INTBA  TBA TBA 003
- 004Boatema,Boateng
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Angela N,Booker
-9999TBA  TBA  INTBA  TBA TBA 005
- 008Matilde,Cordoba Azcarate
-9999TBA  TBA  INTBA  TBA TBA 008
- 009Zeinabu I.,Davis
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Andrew Michael,Dewaard
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Fernando,Dominguez Rubio
-9999TBA  TBA  INTBA  TBA TBA 011
- 012Alexander Leor,Fattal
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Gary,Fields
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Kelly,Gates
-9999TBA  TBA  INTBA  TBA TBA 014
- 015Brian,Goldfarb
-9999TBA  TBA  INTBA  TBA TBA 015
- 018Erin Truesdell,Hill
-9999TBA  TBA  INTBA  TBA TBA 018
- 019Robert B,Horwitz
-9999TBA  TBA  INTBA  TBA TBA 019
- 021Lilly C,Irani
-9999TBA  TBA  INTBA  TBA TBA 021
- 022Caroline Sarah,Jack
-9999TBA  TBA  INTBA  TBA TBA 022
- 023Shawna F,Kidman
-9999TBA  TBA  INTBA  TBA TBA 023
- 024Daniel J,Martinico
-9999TBA  TBA  INTBA  TBA TBA 024
- 026Thomas Rainer,Schmidt
-9999TBA  TBA  INTBA  TBA TBA 026
- 027David,Serlin
-9999TBA  TBA  INTBA  TBA TBA 027
- 028Christopher O,Sims
-9999TBA  TBA  INTBA  TBA TBA 028
- 029Stefan A.,Tanaka
-9999TBA  TBA  INTBA  TBA TBA 029
- 030Elana,Zilberg
-9999TBA  TBA  INTBA  TBA TBA 030
- 031Lillian B,Walkover
-9999TBA  TBA  INTBA  TBA TBA 031
- 032Richard Stuart,Geiger
-9999TBA  TBA  INTBA  TBA TBA 032
 COMM199  Independent Study/Communicatn	/courses/COMM.html#comm199
  001Patricia Jeehyun,Ahn
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Morana,Alac
-9999TBA  TBA  INTBA  TBA TBA 002
- 003Patrick W.,Anderson
-9999TBA  TBA  INTBA  TBA TBA 003
- 004Boatema,Boateng
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Angela N,Booker
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Matilde,Cordoba Azcarate
-9999TBA  TBA  INTBA  TBA TBA 006
- 007Zeinabu I.,Davis
-9999TBA  TBA  INTBA  TBA TBA 007
- 008Andrew Michael,Dewaard
-9999TBA  TBA  INTBA  TBA TBA 008
- 009Fernando,Dominguez Rubio
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Alexander Leor,Fattal
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Gary,Fields
-9999TBA  TBA  INTBA  TBA TBA 011
- 012Kelly,Gates
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Richard Stuart,Geiger
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Brian,Goldfarb
-9999TBA  TBA  INTBA  TBA TBA 014
- 015Erin Truesdell,Hill
-9999TBA  TBA  INTBA  TBA TBA 015
- 016Robert B,Horwitz
-9999TBA  TBA  INTBA  TBA TBA 016
- 017Lilly C,Irani
-9999TBA  TBA  INTBA  TBA TBA 017
- 018Caroline Sarah,Jack
-9999TBA  TBA  INTBA  TBA TBA 018
- 019Shawna F,Kidman
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Daniel J,Martinico
-9999TBA  TBA  INTBA  TBA TBA 020
- 021Thomas Rainer,Schmidt
-9999TBA  TBA  INTBA  TBA TBA 021
- 022David,Serlin
-9999TBA  TBA  INTBA  TBA TBA 022
- 023Christopher O,Sims
-9999TBA  TBA  INTBA  TBA TBA 023
- 024Stefan A.,Tanaka
-9999TBA  TBA  INTBA  TBA TBA 024
- 025Lillian B,Walkover
-9999TBA  TBA  INTBA  TBA TBA 025
- 026Elana,Zilberg
-9999TBA  TBA  INTBA  TBA TBA 026
 CSE 8A   Intro to Programming 1	/courses/CSE.html#cse8a
 :A00Adalbert Geral,Soosai Raj
 0048EBU3B3    LAB250 08000850A500048EBU3B3    LAB250 09000950A510048EBU3B3    LAB250 10001050A520045EBU3B3    LAB250 11001150A53
@@ -6574,8 +6179,6 @@ CSE 299  Research	/courses/CSE.html#cse299
 9999TBA  TBA  INTBA  TBA TBA 013
  014Sanjoy,Dasgupta
 9999TBA  TBA  INTBA  TBA TBA 014
- 015Alin Bernard,Deutsch
-9999TBA  TBA  INTBA  TBA TBA 015
  016Steven P,Dow
 9999TBA  TBA  INTBA  TBA TBA 016
  017Shlomo,Dubnov
@@ -6610,12 +6213,8 @@ CSE 299  Research	/courses/CSE.html#cse299
 9999TBA  TBA  INTBA  TBA TBA 031
  032Ryan Charles,Kastner
 9999TBA  TBA  INTBA  TBA TBA 032
- 033Scott R,Klemmer
-9999TBA  TBA  INTBA  TBA TBA 033
  034Robin,Knight
 9999TBA  TBA  INTBA  TBA TBA 034
- 035David J,Kriegman
-9999TBA  TBA  INTBA  TBA TBA 035
  036Falko,Kuester
 9999TBA  TBA  INTBA  TBA TBA 036
  037Arun Kumar,Kumar
@@ -6638,8 +6237,6 @@ CSE 299  Research	/courses/CSE.html#cse299
 9999TBA  TBA  INTBA  TBA TBA 045
  046Patrick William,Pannuto
 9999TBA  TBA  INTBA  TBA TBA 046
- 047Yannis,Papakonstantinou
-9999TBA  TBA  INTBA  TBA TBA 047
  048Ramamohan,Paturi
 9999TBA  TBA  INTBA  TBA TBA 048
  049Pavel Arkadjevich,Pevzner
@@ -6658,8 +6255,6 @@ CSE 299  Research	/courses/CSE.html#cse299
 9999TBA  TBA  INTBA  TBA TBA 055
  056Debashis,Sahoo
 9999TBA  TBA  INTBA  TBA TBA 056
- 057Lawrence,Saul
-9999TBA  TBA  INTBA  TBA TBA 057
  058Stefan,Savage
 9999TBA  TBA  INTBA  TBA TBA 058
  059Jurgen P.,Schulze
@@ -6684,8 +6279,6 @@ CSE 299  Research	/courses/CSE.html#cse299
 9999TBA  TBA  INTBA  TBA TBA 068
  069Kristen Marie,Vaccaro
 9999TBA  TBA  INTBA  TBA TBA 069
- 070Victor Dan,Vianu
-9999TBA  TBA  INTBA  TBA TBA 070
  071Geoffrey M.,Voelker
 9999TBA  TBA  INTBA  TBA TBA 071
  072Xiaolong,Wang
@@ -6778,14 +6371,6 @@ DERM296  Independent Study
 DERM299  Independent Study Project
  001George Kimet,Hightower
 0010TBA  TBA  INTBA  TBA TBA 001
- 002Shang I Brian,Jiang
-0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
- 004
-0010TBA  TBA  INTBA  TBA TBA 004
- 005
-0010TBA  TBA  INTBA  TBA TBA 005
 DERM428  Clinical Dermatology
  A00Jeremy Adam,Schneider
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -6987,50 +6572,24 @@ DSC 299  Graduate Research
 9999TBA  TBA  INTBA  TBA TBA 002
  003Arya,Mazumdar
 9999TBA  TBA  INTBA  TBA TBA 003
- 004Marina,Langlois
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Suraj,Rampure
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Janine LoBue,Tiefenbruck
-9999TBA  TBA  INTBA  TBA TBA 006
  007Mikhail,Belkin
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Zhiting,Hu
-9999TBA  TBA  INTBA  TBA TBA 008
  009Yian,Ma
 9999TBA  TBA  INTBA  TBA TBA 009
- 010Soohyun Nam,Liao
-9999TBA  TBA  INTBA  TBA TBA 010
  011Tauhidur,Rahman
 9999TBA  TBA  INTBA  TBA TBA 011
  012Tsui-Wei (lily),Weng
 9999TBA  TBA  INTBA  TBA TBA 012
- 013Justin Matthew,Eldridge
-9999TBA  TBA  INTBA  TBA TBA 013
  015Gal,Mishne
 9999TBA  TBA  INTBA  TBA TBA 015
  016Babak,Salimi
 9999TBA  TBA  INTBA  TBA TBA 016
  017Tevfik Berk,Ustun
 9999TBA  TBA  INTBA  TBA TBA 017
- 020Jingbo,Shang
-9999TBA  TBA  INTBA  TBA TBA 020
- 021Jack,Silberman
-9999TBA  TBA  INTBA  TBA TBA 021
- 022Jelena,Bradic
-9999TBA  TBA  INTBA  TBA TBA 022
  023Mikio C,Aoi
 9999TBA  TBA  INTBA  TBA TBA 023
  024Armin,Schwartzman
 9999TBA  TBA  INTBA  TBA TBA 024
- 025David J,Danks
-9999TBA  TBA  INTBA  TBA TBA 025
- 026Richard Stuart,Geiger
-9999TBA  TBA  INTBA  TBA TBA 026
- 027Arun Kumar,Kumar
-9999TBA  TBA  INTBA  TBA TBA 027
- 028Barna,Saha
-9999TBA  TBA  INTBA  TBA TBA 028
  029Benjamin,Smarr
 9999TBA  TBA  INTBA  TBA TBA 029
 DSC 500  Teaching Assistantship	/courses/DSC.html#dsc500
@@ -7208,8 +6767,6 @@ ECE 198  Direct Group Study	/courses/ECE.html#ece198
  001Truong Quang,Nguyen
 9999TBA  TBA  INTBA  TBA TBA 001
 ECE 199  Independent Study/Undergrads	/courses/ECE.html#ece199
- 001Daniel F.,Sievenpiper
-9999TBA  TBA  INTBA  TBA TBA 001
  002Truong Quang,Nguyen
 9999TBA  TBA  INTBA  TBA TBA 002
  003Prasad S.S.,Gudem
@@ -7478,8 +7035,6 @@ ECE 299  Research	/courses/ECE.html#ece299
 9999TBA  TBA  INTBA  TBA TBA 001
  002Nikolay A.,Atanasov
 9999TBA  TBA  INTBA  TBA TBA 002
- 003Saharnaz,Baghdadchi
-9999TBA  TBA  INTBA  TBA TBA 003
  004Dinesh,Bharadia
 9999TBA  TBA  INTBA  TBA TBA 004
  005Pamela C.,Cosman
@@ -7490,12 +7045,8 @@ ECE 299  Research	/courses/ECE.html#ece299
 9999TBA  TBA  INTBA  TBA TBA 008
  009Yeshaiahu,Fainman
 9999TBA  TBA  INTBA  TBA TBA 009
- 010Joseph Earl,Ford
-9999TBA  TBA  INTBA  TBA TBA 010
  011Massimo,Franceschetti
 9999TBA  TBA  INTBA  TBA TBA 011
- 012Eric E,Fullerton
-9999TBA  TBA  INTBA  TBA TBA 012
  013Gal,Mishne
 9999TBA  TBA  INTBA  TBA TBA 013
  014Ian A,Galton
@@ -7542,8 +7093,6 @@ ECE 299  Research	/courses/ECE.html#ece299
 9999TBA  TBA  INTBA  TBA TBA 034
  035Shayan,Mookherjea
 9999TBA  TBA  INTBA  TBA TBA 035
- 036Karcher William,Morris
-9999TBA  TBA  INTBA  TBA TBA 036
  037Tse Nga,Ng
 9999TBA  TBA  INTBA  TBA TBA 037
  038Truong Quang,Nguyen
@@ -7556,8 +7105,6 @@ ECE 299  Research	/courses/ECE.html#ece299
 9999TBA  TBA  INTBA  TBA TBA 041
  042George C.,Papen
 9999TBA  TBA  INTBA  TBA TBA 042
- 043Stojan,Radic
-9999TBA  TBA  INTBA  TBA TBA 043
  044Bhaskar D.,Rao
 9999TBA  TBA  INTBA  TBA TBA 044
  045Ramesh R,Rao
@@ -7570,8 +7117,6 @@ ECE 299  Research	/courses/ECE.html#ece299
 9999TBA  TBA  INTBA  TBA TBA 048
  049Daniel F.,Sievenpiper
 9999TBA  TBA  INTBA  TBA TBA 049
- 050David D.,Sworder
-9999TBA  TBA  INTBA  TBA TBA 050
  051Yuan,Taur
 9999TBA  TBA  INTBA  TBA TBA 051
  052Behrouz,Touri
@@ -7592,16 +7137,8 @@ ECE 299  Research	/courses/ECE.html#ece299
 9999TBA  TBA  INTBA  TBA TBA 060
  061Xinyu,Zhang
 9999TBA  TBA  INTBA  TBA TBA 061
- 062Carl,Taswell
-9999TBA  TBA  INTBA  TBA TBA 062
- 063Gal,Mishne
-9999TBA  TBA  INTBA  TBA TBA 063
  064Prasad S.S.,Gudem
 9999TBA  TBA  INTBA  TBA TBA 064
- 065Karcher William,Morris
-9999TBA  TBA  INTBA  TBA TBA 065
- 066John R,Sanford
-9999TBA  TBA  INTBA  TBA TBA 066
  067Frederick Joel,Harris
 9999TBA  TBA  INTBA  TBA TBA 067
  068Yuanyuan,Shi
@@ -8133,7 +7670,7 @@ TBA  24   SETBA  09001300A00
 EDS 240A Resrch/ASL-English Bilingul Ed	/courses/EDS.html#eds240a
  A00Gabrielle Anastasia,Jones
 0005RWAC 3    LE0401 09001150A00
-EDS 246  EDS First Yr Doctoral Seminar
+EDS 246  EDS First Yr Doctoral Seminar	/courses/EDS.html#eds246
 .B00Shana R,Cohen
 0000TBA  TBA  DITBA  TBA TBA B01
 RWAC 4    SE0401 09001150B00
@@ -8226,14 +7763,8 @@ EDS 299  Dissertation Research	/courses/EDS.html#eds299
 0010TBA  TBA  INTBA  TBA TBA 002
  003Thandeka K,Chapman
 0010TBA  TBA  INTBA  TBA TBA 003
- 004Sherice Nicole,Clarke
-0005TBA  TBA  INTBA  TBA TBA 004
- 005Shana R,Cohen
-0005TBA  TBA  INTBA  TBA TBA 005
  006Amanda Lee,Datnow
 0005TBA  TBA  INTBA  TBA TBA 006
- 007Megan Beth,Hopkins
-0005TBA  TBA  INTBA  TBA TBA 007
  008Christoforos,Mamas
 0005TBA  TBA  INTBA  TBA TBA 008
  009Mica,Pollock
@@ -8312,8 +7843,6 @@ EMED299  Independent Study Project
 0010TBA  TBA  INTBA  TBA TBA 003
  004Christian Alberto,Tomaszewski
 0010TBA  TBA  INTBA  TBA TBA 004
- 005
-0010TBA  TBA  INTBA  TBA TBA 005
 EMED411  Clinical Emergency Medicine
  A00Jorge A,Fernandez
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -8497,12 +8026,6 @@ ETHN299  Thesis Research	/courses/ETHN.html#ethn299
 0099TBA  TBA  INTBA  TBA TBA 004
  005Curtis F.,Marez
 0099TBA  TBA  INTBA  TBA TBA 005
- 006Shaista,Patel
-0099TBA  TBA  INTBA  TBA TBA 006
- 007Roy,Perez
-0099TBA  TBA  INTBA  TBA TBA 007
- 008K. Wayne,Yang
-0099TBA  TBA  INTBA  TBA TBA 008
  009Shelley,Streeby
 0010TBA  TBA  INTBA  TBA TBA 009
 ETHN500  Apprntice Teaching/Ethn Stdies	/courses/ETHN.html#ethn500
@@ -9585,7 +9108,6 @@ JWSP104  Practicum in Advanced Hebrew	/courses/JWSP.html#jwsp104
 0015HSS  13   DI1106B11001150A01
 HSS  135  LE1106B10001050A00
 20221209HSS  FI1106B08001059
-JWSP199  Independent Study	/courses/JWSP.html#jwsp199
 JWSP500  Apprentice Teaching
  A00Alana,Shuster
 0005TBA  TBA  PRTBA  TBA TBA A00
@@ -9867,32 +9389,10 @@ LIGN195  Apprentice Teaching	/courses/LING.html#lign195
  A00William Francis,Styler
 0002TBA  TBA  PRTBA  TBA TBA A00
 LIGN199  Independent Study/Linguistics	/courses/LING.html#lign199
- 001Farrell,Ackerman
-9999TBA  TBA  INTBA  TBA TBA 001
- 002David A.,Barner
-9999TBA  TBA  INTBA  TBA TBA 002
- 003Eric John,Bakovic
-9999TBA  TBA  INTBA  TBA TBA 003
- 004Leon,Bergen
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Gabriela Hernandez,Caballero
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Andrew Scott,Kehler
-9999TBA  TBA  INTBA  TBA TBA 006
- 007Marc,Garellek
-9999TBA  TBA  INTBA  TBA TBA 007
- 008Robert,Kluender
-9999TBA  TBA  INTBA  TBA TBA 008
- 009Ivano,Caponigro
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Sharon,Rose
-9999TBA  TBA  INTBA  TBA TBA 010
  011William Francis,Styler
 9999TBA  TBA  INTBA  TBA TBA 011
  012Emily C,Drake
 9999TBA  TBA  INTBA  TBA TBA 012
- 013Michelle,Yuan
-9999TBA  TBA  INTBA  TBA TBA 013
  014Grant Todd,Goodall
 9999TBA  TBA  INTBA  TBA TBA 014
  015Rachel,Mayberry
@@ -9950,8 +9450,6 @@ LIGN296  Directed Research	/courses/LING.html#lign296
 LIGN299  Doctoral Research	/courses/LING.html#lign299
  001Farrell,Ackerman
 0010TBA  TBA  INTBA  TBA TBA 001
- 002Eric John,Bakovic
-0010TBA  TBA  INTBA  TBA TBA 002
  003David A.,Barner
 0010TBA  TBA  INTBA  TBA TBA 003
  004Leon,Bergen
@@ -9960,24 +9458,16 @@ LIGN299  Doctoral Research	/courses/LING.html#lign299
 0010TBA  TBA  INTBA  TBA TBA 005
  006Ivano,Caponigro
 0010TBA  TBA  INTBA  TBA TBA 006
- 007Emily C,Drake
-0010TBA  TBA  INTBA  TBA TBA 007
  008Marc,Garellek
 0010TBA  TBA  INTBA  TBA TBA 008
  009Grant Todd,Goodall
 0010TBA  TBA  INTBA  TBA TBA 009
  010Andrew Scott,Kehler
 0010TBA  TBA  INTBA  TBA TBA 010
- 011Robert,Kluender
-0010TBA  TBA  INTBA  TBA TBA 011
  012Rachel,Mayberry
 0010TBA  TBA  INTBA  TBA TBA 012
  013Sharon,Rose
 0010TBA  TBA  INTBA  TBA TBA 013
- 014William Francis,Styler
-0010TBA  TBA  INTBA  TBA TBA 014
- 015Michelle,Yuan
-0010TBA  TBA  INTBA  TBA TBA 015
 LIGN500  Ling Graduate IA Training	/courses/LING.html#lign500
 LIGN502  Apprentice Teaching/Linguistcs	/courses/LING.html#lign502
  A00Grant Todd,Goodall
@@ -10050,7 +9540,7 @@ LIHL118  Cantonese for Cantonse Speaker	/courses/LING.html#lihl118
 0035CENTR24   TU217B 15301650A00
 20221205CENTRFI217B 15001759
 LIHL119F Hindi for Hindi Speakers	/courses/LING.html#lihl119f
-LIHL124F Int Vietnamese/Vietnamese Spkr
+LIHL124F Int Vietnamese/Vietnamese Spkr	/courses/LING.html#lihl124f
 'A00Huy Van,Phung
 0028WLH  24   LE2110 14001520A00
 20221208WLH  FI2110 15001759
@@ -10945,8 +10435,6 @@ MAE 199  Independent Study/Undergrads	/courses/MAE.html#mae199
 9999TBA  TBA  INTBA  TBA TBA 003
  004Simon Charles,Bott-Suzuki
 9999TBA  TBA  INTBA  TBA TBA 004
- 005Jorge,Cortes
-9999TBA  TBA  INTBA  TBA TBA 005
  006Lisa Voula,Poulikakos
 9999TBA  TBA  INTBA  TBA TBA 006
  007Tania,Morimoto
@@ -11065,8 +10553,6 @@ MAE 299  Graduate Research	/courses/MAE.html#mae299
 9999TBA  TBA  INTBA  TBA TBA 001
  002Prabhakar,Bandaru
 9999TBA  TBA  INTBA  TBA TBA 002
- 003Janet Maria,Becker
-9999TBA  TBA  INTBA  TBA TBA 003
  004Farhat N.,Beg
 9999TBA  TBA  INTBA  TBA TBA 004
  005Thomas R,Bewley
@@ -11091,8 +10577,6 @@ MAE 299  Graduate Research	/courses/MAE.html#mae299
 9999TBA  TBA  INTBA  TBA TBA 014
  015Nathan Joseph,Delson
 9999TBA  TBA  INTBA  TBA TBA 015
- 016Juan Carlos,Del Alamo
-9999TBA  TBA  INTBA  TBA TBA 016
  017Michael,Frazier
 9999TBA  TBA  INTBA  TBA TBA 017
  018James Robert,Friend
@@ -11115,8 +10599,6 @@ MAE 299  Graduate Research	/courses/MAE.html#mae299
 9999TBA  TBA  INTBA  TBA TBA 026
  027Jan,Kleissl
 9999TBA  TBA  INTBA  TBA TBA 027
- 028John B,Kosmatka
-9999TBA  TBA  INTBA  TBA TBA 028
  029Boris,Kramer
 9999TBA  TBA  INTBA  TBA TBA 029
  030Sergei,Krasheninnikov
@@ -11125,10 +10607,6 @@ MAE 299  Graduate Research	/courses/MAE.html#mae299
 9999TBA  TBA  INTBA  TBA TBA 031
  032Ratnesh,Lal
 9999TBA  TBA  INTBA  TBA TBA 032
- 033Stefan G.,Llewellyn Smith
-9999TBA  TBA  INTBA  TBA TBA 033
- 034Marko,Lubarda
-9999TBA  TBA  INTBA  TBA TBA 034
  035Andrew J.,Lucas
 9999TBA  TBA  INTBA  TBA TBA 035
  036Sonia,Martinez
@@ -11139,16 +10617,10 @@ MAE 299  Graduate Research	/courses/MAE.html#mae299
 9999TBA  TBA  INTBA  TBA TBA 038
  039Tania,Morimoto
 9999TBA  TBA  INTBA  TBA TBA 039
- 041Vitali F,Nesterenko
-9999TBA  TBA  INTBA  TBA TBA 041
  042Keiko K.,Nomura
 9999TBA  TBA  INTBA  TBA TBA 042
  043Geno Ronald,Pawlak
 9999TBA  TBA  INTBA  TBA TBA 043
- 044Lonnie Grove,Petersen
-9999TBA  TBA  INTBA  TBA TBA 044
- 045Albert Paul,Pisano
-9999TBA  TBA  INTBA  TBA TBA 045
  046Lisa Voula,Poulikakos
 9999TBA  TBA  INTBA  TBA TBA 046
  047Huihui,Qi
@@ -11171,8 +10643,6 @@ MAE 299  Graduate Research	/courses/MAE.html#mae299
 9999TBA  TBA  INTBA  TBA TBA 055
  056Frank E,Talke
 9999TBA  TBA  INTBA  TBA TBA 056
- 057Daniel,Tartakovsky
-9999TBA  TBA  INTBA  TBA TBA 057
  058Michael Thomas,Tolley
 9999TBA  TBA  INTBA  TBA TBA 058
  059George Robert,Tynan
@@ -11801,20 +11271,12 @@ MATH299  Reading and Research	/courses/MATH.html#math299
 0999TBA  TBA  INTBA  TBA TBA 009
  010Peter F,Ebenfelt
 0999TBA  TBA  INTBA  TBA TBA 010
- 011Patrick J,Fitzsimmons
-0999TBA  TBA  INTBA  TBA TBA 011
  012Philip E.,Gill
 0999TBA  TBA  INTBA  TBA TBA 012
- 013Guershon,Harel
-0999TBA  TBA  INTBA  TBA TBA 013
- 014Michael J,Holst
-0999TBA  TBA  INTBA  TBA TBA 014
  015Adrian,Ioana
 0999TBA  TBA  INTBA  TBA TBA 015
  016Elham,Izadi
 0999TBA  TBA  INTBA  TBA TBA 016
- 017Daniel Mertz,Kane
-0999TBA  TBA  INTBA  TBA TBA 017
  018Kiran S.,Kedlaya
 0999TBA  TBA  INTBA  TBA TBA 018
  019Todd Aahron,Kemp
@@ -11831,8 +11293,6 @@ MATH299  Reading and Research	/courses/MATH.html#math299
 0999TBA  TBA  INTBA  TBA TBA 024
  025Amir,Mohammadi
 0999TBA  TBA  INTBA  TBA TBA 025
- 026Lei,Ni
-0999TBA  TBA  INTBA  TBA TBA 026
  027Jiawang,Nie
 0999TBA  TBA  INTBA  TBA TBA 027
  028Jonathan I,Novak
@@ -11845,14 +11305,10 @@ MATH299  Reading and Research	/courses/MATH.html#math299
 0999TBA  TBA  INTBA  TBA TBA 031
  032Cristian D.,Popescu
 0999TBA  TBA  INTBA  TBA TBA 032
- 033Jeffrey Mark,Rabin
-0999TBA  TBA  INTBA  TBA TBA 033
  034Brendon Patrick,Rhoades
 0999TBA  TBA  INTBA  TBA TBA 034
  035Justin Deritter,Roberts
 0999TBA  TBA  INTBA  TBA TBA 035
- 036Daniel,Rogalski
-0999TBA  TBA  INTBA  TBA TBA 036
  037Rayan,Saab
 0999TBA  TBA  INTBA  TBA TBA 037
  038Alireza,Salehi Golsefidy
@@ -11861,26 +11317,14 @@ MATH299  Reading and Research	/courses/MATH.html#math299
 0999TBA  TBA  INTBA  TBA TBA 039
  040Jason,Schweinsberg
 0999TBA  TBA  INTBA  TBA TBA 040
- 041Brandon M.,Seward
-0999TBA  TBA  INTBA  TBA TBA 041
- 042Claus M,Sorensen
-0999TBA  TBA  INTBA  TBA TBA 042
  043Luca,Spolaor
 0999TBA  TBA  INTBA  TBA TBA 043
- 044Jacob,Sterbenz
-0999TBA  TBA  INTBA  TBA TBA 044
  045Andrew Hoon,Suk
 0999TBA  TBA  INTBA  TBA TBA 045
- 046Glenn,Tesler
-0999TBA  TBA  INTBA  TBA TBA 046
  047Xiaochuan,Tian
 0999TBA  TBA  INTBA  TBA TBA 047
- 048Jacques Allan,Verstraete
-0999TBA  TBA  INTBA  TBA TBA 048
  049Lutz Peter,Warnke
 0999TBA  TBA  INTBA  TBA TBA 049
- 050Hans G,Wenzl
-0999TBA  TBA  INTBA  TBA TBA 050
  051Ruth J,Williams
 0999TBA  TBA  INTBA  TBA TBA 051
  052Ming,Xiao
@@ -11893,8 +11337,6 @@ MATH299  Reading and Research	/courses/MATH.html#math299
 0999TBA  TBA  INTBA  TBA TBA 055
  056Danna,Zhang
 0999TBA  TBA  INTBA  TBA TBA 056
- 057Tianyi,Zheng
-0999TBA  TBA  INTBA  TBA TBA 057
  058Wenxin,Zhou
 0999TBA  TBA  INTBA  TBA TBA 058
  059Andrej,Zlatos
@@ -11941,8 +11383,6 @@ MATS296  Independent Study	/courses/MATS.html#mats296
  002Prabhakar,Bandaru
 9999TBA  TBA  INTBA  TBA TBA 002
 MATS299  Graduate Research	/courses/MATS.html#mats299
- 001Adah,Almutairi
-9999TBA  TBA  INTBA  TBA TBA 001
  002Prabhakar,Bandaru
 9999TBA  TBA  INTBA  TBA TBA 002
  003Jinhye,Bae
@@ -11957,18 +11397,6 @@ MATS299  Graduate Research	/courses/MATS.html#mats299
 9999TBA  TBA  INTBA  TBA TBA 007
  008Shaochen,Chen
 9999TBA  TBA  INTBA  TBA TBA 008
- 009Carlos F.,Coimbra
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Todd Prentice,Coleman
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Shadi Ahmad,Dayeh
-9999TBA  TBA  INTBA  TBA TBA 011
- 012Robert C.,Dynes
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Adam J.,Engler
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Sadik C,Esener
-9999TBA  TBA  INTBA  TBA TBA 014
  015David,Fenning
 9999TBA  TBA  INTBA  TBA TBA 015
  016Alex M,Frano Pereira
@@ -11979,26 +11407,16 @@ MATS299  Graduate Research	/courses/MATS.html#mats299
 9999TBA  TBA  INTBA  TBA TBA 018
  019Javier,Garay
 9999TBA  TBA  INTBA  TBA TBA 019
- 020Nathan,Gianneschi
-9999TBA  TBA  INTBA  TBA TBA 020
  021Thomas,Hermann
 9999TBA  TBA  INTBA  TBA TBA 021
  022Xiaohua,Huang
 9999TBA  TBA  INTBA  TBA TBA 022
- 023Vlado,Lubarda
-9999TBA  TBA  INTBA  TBA TBA 023
  024Lingyan,Shi
 9999TBA  TBA  INTBA  TBA TBA 024
  025Hyonny,Kim
 9999TBA  TBA  INTBA  TBA TBA 025
- 026Michael D,Burkart
-9999TBA  TBA  INTBA  TBA TBA 026
- 027Clifford Paul,Kubiak
-9999TBA  TBA  INTBA  TBA TBA 027
  028Andrew C,Kummel
 9999TBA  TBA  INTBA  TBA TBA 028
- 029Ratnesh,Lal
-9999TBA  TBA  INTBA  TBA TBA 029
  030Darren John,Lipomi
 9999TBA  TBA  INTBA  TBA TBA 030
  031Ping,Liu
@@ -12013,20 +11431,10 @@ MATS299  Graduate Research	/courses/MATS.html#mats299
 9999TBA  TBA  INTBA  TBA TBA 035
  036Jian,Luo
 9999TBA  TBA  INTBA  TBA TBA 036
- 037Leonid,Butov
-9999TBA  TBA  INTBA  TBA TBA 037
- 038M. Brian,Maple
-9999TBA  TBA  INTBA  TBA TBA 038
  039Y.Shirley,Meng
 9999TBA  TBA  INTBA  TBA TBA 039
- 040Robert Frederick,Mattrey
-9999TBA  TBA  INTBA  TBA TBA 040
  041Marc,Meyers
 9999TBA  TBA  INTBA  TBA TBA 041
- 042Machel Leigh,Morrison
-9999TBA  TBA  INTBA  TBA TBA 042
- 043Vitali F,Nesterenko
-9999TBA  TBA  INTBA  TBA TBA 043
  044Tse Nga,Ng
 9999TBA  TBA  INTBA  TBA TBA 044
  045Kenji,Nomura
@@ -12035,24 +11443,12 @@ MATS299  Graduate Research	/courses/MATS.html#mats299
 9999TBA  TBA  INTBA  TBA TBA 046
  047Yu,Qiao
 9999TBA  TBA  INTBA  TBA TBA 047
- 048Jeffrey Dennis,Rinehart
-9999TBA  TBA  INTBA  TBA TBA 048
  049Andrea Rae,Tao
 9999TBA  TBA  INTBA  TBA TBA 049
- 050Robert Lie-Yuan,Sah
-9999TBA  TBA  INTBA  TBA TBA 050
  051Michael Joseph,Sailor
 9999TBA  TBA  INTBA  TBA TBA 051
- 052Alina M,Schimpf
-9999TBA  TBA  INTBA  TBA TBA 052
  053Ivan K,Schuller
 9999TBA  TBA  INTBA  TBA TBA 053
- 054Donald,Sirbuly
-9999TBA  TBA  INTBA  TBA TBA 054
- 055Daniel,Tartakovsky
-9999TBA  TBA  INTBA  TBA TBA 055
- 056Michael Thomas,Tolley
-9999TBA  TBA  INTBA  TBA TBA 056
  057Oscar,Vazquez Mena
 9999TBA  TBA  INTBA  TBA TBA 057
  058Kenneth S,Vecchio
@@ -12071,14 +11467,8 @@ MATS299  Graduate Research	/courses/MATS.html#mats299
 9999TBA  TBA  INTBA  TBA TBA 064
  065Jesse Vincent,Jokerst
 9999TBA  TBA  INTBA  TBA TBA 065
- 066Michael,Frazier
-9999TBA  TBA  INTBA  TBA TBA 066
- 067Seth M,Cohen
-9999TBA  TBA  INTBA  TBA TBA 067
  068Lisa Voula,Poulikakos
 9999TBA  TBA  INTBA  TBA TBA 068
- 069Terence T.,Hwa
-9999TBA  TBA  INTBA  TBA TBA 069
  070Karen,Christman
 9999TBA  TBA  INTBA  TBA TBA 070
  071Tod A,Pascal
@@ -12786,18 +12176,10 @@ MUS 298  Directed Research	/courses/MUS.html#mus298
 MUS 299  Advncd Rsrch Prjcts&Indpnt Stu	/courses/MUS.html#mus299
  001David Garcia,Borgo
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Anthony I,Burr
-9999TBA  TBA  INTBA  TBA TBA 002
  003Erik Norman,Carlson
 9999TBA  TBA  INTBA  TBA TBA 003
  004Amy Marie,Cimini
 9999TBA  TBA  INTBA  TBA TBA 004
- 005Charles Rector,Curtis
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Anthony Curtis,Davis
-9999TBA  TBA  INTBA  TBA TBA 006
- 007Mark Stuart,Dresser
-9999TBA  TBA  INTBA  TBA TBA 007
  008Shlomo,Dubnov
 9999TBA  TBA  INTBA  TBA TBA 008
  009Tom,Erbe
@@ -12806,22 +12188,14 @@ MUS 299  Advncd Rsrch Prjcts&Indpnt Stu	/courses/MUS.html#mus299
 9999TBA  TBA  INTBA  TBA TBA 010
  013Lei,Liang
 9999TBA  TBA  INTBA  TBA TBA 013
- 014Susan M,Narucki
-9999TBA  TBA  INTBA  TBA TBA 014
- 015Jann Corinne,Pasler
-9999TBA  TBA  INTBA  TBA TBA 015
  018Tamara R.,Smyth
 9999TBA  TBA  INTBA  TBA TBA 018
  019Rand,Steiger
 9999TBA  TBA  INTBA  TBA TBA 019
  020Wilfrido D,Terrazas Perez
 9999TBA  TBA  INTBA  TBA TBA 020
- 021Chinary,Ung
-9999TBA  TBA  INTBA  TBA TBA 021
  022Shahrokh D,Yadegari
 9999TBA  TBA  INTBA  TBA TBA 022
- 023King James,Britt
-9999TBA  TBA  INTBA  TBA TBA 023
  025Stephanie F,Richards
 9999TBA  TBA  INTBA  TBA TBA 025
  026Sarah E.,Hankins
@@ -12951,54 +12325,18 @@ CENG221A Heat Transfer	/courses/NANO.html#ceng221a
 CENG299  Graduate Research/Chemical Eng	/courses/NANO.html#ceng299
  001Jinhye,Bae
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Shaochen,Chen
-9999TBA  TBA  INTBA  TBA TBA 002
- 003Yi,Chen
-9999TBA  TBA  INTBA  TBA TBA 003
  004Zheng,Chen
 9999TBA  TBA  INTBA  TBA TBA 004
- 005Ertugrul,Cubukcu
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Aaron,Drews
-9999TBA  TBA  INTBA  TBA TBA 006
  007David,Fenning
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Eric E,Fullerton
-9999TBA  TBA  INTBA  TBA TBA 008
- 009Olivia A,Graeve
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Vicki Helene,Grassian
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Zeinab,Jahed Motlagh
-9999TBA  TBA  INTBA  TBA TBA 011
- 012Jesse Vincent,Jokerst
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Clifford Paul,Kubiak
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Andrew C,Kummel
-9999TBA  TBA  INTBA  TBA TBA 014
- 015Ester Jihae,Kwon
-9999TBA  TBA  INTBA  TBA TBA 015
- 016Ratnesh,Lal
-9999TBA  TBA  INTBA  TBA TBA 016
  017Darren John,Lipomi
 9999TBA  TBA  INTBA  TBA TBA 017
- 018Ping,Liu
-9999TBA  TBA  INTBA  TBA TBA 018
- 019Vlado,Lubarda
-9999TBA  TBA  INTBA  TBA TBA 019
  020Jian,Luo
 9999TBA  TBA  INTBA  TBA TBA 020
- 021M. Brian,Maple
-9999TBA  TBA  INTBA  TBA TBA 021
  022Y.Shirley,Meng
 9999TBA  TBA  INTBA  TBA TBA 022
- 023Marc,Meyers
-9999TBA  TBA  INTBA  TBA TBA 023
  024Shyue Ping,Ong
 9999TBA  TBA  INTBA  TBA TBA 024
- 025Justin Paul,Opatkiewicz
-9999TBA  TBA  INTBA  TBA TBA 025
  026Tod A,Pascal
 9999TBA  TBA  INTBA  TBA TBA 026
  027Jonathan Kyle,Pokorski
@@ -13007,28 +12345,12 @@ CENG299  Graduate Research/Chemical Eng	/courses/NANO.html#ceng299
 9999TBA  TBA  INTBA  TBA TBA 028
  029Padmini,Rangamani
 9999TBA  TBA  INTBA  TBA TBA 029
- 030Michael Joseph,Sailor
-9999TBA  TBA  INTBA  TBA TBA 030
  031Nisarg,Shah
 9999TBA  TBA  INTBA  TBA TBA 031
- 032Donald,Sirbuly
-9999TBA  TBA  INTBA  TBA TBA 032
- 033Nicole F,Steinmetz
-9999TBA  TBA  INTBA  TBA TBA 033
  034Shankar,Subramaniam
 9999TBA  TBA  INTBA  TBA TBA 034
- 035Andrea Rae,Tao
-9999TBA  TBA  INTBA  TBA TBA 035
- 036Oscar,Vazquez Mena
-9999TBA  TBA  INTBA  TBA TBA 036
- 037Kenneth S,Vecchio
-9999TBA  TBA  INTBA  TBA TBA 037
  038Joseph,Wang
 9999TBA  TBA  INTBA  TBA TBA 038
- 039Sheng,Xu
-9999TBA  TBA  INTBA  TBA TBA 039
- 040Kesong,Yang
-9999TBA  TBA  INTBA  TBA TBA 040
  041Liangfang,Zhang
 9999TBA  TBA  INTBA  TBA TBA 041
 NANO4    Experience NanoEngineering	/courses/NANO.html#nano4
@@ -13093,8 +12415,6 @@ NANO199  Independent Study/Undergrad	/courses/NANO.html#nano199
 9999TBA  TBA  INTBA  TBA TBA 002
  003Shaochen,Chen
 9999TBA  TBA  INTBA  TBA TBA 003
- 004Vicki Helene,Grassian
-9999TBA  TBA  INTBA  TBA TBA 004
  005Y.Shirley,Meng
 9999TBA  TBA  INTBA  TBA TBA 005
  006Zeinab,Jahed Motlagh
@@ -13138,28 +12458,16 @@ NANO299  Grad Research NanoEngineering	/courses/NANO.html#nano299
 9999TBA  TBA  INTBA  TBA TBA 001
  002Shaochen,Chen
 9999TBA  TBA  INTBA  TBA TBA 002
- 003Yi,Chen
-9999TBA  TBA  INTBA  TBA TBA 003
  004Zheng,Chen
 9999TBA  TBA  INTBA  TBA TBA 004
- 005Ertugrul,Cubukcu
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Aaron,Drews
-9999TBA  TBA  INTBA  TBA TBA 006
  007David,Fenning
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Eric E,Fullerton
-9999TBA  TBA  INTBA  TBA TBA 008
  009Olivia A,Graeve
 9999TBA  TBA  INTBA  TBA TBA 009
- 010Vicki Helene,Grassian
-9999TBA  TBA  INTBA  TBA TBA 010
  011Zeinab,Jahed Motlagh
 9999TBA  TBA  INTBA  TBA TBA 011
  012Jesse Vincent,Jokerst
 9999TBA  TBA  INTBA  TBA TBA 012
- 013Clifford Paul,Kubiak
-9999TBA  TBA  INTBA  TBA TBA 013
  014Andrew C,Kummel
 9999TBA  TBA  INTBA  TBA TBA 014
  015Ester Jihae,Kwon
@@ -13170,55 +12478,29 @@ NANO299  Grad Research NanoEngineering	/courses/NANO.html#nano299
 9999TBA  TBA  INTBA  TBA TBA 017
  018Ping,Liu
 9999TBA  TBA  INTBA  TBA TBA 018
- 019Vlado,Lubarda
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Jian,Luo
-9999TBA  TBA  INTBA  TBA TBA 020
- 021M. Brian,Maple
-9999TBA  TBA  INTBA  TBA TBA 021
  022Y.Shirley,Meng
 9999TBA  TBA  INTBA  TBA TBA 022
- 023Marc,Meyers
-9999TBA  TBA  INTBA  TBA TBA 023
  024Shyue Ping,Ong
 9999TBA  TBA  INTBA  TBA TBA 024
- 025Justin Paul,Opatkiewicz
-9999TBA  TBA  INTBA  TBA TBA 025
  026Tod A,Pascal
 9999TBA  TBA  INTBA  TBA TBA 026
  027Jonathan Kyle,Pokorski
 9999TBA  TBA  INTBA  TBA TBA 027
- 028Alyssa,Powell
-9999TBA  TBA  INTBA  TBA TBA 028
- 029Padmini,Rangamani
-9999TBA  TBA  INTBA  TBA TBA 029
- 030Michael Joseph,Sailor
-9999TBA  TBA  INTBA  TBA TBA 030
  031Nisarg,Shah
 9999TBA  TBA  INTBA  TBA TBA 031
- 032Donald,Sirbuly
-9999TBA  TBA  INTBA  TBA TBA 032
  033Nicole F,Steinmetz
 9999TBA  TBA  INTBA  TBA TBA 033
- 034Shankar,Subramaniam
-9999TBA  TBA  INTBA  TBA TBA 034
  035Andrea Rae,Tao
 9999TBA  TBA  INTBA  TBA TBA 035
  036Oscar,Vazquez Mena
 9999TBA  TBA  INTBA  TBA TBA 036
- 037Kenneth S,Vecchio
-9999TBA  TBA  INTBA  TBA TBA 037
  038Joseph,Wang
 9999TBA  TBA  INTBA  TBA TBA 038
  039Sheng,Xu
 9999TBA  TBA  INTBA  TBA TBA 039
- 040Kesong,Yang
-9999TBA  TBA  INTBA  TBA TBA 040
  041Liangfang,Zhang
 9999TBA  TBA  INTBA  TBA TBA 041
 NEU 199  Independent Study	/courses/NEU.html#neu199
- 001Stacey Marie,Glasgow
-9999TBA  TBA  INTBA  TBA TBA 001
  002Eric,Halgren
 9999TBA  TBA  INTBA  TBA TBA 002
 NEU 200A Basic Neuroscience	/courses/NEU.html#neu200a
@@ -13260,8 +12542,6 @@ NEU 299  Neurosciences Research	/courses/NEU.html#neu299
 0010TBA  TBA  INTBA  TBA TBA 002
  003Sean Jeffrey,Evans
 0010TBA  TBA  INTBA  TBA TBA 003
- 004
-0010TBA  TBA  INTBA  TBA TBA 004
  005Sean Jeffrey,Evans
 0010TBA  TBA  INTBA  TBA TBA 005
 NEU 401  Neurology Core Clerkship
@@ -13342,8 +12622,6 @@ NEUG299  Neurosciences Research	/courses/NEU.html#neug299
 9999TBA  TBA  INTBA  TBA TBA 006
  007Brenda Laurie,Bloodgood
 9999TBA  TBA  INTBA  TBA TBA 007
- 008Divya Sanam,Bolar
-9999TBA  TBA  INTBA  TBA TBA 008
  009Mark,Bondi
 9999TBA  TBA  INTBA  TBA TBA 009
  010Edward M,Callaway
@@ -13360,8 +12638,6 @@ NEUG299  Neurosciences Research	/courses/NEU.html#neug299
 9999TBA  TBA  INTBA  TBA TBA 015
  016Paula A,Desplats
 9999TBA  TBA  INTBA  TBA TBA 016
- 017Stephanie Carole,Dulawa
-9999TBA  TBA  INTBA  TBA TBA 017
  018Fred H,Gage
 9999TBA  TBA  INTBA  TBA TBA 018
  019Tim,Gentner
@@ -13392,8 +12668,6 @@ NEUG299  Neurosciences Research	/courses/NEU.html#neug299
 9999TBA  TBA  INTBA  TBA TBA 031
  032Judy,Pa
 9999TBA  TBA  INTBA  TBA TBA 032
- 033Abraham Amos,Palmer
-9999TBA  TBA  INTBA  TBA TBA 033
  034Gentry,Patrick
 9999TBA  TBA  INTBA  TBA TBA 034
  035Samuel,Pfaff
@@ -13453,10 +12727,6 @@ OPTH296  Independent Study
 OPTH299  Ophthalmology Indepndnt Resrch
  001
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
-0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
 OPTH410  Introduction to Ophthalmology
  A00Yunxiang,Liu
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -13532,13 +12802,6 @@ PATH224  Scientific Ethics
 TBA  TBA  LETBA  TBA TBA A00
 PATH296  Pathology Independent Research	/courses/PATH.html#path296
  001Anne Elizabeth,Hiniker
-0010TBA  TBA  INTBA  TBA TBA 001
- 002
-0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
-PATH299  Path/Independent Study Project	/courses/PATH.html#path299
- 001
 0010TBA  TBA  INTBA  TBA TBA 001
  002
 0010TBA  TBA  INTBA  TBA TBA 002
@@ -13747,56 +13010,8 @@ PHIL191A Philosophy Honors	/courses/PHIL.html#phil191a
  B00Jennifer Rose,Carr
 0001TBA  TBA  TUTBA  TBA TBA B00
 PHIL199  Directed Individual Study	/courses/PHIL.html#phil199
- 001Richard J.,Arneson
-9999TBA  TBA  INTBA  TBA TBA 001
  002Saba,Bazargan-Forward
 9999TBA  TBA  INTBA  TBA TBA 002
- 003William,Bechtel
-9999TBA  TBA  INTBA  TBA TBA 003
- 004David O.,Brink
-9999TBA  TBA  INTBA  TBA TBA 004
- 005Reuven A,Brandt
-9999TBA  TBA  INTBA  TBA TBA 005
- 006Craig Adam,Callender
-9999TBA  TBA  INTBA  TBA TBA 006
- 007Jennifer Rose,Carr
-9999TBA  TBA  INTBA  TBA TBA 007
- 008Nancy D.,Cartwright
-9999TBA  TBA  INTBA  TBA TBA 008
- 009Keming,Chen
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Jonathan David,Cohen
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Matthew Todd,Fulkerson
-9999TBA  TBA  INTBA  TBA TBA 011
- 012Rick Scott,Grush
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Michael O.,Hardimon
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Monte,Johnson
-9999TBA  TBA  INTBA  TBA TBA 014
- 015Andy M.,Lamey
-9999TBA  TBA  INTBA  TBA TBA 015
- 016Kerry V.,McKenzie
-9999TBA  TBA  INTBA  TBA TBA 016
- 017Dana Kay,Nelkin
-9999TBA  TBA  INTBA  TBA TBA 017
- 018Samuel Charles,Rickless
-9999TBA  TBA  INTBA  TBA TBA 018
- 019Gila,Sher
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Clinton,Tolley
-9999TBA  TBA  INTBA  TBA TBA 020
- 021Manuel Rogelio,Vargas
-9999TBA  TBA  INTBA  TBA TBA 021
- 022Eric,Watkins
-9999TBA  TBA  INTBA  TBA TBA 022
- 023Monique L.,Wonderly
-9999TBA  TBA  INTBA  TBA TBA 023
- 024David J,Danks
-9999TBA  TBA  INTBA  TBA TBA 024
- 025Maralee Mae,Harrell
-9999TBA  TBA  INTBA  TBA TBA 025
 PHIL200  Proseminar	/courses/PHIL.html#phil200
  A00Jonathan David,Cohen
 0020RWAC 3    SE0472 13001550A00
@@ -13938,36 +13153,24 @@ PHIL295  Research Topics	/courses/PHIL.html#phil295
 PHIL299  Thesis Research	/courses/PHIL.html#phil299
  001Richard J.,Arneson
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Saba,Bazargan-Forward
-9999TBA  TBA  INTBA  TBA TBA 002
  003William,Bechtel
 9999TBA  TBA  INTBA  TBA TBA 003
  004David O.,Brink
 9999TBA  TBA  INTBA  TBA TBA 004
- 005Reuven A,Brandt
-9999TBA  TBA  INTBA  TBA TBA 005
  006Craig Adam,Callender
 9999TBA  TBA  INTBA  TBA TBA 006
  007Jennifer Rose,Carr
 9999TBA  TBA  INTBA  TBA TBA 007
  008Nancy D.,Cartwright
 9999TBA  TBA  INTBA  TBA TBA 008
- 009Keming,Chen
-9999TBA  TBA  INTBA  TBA TBA 009
  010Jonathan David,Cohen
 9999TBA  TBA  INTBA  TBA TBA 010
  011Matthew Todd,Fulkerson
 9999TBA  TBA  INTBA  TBA TBA 011
- 012Rick Scott,Grush
-9999TBA  TBA  INTBA  TBA TBA 012
  013Michael O.,Hardimon
 9999TBA  TBA  INTBA  TBA TBA 013
  014Monte,Johnson
 9999TBA  TBA  INTBA  TBA TBA 014
- 015Andy M.,Lamey
-9999TBA  TBA  INTBA  TBA TBA 015
- 016Kerry V.,McKenzie
-9999TBA  TBA  INTBA  TBA TBA 016
  017Dana Kay,Nelkin
 9999TBA  TBA  INTBA  TBA TBA 017
  018Samuel Charles,Rickless
@@ -13980,12 +13183,6 @@ PHIL299  Thesis Research	/courses/PHIL.html#phil299
 9999TBA  TBA  INTBA  TBA TBA 021
  022Eric,Watkins
 9999TBA  TBA  INTBA  TBA TBA 022
- 023Monique L.,Wonderly
-9999TBA  TBA  INTBA  TBA TBA 023
- 024David J,Danks
-9999TBA  TBA  INTBA  TBA TBA 024
- 025Maralee Mae,Harrell
-9999TBA  TBA  INTBA  TBA TBA 025
 PHIL500  Apprentice Teaching	/courses/PHIL.html#phil500
  001Richard J.,Arneson
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -14616,84 +13813,38 @@ PHYS298  Directed Study in Physics	/courses/PHYS.html#phys298
 PHYS299  Thesis Research in Physics	/courses/PHYS.html#phys299
  001Henry Don Isaac,Abarbanel
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Monica T,Allen
-9999TBA  TBA  INTBA  TBA TBA 002
  003Kam S,Arnold
 9999TBA  TBA  INTBA  TBA TBA 003
- 004Daniel P,Arovas
-9999TBA  TBA  INTBA  TBA TBA 004
  005Richard Douglas,Averitt
 9999TBA  TBA  INTBA  TBA TBA 005
  006Julio,Barreiro Guerrero
 9999TBA  TBA  INTBA  TBA TBA 006
- 007Dmitri N.,Bassov
-9999TBA  TBA  INTBA  TBA TBA 007
- 008Steven Edward,Boggs
-9999TBA  TBA  INTBA  TBA TBA 008
- 009James G,Branson
-9999TBA  TBA  INTBA  TBA TBA 009
  010Adam Jonathan,Burgasser
 9999TBA  TBA  INTBA  TBA TBA 010
  011Leonid,Butov
 9999TBA  TBA  INTBA  TBA TBA 011
- 012Raja S,Chivukula
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Alison,Coil
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Eva-Maria Schoetz,Collins
-9999TBA  TBA  INTBA  TBA TBA 014
  015Patrick H,Diamond
 9999TBA  TBA  INTBA  TBA TBA 015
  016Massimiliano,Di Ventra
 9999TBA  TBA  INTBA  TBA TBA 016
- 017Charles F.,Driscoll
-9999TBA  TBA  INTBA  TBA TBA 017
  018Chunhui,Du
 9999TBA  TBA  INTBA  TBA TBA 018
  019Javier Mauricio,Duarte
 9999TBA  TBA  INTBA  TBA TBA 019
- 020Daniel Herschel,Dubin
-9999TBA  TBA  INTBA  TBA TBA 020
- 021Olga,Dudko
-9999TBA  TBA  INTBA  TBA TBA 021
- 022Robert C.,Dynes
-9999TBA  TBA  INTBA  TBA TBA 022
- 023Raphael M,Flauger
-9999TBA  TBA  INTBA  TBA TBA 023
  024Michael M.,Fogler
 9999TBA  TBA  INTBA  TBA TBA 024
  025Alex M,Frano Pereira
 9999TBA  TBA  INTBA  TBA TBA 025
- 026George Michael,Fuller
-9999TBA  TBA  INTBA  TBA TBA 026
  027Eric E,Fullerton
 9999TBA  TBA  INTBA  TBA TBA 027
- 028Michael,Galperin
-9999TBA  TBA  INTBA  TBA TBA 028
- 029Nigel,Goldenfeld
-9999TBA  TBA  INTBA  TBA TBA 029
- 030John M.,Goodkind
-9999TBA  TBA  INTBA  TBA TBA 030
  031Daniel Richard,Green
 9999TBA  TBA  INTBA  TBA TBA 031
- 032Kim,Griest
-9999TBA  TBA  INTBA  TBA TBA 032
- 033Benjamin,Grinstein
-9999TBA  TBA  INTBA  TBA TBA 033
- 034Alexander,Groisman
-9999TBA  TBA  INTBA  TBA TBA 034
- 035Jorge Eduardo,Hirsch
-9999TBA  TBA  INTBA  TBA TBA 035
  036Terence T.,Hwa
 9999TBA  TBA  INTBA  TBA TBA 036
  037Kenneth Arthur,Intriligator
 9999TBA  TBA  INTBA  TBA TBA 037
- 038Elizabeth,Jenkins
-9999TBA  TBA  INTBA  TBA TBA 038
  039Suckjoon,Jun
 9999TBA  TBA  INTBA  TBA TBA 039
- 040Brian,Keating
-9999TBA  TBA  INTBA  TBA TBA 040
  041Dusan,Keres
 9999TBA  TBA  INTBA  TBA TBA 041
  042David,Kleinfeld
@@ -14704,24 +13855,10 @@ PHYS299  Thesis Research in Physics	/courses/PHYS.html#phys299
 9999TBA  TBA  INTBA  TBA TBA 044
  045Sergey A,Kryazhimskiy
 9999TBA  TBA  INTBA  TBA TBA 045
- 046Julius,Kuti
-9999TBA  TBA  INTBA  TBA TBA 046
  047Tongyan,Lin
 9999TBA  TBA  INTBA  TBA TBA 047
- 048Jennifer A.,Mackinnon
-9999TBA  TBA  INTBA  TBA TBA 048
- 049Mikhail Alexandr,Malkov
-9999TBA  TBA  INTBA  TBA TBA 049
- 050Aneesh Vasant,Manohar
-9999TBA  TBA  INTBA  TBA TBA 050
  051M. Brian,Maple
 9999TBA  TBA  INTBA  TBA TBA 051
- 052Loren K.,Mell
-9999TBA  TBA  INTBA  TBA TBA 052
- 053Justin Raymond,Meyer
-9999TBA  TBA  INTBA  TBA TBA 053
- 054S. Maurice,Montal
-9999TBA  TBA  INTBA  TBA TBA 054
  055Eran A,Mukamel
 9999TBA  TBA  INTBA  TBA TBA 055
  056Thomas,Murphy
@@ -14730,62 +13867,28 @@ PHYS299  Thesis Research in Physics	/courses/PHYS.html#phys299
 9999TBA  TBA  INTBA  TBA TBA 057
  058Michael L,Norman
 9999TBA  TBA  INTBA  TBA TBA 058
- 059Thomas M.,O'Neil
-9999TBA  TBA  INTBA  TBA TBA 059
  060Jeremie,Palacci
 9999TBA  TBA  INTBA  TBA TBA 060
  061Tenio,Popmintchev
 9999TBA  TBA  INTBA  TBA TBA 061
  062Wouter Jan,Rappel
 9999TBA  TBA  INTBA  TBA TBA 062
- 063Richard E.,Rothschild
-9999TBA  TBA  INTBA  TBA TBA 063
  064Karin Marie,Sandstrom
 9999TBA  TBA  INTBA  TBA TBA 064
  065Ivan K,Schuller
 9999TBA  TBA  INTBA  TBA TBA 065
- 066Terrence J,Sejnowski
-9999TBA  TBA  INTBA  TBA TBA 066
- 067Mattia,Serra
-9999TBA  TBA  INTBA  TBA TBA 067
- 068Lu Jeu,Sham
-9999TBA  TBA  INTBA  TBA TBA 068
- 069Vivek A.,Sharma
-9999TBA  TBA  INTBA  TBA TBA 069
- 070Tatyana,Sharpee
-9999TBA  TBA  INTBA  TBA TBA 070
  071Oleg,Shpyrko
 9999TBA  TBA  INTBA  TBA TBA 071
- 072Elizabeth H,Simmons
-9999TBA  TBA  INTBA  TBA TBA 072
- 073Sunil K,Sinha
-9999TBA  TBA  INTBA  TBA TBA 073
  074Douglas E,Smith
 9999TBA  TBA  INTBA  TBA TBA 074
- 075Clifford M,Surko
-9999TBA  TBA  INTBA  TBA TBA 075
- 076Mark H,Thiemens
-9999TBA  TBA  INTBA  TBA TBA 076
- 077George Robert,Tynan
-9999TBA  TBA  INTBA  TBA TBA 077
  078David Robert,Tytler
 9999TBA  TBA  INTBA  TBA TBA 078
- 079Massimo,Vergassola
-9999TBA  TBA  INTBA  TBA TBA 079
  080Bradley T.,Werner
 9999TBA  TBA  INTBA  TBA TBA 080
- 081David Y.,Wong
-9999TBA  TBA  INTBA  TBA TBA 081
  082Shelley Adams,Wright
 9999TBA  TBA  INTBA  TBA TBA 082
  083Frank,Wuerthwein
 9999TBA  TBA  INTBA  TBA TBA 083
- 084Congjun,Wu
-9999TBA  TBA  INTBA  TBA TBA 084
- 085Avi,Yagil
-9999TBA  TBA  INTBA  TBA TBA 085
- 086Liang,Yang
-9999TBA  TBA  INTBA  TBA TBA 086
  087Yizhuang,You
 9999TBA  TBA  INTBA  TBA TBA 087
  088John A.,McGreevy
@@ -14917,83 +14020,6 @@ POLI194SDLocal Internship Research Sem.	/courses/POLI.html#poli194sd
 POLI197SDLocal Internship Pol Sci	/courses/POLI.html#poli197sd
  001Maysa,Nichter
 9999TBA  TBA  ITTBA  TBA TBA 001
-POLI199  Independent Study	/courses/POLI.html#poli199
- 001Marisa,Abrajano
-0999TBA  TBA  INTBA  TBA TBA 001
- 002Claire,Adida
-0999TBA  TBA  INTBA  TBA TBA 002
- 003Pamela M,Ban
-0999TBA  TBA  INTBA  TBA TBA 003
- 005James Lawrence,Broz
-0999TBA  TBA  INTBA  TBA TBA 005
- 007Scott,Desposato
-0999TBA  TBA  INTBA  TBA TBA 007
- 008Samuel Zincke,Elgin
-0999TBA  TBA  INTBA  TBA TBA 008
- 009Maureen Catherine,Feeley
-0999TBA  TBA  INTBA  TBA TBA 009
- 010Karen E,Ferree
-0999TBA  TBA  INTBA  TBA TBA 010
- 011Fonna,Forman
-0999TBA  TBA  INTBA  TBA TBA 011
- 012James,Fowler
-0999TBA  TBA  INTBA  TBA TBA 012
- 013Erik,Gartzke
-0999TBA  TBA  INTBA  TBA TBA 013
- 014LaGina,Gause
-0999TBA  TBA  INTBA  TBA TBA 014
- 015Clark C,Gibson
-0999TBA  TBA  INTBA  TBA TBA 015
- 016Emilie,Hafner-Burton
-0999TBA  TBA  INTBA  TBA TBA 016
- 017Stephan M.,Haggard
-0999TBA  TBA  INTBA  TBA TBA 017
- 018Zoltan Lloyd,Hajnal
-0999TBA  TBA  INTBA  TBA TBA 018
- 019Seth J,Hill
-0999TBA  TBA  INTBA  TBA TBA 019
- 020Germaine,Hoston
-0999TBA  TBA  INTBA  TBA TBA 020
- 021Sean,Ingham
-0999TBA  TBA  INTBA  TBA TBA 021
- 022Federica,Izzo
-0999TBA  TBA  INTBA  TBA TBA 022
- 023Michael F,Joseph
-0999TBA  TBA  INTBA  TBA TBA 023
- 024Thad,Kousser
-0999TBA  TBA  INTBA  TBA TBA 024
- 025David A,Lake
-0999TBA  TBA  INTBA  TBA TBA 025
- 026Gerald,Mackie
-0999TBA  TBA  INTBA  TBA TBA 026
- 027Victor Valentine,Magagna
-0999TBA  TBA  INTBA  TBA TBA 027
- 028David R,Mares
-0999TBA  TBA  INTBA  TBA TBA 028
- 029Gareth Hb,Nellis
-0999TBA  TBA  INTBA  TBA TBA 029
- 030Megumi,Naoi
-0999TBA  TBA  INTBA  TBA TBA 030
- 031Simeon C,Nichter
-0999TBA  TBA  INTBA  TBA TBA 031
- 032Agustina,Paglayan
-0999TBA  TBA  INTBA  TBA TBA 032
- 033Margaret Earling,Roberts
-0999TBA  TBA  INTBA  TBA TBA 033
- 034Philip G,Roeder
-0999TBA  TBA  INTBA  TBA TBA 034
- 035Sebastian,Saiegh
-0999TBA  TBA  INTBA  TBA TBA 035
- 036Christina,Schneider
-0999TBA  TBA  INTBA  TBA TBA 036
- 037Branislav,Slantchev
-0999TBA  TBA  INTBA  TBA TBA 037
- 038Kaare,Strom
-0999TBA  TBA  INTBA  TBA TBA 038
- 039David,Wiens
-0999TBA  TBA  INTBA  TBA TBA 039
- 040Tak Kei,Wong
-0999TBA  TBA  INTBA  TBA TBA 040
 POLI204A Research Design	/courses/POLI.html#poli204a
  A00Karen E,Ferree
 0025RBC  5    SE1401 09001150A00
@@ -15150,16 +14176,8 @@ POLI299  Dissertation Research	/courses/POLI.html#poli299
 0999TBA  TBA  INTBA  TBA TBA 001
  002Claire,Adida
 0999TBA  TBA  INTBA  TBA TBA 002
- 003Pamela M,Ban
-0999TBA  TBA  INTBA  TBA TBA 003
- 005James Lawrence,Broz
-0999TBA  TBA  INTBA  TBA TBA 005
  007Scott,Desposato
 0999TBA  TBA  INTBA  TBA TBA 007
- 008Samuel Zincke,Elgin
-0999TBA  TBA  INTBA  TBA TBA 008
- 009Maureen Catherine,Feeley
-0999TBA  TBA  INTBA  TBA TBA 009
  010Karen E,Ferree
 0999TBA  TBA  INTBA  TBA TBA 010
  011Fonna,Forman
@@ -15172,42 +14190,20 @@ POLI299  Dissertation Research	/courses/POLI.html#poli299
 0999TBA  TBA  INTBA  TBA TBA 014
  015Clark C,Gibson
 0999TBA  TBA  INTBA  TBA TBA 015
- 016Emilie,Hafner-Burton
-0999TBA  TBA  INTBA  TBA TBA 016
- 017Stephan M.,Haggard
-0999TBA  TBA  INTBA  TBA TBA 017
- 018Zoltan Lloyd,Hajnal
-0999TBA  TBA  INTBA  TBA TBA 018
  019Seth J,Hill
 0999TBA  TBA  INTBA  TBA TBA 019
  020Germaine,Hoston
 0999TBA  TBA  INTBA  TBA TBA 020
  021Sean,Ingham
 0999TBA  TBA  INTBA  TBA TBA 021
- 022Federica,Izzo
-0999TBA  TBA  INTBA  TBA TBA 022
- 023Michael F,Joseph
-0999TBA  TBA  INTBA  TBA TBA 023
- 024Samuel H.,Kernell
-0999TBA  TBA  INTBA  TBA TBA 024
  025Thad,Kousser
 0999TBA  TBA  INTBA  TBA TBA 025
  026David A,Lake
 0999TBA  TBA  INTBA  TBA TBA 026
- 027Gerald,Mackie
-0999TBA  TBA  INTBA  TBA TBA 027
- 028Victor Valentine,Magagna
-0999TBA  TBA  INTBA  TBA TBA 028
- 029David R,Mares
-0999TBA  TBA  INTBA  TBA TBA 029
- 030Gareth Hb,Nellis
-0999TBA  TBA  INTBA  TBA TBA 030
  031Megumi,Naoi
 0999TBA  TBA  INTBA  TBA TBA 031
  032Simeon C,Nichter
 0999TBA  TBA  INTBA  TBA TBA 032
- 033Agustina,Paglayan
-0999TBA  TBA  INTBA  TBA TBA 033
  034Margaret Earling,Roberts
 0999TBA  TBA  INTBA  TBA TBA 034
  035Philip G,Roeder
@@ -15218,18 +14214,10 @@ POLI299  Dissertation Research	/courses/POLI.html#poli299
 0999TBA  TBA  INTBA  TBA TBA 037
  038Victor Chung,Shih
 0999TBA  TBA  INTBA  TBA TBA 038
- 039Susan L.,Shirk
-0999TBA  TBA  INTBA  TBA TBA 039
  040Branislav,Slantchev
 0999TBA  TBA  INTBA  TBA TBA 040
- 041Kaare,Strom
-0999TBA  TBA  INTBA  TBA TBA 041
- 042Barbara Florence,Walter
-0999TBA  TBA  INTBA  TBA TBA 042
  043David,Wiens
 0999TBA  TBA  INTBA  TBA TBA 043
- 044Tak Kei,Wong
-0999TBA  TBA  INTBA  TBA TBA 044
 PSY 199  Independent Study
  001Ellen Eun-Ok,Lee
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -15711,8 +14699,6 @@ PSYC296  Research Practicum	/courses/PSYC.html#psyc296
 PSYC299  Independent Research	/courses/PSYC.html#psyc299
  001Stephan,Anagnostaras
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Adam,Aron
-9999TBA  TBA  INTBA  TBA TBA 002
  003David A.,Barner
 9999TBA  TBA  INTBA  TBA TBA 003
  004Adena Schachner,Brady
@@ -15725,34 +14711,16 @@ PSYC299  Independent Research	/courses/PSYC.html#psyc299
 9999TBA  TBA  INTBA  TBA TBA 007
  008Judith Ellen,Fan
 9999TBA  TBA  INTBA  TBA TBA 008
- 009Victor,Ferreira
-9999TBA  TBA  INTBA  TBA TBA 009
  010Tim,Gentner
 9999TBA  TBA  INTBA  TBA TBA 010
- 011Michael R.,Gorman
-9999TBA  TBA  INTBA  TBA TBA 011
- 012Emma Harlan,Geller
-9999TBA  TBA  INTBA  TBA TBA 012
- 013Christina M,Gremel
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Christine Renee,Harris
-9999TBA  TBA  INTBA  TBA TBA 014
  015Gail D.,Heyman
 9999TBA  TBA  INTBA  TBA TBA 015
- 016Michael E,McCullough
-9999TBA  TBA  INTBA  TBA TBA 016
- 017Craig R.M.,Mc Kenzie
-9999TBA  TBA  INTBA  TBA TBA 017
  018Cory T.,Miller
 9999TBA  TBA  INTBA  TBA TBA 018
  019Harold E,Pashler
 9999TBA  TBA  INTBA  TBA TBA 019
- 020Celeste Cristine,Pilegard
-9999TBA  TBA  INTBA  TBA TBA 020
  021Lindsey Jane,Powell
 9999TBA  TBA  INTBA  TBA TBA 021
- 022Vilayanur S,Ramachandran
-9999TBA  TBA  INTBA  TBA TBA 022
  023Timothy C.,Rickard
 9999TBA  TBA  INTBA  TBA TBA 023
  024John Thomas,Serences
@@ -15767,12 +14735,6 @@ PSYC299  Independent Research	/courses/PSYC.html#psyc299
 9999TBA  TBA  INTBA  TBA TBA 028
  029John T,Wixted
 9999TBA  TBA  INTBA  TBA TBA 029
- 030Eddie Nathaniel,Chapman
-9999TBA  TBA  INTBA  TBA TBA 030
- 031Janna Alene,Dickenson
-9999TBA  TBA  INTBA  TBA TBA 031
- 032Dhananjaya,Mukku
-9999TBA  TBA  INTBA  TBA TBA 032
 PSYC500  Apprentice Teaching	/courses/PSYC.html#psyc500
  001Celeste Cristine,Pilegard
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -15830,15 +14792,6 @@ RAD 296  Radiology Independent Research
  003Albert,Hsiao
 0010TBA  TBA  INTBA  TBA TBA 003
  004Albert,Hsiao
-0010TBA  TBA  INTBA  TBA TBA 004
-RAD 299  Radiology Independent Study
- 001
-0010TBA  TBA  INTBA  TBA TBA 001
- 002
-0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
- 004
 0010TBA  TBA  INTBA  TBA TBA 004
 RAD 401  General Radiology
  A00Nikdokht,Farid
@@ -15911,8 +14864,6 @@ RMAS299  Independent Research Project
 0010TBA  TBA  INTBA  TBA TBA 001
  002James D,Murphy
 0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
 RMAS410  Componts/Clin Radiatn Oncology
  A00James D,Murphy
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -15931,10 +14882,6 @@ RMED299  Repro Med Indepen Study Projct
 0010TBA  TBA  INTBA  TBA TBA 001
  002Hui-Chun Irene,Su
 0010TBA  TBA  INTBA  TBA TBA 002
- 003
-0010TBA  TBA  INTBA  TBA TBA 003
- 004
-0010TBA  TBA  INTBA  TBA TBA 004
 RMED427  Adv Clerkship/Reproductive Med
  A00Jeffrey R.,Chang
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -16224,26 +15171,14 @@ MGT 296  Research/Mgmt for Dissertation	/courses/MGT.html#mgt296
  013Kanishka,Misra
 0001TBA  TBA  INTBA  TBA TBA 013
 MGT 299  Individual Directed Study	/courses/MGT.html#mgt299
- 001Anya,Samek	Sally,Sadoff
-0003TBA  TBA  INTBA  TBA TBA 001
- 002Marta,Serra Garcia	Uri,Gneezy
-0003TBA  TBA  INTBA  TBA TBA 002
- 003Joseph Edward,Engelberg
-0003TBA  TBA  INTBA  TBA TBA 003
  004Allan,Timmermann	William,Mullins
 0003TBA  TBA  INTBA  TBA TBA 004
  005Danqi,Luo
 0003TBA  TBA  INTBA  TBA TBA 005
- 006Tage S,Rai
-0003TBA  TBA  INTBA  TBA TBA 006
  007Christopher S,Oveis	Elizabeth L,Campbell
 0003TBA  TBA  INTBA  TBA TBA 007
  008Ayelet,Gneezy
 0003TBA  TBA  INTBA  TBA TBA 008
- 009On,Amir
-0003TBA  TBA  INTBA  TBA TBA 009
- 010Wei,Liu
-0003TBA  TBA  INTBA  TBA TBA 010
  011Kevin Xiaoguo,Zhu	Zhe,Zhang
 0003TBA  TBA  INTBA  TBA TBA 011
  012Jun,Liu
@@ -16256,8 +15191,6 @@ MGT 299  Individual Directed Study	/courses/MGT.html#mgt299
 0003TBA  TBA  INTBA  TBA TBA 015
  016Pamela Karen,Smith
 0003TBA  TBA  INTBA  TBA TBA 016
- 017Kevin Xiaoguo,Zhu
-0003TBA  TBA  INTBA  TBA TBA 017
  018On,Amir	Michael Wayne,Meyer
 0003TBA  TBA  INTBA  TBA TBA 018
  019Uma R,Karmarkar
@@ -16648,8 +15581,6 @@ SE  296  Independent Study	/courses/SE.html#se296
  027Jose,Restrepo
 0010TBA  TBA  INTBA  TBA TBA 027
 SE  299  Graduate Research	/courses/SE.html#se299
- 001Robert J,Asaro
-0099TBA  TBA  INTBA  TBA TBA 001
  002Jiun-Shyan,Chen
 0099TBA  TBA  INTBA  TBA TBA 002
  003Joel P,Conte
@@ -16664,12 +15595,6 @@ SE  299  Graduate Research	/courses/SE.html#se299
 0099TBA  TBA  INTBA  TBA TBA 007
  008Hyunsun Alicia,Kim
 0099TBA  TBA  INTBA  TBA TBA 008
- 009John B,Kosmatka
-0099TBA  TBA  INTBA  TBA TBA 009
- 010Petr,Krysl
-0099TBA  TBA  INTBA  TBA TBA 010
- 011Falko,Kuester
-0099TBA  TBA  INTBA  TBA TBA 011
  012Francesco,Lanza Di Scalea
 0099TBA  TBA  INTBA  TBA TBA 012
  013Kenneth J. H.,Loh
@@ -16680,8 +15605,6 @@ SE  299  Graduate Research	/courses/SE.html#se299
 0099TBA  TBA  INTBA  TBA TBA 015
  016Gilberto,Mosqueda
 0099TBA  TBA  INTBA  TBA TBA 016
- 017Yu,Qiao
-0099TBA  TBA  INTBA  TBA TBA 017
  018Jose,Restrepo
 0099TBA  TBA  INTBA  TBA TBA 018
  019P. Benson,Shing
@@ -16694,10 +15617,6 @@ SE  299  Graduate Research	/courses/SE.html#se299
 0099TBA  TBA  INTBA  TBA TBA 022
  023Chia-Ming,Uang
 0099TBA  TBA  INTBA  TBA TBA 023
- 024Yael Dahlia,Van Den Einde
-0099TBA  TBA  INTBA  TBA TBA 024
- 025Qiang,Zhu
-0099TBA  TBA  INTBA  TBA TBA 025
 SE  501  Teaching Experience	/courses/SE.html#se501
  A00Joel P,Conte
 0001TBA  TBA  LETBA  TBA TBA A00
@@ -16887,8 +15806,6 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 108
  109Isabel C,Rivera-Collazo
 9999TBA  TBA  INTBA  TBA TBA 109
- 110Gregory Charles,Roberts
-9999TBA  TBA  INTBA  TBA TBA 110
  111Gregory W.,Rouse
 9999TBA  TBA  INTBA  TBA TBA 111
  112Daniel Lars,Rudnick
@@ -16915,12 +15832,8 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 122
  123Janet,Sprintall
 9999TBA  TBA  INTBA  TBA TBA 123
- 124Leonard J.,Srnka
-9999TBA  TBA  INTBA  TBA TBA 124
  125David,Stegman
 9999TBA  TBA  INTBA  TBA TBA 125
- 126Malcolm Dale,Stokes
-9999TBA  TBA  INTBA  TBA TBA 126
  127Dariusz,Stramski
 9999TBA  TBA  INTBA  TBA TBA 127
  128Fiammetta,Straneo
@@ -16929,12 +15842,8 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 129
  130Lynne D,Talley
 9999TBA  TBA  INTBA  TBA TBA 130
- 131Lisa,Tauxe
-9999TBA  TBA  INTBA  TBA TBA 131
  132Jennifer Rebecca,Taylor
 9999TBA  TBA  INTBA  TBA TBA 132
- 133Jane,Teranes
-0000TBA  TBA  INTBA  TBA TBA 133
  134Eric James,Terrill
 9999TBA  TBA  INTBA  TBA TBA 134
  135Aaron Michael,Thode
@@ -16945,32 +15854,22 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 137
  138Maria,Vernet
 9999TBA  TBA  INTBA  TBA TBA 138
- 139Bradley T.,Werner
-9999TBA  TBA  INTBA  TBA TBA 139
  140Vanshan D,Wright
 9999TBA  TBA  INTBA  TBA TBA 140
  141Shang-Ping,Xie
 9999TBA  TBA  INTBA  TBA TBA 141
- 142William Roy,Young
-9999TBA  TBA  INTBA  TBA TBA 142
  143Lisa A,Zeigler
 9999TBA  TBA  INTBA  TBA TBA 143
  144Nathalie,Zilberman
 9999TBA  TBA  INTBA  TBA TBA 144
- 145Mark Andrew,Zumberge
-9999TBA  TBA  INTBA  TBA TBA 145
  146Anne Alice-Agnes,Gabriel
 9999TBA  TBA  INTBA  TBA TBA 146
  147Nicholas J.,Lutsko
 9999TBA  TBA  INTBA  TBA TBA 147
- 148Samantha J.,Murray
-9999TBA  TBA  INTBA  TBA TBA 148
  001Sarah Miranda,Aarons
 9999TBA  TBA  INTBA  TBA TBA 001
  002Marco Octavio,Aburto Oropeza
 9999TBA  TBA  INTBA  TBA TBA 002
- 003Duncan Carr,Agnew
-9999TBA  TBA  INTBA  TBA TBA 003
  004Matthew Hudson,Alford
 9999TBA  TBA  INTBA  TBA TBA 004
  005Andrew Ellis,Allen
@@ -16983,44 +15882,24 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 008
  009Frederick Ivan,Archer
 9999TBA  TBA  INTBA  TBA TBA 009
- 010Laurence,Armi
-9999TBA  TBA  INTBA  TBA TBA 010
- 011Lisa Taylor,Ballance
-9999TBA  TBA  INTBA  TBA TBA 011
  012Katherine,Barbeau
 9999TBA  TBA  INTBA  TBA TBA 012
- 013Jay Phillip,Barlow
-9999TBA  TBA  INTBA  TBA TBA 013
  014Douglas H,Bartlett
 9999TBA  TBA  INTBA  TBA TBA 014
  015Andrew David,Barton
 9999TBA  TBA  INTBA  TBA TBA 015
  016Simone,Baumann-Pickering 
 9999TBA  TBA  INTBA  TBA TBA 016
- 017Janet Maria,Becker
-9999TBA  TBA  INTBA  TBA TBA 017
- 018Tarik,Benmarhnia
-9999TBA  TBA  INTBA  TBA TBA 018
  019Yehuda,Bock
 9999TBA  TBA  INTBA  TBA TBA 019
  020Adrian Antal,Borsa
 9999TBA  TBA  INTBA  TBA TBA 020
  021Jeff Shovlowsky,Bowman
 9999TBA  TBA  INTBA  TBA TBA 021
- 022Peter Donald,Bromirski
-9999TBA  TBA  INTBA  TBA TBA 022
  023Michael J,Buckingham
 9999TBA  TBA  INTBA  TBA TBA 023
- 024Ronald S.,Burton
-9999TBA  TBA  INTBA  TBA TBA 024
- 025Paterno R.,Castillo
-9999TBA  TBA  INTBA  TBA TBA 025
- 026Daniel R.,Cayan
-9999TBA  TBA  INTBA  TBA TBA 026
  027Luca Raffaele,Centurioni
 9999TBA  TBA  INTBA  TBA TBA 027
- 028Paola,Cessi
-9999TBA  TBA  INTBA  TBA TBA 028
  029Christopher D.,Charles
 9999TBA  TBA  INTBA  TBA TBA 029
  030Teresa,Chereskin
@@ -17029,12 +15908,6 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 031
  032Catherine G,Constable
 9999TBA  TBA  INTBA  TBA TBA 032
- 033Steven C,Constable
-9999TBA  TBA  INTBA  TBA TBA 033
- 034Bruce D,Cornuelle
-9999TBA  TBA  INTBA  TBA TBA 034
- 035Jade A,D'Alpoim Guedes
-9999TBA  TBA  INTBA  TBA TBA 035
  036James M.D.,Day
 9999TBA  TBA  INTBA  TBA TBA 036
  037Grant Biden,Deane
@@ -17045,20 +15918,14 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 039
  040Julia Michelle,Diaz
 9999TBA  TBA  INTBA  TBA TBA 040
- 041Andrew Gilmore,Dickson
-9999TBA  TBA  INTBA  TBA TBA 041
  042Neal W.,Driscoll
 9999TBA  TBA  INTBA  TBA TBA 042
- 043Gerald L,D'Spain
-9999TBA  TBA  INTBA  TBA TBA 043
  044Ian,Eisenman
 9999TBA  TBA  INTBA  TBA TBA 044
  045Amato Tomas,Evan
 9999TBA  TBA  INTBA  TBA TBA 045
  046Wenyuan,Fan
 9999TBA  TBA  INTBA  TBA TBA 046
- 047Falk,Feddersen
-9999TBA  TBA  INTBA  TBA TBA 047
  048William H.,Fenical
 9999TBA  TBA  INTBA  TBA TBA 048
  049Yuri A.,Fialko
@@ -17069,18 +15936,12 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 051
  052Helen A.,Fricker
 9999TBA  TBA  INTBA  TBA TBA 052
- 053Theresa,Gaasterland
-9999TBA  TBA  INTBA  TBA TBA 053
- 054Jeffrey S,Gee
-9999TBA  TBA  INTBA  TBA TBA 054
  055Konstantine P,Georgakakos
 9999TBA  TBA  INTBA  TBA TBA 055
  056Alexander,Gershunov
 9999TBA  TBA  INTBA  TBA TBA 056
  057Peter,Gerstoft
 9999TBA  TBA  INTBA  TBA TBA 057
- 058William Henry,Gerwick
-9999TBA  TBA  INTBA  TBA TBA 058
  059Sarah Nicole,Giddings
 9999TBA  TBA  INTBA  TBA TBA 059
  060Jack Anthony,Gilbert
@@ -17103,22 +15964,12 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 068
  069Paul R.,Jensen
 9999TBA  TBA  INTBA  TBA TBA 069
- 070T.M. Shaun,Johnston
-9999TBA  TBA  INTBA  TBA TBA 070
- 071David,Kacev
-9999TBA  TBA  INTBA  TBA TBA 071
  072Ralph F.,Keeling
 9999TBA  TBA  INTBA  TBA TBA 072
  073Linda Ellen Wegley,Kelly
 9999TBA  TBA  INTBA  TBA TBA 073
  074William A,Kuperman
 9999TBA  TBA  INTBA  TBA TBA 074
- 075Michael Raymond,Landry
-9999TBA  TBA  INTBA  TBA TBA 075
- 076Gabi,Laske
-9999TBA  TBA  INTBA  TBA TBA 076
- 077Michael I,Latz
-9999TBA  TBA  INTBA  TBA TBA 077
  078James J.,Leichter
 9999TBA  TBA  INTBA  TBA TBA 078
  079Luc Georges,Lenain
@@ -17127,8 +15978,6 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 080
  081Morgan,Levy
 9999TBA  TBA  INTBA  TBA TBA 081
- 082Stefan G.,Llewellyn Smith
-9999TBA  TBA  INTBA  TBA TBA 082
  083Dan,Lubin
 9999TBA  TBA  INTBA  TBA TBA 083
  084Andrew J.,Lucas
@@ -17143,14 +15992,10 @@ SIO 299  Research	/courses/SIO.html#sio299
 9999TBA  TBA  INTBA  TBA TBA 088
  089Matthew R.,Mazloff
 9999TBA  TBA  INTBA  TBA TBA 089
- 090Julie L.,McClean
-9999TBA  TBA  INTBA  TBA TBA 090
  091Mark A,Merrifield
 9999TBA  TBA  INTBA  TBA TBA 091
  092Sophia T,Merrifield
 9999TBA  TBA  INTBA  TBA TBA 092
- 093Sarah,Mesnick
-9999TBA  TBA  INTBA  TBA TBA 093
  094Florian,Meyer
 9999TBA  TBA  INTBA  TBA TBA 094
  095Arthur Joseph,Miller
@@ -17409,32 +16254,18 @@ SOCG298  Independent Study	/courses/SOC.html#socg298
 SOCG299  Thesis Research	/courses/SOC.html#socg299
  001Abigail Leslie,Andrews
 9999TBA  TBA  INTBA  TBA TBA 001
- 002Richard,Biernacki
-9999TBA  TBA  INTBA  TBA TBA 002
  003Amy,Binder
 9999TBA  TBA  INTBA  TBA TBA 003
  004Mary,Blair-Loy
 9999TBA  TBA  INTBA  TBA TBA 004
- 005Michel,Estefan
-9999TBA  TBA  INTBA  TBA TBA 005
  006John Hyde,Evans
 9999TBA  TBA  INTBA  TBA TBA 006
- 007Ivan T,Evans
-9999TBA  TBA  INTBA  TBA TBA 007
  008David S,Fitzgerald
 9999TBA  TBA  INTBA  TBA TBA 008
- 009Harvey Stern,Goldman
-9999TBA  TBA  INTBA  TBA TBA 009
- 010Neil M,Gong
-9999TBA  TBA  INTBA  TBA TBA 010
  011Lane A.,Kenworthy
 9999TBA  TBA  INTBA  TBA TBA 011
  012Martha,Lampland
 9999TBA  TBA  INTBA  TBA TBA 012
- 013Bennetta W.,Jules-Rosette
-9999TBA  TBA  INTBA  TBA TBA 013
- 014Kevin Michael,Lewis
-9999TBA  TBA  INTBA  TBA TBA 014
  015Thomas Matthew,Medvetz
 9999TBA  TBA  INTBA  TBA TBA 015
  016Daniel,Navon
@@ -17443,22 +16274,14 @@ SOCG299  Thesis Research	/courses/SOC.html#socg299
 9999TBA  TBA  INTBA  TBA TBA 017
  018Juan Pablo,Pardo Guerra
 9999TBA  TBA  INTBA  TBA TBA 018
- 019Richard Norris,Pitt
-9999TBA  TBA  INTBA  TBA TBA 019
- 020Danielle,Raudenbush
-9999TBA  TBA  INTBA  TBA TBA 020
  021Janet Vanesa,Ribas Norris
 9999TBA  TBA  INTBA  TBA TBA 021
  022Akos,Rona-Tas
 9999TBA  TBA  INTBA  TBA TBA 022
  023Gershon,Shafir
 9999TBA  TBA  INTBA  TBA TBA 023
- 024April Marie,Sutton
-9999TBA  TBA  INTBA  TBA TBA 024
  025John David,Skrentny
 9999TBA  TBA  INTBA  TBA TBA 025
- 026Charles Robert,Thorpe
-9999TBA  TBA  INTBA  TBA TBA 026
  027Christena L.,Turner
 9999TBA  TBA  INTBA  TBA TBA 027
  028Isaac,Martin
@@ -18369,11 +17192,6 @@ UROL296  Independent Study
 0010TBA  TBA  INTBA  TBA TBA 002
  003Ithaar,Derweesh
 0010TBA  TBA  INTBA  TBA TBA 003
-UROL299  Independent Study Project
- 001
-0010TBA  TBA  INTBA  TBA TBA 001
- 002
-0010TBA  TBA  INTBA  TBA TBA 002
 UROL412  Introduction to Urology
  A00Ithaar,Derweesh
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -18780,8 +17598,6 @@ VIS 299  Graduate Research	/courses/VIS.html#vis299
 9999TBA  TBA  INTBA  TBA TBA 019
  020Pinar,Yoldas
 9999TBA  TBA  INTBA  TBA TBA 020
- 021Pinar,Yoldas
-9999TBA  TBA  INTBA  TBA TBA 021
  022Dean,Erdmann
 9999TBA  TBA  INTBA  TBA TBA 022
 VIS 500  Apprentice Teaching	/courses/VIS.html#vis500
@@ -18885,3 +17701,7 @@ WES 237C Hardware for Embedded Systems	/courses/MAS.html#wes237c
 WES 267  DSP for Wireless Embed Sys	/courses/MAS.html#wes267
  A00Frederick Joel,Harris
 0030TBA  6    LETBA  09001630A00
+WES 268A Digtl Comm Sys I	/courses/MAS.html#wes268a
+.A00Patrick L,Ling
+0015TBA  TBA  LATBA  TBA TBA A01
+TBA  6    LETBA  09001630A00
