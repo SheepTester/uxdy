@@ -1,0 +1,78 @@
+name: Auto-format code with Prettier
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: Last two digits of the year
+        required: true
+        type: string
+      quarter:
+        description: Quarter
+        required: true
+        type: choice
+        options:
+          - FA
+          - WI
+          - SP
+          - SU
+          - S1
+          - S2
+          - S3
+          - Summer
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scrape UCSD schedules (non-summer)
+        if: ${{ inputs.quarter != 'Summer' }}
+        env:
+          TERM: ${{ inputs.quarter }}${{ inputs.year }}
+        run: |
+          echo "Scraping $TERM"
+          deno task classrooms:scrape-to-file
+      - name: Scrape UCSD schedules (summer)
+        if: ${{ inputs.quarter == 'Summer' }}
+        env:
+          YEAR: ${{ inputs.year }}
+        run: |
+          echo "Scraping $YEAR summer"
+          for quarter in SU S1 S2 S3
+          do
+            export TERM="$quarter$YEAR"
+            echo "Scraping $TERM"
+            deno task classrooms:scrape-to-file
+          done
+      - name: Upload scraped data
+        uses: actions/upload-artifact@v4
+        with:
+          name: data
+          path: ./classrooms/data/
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - uses: actions/download-artifact@v4
+        with:
+          name: data
+          path: ~/data/
+      - name: Push scraped data to gh-pages
+        env:
+          TERM: ${{ inputs.quarter == 'Summer' && format('Summer {0}', inputs.year) || format('{0}{1}', inputs.quarter, inputs.year) }}
+        run: |
+          cp -v ~/data/* ./data/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ./data/
+          git commit -m "Scrape $TERM"
+          git push
