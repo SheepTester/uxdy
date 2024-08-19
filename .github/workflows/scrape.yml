@@ -1,4 +1,4 @@
-name: Auto-format code with Prettier
+name: Scrape UCSD schedules
 
 on:
   workflow_dispatch:
@@ -29,6 +29,7 @@ permissions:
 
 jobs:
   scrape:
+    name: Scrape Schedule of Classes
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,7 +58,9 @@ jobs:
           name: data
           path: ./classrooms/data/
   upload:
+    name: Upload scraped data to gh-pages
     runs-on: ubuntu-latest
+    needs: scrape
     steps:
       - uses: actions/checkout@v4
         with:
