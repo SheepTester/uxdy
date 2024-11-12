@@ -2,6 +2,8 @@
 
 What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦
 
+[**Scrape schedules**](https://github.com/SheepTester/uxdy/actions/workflows/scrape.yml)
+
 ## Development
 
 ```sh

@@ -1,4 +1,5 @@
 name: Scrape UCSD schedules
+run-name: Scrape UCSD schedules (${{ format(inputs.quarter == 'Summer' && '{0} 20{1}' || '{0}{1}', inputs.quarter, inputs.year) }})
 
 on:
   workflow_dispatch:
