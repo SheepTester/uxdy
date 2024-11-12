@@ -1,4 +1,4 @@
-V31724029193764
+V31731400986634
 AIP 197  Academic Internship Program	/courses/AIP.html#aip197
  001Julie A,Law
 9999TBA  TBA  ITTBA  TBA TBA 001
@@ -752,8 +752,9 @@ RWAC 24   LE0416 11001250A00
 20240803RWAC FI0416 11301429
 EDS 107  Struggle for K-12 Ethnic Stdy	/courses/EDS.html#eds107
 EDS 110R Early Learning Environments	/courses/EDS.html#eds110r
-'A01Yan,Jiang
+:A00Yan,Jiang
 0031RCLAS3    DIR15  13001450A01
+TBA  TBA  LETBA  TBA TBA A00
 20240802RCLASFIR16  11301429
 EDS 112  U.S. Urban Education	/courses/EDS.html#eds112
 :A00Thandeka K,Chapman
@@ -853,6 +854,9 @@ HIEU124GSThe City in Italy	/courses/HIST.html#hieu124gs
  A00Kristina,Markman
 0028TBA  TBA  LETBA  TBA TBA A00
 HIEU147  Europe and the World I	/courses/HIST.html#hieu147
+'A00Dimitrios,Stergiopoulos
+0032TBA  TBA  LETBA  TBA TBA A00
+20240802RCLASFIR03  11301429
 HIEU149GSMedieval Spain	/courses/HIST.html#hieu149gs
  A00Michael Alan,Caldwell
 0028TBA  TBA  LETBA  TBA TBA A00
@@ -887,6 +891,9 @@ HIUS103  United States & Pacific World	/courses/HIST.html#hius103
 0023RCLAS1234 LER12  12301350A00
 20240802RCLASFIR12  11301429
 HIUS108B History/Native Americans/US II	/courses/HIST.html#hius108b
+'A00Robert Scott,Edwards
+0032TBA  TBA  LETBA  TBA TBA A00
+20240802RCLASFIR02  15001759
 HIUS141  Economic Hist/United States II	/courses/HIST.html#hius141
 'A00Gerald M.,Hendrickson
 0025RCLAS24   LER08  14001650A00
@@ -1255,7 +1262,7 @@ MUS 5R   Sound in Time
 RCLAS13   LER36  08001050A00
 20240802RCLASFIR36  08001059
 MUS 6    Electronic Music	/courses/MUS.html#mus6
-:A00Erin,Graham
+:A00Ash,Graham
 0025RCLAS24   DIR35  17001750A010025RCLAS24   DIR36  17001750A02
 RCLAS24   LER36  14001650A00
 20240803RCLASFIR36  15001759
