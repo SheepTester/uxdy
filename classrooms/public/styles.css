@@ -1223,19 +1223,25 @@ input[type='checkbox']:checked:hover {
   overflow: hidden;
   position: relative;
   min-height: 40px;
+  padding: 10px;
+  gap: 10px;
+  box-sizing: border-box;
 }
 .group-code {
-  position: absolute;
-  left: 15px;
-  bottom: -15px;
-  font-size: 36px;
+  line-height: 20px;
   opacity: 0.15;
+  font-size: 1.5em;
+}
+.section-title {
+  font-family: var(--normal);
+  font-weight: normal;
+  font-size: 1em;
+  margin: 0;
 }
 .instructors {
   display: flex;
   flex-direction: column;
   text-align: right;
-  margin: 10px;
   margin-left: auto;
   gap: 5px;
 }

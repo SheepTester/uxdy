@@ -97,6 +97,9 @@ export function CourseInfo ({ course }: CourseInfoProps) {
         <article class='group' key={group.code}>
           <header class='group-info'>
             <span class='group-code'>{group.code}</span>
+            {group.sectionTitle ? (
+              <h2 class='section-title'>{group.sectionTitle}</h2>
+            ) : null}
             <div class='instructors'>
               {group.instructors.map(({ first, last }) => (
                 <Link
