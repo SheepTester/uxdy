@@ -1,8 +1,13 @@
 // deno run --allow-read scheduleofclasses/group-sections.ts SP23
 // Prints list of remote sections.
 
-import { Day } from '../util/Day'
-import { getCourses, readCourses, ScrapedCourse, ScrapedResult } from './scrape'
+import { Day } from '../util/Day.ts'
+import {
+  getCourses,
+  readCourses,
+  ScrapedCourse,
+  ScrapedResult
+} from './scrape.ts'
 
 export type MeetingTime<Time = number> = {
   /**
@@ -193,8 +198,8 @@ function printRemoteSections (
         exam => !exam.location || exam.location.building === 'RCLAS'
       )
         ? group.sections
-          .filter(section => section.location?.building === 'RCLAS')
-          .map(section => section.code)
+            .filter(section => section.location?.building === 'RCLAS')
+            .map(section => section.code)
         : []
     )
     if (onlineSections.length > 0) {
@@ -203,11 +208,11 @@ function printRemoteSections (
   }
 }
 
-if (process.argv[1] === import.meta.filename) {
-  const term = process.argv[2] || 'SP23'
+if (import.meta.main) {
+  const term = Deno.args[0] || 'SP23'
 
   const result: ScrapedResult =
-    process.argv[3] === 'fetch'
+    Deno.args[1] === 'fetch'
       ? await getCourses(term, true)
       : await readCourses(`./scheduleofclasses/terms/${term}.json`)
 

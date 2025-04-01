@@ -1,5 +1,5 @@
-import buildingData from './buildings.json'
-import { Location } from './locations'
+import buildingData from './buildings.json' assert { type: 'json' }
+import { Location } from './locations.ts'
 
 export type BuildingDatum = {
   name: string
