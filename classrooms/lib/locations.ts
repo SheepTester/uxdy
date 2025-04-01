@@ -5,7 +5,7 @@ export type Location = [latitude: number, longitude: number]
 // Tile bounds used to generate the map image
 const TILE_LEFT = -6
 const TILE_RIGHT = 5
-const TILE_TOP = 4
+const TILE_TOP = 5
 /** maps.ucsd.edu zoom level used for the map image. */
 export const ZOOM = 17
 /** Size of each map tile */

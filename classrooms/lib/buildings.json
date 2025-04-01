@@ -194,6 +194,22 @@
         "location": [32.88134401507817, -117.23933111579409],
         "name": "Thurgood Marshall 102",
         "images": ["https://i.imgur.com/gGIHRxo.jpeg"]
+      },
+      "UNEXG": {
+        "location": [32.88229931064555, -117.24356956315178],
+        "name": "Extended Studies and Public Programs - Building G",
+        "images": [],
+        "comment": [
+          "https://facilityservices.ucsd.edu/information/addressing.html#Marshall"
+        ]
+      },
+      "UNEXN": {
+        "location": [32.882552141976745, -117.24356447238807],
+        "name": "Extended Studies and Public Programs - Building N",
+        "images": [],
+        "comment": [
+          "https://facilityservices.ucsd.edu/information/addressing.html#Marshall"
+        ]
       }
     },
     "sixth": {
@@ -503,6 +519,11 @@
       }
     },
     "warren": {
+      "CALIT": {
+        "location": [32.88260847519584, -117.23461061168094],
+        "name": "Atkinson Hall",
+        "images": []
+      },
       "CMRR": {
         "location": [32.88061652328027, -117.23531336416724],
         "name": "Center for Memory and Recording Research",
@@ -751,6 +772,12 @@
         "location": [32.86529347606621, -117.25357019529167],
         "name": "Ritter Hall",
         "images": []
+      },
+      "SCRM": {
+        "location": [32.88959584067767, -117.24408722122243],
+        "name": "Sanford Consortium for Regenerative Medicine",
+        "images": [],
+        "comment": ["Is this in SIO?"]
       },
       "SPIES": {
         "location": [32.86909245015263, -117.25095900205372],
