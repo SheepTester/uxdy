@@ -46,10 +46,10 @@ class StringTaker {
       time:
         days !== 'TBA'
           ? {
-              days: Array.from(days, Number),
-              start: this.#takeMinutes(),
-              end: this.#takeMinutes()
-            }
+            days: Array.from(days, Number),
+            start: this.#takeMinutes(),
+            end: this.#takeMinutes()
+          }
           : this.discard(8)
     }
   }
@@ -86,7 +86,8 @@ export function coursesFromFile (
   let state: State = { type: 'course-or-group' }
   const lines = file.trim().split(/\r?\n/)
   const metadata = new StringTaker(lines.shift() ?? '')
-  if (metadata.take(2) !== 'V3') {
+  const version = metadata.take(2)
+  if (version !== 'V3' && version !== 'V4') {
     throw new CourseFormatError(
       "I don't understand the format the courses are in."
     )
@@ -110,30 +111,30 @@ export function coursesFromFile (
       } else {
         // Group
         const additionalMeetings = taker.take(1)
+        const code = taker.take(3)
+        const dateRange = includeDateRange
+          ? {
+            start: Day.from(
+              taker.takeInt(4),
+              taker.takeInt(2),
+              taker.takeInt(2)
+            ),
+            end: Day.from(taker.takeInt(4), taker.takeInt(2), taker.takeInt(2))
+          }
+          : undefined
+        const instructors = taker.takeRest().split('\t')
+        // V4 inserted section title to the left of instructor list
+        const sectionTitle = version === 'V3' ? null : instructors.shift()
         course.groups.push({
-          code: taker.take(3),
-          dateRange: includeDateRange
-            ? {
-                start: Day.from(
-                  taker.takeInt(4),
-                  taker.takeInt(2),
-                  taker.takeInt(2)
-                ),
-                end: Day.from(
-                  taker.takeInt(4),
-                  taker.takeInt(2),
-                  taker.takeInt(2)
-                )
-              }
-            : undefined,
-          instructors: taker
-            .takeRest()
-            .split('\t')
+          code,
+          dateRange,
+          instructors: instructors
             .filter(name => name !== '')
             .map(name => {
               const [first, last] = name.split(',')
               return { first, last }
             }),
+          sectionTitle: sectionTitle || null,
           sections: [],
           meetings: [],
           exams: [],
@@ -158,8 +159,8 @@ export function coursesFromFile (
       state = state.hasMeetings
         ? { type: 'meetings', hasExams: state.hasExams }
         : state.hasExams
-        ? { type: 'exams' }
-        : { type: 'course-or-group' }
+          ? { type: 'exams' }
+          : { type: 'course-or-group' }
     } else if (state.type === 'meetings') {
       while (taker.hasMore()) {
         group.meetings.push({

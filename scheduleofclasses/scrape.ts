@@ -1,4 +1,4 @@
-// deno run --allow-net scheduleofclasses/scrape.ts SP23 > scheduleofclasses/terms/SP23.json
+// deno run --allow-net scheduleofclasses/scrape.ts SP25 > scheduleofclasses/terms/SP25.json
 // Outputs JSON file of scraped courses to stdout. Prints progress status to stderr.
 
 import { writeAll } from 'std/streams/write_all.ts'
@@ -153,7 +153,7 @@ export type ScrapedCourse = {
   subjectName: string
   number: string
   title: string
-  /** Seminar classes list their topic under the course title. */
+  /** Seminar classes (e.g. CSE 291) list their topic under the course title. */
   description?: string
   /**
    * The path to the course's entry in the course catalog, e.g.
@@ -189,37 +189,37 @@ const getUrl = (term: string, departments: string[], page: number) =>
   `${BASE}/scheduleOfClassesStudentResult.htm?${new URLSearchParams([
     ['selectedTerm', term],
     ['tabNum', 'tabs-dept'],
-    ["_selectedSubjects", "1"],
-    ["schedOption1", "true"],
-    ["_schedOption1", "on"],
-    ["_schedOption11", "on"],
-    ["_schedOption12", "on"],
-    ["schedOption2", "true"],
-    ["_schedOption2", "on"],
-    ["_schedOption4", "on"],
-    ["_schedOption5", "on"],
-    ["_schedOption3", "on"],
-    ["_schedOption7", "on"],
-    ["_schedOption8", "on"],
-    ["_schedOption13", "on"],
-    ["_schedOption10", "on"],
-    ["_schedOption9", "on"],
-    ["schDay", "M"],
-    ["_schDay", "on"],
-    ["schDay", "T"],
-    ["_schDay", "on"],
-    ["schDay", "W"],
-    ["_schDay", "on"],
-    ["schDay", "R"],
-    ["_schDay", "on"],
-    ["schDay", "F"],
-    ["_schDay", "on"],
-    ["schDay", "S"],
-    ["_schDay", "on"],
-    ["schStartTime", "12:00"],
-    ["schStartAmPm", "0"],
-    ["schEndTime", "12:00"],
-    ["schEndAmPm", "0"],
+    ['_selectedSubjects', '1'],
+    ['schedOption1', 'true'],
+    ['_schedOption1', 'on'],
+    ['_schedOption11', 'on'],
+    ['_schedOption12', 'on'],
+    ['schedOption2', 'true'],
+    ['_schedOption2', 'on'],
+    ['_schedOption4', 'on'],
+    ['_schedOption5', 'on'],
+    ['_schedOption3', 'on'],
+    ['_schedOption7', 'on'],
+    ['_schedOption8', 'on'],
+    ['_schedOption13', 'on'],
+    ['_schedOption10', 'on'],
+    ['_schedOption9', 'on'],
+    ['schDay', 'M'],
+    ['_schDay', 'on'],
+    ['schDay', 'T'],
+    ['_schDay', 'on'],
+    ['schDay', 'W'],
+    ['_schDay', 'on'],
+    ['schDay', 'R'],
+    ['_schDay', 'on'],
+    ['schDay', 'F'],
+    ['_schDay', 'on'],
+    ['schDay', 'S'],
+    ['_schDay', 'on'],
+    ['schStartTime', '12:00'],
+    ['schStartAmPm', '0'],
+    ['schEndTime', '12:00'],
+    ['schEndAmPm', '0'],
     ...departments.map(department => ['selectedDepartments', department]),
     ['page', String(page)]
   ])}`
@@ -438,87 +438,85 @@ export async function * getCourseIterator (
         }
 
         const number = row.children[1].textContent
-        if (number !== lastNumber) {
-          const note =
-            noteState.type === 'note'
-              ? noteState.number === number
-                ? noteState.content
-                : unwrap(
-                    new TypeError(
-                      `The note was intended for ${noteState.number} but instead was received by ${number}.`
-                    )
-                  )
-              : undefined
-          noteState = { type: 'none' }
-          const catalogUrl = row.children[2]
-            .querySelector('a')
-            ?.getAttribute('href')
-            ?.slice(26, -2)
-          const catalog =
-            !catalogUrl ||
-            catalogUrl === 'http://registrar.ucsd.edu/studentlink/cnd.html'
-              ? undefined
-              : catalogUrl?.startsWith('http://www.ucsd.edu/catalog/')
+        const note =
+          noteState.type === 'note'
+            ? noteState.number === number
+              ? noteState.content
+              : unwrap(
+                new TypeError(
+                  `The note was intended for ${noteState.number} but instead was received by ${number}.`
+                )
+              )
+            : undefined
+        noteState = { type: 'none' }
+        const catalogUrl = row.children[2]
+          .querySelector('a')
+          ?.getAttribute('href')
+          ?.slice(26, -2)
+        const catalog =
+          !catalogUrl ||
+          catalogUrl === 'http://registrar.ucsd.edu/studentlink/cnd.html'
+            ? undefined
+            : catalogUrl?.startsWith('http://www.ucsd.edu/catalog/')
               ? catalogUrl.replace('http://www.ucsd.edu/catalog', '')
               : catalogUrl
-          const restriction = row.children[0].textContent.trim()
-          // ( 2 Units)
-          // ( 2 /4 by 2 Units)
-          // ( 1 -4 Units)
-          // ( 1 /5 by 0.5 Units) [SP23 BIOM 231]
-          // ( 2.5 Units) [SP23 LIAB 1C]
-          const unitMatch =
-            courseInfo.match(
-              /^(.+) \( (\d+)(\.5)?(?: [/-](\d+)(?: by (\d+)(\.5)?)?)? Units\) ?/
-            ) ?? unwrap(new SyntaxError('Missing "(N units)"\n' + courseInfo))
-          const title = unitMatch[1]
-          const from = parseNatural(unitMatch[2]) + (unitMatch[3] ? 0.5 : 0)
-          const to = unitMatch[4] ? parseNatural(unitMatch[4]) : null
-          const inc = unitMatch[5]
-            ? parseNatural(unitMatch[5]) + (unitMatch[6] ? 0.5 : 0)
-            : null
-          if (progress) {
-            print(
-              `\r${subject} ${number}`.padEnd(60, ' ') +
-                `${page}/${pageCount}`.padStart(20, ' ')
-            )
-          }
-          const description = courseInfo.slice(
-            unitMatch[0].length,
-            dateRangeMatch?.index
+        const restriction = row.children[0].textContent.trim()
+        // ( 2 Units)
+        // ( 2 /4 by 2 Units)
+        // ( 1 -4 Units)
+        // ( 1 /5 by 0.5 Units) [SP23 BIOM 231]
+        // ( 2.5 Units) [SP23 LIAB 1C]
+        const unitMatch =
+          courseInfo.match(
+            /^(.+) \( (\d+)(\.5)?(?: [/-](\d+)(?: by (\d+)(\.5)?)?)? Units\) ?/
+          ) ?? unwrap(new SyntaxError('Missing "(N units)"\n' + courseInfo))
+        const title = unitMatch[1]
+        const from = parseNatural(unitMatch[2]) + (unitMatch[3] ? 0.5 : 0)
+        const to = unitMatch[4] ? parseNatural(unitMatch[4]) : null
+        const inc = unitMatch[5]
+          ? parseNatural(unitMatch[5]) + (unitMatch[6] ? 0.5 : 0)
+          : null
+        if (progress) {
+          print(
+            `\r${subject} ${number}`.padEnd(60, ' ') +
+              `${page}/${pageCount}`.padStart(20, ' ')
           )
-          yield {
-            page,
-            pages: pageCount,
-            type: 'course',
-            item: {
-              subject,
-              subjectName,
-              number,
-              title,
-              description: description || undefined,
-              catalog,
-              restriction: restriction ? restriction.split(/\s+/) : [],
-              note,
-              units: { from, to: to ?? from, inc: inc ?? 1 }
-            }
-          }
-          lastNumber = number
         }
+        const description = courseInfo.slice(
+          unitMatch[0].length,
+          dateRangeMatch?.index
+        )
+        yield {
+          page,
+          pages: pageCount,
+          type: 'course',
+          item: {
+            subject,
+            subjectName,
+            number,
+            title,
+            description: description || undefined,
+            catalog,
+            restriction: restriction ? restriction.split(/\s+/) : [],
+            note,
+            units: { from, to: to ?? from, inc: inc ?? 1 }
+          }
+        }
+        lastNumber = number
 
         const dateRange: [DateTuple, DateTuple] | undefined = dateRangeMatch
           ? [
-              [
-                +dateRangeMatch[5],
-                months.indexOf(dateRangeMatch[3]),
-                +dateRangeMatch[4]
-              ],
-              [
-                +dateRangeMatch[8],
-                months.indexOf(dateRangeMatch[6]),
-                +dateRangeMatch[7]
-              ]
+            [
+              +dateRangeMatch[5],
+              months.indexOf(dateRangeMatch[3]),
+              +dateRangeMatch[4]
+            ],
+            [
+              +dateRangeMatch[8],
+              months.indexOf(dateRangeMatch[6]),
+              +dateRangeMatch[7]
             ]
+          ]
           : undefined
         if (dateRange) {
           yield {
@@ -606,8 +604,8 @@ export async function * getCourseIterator (
               selectable:
                 sectionId !== ''
                   ? {
-                      id: parseNatural(sectionId)
-                    }
+                    id: parseNatural(sectionId)
+                  }
                   : null,
               type: meetingType,
               section: sectionCodeOrDate,
@@ -638,25 +636,25 @@ export async function * getCourseIterator (
             selectable:
               sectionId !== ''
                 ? {
-                    id: parseNatural(sectionId),
-                    available:
-                      seatsAvailable === 'Unlim'
-                        ? Infinity
-                        : seatsAvailable.includes('FULL')
+                  id: parseNatural(sectionId),
+                  available:
+                    seatsAvailable === 'Unlim'
+                      ? Infinity
+                      : seatsAvailable.includes('FULL')
                         ? -(
-                            seatsAvailable.match(/\((\d+)\)/)?.[1] ??
-                            unwrap(
-                              new SyntaxError(
-                                `Cannot get waitlist count from ${seatsAvailable}`
-                              )
+                          seatsAvailable.match(/\((\d+)\)/)?.[1] ??
+                          unwrap(
+                            new SyntaxError(
+                              `Cannot get waitlist count from ${seatsAvailable}`
                             )
                           )
+                        )
                         : parseNatural(seatsAvailable),
-                    capacity:
-                      seatsAvailable === 'Unlim'
-                        ? Infinity
-                        : parseNatural(seatsLimit)
-                  }
+                  capacity:
+                    seatsAvailable === 'Unlim'
+                      ? Infinity
+                      : parseNatural(seatsLimit)
+                }
                 : null,
             type: meetingType,
             section: sectionCodeOrDate.includes('/')
@@ -665,12 +663,11 @@ export async function * getCourseIterator (
             time:
               days !== 'TBA'
                 ? {
-                    days: Array.from(
-                      days.matchAll(/Sun|T[uh]|[MWFS]/g),
-                      match => DAYS.indexOf(match[0])
-                    ).sort((a, b) => a - b),
-                    ...parseTimeRange(time)
-                  }
+                  days: Array.from(days.matchAll(/Sun|T[uh]|[MWFS]/g), match =>
+                    DAYS.indexOf(match[0])
+                  ).sort((a, b) => a - b),
+                  ...parseTimeRange(time)
+                }
                 : null,
             location: building !== 'TBA' ? { building, room } : null,
             instructors: Array.from(instructor.querySelectorAll('a'), td => {
@@ -701,6 +698,10 @@ export async function * getCourseIterator (
 
 export type ScrapedResult = {
   scrapeTime: number
+  /**
+   * NOTE: The same course code may appear multiple times (with potentially
+   * different `units` and `description`).
+   */
   courses: ScrapedCourse[]
 }
 
@@ -729,8 +730,8 @@ export async function readCourses (path: string | URL): Promise<ScrapedResult> {
     key === 'section' && value.length > 3
       ? Day.parse(value)
       : key === 'capacity' && value === null
-      ? Infinity
-      : value
+        ? Infinity
+        : value
   )
 }
 

@@ -61,6 +61,7 @@ export type Group = {
    * or 001.
    */
   code: string
+  sectionTitle: string | null
   /** Individual sections where students have to select one to enroll in. */
   sections: Section[]
   /** Additional meetings, such as a lecture, that all sections share. */
@@ -134,6 +135,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
       // 100R) do not have lectures, so the first section is A01, a DI.
       groups[letter] ??= {
         code: section.section,
+        sectionTitle: course.description ?? null,
         sections: [],
         meetings: [],
         exams: [],
@@ -163,11 +165,15 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
     }
 
     const code = `${course.subject} ${course.number}`
-    courses[code] = {
-      code,
-      title: course.title,
-      catalog: course.catalog,
-      groups: Object.values(groups)
+    if (courses[code]) {
+      courses[code].groups.push(...Object.values(groups))
+    } else {
+      courses[code] = {
+        code,
+        title: course.title,
+        catalog: course.catalog,
+        groups: Object.values(groups)
+      }
     }
   }
   return courses
@@ -198,8 +204,8 @@ function printRemoteSections (
         exam => !exam.location || exam.location.building === 'RCLAS'
       )
         ? group.sections
-            .filter(section => section.location?.building === 'RCLAS')
-            .map(section => section.code)
+          .filter(section => section.location?.building === 'RCLAS')
+          .map(section => section.code)
         : []
     )
     if (onlineSections.length > 0) {

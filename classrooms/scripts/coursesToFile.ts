@@ -1,4 +1,4 @@
-// deno run --allow-read classrooms/scripts/to-file.ts WI23 > classrooms/dist/classrooms-WI23.txt
+// deno run --allow-read classrooms/scripts/coursesToFile.ts SP25 > classrooms/data/classrooms-SP25.txt
 
 import { writeAll } from 'std/streams/write_all.ts'
 import {
@@ -17,8 +17,8 @@ const printTime = (minutes?: number) =>
     minutes === undefined
       ? 'TBA '
       : Math.floor(minutes / 60)
-          .toString()
-          .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
+        .toString()
+        .padStart(2, '0') + (minutes % 60).toString().padStart(2, '0')
   )
 
 async function printMeeting (meeting: BaseMeeting, days = true): Promise<void> {
@@ -55,7 +55,7 @@ async function coursesToFile (
   buildingsOnly = false,
   includeDateRange = false
 ): Promise<void> {
-  await print(`V3${result.scrapeTime}\n`)
+  await print(`V4${result.scrapeTime}\n`)
   for await (const course of Object.values(groupSections(result))) {
     if (
       buildingsOnly &&
@@ -97,8 +97,8 @@ async function coursesToFile (
             ? ':'
             : '.'
           : exams.length > 0
-          ? "'"
-          : ' '
+            ? "'"
+            : ' '
       )
       await print(group.code)
       if (includeDateRange) {
@@ -112,9 +112,10 @@ async function coursesToFile (
       }
       if (!buildingsOnly) {
         await print(
-          group.instructors
-            .map(({ first, last }) => `${first},${last}`)
-            .join('\t')
+          [
+            group.sectionTitle?.replace(/\s+/, ' ') ?? '',
+            ...group.instructors.map(({ first, last }) => `${first},${last}`)
+          ].join('\t')
         )
       }
       await print('\n')
