@@ -45,36 +45,32 @@ function MeetingCard ({ meeting, code }: MeetingCardProps) {
         </p>
       )}
       <div class='mobile-break' />
-      <p
-        class={`meeting-column meeting-date ${
-          meeting.kind === 'exam' ? 'meeting-date-specific' : ''
-        }`}
-      >
+      <p class='meeting-column meeting-date'>
+        {meeting.time && (
+          <abbr
+            title={meeting.time.days
+              .map(day => Day.dayName(day, 'long'))
+              .join(', ')}
+          >
+            {meeting.time.days.map(day => webregDays[day]).join('')}
+          </abbr>
+        )}{' '}
         {meeting.kind === 'exam'
-          ? meeting.date.toString([], { month: 'long', day: 'numeric' })
-          : meeting.time && (
-              <>
-                <abbr
-                  title={meeting.time.days
-                    .map(day => Day.dayName(day, 'long'))
-                    .join(', ')}
-                >
-                  {meeting.time.days.map(day => webregDays[day]).join('')}
-                </abbr>{' '}
-                {Time.from(meeting.time.start).formatRange(
-                  Time.from(meeting.time.end)
-                )}
-              </>
-            )}
+          ? meeting.date.toString([], { month: 'short', day: 'numeric' })
+          : null}{' '}
+        {meeting.time &&
+          Time.from(meeting.time.start).formatRange(
+            Time.from(meeting.time.end)
+          )}
       </p>
       <Link
         view={
           physicalRoom && meeting.location
             ? {
-                type: 'building',
-                building: meeting.location.building,
-                room: meeting.location.room
-              }
+              type: 'building',
+              building: meeting.location.building,
+              room: meeting.location.room
+            }
             : null
         }
         class={`meeting-column location ${
