@@ -29,8 +29,8 @@ export function TermStatus ({
             status === 'offline'
               ? 'term-offline'
               : status === 'unavailable'
-              ? 'term-unavailable'
-              : ''
+                ? 'term-unavailable'
+                : ''
           }`}
         >
           {!omitTerm && (
@@ -48,7 +48,10 @@ export function TermStatus ({
             'failed to load.'
           ) : (
             'is unavailable.'
-          )}
+          )}{' '}
+          <a href='https://github.com/SheepTester/uxdy' class='link'>
+            GitHub
+          </a>
         </p>
       ))}
     </div>
