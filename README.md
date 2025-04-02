@@ -64,11 +64,8 @@ Current uses:
   - Feature: search buildings by code.
 - **Finding what classes are taught by a professor this quarter.** What classes is Sworder teaching next quarter?
   - Feature: search sections by professor.
-
-Planned uses:
-
 - **Determining when a professor is free.** I want to schedule a meeting with my professor. When might they be free?
-  - Feature: calendar view for a professor. Note: this might have privacy implications, tread carefully.
+  - Feature: calendar view for a professor.
 - **Guiding students to buildings.** Where is Mosaic? It's next to Wolftown.
   - Feature: link to buildings directly, include photos of buildings.
 

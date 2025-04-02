@@ -18,11 +18,11 @@ export function TermStatus ({
   visible
 }: TermStatusProps) {
   const showStatus = visible && currentStatus && currentStatus.length > 0
-  const status = useLast([], showStatus ? currentStatus : null)
-  const omitTerm = status.length === 1 && status[0][0].quarter !== 'S3'
+  const statuses = useLast([], showStatus ? currentStatus : null)
+  const omitTerm = statuses.length === 1 && statuses[0][0].quarter !== 'S3'
   return (
     <div class={`term-statuses ${showStatus ? '' : 'hide-status'}`}>
-      {status.map(([term, status]) => (
+      {statuses.map(([term, status]) => (
         <p
           key={termCode(term.year, term.quarter)}
           class={`term-updated ${
@@ -49,11 +49,21 @@ export function TermStatus ({
           ) : (
             'is unavailable.'
           )}{' '}
+          {statuses.length === 1 ? (
+            <a href='https://github.com/SheepTester/uxdy' class='link'>
+              GitHub
+            </a>
+          ) : null}
+        </p>
+      ))}
+      {statuses.length > 1 ? (
+        <span>
           <a href='https://github.com/SheepTester/uxdy' class='link'>
             GitHub
           </a>
-        </p>
-      ))}
+          .
+        </span>
+      ) : null}
     </div>
   )
 }
