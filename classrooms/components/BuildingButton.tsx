@@ -13,12 +13,10 @@ import {
   PADDING,
   northeast
 } from '../lib/locations.ts'
-import { used } from '../lib/now.ts'
 import { Link } from './Link.tsx'
+import { isMeetingOngoing, useMoment } from '../moment-context.ts'
 
 type BuildingButtonProps = {
-  weekday: number
-  time: Time
   building: BuildingDatum
   rooms: RoomMeeting[][]
   selected: boolean
@@ -27,14 +25,14 @@ type BuildingButtonProps = {
 }
 
 export function BuildingButton ({
-  weekday,
-  time,
   building,
   rooms,
   selected,
   scrollTarget,
   visible
 }: BuildingButtonProps) {
+  const moment = useMoment()
+
   const college = building.college
 
   const ref = useCallback(
@@ -75,7 +73,11 @@ export function BuildingButton ({
       {building.code}
       <span class='room-count'>
         <span class='in-use'>
-          {rooms.filter(meetings => meetings.some(used(weekday, time))).length}
+          {
+            rooms.filter(meetings =>
+              meetings.some(meeting => isMeetingOngoing(meeting, moment))
+            ).length
+          }
         </span>
         /{rooms.length}
       </span>

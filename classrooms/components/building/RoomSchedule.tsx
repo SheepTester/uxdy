@@ -8,19 +8,22 @@ import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
-import { used } from '../../lib/now.ts'
 import { Link } from '../Link.tsx'
+import {
+  doesMeetingHappen,
+  isMeetingOngoing,
+  useMoment
+} from '../../moment-context.ts'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]
 const WEEKDAYS = [1, 2, 3, 4, 5]
 const SCALE = 1 // px per min
 
 export type RoomScheduleProps = {
-  weekday: number
-  time: Time
   meetings: RoomMeeting[]
 }
-export function RoomSchedule ({ weekday, time, meetings }: RoomScheduleProps) {
+export function RoomSchedule ({ meetings }: RoomScheduleProps) {
+  const moment = useMoment()
   const [day, setDay] = useState<number | null>(null)
 
   if (meetings.length === 0) {
@@ -34,19 +37,31 @@ export function RoomSchedule ({ weekday, time, meetings }: RoomScheduleProps) {
     )
   }
 
-  const hasWeekend = meetings.some(
-    meeting => meeting.days.includes(6) || meeting.days.includes(7)
+  const actualMeetings = Object.fromEntries(
+    DAYS.map(day => [
+      day,
+      meetings.filter(meeting =>
+        doesMeetingHappen(
+          meeting,
+          moment, // WebReg weeks start on Monday
+          moment.date.monday.add(day - 1),
+          meeting.special
+        )
+      )
+    ])
   )
-  const earliest = meetings.reduce(
-    (acc, curr) => Math.min(acc, +curr.start),
+  const hasWeekend =
+    actualMeetings[6].length > 0 || actualMeetings[7].length > 0
+  const filteredMeetings =
+    day !== null ? actualMeetings[day] : Object.values(actualMeetings).flat()
+  const earliest = filteredMeetings.reduce(
+    (acc, curr) => Math.min(acc, +curr.time.start),
     Infinity
   )
-  const latest = meetings.reduce(
-    (acc, curr) => Math.max(acc, +curr.end),
+  const latest = filteredMeetings.reduce(
+    (acc, curr) => Math.max(acc, +curr.time.end),
     -Infinity
   )
-
-  const inUse = used(weekday, time)
 
   return (
     <div class='schedule'>
@@ -65,56 +80,65 @@ export function RoomSchedule ({ weekday, time, meetings }: RoomScheduleProps) {
         </div>
       </div>
       <div class={`meetings-wrapper ${day === null ? 'full-week' : ''}`}>
-        {(day !== null ? [day] : hasWeekend ? DAYS : WEEKDAYS).map(day => (
-          <div
-            class='day meetings'
-            key={day}
-            style={{ height: `${(latest - earliest) / SCALE}px` }}
-          >
-            {meetings
-              .filter(meeting => meeting.days.includes(day))
-              .sort((a, b) => +a.start - +b.start)
-              .map(meeting => (
-                <Link
-                  view={{ type: 'course', course: meeting.course }}
-                  class={`meeting ${inUse(meeting) ? 'current' : ''} ${
-                    meeting.kind === 'exam' ? 'exam' : ''
-                  }`}
-                  style={{
-                    top: `${(+meeting.start - earliest) / SCALE}px`,
-                    height: `${(+meeting.end - +meeting.start) / SCALE}px`
-                  }}
-                >
-                  <div class='meeting-name'>
-                    {meeting.course} (
-                    <abbr title={meetingTypes[meeting.type]}>
-                      {meeting.type}
-                    </abbr>
-                    )
-                  </div>
-                  <div class='meeting-time'>
-                    {meeting.start.formatRange(meeting.end)}
-                  </div>
-                  {meeting.special && (
-                    <abbr
-                      class='special-summer'
-                      title='This meeting is from a Special Summer Session course.'
-                    >
-                      S3
-                    </abbr>
-                  )}
-                </Link>
-              ))}
-            {weekday === day && earliest <= +time && +time < latest && (
-              <div
-                class='now'
-                style={{
-                  top: `${(+time - earliest) / SCALE}px`
-                }}
-              />
-            )}
-          </div>
-        ))}
+        {(day !== null ? [day] : hasWeekend ? DAYS : WEEKDAYS).map(day => {
+          const holiday = moment.holidays[moment.date.monday.add(day - 1).id]
+          return (
+            <div
+              class={`day meetings ${holiday ? 'has-holiday' : ''}`}
+              key={day}
+              style={{ height: `${(latest - earliest) / SCALE}px` }}
+            >
+              {holiday ? (
+                <p class='schedule-holiday-notice'>{holiday}</p>
+              ) : null}
+              {actualMeetings[day]
+                .sort((a, b) => +a.time.start - +b.time.start)
+                .map(meeting => (
+                  <Link
+                    view={{ type: 'course', course: meeting.course }}
+                    class={`meeting ${
+                      isMeetingOngoing(meeting, moment) ? 'current' : ''
+                    } ${meeting.kind === 'exam' ? 'exam' : ''}`}
+                    style={{
+                      top: `${(+meeting.time.start - earliest) / SCALE}px`,
+                      height: `${
+                        (+meeting.time.end - +meeting.time.start) / SCALE
+                      }px`
+                    }}
+                  >
+                    <div class='meeting-name'>
+                      {meeting.course} (
+                      <abbr title={meetingTypes[meeting.type]}>
+                        {meeting.type}
+                      </abbr>
+                      )
+                    </div>
+                    <div class='meeting-time'>
+                      {meeting.time.start.formatRange(meeting.time.end)}
+                    </div>
+                    {meeting.special && (
+                      <abbr
+                        class='special-summer'
+                        title='This meeting is from a Special Summer Session course.'
+                      >
+                        S3
+                      </abbr>
+                    )}
+                  </Link>
+                ))}
+              {moment.date.day === day &&
+                earliest <= +moment.time &&
+                +moment.time < latest && (
+                  <div
+                    class='now'
+                    style={{
+                      top: `${(+moment.time - earliest) / SCALE}px`
+                    }}
+                  />
+                )}
+            </div>
+          )
+        })}
       </div>
       <footer class='disclaimer-wrapper'>
         <div class='gradient gradient-bg gradient-bottom' />

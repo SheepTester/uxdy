@@ -4,13 +4,12 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { Meeting, Section } from '../../../scheduleofclasses/group-sections.ts'
 import { Term } from '../../lib/TermCache.ts'
+import { isMeetingOngoing, useMoment } from '../../moment-context.ts'
 import { ClearIcon } from '../icons/CloseIcon.tsx'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
 import { SearchData, SearchResults } from './SearchResults.tsx'
-import { BaseMeeting } from '../../../scheduleofclasses/group-sections.ts'
-import { Time } from '../../../util/Time.ts'
-import { used } from '../../lib/now.ts'
 
 export type State =
   | { type: 'unloaded' }
@@ -30,8 +29,6 @@ export type SearchBarProps = {
   showResults: boolean
   onSearch: (showResults: boolean) => void
   visible: boolean
-  weekday: number
-  time: Time
 }
 export function SearchBar ({
   state,
@@ -40,10 +37,9 @@ export function SearchBar ({
   buildings,
   showResults,
   onSearch,
-  visible,
-  weekday,
-  time
+  visible
 }: SearchBarProps) {
+  const moment = useMoment()
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
   const [ongoingOnly, setOngoingOnly] = useState(false)
@@ -146,10 +142,9 @@ export function SearchBar ({
               ? {
                 courses: state.data.courses.filter(course =>
                   course.groups.some(group => {
-                    const test = (meeting: BaseMeeting) =>
+                    const test = (meeting: Meeting | Section) =>
                       (meeting.type === 'LE' || meeting.type === 'SE') &&
-                      meeting.time &&
-                      used(weekday, +time)(meeting.time)
+                      isMeetingOngoing(meeting, moment)
                     return (
                       group.meetings.some(test) || group.sections.some(test)
                     )

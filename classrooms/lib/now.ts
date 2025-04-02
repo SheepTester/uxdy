@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'preact/hooks'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
-import { MeetingTime } from '../../scheduleofclasses/group-sections.ts'
 
 export type Moment = {
   date: Day
@@ -50,24 +48,4 @@ function toPT (date: Date): Moment {
 
 export function now (): Moment {
   return toPT(new Date())
-}
-
-/**
- * @param includeBefore Minutes before the meeting to consider as part of the
- * meeting. Useful to determine if a meeting will occur soon but not right now.
- * @returns a predicate that searches for a meeting that is occuring at the
- * given time, to determine whether a room is being used.
- */
-export function used<T> (
-  weekday: number,
-  time: T,
-  includeBefore = 0
-): (meeting: MeetingTime<T>) => boolean {
-  return meeting => {
-    return (
-      meeting.days.includes(weekday) &&
-      +meeting.start - includeBefore <= +time &&
-      time < meeting.end
-    )
-  }
 }

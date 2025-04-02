@@ -6,6 +6,7 @@
 import { getTerm, termCode } from '../../../terms/index.ts'
 import { Day } from '../../../util/Day.ts'
 import { Time } from '../../../util/Time.ts'
+import { useMoment } from '../../moment-context.ts'
 
 const dateFormat = new Intl.DateTimeFormat([], {
   dateStyle: 'short',
@@ -13,20 +14,20 @@ const dateFormat = new Intl.DateTimeFormat([], {
 })
 
 export type DateTimeButtonProps = {
-  date: Day
-  time: Time
   onClick: () => void
   bottomPanelOpen: boolean
   disabled: boolean
 }
 export function DateTimeButton ({
-  date,
-  time,
   onClick,
   bottomPanelOpen,
   disabled
 }: DateTimeButtonProps) {
-  const { year, season, current, week } = getTerm(date)
+  const {
+    date,
+    time,
+    currentTerm: { year, season, current, week }
+  } = useMoment()
   return (
     <button
       class={`date-time-button ${bottomPanelOpen ? 'bottom-panel-open' : ''}`}

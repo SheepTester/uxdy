@@ -2,6 +2,7 @@
 // Prints list of remote sections.
 
 import { Day } from '../util/Day.ts'
+import { Time } from '../util/Time.ts'
 import {
   getCourses,
   readCourses,
@@ -9,7 +10,7 @@ import {
   ScrapedResult
 } from './scrape.ts'
 
-export type MeetingTime<Time = number> = {
+export type MeetingTime = {
   /**
    * Sorted array of numbers 0-6 representing days of the week. 0 is Sunday.
    */
@@ -111,7 +112,13 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
       }
       const meeting: BaseMeeting = {
         type: section.type,
-        time: section.time,
+        time: section.time
+          ? {
+            days: section.time.days,
+            start: Time.from(section.time.start),
+            end: Time.from(section.time.end)
+          }
+          : null,
         location: section.location
       }
 
@@ -304,8 +311,8 @@ if (import.meta.main) {
         for (const day of meeting.time.days) {
           const period: Period = {
             day,
-            start: meeting.time.start,
-            end: meeting.time.end,
+            start: +meeting.time.start,
+            end: +meeting.time.end,
             course: course.code,
             code: meeting.code,
             type: meeting.type,

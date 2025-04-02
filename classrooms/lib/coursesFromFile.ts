@@ -1,5 +1,6 @@
 import { Course, BaseMeeting } from '../../scheduleofclasses/group-sections.ts'
 import { Day } from '../../util/Day.ts'
+import { Time } from '../../util/Time.ts'
 
 class StringTaker {
   #string: string
@@ -47,8 +48,8 @@ class StringTaker {
         days !== 'TBA'
           ? {
             days: Array.from(days, Number),
-            start: this.#takeMinutes(),
-            end: this.#takeMinutes()
+            start: Time.from(this.#takeMinutes()),
+            end: Time.from(this.#takeMinutes())
           }
           : this.discard(8)
     }

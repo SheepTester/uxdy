@@ -3,7 +3,7 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { useContext, useEffect, useRef, useState } from 'preact/hooks'
+import { useContext, useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { Course } from '../../scheduleofclasses/group-sections.ts'
 import { getHolidays } from '../../terms/holidays.ts'
 import {
@@ -33,6 +33,7 @@ import { navigate } from './Link.tsx'
 import { ModalView, ResultModal } from './search/ResultModal.tsx'
 import { SearchBar, State } from './search/SearchBar.tsx'
 import { TermStatus } from './TermStatus.tsx'
+import { fromMoment, MomentContext } from '../moment-context.ts'
 
 /**
  * Represents the state of the app:
@@ -88,23 +89,18 @@ export function App ({ title }: AppProps) {
   const onView = useContext(OnView)
 
   const [realTime, setRealTime] = useState(true)
-  const [date, setDate] = useState<Day>(() => now().date)
-  const [time, setTime] = useState<Time>(() => now().time)
+  const [moment, setMoment] = useState(() => fromMoment(now()))
   useEffect(() => {
     if (realTime) {
       const intervalId = setInterval(() => {
-        const { date, time } = now()
+        const newMoment = now()
         // Avoid unnecessary rerenders by returning original object if they have
         // the same values
-        setTime(oldTime => (+oldTime === +time ? oldTime : time))
-        setDate(oldDate => {
-          if (+oldDate === +date) {
-            return oldDate
-          } else {
-            handleDate(date)
-            return date
-          }
-        })
+        setMoment(moment =>
+          +moment.date !== +newMoment.date || +moment.time !== +newMoment.time
+            ? fromMoment(newMoment)
+            : moment
+        )
       }, 1000)
       return () => {
         clearInterval(intervalId)
@@ -115,7 +111,7 @@ export function App ({ title }: AppProps) {
   const termCache = useRef(new TermCache())
   const [state, setState] = useState<AppState | null>(null)
 
-  // TODO: Show errors if any in a corner
+  // TODO: Show errors, if any, in a corner
   const noticeVisible = !state?.buildings
   const notice = useLast(
     '',
@@ -148,7 +144,7 @@ export function App ({ title }: AppProps) {
     modal
   )
 
-  const terms = getTerms(getTerm(date))
+  const terms = getTerms(getTerm(moment.date))
   const termId = terms.map(term => termCode(term.year, term.quarter)).join(' ')
 
   const datePanelVisible = showDatePanel || (noticeVisible && state !== null)
@@ -174,10 +170,7 @@ export function App ({ title }: AppProps) {
     const courses = successes.flatMap(result => result.result.courses)
     // Summer sessions' finals week overlaps with classes, it seems like?
     const finalsWeek = finals && season !== 'S1' && season !== 'S2'
-    const classrooms = coursesToClassrooms(courses, {
-      monday: date.monday,
-      finals: finalsWeek
-    })
+    const classrooms = coursesToClassrooms(courses)
     for (const building of Object.keys(classrooms)) {
       if (!buildings[building]) {
         console.warn(`${building} does not exist.`)
@@ -201,8 +194,8 @@ export function App ({ title }: AppProps) {
     })
   }
   useEffect(() => {
-    handleDate(date)
-  }, [])
+    handleDate(moment.date)
+  }, [+moment.date])
 
   async function loadTerms (): Promise<Course[]> {
     const maybePromise = termCache.current.requestTerms(terms, true)
@@ -318,133 +311,125 @@ export function App ({ title }: AppProps) {
 
   return (
     <OnView.Provider value={handleView}>
-      <SearchBar
-        state={searchState}
-        terms={terms}
-        termId={termId}
-        buildings={state?.buildings ? Object.keys(state?.buildings) : []}
-        showResults={showResults}
-        onSearch={showResults => {
-          setShowResults(showResults)
-          navigate(onView, {
-            view: { type: 'default', searching: showResults },
-            back: ([previous]) => {
-              if (showResults || !previous) {
-                return null
+      <MomentContext.Provider value={moment}>
+        <SearchBar
+          state={searchState}
+          terms={terms}
+          termId={termId}
+          buildings={state?.buildings ? Object.keys(state?.buildings) : []}
+          showResults={showResults}
+          onSearch={showResults => {
+            setShowResults(showResults)
+            navigate(onView, {
+              view: { type: 'default', searching: showResults },
+              back: ([previous]) => {
+                if (showResults || !previous) {
+                  return null
+                }
+                if (previous.type === 'default' && !previous.searching) {
+                  return 0
+                } else {
+                  return null
+                }
               }
-              if (previous.type === 'default' && !previous.searching) {
-                return 0
-              } else {
-                return null
-              }
+            })
+            if (
+              searchState.type === 'unloaded' ||
+              (searchState.type === 'loaded' && searchState.termId !== termId)
+            ) {
+              loadTerms()
             }
-          })
-          if (
-            searchState.type === 'unloaded' ||
-            (searchState.type === 'loaded' && searchState.termId !== termId)
-          ) {
-            loadTerms()
-          }
-        }}
-        visible={!noticeVisible}
-        weekday={date.day}
-        time={time}
-      />
-      <ResultModal view={modalView} open={modal !== null} />
-      <div class='corner'>
-        <DateTimeButton
-          date={date}
-          time={time}
-          onClick={() => setShowDatePanel(true)}
-          bottomPanelOpen={buildingPanelVisible}
-          disabled={datePanelVisible}
+          }}
+          visible={!noticeVisible}
         />
-        <TermStatus status={state?.status} visible={!noticeVisible} />
-      </div>
-      <DateTimePanel
-        date={date}
-        onDate={date => {
-          setRealTime(false)
-          setDate(date)
-          handleDate(date)
-        }}
-        time={time}
-        onTime={time => {
-          setRealTime(false)
-          setTime(time)
-        }}
-        useNow={realTime}
-        onUseNow={useNow => {
-          if (useNow) {
-            const { date, time } = now()
-            setRealTime(true)
-            setDate(date)
-            setTime(time)
-            handleDate(date)
-          } else {
-            setRealTime(false)
-          }
-        }}
-        visible={datePanelVisible}
-        closeable={!noticeVisible || state === null}
-        class={`${buildingPanelVisible ? 'date-time-panel-bottom-panel' : ''} ${
-          noticeVisible ? 'date-time-panel-notice-visible' : ''
-        }`}
-        onClose={() => setShowDatePanel(false)}
-      />
-      <div class='buildings-wrapper'>
-        <p
-          class={`notice ${noticeVisible ? 'notice-visible' : ''} ${
-            datePanelVisible ? 'notice-date-open' : ''
-          }`}
-        >
-          <span class='notice-text'>{notice}</span>
-        </p>
-        <div class='buildings'>
-          <div
-            class='scroll-area'
-            style={{
-              width: `${northeast.x - southwest.x + PADDING.horizontal * 2}px`,
-              height: `${
-                southwest.y - northeast.y + PADDING.top + PADDING.bottom
-              }px`,
-              backgroundSize: `${mapPosition.width}px`,
-              backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`
-            }}
+        <ResultModal view={modalView} open={modal !== null} />
+        <div class='corner'>
+          <DateTimeButton
+            onClick={() => setShowDatePanel(true)}
+            bottomPanelOpen={buildingPanelVisible}
+            disabled={datePanelVisible}
           />
-          {Object.values(buildings).map(building => (
-            <BuildingButton
-              key={building.code}
-              weekday={date.day}
-              time={time}
-              building={building}
-              rooms={Object.values(state?.buildings?.[building.code] ?? {})}
-              selected={building.code === buildingCode}
-              scrollTarget={
-                building.code === scrollTo.building ? scrollTo : null
-              }
-              visible={!!state?.buildings && building.code in state.buildings}
-            />
-          ))}
+          <TermStatus status={state?.status} visible={!noticeVisible} />
         </div>
-      </div>
-      <BuildingPanel
-        weekday={date.day}
-        time={time}
-        building={
-          buildings[lastBuilding] ?? {
-            code: lastBuilding,
-            college: '',
-            images: '',
-            location: [0, 0],
-            name: lastBuilding
+        <DateTimePanel
+          date={moment.date}
+          onDate={date => {
+            setRealTime(false)
+            setMoment(moment => fromMoment({ ...moment, date }))
+          }}
+          time={moment.time}
+          onTime={time => {
+            setRealTime(false)
+            setMoment(moment => fromMoment({ ...moment, time }))
+          }}
+          useNow={realTime}
+          onUseNow={useNow => {
+            if (useNow) {
+              setRealTime(true)
+              setMoment(fromMoment(now()))
+            } else {
+              setRealTime(false)
+            }
+          }}
+          visible={datePanelVisible}
+          closeable={!noticeVisible || state === null}
+          class={`${
+            buildingPanelVisible ? 'date-time-panel-bottom-panel' : ''
+          } ${noticeVisible ? 'date-time-panel-notice-visible' : ''}`}
+          onClose={() => setShowDatePanel(false)}
+        />
+        <div class='buildings-wrapper'>
+          <p
+            class={`notice ${noticeVisible ? 'notice-visible' : ''} ${
+              datePanelVisible ? 'notice-date-open' : ''
+            }`}
+          >
+            <span class='notice-text'>{notice}</span>
+          </p>
+          <div class='buildings'>
+            <div
+              class='scroll-area'
+              style={{
+                width: `${
+                  northeast.x - southwest.x + PADDING.horizontal * 2
+                }px`,
+                height: `${
+                  southwest.y - northeast.y + PADDING.top + PADDING.bottom
+                }px`,
+                backgroundSize: `${mapPosition.width}px`,
+                backgroundPosition: `${mapPosition.x}px ${mapPosition.y}px`
+              }}
+            />
+            {Object.values(buildings).map(building => (
+              <BuildingButton
+                key={building.code}
+                building={building}
+                rooms={Object.values(state?.buildings?.[building.code] ?? {})}
+                selected={building.code === buildingCode}
+                scrollTarget={
+                  building.code === scrollTo.building ? scrollTo : null
+                }
+                visible={!!state?.buildings && building.code in state.buildings}
+              />
+            ))}
+          </div>
+        </div>
+        <BuildingPanel
+          building={
+            buildings[lastBuilding] ?? {
+              code: lastBuilding,
+              college: '',
+              images: '',
+              location: [0, 0],
+              name: lastBuilding
+            }
           }
-        }
-        room={room}
-        rooms={state?.buildings?.[lastBuilding] ?? {}}
-        visible={buildingPanelVisible}
-        rightPanelOpen={datePanelVisible}
-      />
+          room={room}
+          rooms={state?.buildings?.[lastBuilding] ?? {}}
+          visible={buildingPanelVisible}
+          rightPanelOpen={datePanelVisible}
+        />
+      </MomentContext.Provider>
     </OnView.Provider>
   )
 }

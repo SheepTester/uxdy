@@ -177,6 +177,7 @@ input[type='checkbox']:checked:hover {
   }
 }
 .notice-text {
+  color: white;
   display: block;
   max-width: 500px;
   transform: scale(0.9);
@@ -498,11 +499,11 @@ input[type='checkbox']:checked:hover {
   outline: 1px solid var(--text);
   border-radius: 50%;
 }
-.calendar-finals-day {
-  color: var(--exam);
-}
 .calendar-break-day {
   color: var(--secondary);
+}
+.calendar-finals-day {
+  color: var(--exam);
 }
 .calendar-selected {
   background-color: var(--button);
@@ -843,6 +844,16 @@ input[type='checkbox']:checked:hover {
 }
 .meetings-wrapper {
   flex: auto;
+}
+.has-holiday {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.schedule-holiday-notice {
+  color: var(--secondary);
+  font-family: var(--normal);
 }
 .meeting {
   display: flex;

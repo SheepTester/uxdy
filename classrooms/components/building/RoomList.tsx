@@ -3,20 +3,19 @@
 /// <reference lib="dom" />
 /// <reference lib="deno.ns" />
 
-import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
 import { compareRoomNums } from '../../lib/compareRoomNums.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
-import { used } from '../../lib/now.ts'
+import { isMeetingOngoing, useMoment } from '../../moment-context.ts'
 import { Link } from '../Link.tsx'
 
 export type RoomListProps = {
-  weekday: number
-  time: Time
   building: string
   rooms: Record<string, RoomMeeting[]>
 }
-export function RoomList ({ weekday, time, building, rooms }: RoomListProps) {
+export function RoomList ({ building, rooms }: RoomListProps) {
+  const moment = useMoment()
+
   if (Object.keys(rooms).length === 0) {
     return (
       <div class='empty'>
@@ -37,8 +36,10 @@ export function RoomList ({ weekday, time, building, rooms }: RoomListProps) {
           // properties differently
           .sort(([a], [b]) => compareRoomNums(a, b))
           .map(([room, meetings]) => {
-            const activeMeeting = meetings.find(used(weekday, time, 10))
-            const soon = activeMeeting && time < activeMeeting.start
+            const activeMeeting = meetings.find(meeting =>
+              isMeetingOngoing(meeting, moment, 10)
+            )
+            const soon = activeMeeting && moment.time < activeMeeting.time.start
             return (
               <Link
                 view={{ type: 'building', building, room }}

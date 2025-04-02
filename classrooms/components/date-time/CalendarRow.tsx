@@ -102,8 +102,8 @@ export function CalendarWeekRow ({
         {week === 11
           ? 'FI'
           : termDays.start < endDay && monday <= termDays.end
-          ? week
-          : ''}
+            ? week
+            : ''}
       </div>
       {DAY_NUMS.map(i => {
         const day = monday.add(i)
@@ -117,7 +117,11 @@ export function CalendarWeekRow ({
                 ? 'calendar-finals-day'
                 : ''
             } ${day.id === date.id ? 'calendar-selected' : ''} ${
-              day >= termDays.start && day <= termDays.end && !holidays[day.id]
+              day >= termDays.start &&
+              day <= termDays.end &&
+              !holidays[day.id] &&
+              day.day > 0 &&
+              day.day < 6
                 ? ''
                 : 'calendar-break-day'
             }`}

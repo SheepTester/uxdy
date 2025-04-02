@@ -16,15 +16,11 @@ import { RoomList } from './RoomList.tsx'
 import { RoomSchedule } from './RoomSchedule.tsx'
 
 type BuildingPanelContentProps = {
-  weekday: number
-  time: Time
   building: BuildingDatum
   room: string | null
   rooms: Record<string, RoomMeeting[]>
 }
 function BuildingPanelContent ({
-  weekday,
-  time,
   building: { code, images, college, name },
   room,
   rooms
@@ -103,13 +99,9 @@ function BuildingPanelContent ({
         </Link>
       </header>
       {room ? (
-        <RoomSchedule
-          weekday={weekday}
-          time={time}
-          meetings={rooms[room] ?? []}
-        />
+        <RoomSchedule meetings={rooms[room] ?? []} />
       ) : (
-        <RoomList weekday={weekday} time={time} building={code} rooms={rooms} />
+        <RoomList building={code} rooms={rooms} />
       )}
     </>
   )

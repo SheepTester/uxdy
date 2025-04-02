@@ -58,10 +58,7 @@ export function MeetingCard ({ meeting, code }: MeetingCardProps) {
         {meeting.kind === 'exam'
           ? meeting.date.toString([], { month: 'short', day: 'numeric' })
           : null}{' '}
-        {meeting.time &&
-          Time.from(meeting.time.start).formatRange(
-            Time.from(meeting.time.end)
-          )}
+        {meeting.time && meeting.time.start.formatRange(meeting.time.end)}
       </p>
       <Link
         view={

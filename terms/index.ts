@@ -89,17 +89,19 @@ export function getTermDays (year: number, season: Season): TermDays {
           ? 1
           : // Summer session in the 20th century ended on a Friday
           year < 2000 && (season === 'S1' || season === 'S2')
-          ? -1
-          : 0)
+            ? -1
+            : 0)
     )
   }
 }
 
-export type CurrentTerm =
+export type CurrentTerm = {
+  year: number
+  season: Season
+  termDays: TermDays
+} & (
   | {
       current: true
-      year: number
-      season: Season
       /**
        * Week number of the given day. The first Monday of the quarter is in week 1;
        * if there are days before it, then they are in week 0. Finals week for fall,
@@ -112,11 +114,10 @@ export type CurrentTerm =
   | {
       /** The year/season refers to the following quarter. */
       current: false
-      year: number
-      season: Season
       week: -1
       finals: false
     }
+)
 
 /**
  * Determines the quarter that the day is in, or the next term if the day is
@@ -146,9 +147,9 @@ export function getTerm (day: Day): CurrentTerm {
   if (current) {
     const finals = current && day >= termDays.finals
     const week = Math.floor((+day.monday - +termDays.start) / 7) + 1
-    return { year, season, current, week, finals }
+    return { year, season, current, termDays, week, finals }
   } else {
-    return { year, season, current, week: -1, finals: false }
+    return { year, season, current, termDays, week: -1, finals: false }
   }
 }
 
