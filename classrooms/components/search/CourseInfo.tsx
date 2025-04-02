@@ -20,7 +20,7 @@ type MeetingCardProps = {
   meeting: Section | Meeting | Exam
   code?: string | null
 }
-function MeetingCard ({ meeting, code }: MeetingCardProps) {
+export function MeetingCard ({ meeting, code }: MeetingCardProps) {
   const physicalRoom = meeting.location && meeting.location.building !== 'RCLAS'
   return (
     <section class='meeting-card'>
@@ -96,7 +96,7 @@ export function CourseInfo ({ course }: CourseInfoProps) {
       {course.groups.map(group => (
         <article class='group' key={group.code}>
           <header class='group-info'>
-            <span class='group-code'>{group.code}</span>
+            <div class='group-code'>{group.code}</div>
             {group.sectionTitle ? (
               <h2 class='section-title'>{group.sectionTitle}</h2>
             ) : null}

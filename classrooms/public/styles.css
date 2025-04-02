@@ -1227,10 +1227,17 @@ input[type='checkbox']:checked:hover {
   gap: 10px;
   box-sizing: border-box;
 }
+.course-code {
+  line-height: 20px;
+}
 .group-code {
   line-height: 20px;
   opacity: 0.15;
   font-size: 1.5em;
+}
+.group-code-small {
+  font-size: 1em;
+  opacity: 0.5;
 }
 .section-title {
   font-family: var(--normal);
