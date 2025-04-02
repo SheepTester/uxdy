@@ -9,6 +9,8 @@
   /* Cards refer to clickable buttons that contain rich content (eg a heading
   and secondary text), rather than a typical plain text label. */
   --card-line: rgba(255, 255, 255, 0.1);
+  --card-header: rgba(255, 255, 255, 0.05);
+  --result-hover: rgba(255, 255, 255, 0.1);
   --button: rgba(0, 184, 255, 0.3);
   --button-hover: rgba(0, 184, 255, 0.5);
   /* eg text inputs. */
@@ -42,7 +44,10 @@
     --exam: #c1a20a;
     --line: #e9eef1;
     --card-line: rgba(0, 0, 0, 0.1);
+    --card-header: rgba(0, 0, 0, 0.05);
+    --result-hover: rgba(0, 0, 0, 0.1);
     --button: #2789f2;
+    --button-hover: #1866ba;
     --field: rgba(0, 0, 0, 0.05);
     --card-shadow-hover: 0 2px 5px rgba(0, 0, 0, 0.1);
     --card-shadow-active: 0 0 0 rgba(0, 0, 0, 0.3);
@@ -490,7 +495,7 @@ input[type='checkbox']:checked:hover {
   cursor: pointer;
 }
 .calendar-day:focus-within {
-  outline: 1px solid white; /* TEMP */
+  outline: 1px solid var(--text);
   border-radius: 50%;
 }
 .calendar-finals-day {
@@ -585,6 +590,7 @@ input[type='checkbox']:checked:hover {
 .today-btn,
 .filled-icon-btn {
   background-color: var(--button);
+  color: white;
 }
 .today-btn:hover,
 .filled-icon-btn:hover,
@@ -1043,7 +1049,7 @@ input[type='checkbox']:checked:hover {
 }
 .result:hover,
 .result-selected {
-  background-color: rgba(255, 255, 255, 0.1); /* TEMP */
+  background-color: var(--result-hover);
 }
 .result-primary {
   margin: 0;
@@ -1213,23 +1219,36 @@ input[type='checkbox']:checked:hover {
   display: flex;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05); /* TEMP */
+  background-color: var(--card-header);
   overflow: hidden;
   position: relative;
   min-height: 40px;
+  padding: 10px;
+  gap: 10px;
+  box-sizing: border-box;
+}
+.course-code {
+  line-height: 20px;
 }
 .group-code {
-  position: absolute;
-  left: 15px;
-  bottom: -15px;
-  font-size: 36px;
+  line-height: 20px;
   opacity: 0.15;
+  font-size: 1.5em;
+}
+.group-code-small {
+  font-size: 1em;
+  opacity: 0.5;
+}
+.section-title {
+  font-family: var(--normal);
+  font-weight: normal;
+  font-size: 1em;
+  margin: 0;
 }
 .instructors {
   display: flex;
   flex-direction: column;
   text-align: right;
-  margin: 10px;
   margin-left: auto;
   gap: 5px;
 }
@@ -1271,9 +1290,6 @@ input[type='checkbox']:checked:hover {
 }
 .meeting-date {
   width: 180px;
-}
-.meeting-date-specific {
-  font-family: var(--normal);
 }
 .location {
   width: 80px;
