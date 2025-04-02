@@ -1,6 +1,8 @@
 import { createContext } from 'preact'
 
-export type View =
+export type View = {
+  searching?: boolean
+} & (
   | {
       type: 'default'
       searching?: boolean
@@ -18,30 +20,36 @@ export type View =
       building: string
       room?: string | null
     }
+)
 
 export function viewFromUrl (url: string): View {
   const { searchParams, hash } = new URL(url)
   const building = searchParams.get('building')
   const course = searchParams.get('course')
   const professor = searchParams.get('professor')
+  const searching = hash === '#search'
   if (building) {
-    return { type: 'building', building, room: searchParams.get('room') }
+    return {
+      type: 'building',
+      building,
+      room: searchParams.get('room'),
+      searching
+    }
   } else if (course) {
-    return { type: 'course', course }
+    return { type: 'course', course, searching }
   } else if (professor) {
-    return { type: 'professor', name: professor }
+    return { type: 'professor', name: professor, searching }
   } else {
-    return { type: 'default', searching: hash === '#search' }
+    return { type: 'default', searching }
   }
 }
 
 export function viewToUrl (view: View): URL {
   const url = new URL(window.location.pathname, window.location.href)
-  if (view.type === 'default') {
-    if (view.searching) {
-      url.hash = 'search'
-    }
-  } else if (view.type === 'building') {
+  if (view.searching) {
+    url.hash = 'search'
+  }
+  if (view.type === 'building') {
     url.searchParams.append('building', view.building)
     if (view.room) {
       url.searchParams.append('room', view.room)

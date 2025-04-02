@@ -16,6 +16,17 @@ import {
 
 export type NavigateOptions = {
   view: View
+  /**
+   * Determines whether the navigation should reuse prior history entries
+   * instead of pushing new ones. This way, the back button can sometimes mimic
+   * the browser back button behavior.
+   *
+   * The callback is given a list of previous views `previous`, most recent
+   * first.
+   *
+   * Returns `null` to push to the history stack. Returns a number `index` to go
+   * back `index + 1` entries (i.e. jump to the entry in `previous`).
+   */
   back: BackHandler
 }
 

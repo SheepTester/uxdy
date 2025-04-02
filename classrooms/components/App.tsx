@@ -24,7 +24,7 @@ import {
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { now } from '../lib/now.ts'
 import { Term, TermCache, TermError } from '../lib/TermCache.ts'
-import { OnView, View, viewFromUrl } from '../View.ts'
+import { OnView, View, viewFromUrl, viewToUrl } from '../View.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
@@ -235,14 +235,13 @@ export function App ({ title }: AppProps) {
   }
 
   async function handleView (view: View) {
+    setShowResults(!!view.searching)
     if (view.type === 'default') {
       setModal(null)
       setBuildingCode(null)
-      setShowResults(!!view.searching)
       document.title = title
       return
     }
-    setShowResults(false)
     if (view.type === 'building') {
       setScrollTo({ building: view.building, init: false })
       setBuildingCode(view.building)
@@ -295,6 +294,18 @@ export function App ({ title }: AppProps) {
 
   useEffect(() => {
     const initView = viewFromUrl(window.location.href)
+    if (initView.searching) {
+      // On page load, if #search is in the URL, remove it
+      window.history.replaceState(
+        window.history.state,
+        '',
+        viewToUrl({ ...initView, searching: false })
+      )
+    }
+  }, [])
+
+  useEffect(() => {
+    const initView = viewFromUrl(window.location.href)
     if (initView.type !== 'default') {
       handleView(initView)
     }
@@ -320,13 +331,18 @@ export function App ({ title }: AppProps) {
           showResults={showResults}
           onSearch={showResults => {
             setShowResults(showResults)
+            const currentView = viewFromUrl(window.location.href)
             navigate(onView, {
-              view: { type: 'default', searching: showResults },
+              view: { ...currentView, searching: showResults },
               back: ([previous]) => {
-                if (showResults || !previous) {
+                if (
+                  showResults ||
+                  !previous ||
+                  previous.type !== currentView.type
+                ) {
                   return null
                 }
-                if (previous.type === 'default' && !previous.searching) {
+                if (!previous.searching) {
                   return 0
                 } else {
                   return null
