@@ -4,11 +4,13 @@
 /// <reference lib="deno.ns" />
 
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { termCode } from '../../../terms/index.ts'
 import { Term } from '../../lib/TermCache.ts'
 import { ClearIcon } from '../icons/CloseIcon.tsx'
 import { SearchIcon } from '../icons/SearchIcon.tsx'
 import { SearchData, SearchResults } from './SearchResults.tsx'
+import { BaseMeeting } from '../../../scheduleofclasses/group-sections.ts'
+import { Time } from '../../../util/Time.ts'
+import { used } from '../../lib/now.ts'
 
 export type State =
   | { type: 'unloaded' }
@@ -28,6 +30,8 @@ export type SearchBarProps = {
   showResults: boolean
   onSearch: (showResults: boolean) => void
   visible: boolean
+  weekday: number
+  time: Time
 }
 export function SearchBar ({
   state,
@@ -36,10 +40,13 @@ export function SearchBar ({
   buildings,
   showResults,
   onSearch,
-  visible
+  visible,
+  weekday,
+  time
 }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0)
+  const [ongoingOnly, setOngoingOnly] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
 
   const loaded = state.type === 'loaded' && state.termId === termId
@@ -134,10 +141,38 @@ export function SearchBar ({
         <SearchResults
           terms={terms}
           query={query}
-          data={{ ...state.data, buildings }}
+          data={
+            ongoingOnly
+              ? {
+                courses: state.data.courses.filter(course =>
+                  course.groups.some(group => {
+                    const test = (meeting: BaseMeeting) =>
+                      (meeting.type === 'LE' || meeting.type === 'SE') &&
+                      meeting.time &&
+                      used(weekday, +time)(meeting.time)
+                    return (
+                      group.meetings.some(test) || group.sections.some(test)
+                    )
+                  })
+                ),
+                professors: [],
+                buildings: []
+              }
+              : { ...state.data, buildings }
+          }
           index={index}
         />
       )}
+      <label class={`ongoing-only ${showResults ? 'show-ongoing-only' : ''}`}>
+        <input
+          type='checkbox'
+          checked={ongoingOnly}
+          onInput={e => {
+            setOngoingOnly(e.currentTarget.checked)
+          }}
+        />
+        Ongoing lectures only
+      </label>
     </form>
   )
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import { Day } from '../../util/Day.ts'
 import { Time } from '../../util/Time.ts'
-import { RoomMeeting } from './coursesToClassrooms.ts'
+import { MeetingTime } from '../../scheduleofclasses/group-sections.ts'
 
 export type Moment = {
   date: Day
@@ -58,11 +58,11 @@ export function now (): Moment {
  * @returns a predicate that searches for a meeting that is occuring at the
  * given time, to determine whether a room is being used.
  */
-export function used (
+export function used<T> (
   weekday: number,
-  time: Time,
+  time: T,
   includeBefore = 0
-): (meeting: RoomMeeting) => boolean {
+): (meeting: MeetingTime<T>) => boolean {
   return meeting => {
     return (
       meeting.days.includes(weekday) &&

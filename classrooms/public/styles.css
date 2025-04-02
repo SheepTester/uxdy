@@ -1011,6 +1011,16 @@ input[type='checkbox']:checked:hover {
   padding: 0;
   border-top-right-radius: 10px;
 }
+.ongoing-only {
+  display: none;
+  padding: 10px;
+  font-family: var(--normal);
+  gap: 10px;
+}
+.show-ongoing-only,
+.search-wrapper:focus-within .ongoing-only {
+  display: flex;
+}
 .no-results,
 .results {
   border-top: 1px solid var(--line);
@@ -1018,6 +1028,7 @@ input[type='checkbox']:checked:hover {
 .no-results {
   font-family: var(--normal);
   padding: 10px;
+  padding-bottom: 0;
   color: var(--secondary);
   margin: 0;
 }
@@ -1064,6 +1075,7 @@ input[type='checkbox']:checked:hover {
 .result-match {
   background-color: var(--button);
   color: white;
+  border-radius: 2px;
 }
 @media (max-width: 690px) {
   .search-wrapper {

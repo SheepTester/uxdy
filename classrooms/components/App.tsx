@@ -122,16 +122,16 @@ export function App ({ title }: AppProps) {
     state === null
       ? 'Loading...'
       : state.buildings
-      ? null
-      : state && state.errors.length > 0
-      ? displayError(state.errors)
-      : state.holiday
-      ? `${state.holiday}!`
-      : state.season === 'WI'
-      ? 'Winter break.'
-      : state.season === 'SP'
-      ? 'Spring break.'
-      : 'Summer break.'
+        ? null
+        : state && state.errors.length > 0
+          ? displayError(state.errors)
+          : state.holiday
+            ? `${state.holiday}!`
+            : state.season === 'WI'
+              ? 'Winter break.'
+              : state.season === 'SP'
+                ? 'Spring break.'
+                : 'Summer break.'
   )
 
   const [showDatePanel, setShowDatePanel] = useState(false)
@@ -347,6 +347,8 @@ export function App ({ title }: AppProps) {
           }
         }}
         visible={!noticeVisible}
+        weekday={date.day}
+        time={time}
       />
       <ResultModal view={modalView} open={modal !== null} />
       <div class='corner'>
