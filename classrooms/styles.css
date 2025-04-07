@@ -958,6 +958,7 @@ input[type='checkbox']:checked:hover {
   gap: 2px;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   font-family: var(--normal);
   color: var(--secondary);
   transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
@@ -975,9 +976,11 @@ input[type='checkbox']:checked:hover {
 .term-updated {
   margin: 0;
 }
-.term-code,
-.updated-date {
+.term-code {
   font-family: var(--narrow);
+  color: var(--text);
+}
+.updated-date {
   color: var(--text);
 }
 .term-offline {
@@ -1105,7 +1108,8 @@ input[type='checkbox']:checked:hover {
   }
   .showing-results .search-bar,
   .result-heading,
-  .no-results {
+  .no-results,
+  .ongoing-only {
     margin: 0 10px;
   }
   .result {
