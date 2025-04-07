@@ -20,6 +20,15 @@ export function TermStatus ({
   const showStatus = visible && currentStatus && currentStatus.length > 0
   const statuses = useLast([], showStatus ? currentStatus : null)
   const omitTerm = statuses.length === 1 && statuses[0][0].quarter !== 'S3'
+  const credit = (
+    <span>
+      Made by{' '}
+      <a href='https://www.instagram.com/sheeptester/' class='link'>
+        @sheeptester
+      </a>
+      .
+    </span>
+  )
   return (
     <div class={`term-statuses ${showStatus ? '' : 'hide-status'}`}>
       {statuses.map(([term, status]) => (
@@ -49,21 +58,10 @@ export function TermStatus ({
           ) : (
             'is unavailable.'
           )}{' '}
-          {statuses.length === 1 ? (
-            <a href='https://github.com/SheepTester/uxdy' class='link'>
-              GitHub
-            </a>
-          ) : null}
+          {statuses.length === 1 ? credit : null}
         </p>
       ))}
-      {statuses.length > 1 ? (
-        <span>
-          <a href='https://github.com/SheepTester/uxdy' class='link'>
-            GitHub
-          </a>
-          .
-        </span>
-      ) : null}
+      {statuses.length > 1 ? credit : null}
     </div>
   )
 }
