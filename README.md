@@ -79,7 +79,7 @@ Features to add:
 - [x] Load summer session 3 when needed
 - [ ] Handle co-scheduled courses
 - [x] Show when the quarter's data was last refreshed
-- [ ] Show all images for building
+- [x] Show all images for building
 
 - [x] Support using back/forward for modals
 - [x] Permalink buildings, courses, and professors

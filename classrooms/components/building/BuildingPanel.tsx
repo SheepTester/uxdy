@@ -4,7 +4,6 @@
 /// <reference lib="deno.ns" />
 
 import { useState } from 'preact/hooks'
-import { Time } from '../../../util/Time.ts'
 import { useLast } from '../../../util/useLast.ts'
 import { BuildingDatum, buildings } from '../../lib/buildings.ts'
 import { RoomMeeting } from '../../lib/coursesToClassrooms.ts'
@@ -14,6 +13,7 @@ import { CloseIcon } from '../icons/CloseIcon.tsx'
 import { Link } from '../Link.tsx'
 import { RoomList } from './RoomList.tsx'
 import { RoomSchedule } from './RoomSchedule.tsx'
+import { Image } from '../Image.tsx'
 
 type BuildingPanelContentProps = {
   building: BuildingDatum
@@ -26,7 +26,6 @@ function BuildingPanelContent ({
   rooms
 }: BuildingPanelContentProps) {
   const lastRoom = useLast('', room)
-  const [imageLoaded, setImageLoaded] = useState(false)
 
   // Make Imgur compress the image.
   // https://thomas.vanhoutte.be/miniblog/imgur-thumbnail-trick/
@@ -40,14 +39,7 @@ function BuildingPanelContent ({
         } college-${college}`}
       >
         {images.length > 0 && (
-          <img
-            class={`building-image ${
-              imageLoaded ? '' : 'building-image-loading'
-            }`}
-            src={imageUrl}
-            onLoad={() => setImageLoaded(true)}
-            key={imageUrl}
-          />
+          <Image class='building-header-image' src={imageUrl} key={imageUrl} />
         )}
         <Link
           view={room ? { type: 'building', building: code } : null}
@@ -101,7 +93,27 @@ function BuildingPanelContent ({
       {room ? (
         <RoomSchedule meetings={rooms[room] ?? []} />
       ) : (
-        <RoomList building={code} rooms={rooms} />
+        <>
+          <div class='gradient gradient-sticky gradient-top' />
+          <RoomList building={code} rooms={rooms} />
+          {images.length > 0 ? (
+            <div class='building-images'>
+              {images.map(image => {
+                const imageUrl = image.replace(/\.jpeg$/, 'l.jpeg')
+                return (
+                  <a href={image} class='building-image-link' key={imageUrl}>
+                    <Image
+                      class='building-image'
+                      src={imageUrl}
+                      loading='lazy'
+                    />
+                  </a>
+                )
+              })}
+            </div>
+          ) : null}
+          <div class='gradient gradient-sticky gradient-bottom' />
+        </>
       )}
     </>
   )

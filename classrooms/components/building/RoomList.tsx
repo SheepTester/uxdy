@@ -29,7 +29,6 @@ export function RoomList ({ building, rooms }: RoomListProps) {
 
   return (
     <div class='room-list'>
-      <div class='gradient gradient-sticky gradient-top' />
       <div class='rooms'>
         {Object.entries(rooms)
           // Can't pre-sort the rooms object entries because JS sorts numerical
@@ -74,7 +73,6 @@ export function RoomList ({ building, rooms }: RoomListProps) {
             )
           })}
       </div>
-      <div class='gradient gradient-sticky gradient-bottom' />
     </div>
   )
 }

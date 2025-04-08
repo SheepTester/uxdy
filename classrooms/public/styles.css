@@ -716,7 +716,7 @@ input[type='checkbox']:checked:hover {
 .list-view .room-number {
   opacity: 0;
 }
-.building-image {
+.building-header-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -724,12 +724,14 @@ input[type='checkbox']:checked:hover {
   height: 100%;
   object-fit: cover;
   opacity: 0.5;
-  transition: opacity 0.5s;
 }
-.schedule-view .building-image {
+.schedule-view .building-header-image {
   opacity: 0;
 }
-.building-image-loading {
+.image {
+  transition: opacity 0.5s;
+}
+.image-loading {
   opacity: 0;
   transition: none;
 }
@@ -755,6 +757,30 @@ input[type='checkbox']:checked:hover {
   visibility: hidden;
   opacity: 0;
   margin-left: -48px;
+}
+.building-images {
+  padding: 0 20px;
+  padding-top: 20px;
+  column-width: 200px;
+  column-gap: 20px;
+  column-fill: balance;
+}
+.building-image-link {
+  display: block;
+  margin-bottom: 20px;
+}
+@media (max-width: 690px) {
+  .building-images {
+    padding: 0 10px;
+    padding-top: 10px;
+  }
+  .building-image-link {
+    margin-bottom: 10px;
+  }
+}
+.building-image {
+  width: 100%;
+  border-radius: 10px;
 }
 
 .empty {
