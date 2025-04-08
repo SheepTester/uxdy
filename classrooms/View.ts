@@ -1,4 +1,7 @@
 import { createContext } from 'preact'
+import { Moment } from './lib/now.ts'
+import { Day } from '../util/Day.ts'
+import { Time } from '../util/Time.ts'
 
 export type View = {
   searching?: boolean
@@ -22,32 +25,55 @@ export type View = {
     }
 )
 
-export function viewFromUrl (url: string): View {
+export type ViewWithTerm = View & {
+  term: Moment | null
+}
+
+export function viewFromUrl (url: string): ViewWithTerm {
   const { searchParams, hash } = new URL(url)
   const building = searchParams.get('building')
   const course = searchParams.get('course')
   const professor = searchParams.get('professor')
+  const dateTime = searchParams.get('term')
+  let term: Moment | null = null
+  if (dateTime?.includes('T')) {
+    const [dateStr, timeStr] = dateTime.split('T')
+    const date = Day.parse(dateStr)
+    const time = Time.parse24(timeStr.replace('.', ':'))
+    if (date && time) {
+      term = { date, time }
+    }
+  }
   const searching = hash === '#search'
   if (building) {
     return {
       type: 'building',
       building,
       room: searchParams.get('room'),
+      term,
       searching
     }
   } else if (course) {
-    return { type: 'course', course, searching }
+    return { type: 'course', course, term, searching }
   } else if (professor) {
-    return { type: 'professor', name: professor, searching }
+    return { type: 'professor', name: professor, term, searching }
   } else {
-    return { type: 'default', searching }
+    return { type: 'default', term, searching }
   }
 }
 
-export function viewToUrl (view: View): URL {
+export function viewToUrl (view: ViewWithTerm): URL {
   const url = new URL(window.location.pathname, window.location.href)
   if (view.searching) {
     url.hash = 'search'
+  }
+  if (view.term) {
+    url.searchParams.append(
+      'term',
+      `${view.term.date.toString()}T${view.term.time
+        .toString(true)
+        .replace(':', '.')}`
+    )
   }
   if (view.type === 'building') {
     url.searchParams.append('building', view.building)
@@ -62,9 +88,9 @@ export function viewToUrl (view: View): URL {
   return url
 }
 
-export type ViewHandler = (view: View) => void
+export type ViewHandler = (view: ViewWithTerm) => void
 
-export const OnView = createContext<ViewHandler>((_: View) => {})
+export const OnView = createContext<ViewHandler>((_: ViewWithTerm) => {})
 
 /** @param history - In reverse chronological order, newest first. */
-export type BackHandler = (history: View[]) => number | null
+export type BackHandler = (history: ViewWithTerm[]) => number | null

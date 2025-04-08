@@ -14,7 +14,6 @@ import {
   termName
 } from '../../terms/index.ts'
 import { Day } from '../../util/Day.ts'
-import { Time } from '../../util/Time.ts'
 import { useLast } from '../../util/useLast.ts'
 import { buildings } from '../lib/buildings.ts'
 import {
@@ -24,7 +23,7 @@ import {
 import { northeast, southwest, PADDING, mapPosition } from '../lib/locations.ts'
 import { now } from '../lib/now.ts'
 import { Term, TermCache, TermError } from '../lib/TermCache.ts'
-import { OnView, View, viewFromUrl, viewToUrl } from '../View.ts'
+import { OnView, viewFromUrl, viewToUrl, ViewWithTerm } from '../View.ts'
 import { BuildingPanel } from './building/BuildingPanel.tsx'
 import { BuildingButton } from './BuildingButton.tsx'
 import { DateTimeButton } from './date-time/DateTimeButton.tsx'
@@ -86,10 +85,8 @@ export type AppProps = {
   title: string
 }
 export function App ({ title }: AppProps) {
-  const onView = useContext(OnView)
-
   const [realTime, setRealTime] = useState(true)
-  const [moment, setMoment] = useState(() => fromMoment(now()))
+  const [moment, setMoment] = useState(() => fromMoment(now(), realTime))
   useEffect(() => {
     if (realTime) {
       const intervalId = setInterval(() => {
@@ -98,7 +95,7 @@ export function App ({ title }: AppProps) {
         // the same values
         setMoment(moment =>
           +moment.date !== +newMoment.date || +moment.time !== +newMoment.time
-            ? fromMoment(newMoment)
+            ? fromMoment(newMoment, realTime)
             : moment
         )
       }, 1000)
@@ -234,8 +231,11 @@ export function App ({ title }: AppProps) {
     return courses
   }
 
-  async function handleView (view: View) {
+  async function handleView (view: ViewWithTerm) {
+    setRealTime(view.term === null)
+    setMoment(fromMoment(view.term ?? now(), view.term === null))
     setShowResults(!!view.searching)
+    console.log(view.term) // TEMP
     if (view.type === 'default') {
       setModal(null)
       setBuildingCode(null)
@@ -306,9 +306,7 @@ export function App ({ title }: AppProps) {
 
   useEffect(() => {
     const initView = viewFromUrl(window.location.href)
-    if (initView.type !== 'default') {
-      handleView(initView)
-    }
+    handleView(initView)
     const handlePopstate = () => {
       handleView(viewFromUrl(window.location.href))
     }
@@ -332,7 +330,7 @@ export function App ({ title }: AppProps) {
           onSearch={showResults => {
             setShowResults(showResults)
             const currentView = viewFromUrl(window.location.href)
-            navigate(onView, {
+            navigate(handleView, {
               view: { ...currentView, searching: showResults },
               back: ([previous]) => {
                 if (
@@ -370,22 +368,30 @@ export function App ({ title }: AppProps) {
         <DateTimePanel
           date={moment.date}
           onDate={date => {
-            setRealTime(false)
-            setMoment(moment => fromMoment({ ...moment, date }))
+            navigate(handleView, {
+              view: {
+                ...viewFromUrl(window.location.href),
+                term: { ...moment, date }
+              }
+            })
           }}
           time={moment.time}
           onTime={time => {
-            setRealTime(false)
-            setMoment(moment => fromMoment({ ...moment, time }))
+            navigate(handleView, {
+              view: {
+                ...viewFromUrl(window.location.href),
+                term: { ...moment, time }
+              }
+            })
           }}
           useNow={realTime}
           onUseNow={useNow => {
-            if (useNow) {
-              setRealTime(true)
-              setMoment(fromMoment(now()))
-            } else {
-              setRealTime(false)
-            }
+            navigate(handleView, {
+              view: {
+                ...viewFromUrl(window.location.href),
+                term: useNow ? null : moment
+              }
+            })
           }}
           visible={datePanelVisible}
           closeable={!noticeVisible || state === null}

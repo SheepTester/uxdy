@@ -11,11 +11,13 @@ import {
   View,
   viewFromUrl,
   ViewHandler,
-  viewToUrl
+  viewToUrl,
+  ViewWithTerm
 } from '../View.ts'
+import { useMoment } from '../moment-context.ts'
 
 export type NavigateOptions = {
-  view: View
+  view: ViewWithTerm
   /**
    * Determines whether the navigation should reuse prior history entries
    * instead of pushing new ones. This way, the back button can sometimes mimic
@@ -27,12 +29,12 @@ export type NavigateOptions = {
    * Returns `null` to push to the history stack. Returns a number `index` to go
    * back `index + 1` entries (i.e. jump to the entry in `previous`).
    */
-  back: BackHandler
+  back?: BackHandler
 }
 
 export function navigate (
   onView: ViewHandler,
-  { view = { type: 'default' }, back }: Partial<NavigateOptions> = {}
+  { view, back }: NavigateOptions
 ): void {
   const destination = viewToUrl(view)
   const previous: string[] = Array.isArray(window.history.state?.previous)
@@ -73,6 +75,7 @@ export function Link ({
   children,
   elemRef
 }: LinkProps) {
+  const moment = useMoment()
   const onView = useContext(OnView)
   return (
     <a
@@ -83,7 +86,10 @@ export function Link ({
       onClick={e => {
         e.preventDefault()
         if (view) {
-          navigate(onView, { view, back })
+          navigate(onView, {
+            view: { ...view, term: moment.isLive ? null : moment },
+            back
+          })
         }
       }}
     >

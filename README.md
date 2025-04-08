@@ -83,7 +83,7 @@ Features to add:
 
 - [x] Support using back/forward for modals
 - [x] Permalink buildings, courses, and professors
-- [ ] Permalink dates
+- [x] Permalink dates
 - [ ] Simplify term selection
 
 ---

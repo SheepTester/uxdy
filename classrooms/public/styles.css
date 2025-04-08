@@ -340,6 +340,7 @@ input[type='checkbox']:checked:hover {
   box-shadow: none;
   border-radius: 15px;
 }
+/* To prevent user from opening date panel while building panel is open */
 @media (max-width: 950px) {
   .bottom-panel-open {
     opacity: 0;
@@ -781,6 +782,10 @@ input[type='checkbox']:checked:hover {
 .building-image {
   width: 100%;
   border-radius: 10px;
+  transition: box-shadow 0.2s;
+}
+.building-image-link:hover .building-image {
+  box-shadow: var(--card-shadow-hover);
 }
 
 .empty {

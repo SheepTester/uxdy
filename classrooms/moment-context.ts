@@ -12,10 +12,11 @@ export type TermMoment = Moment & {
   holidays: Record<number, string>
   isFinals: boolean
   isHoliday: boolean
+  isLive: boolean
 }
 
 /** Add cached term information to a plain `Moment` object */
-export function fromMoment (moment: Moment): TermMoment {
+export function fromMoment (moment: Moment, isLive: boolean): TermMoment {
   const currentTerm = getTerm(moment.date)
   const holidays = getHolidays(moment.date.year)
   return {
@@ -27,7 +28,8 @@ export function fromMoment (moment: Moment): TermMoment {
       currentTerm.finals &&
       currentTerm.season !== 'S1' &&
       currentTerm.season !== 'S2',
-    isHoliday: !!holidays[moment.date.id]
+    isHoliday: !!holidays[moment.date.id],
+    isLive
   }
 }
 
@@ -120,7 +122,8 @@ export const MomentContext = createContext<TermMoment>({
     year: 0
   },
   isFinals: false,
-  isHoliday: false
+  isHoliday: false,
+  isLive: false
 })
 
 export function useMoment (): TermMoment {

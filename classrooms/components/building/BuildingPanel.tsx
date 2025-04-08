@@ -101,7 +101,12 @@ function BuildingPanelContent ({
               {images.map(image => {
                 const imageUrl = image.replace(/\.jpeg$/, 'l.jpeg')
                 return (
-                  <a href={image} class='building-image-link' key={imageUrl}>
+                  <a
+                    href={image}
+                    class='building-image-link'
+                    key={imageUrl}
+                    target='_blank'
+                  >
                     <Image
                       class='building-image'
                       src={imageUrl}

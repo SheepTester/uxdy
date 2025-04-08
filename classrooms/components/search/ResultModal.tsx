@@ -11,6 +11,7 @@ import { CloseIcon } from '../icons/CloseIcon.tsx'
 import { navigate } from '../Link.tsx'
 import { CourseInfo } from './CourseInfo.tsx'
 import { Professor, ProfInfo } from './ProfInfo.tsx'
+import { useMoment } from '../../moment-context.ts'
 
 export type ModalView =
   | { type: 'course'; course: Course }
@@ -21,6 +22,7 @@ export type ResultModalProps = {
   open: boolean
 }
 export function ResultModal ({ view, open }: ResultModalProps) {
+  const moment = useMoment()
   const onView = useContext(OnView)
   const ref = useRef<HTMLDialogElement>(null)
 
@@ -44,7 +46,7 @@ export function ResultModal ({ view, open }: ResultModalProps) {
       onClose={e => {
         if (e.currentTarget.returnValue !== 'force-closed') {
           navigate(onView, {
-            view: { type: 'default' },
+            view: { type: 'default', term: moment.isLive ? null : moment },
             back: ([previous]) => {
               if (
                 previous &&
