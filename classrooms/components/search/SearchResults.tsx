@@ -139,12 +139,14 @@ export type SearchResultsProps = {
   query: string
   data: SearchData
   index: number | null
+  ongoingOnly: boolean
 }
 export function SearchResults ({
   terms,
   query,
   data,
-  index
+  index,
+  ongoingOnly
 }: SearchResultsProps) {
   const results = useMemo(
     () => search(data, query.toLowerCase()),
@@ -161,11 +163,11 @@ export function SearchResults ({
     } else {
       return (
         <p class='no-results'>
-          No results from&nbsp;
-          {terms
-            .map(({ year, quarter }) => termName(year, quarter))
-            .join(' nor ')}
-          .
+          {ongoingOnly
+            ? 'No courses with ongoing lectures match your search query.'
+            : `No results from ${terms
+              .map(({ year, quarter }) => termName(year, quarter))
+              .join(' nor ')}.`}
         </p>
       )
     }

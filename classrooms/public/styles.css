@@ -1318,6 +1318,34 @@ input[type='checkbox']:checked:hover {
 .meeting-date {
   width: 180px;
 }
+.live-marker {
+  background-color: var(--active);
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0.2em 0.25em;
+  border-radius: 50%;
+  position: relative;
+}
+.live-marker::after {
+  content: '';
+  background-color: var(--active);
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: live 1s infinite;
+}
+@keyframes live {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
 .location {
   width: 80px;
   text-align: left;

@@ -10,8 +10,8 @@ import {
   Section
 } from '../../../scheduleofclasses/group-sections.ts'
 import { Day } from '../../../util/Day.ts'
-import { Time } from '../../../util/Time.ts'
 import { meetingTypes } from '../../../webreg-scraping/meeting-types.ts'
+import { useMoment } from '../../moment-context.ts'
 import { Link } from '../Link.tsx'
 
 const webregDays = ['Sun', 'M', 'Tu', 'W', 'Th', 'F', 'S', 'Sun']
@@ -21,7 +21,9 @@ type MeetingCardProps = {
   code?: string | null
 }
 export function MeetingCard ({ meeting, code }: MeetingCardProps) {
+  const moment = useMoment()
   const physicalRoom = meeting.location && meeting.location.building !== 'RCLAS'
+
   return (
     <section class='meeting-card'>
       <p class='meeting-type'>
@@ -59,6 +61,18 @@ export function MeetingCard ({ meeting, code }: MeetingCardProps) {
           ? meeting.date.toString([], { month: 'short', day: 'numeric' })
           : null}{' '}
         {meeting.time && meeting.time.start.formatRange(meeting.time.end)}
+        {meeting.time &&
+        meeting.time.start <= moment.time &&
+        moment.time < meeting.time.end &&
+        (meeting.kind === 'exam'
+          ? +meeting.date === +moment.date
+          : meeting.time.days.includes(moment.date.day)) ? (
+          <span
+            className='live-marker'
+            title='Happening now'
+            aria-label='(Happening now)'
+          />
+        ) : null}
       </p>
       <Link
         view={

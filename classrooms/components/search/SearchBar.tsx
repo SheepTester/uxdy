@@ -156,6 +156,7 @@ export function SearchBar ({
               : { ...state.data, buildings }
           }
           index={index}
+          ongoingOnly={ongoingOnly}
         />
       )}
       <label class={`ongoing-only ${showResults ? 'show-ongoing-only' : ''}`}>
