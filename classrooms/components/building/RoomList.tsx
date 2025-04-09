@@ -58,7 +58,13 @@ export function RoomList ({ building, rooms }: RoomListProps) {
                       ) : (
                         <>
                           (
-                          <abbr title={meetingTypes[activeMeeting.type]}>
+                          <abbr
+                            title={`${
+                              meetingTypes[activeMeeting.type]
+                            } with up to ${activeMeeting.capacity} student${
+                              activeMeeting.capacity === 1 ? '' : 's'
+                            }`}
+                          >
                             {activeMeeting.type}
                           </abbr>
                           )

@@ -108,7 +108,11 @@ export function RoomSchedule ({ meetings }: RoomScheduleProps) {
                   >
                     <div class='meeting-name'>
                       {meeting.course} (
-                      <abbr title={meetingTypes[meeting.type]}>
+                      <abbr
+                        title={`${meetingTypes[meeting.type]} with up to ${
+                          meeting.capacity
+                        } student${meeting.capacity === 1 ? '' : 's'}`}
+                      >
                         {meeting.type}
                       </abbr>
                       )

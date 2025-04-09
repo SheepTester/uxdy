@@ -18,7 +18,18 @@
             "name": { "type": "string" },
             "images": {
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "object",
+                "properties": {
+                  "url": { "type": "string" },
+                  "size": {
+                    "type": "array",
+                    "items": [{ "type": "number" }, { "type": "number" }],
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
             },
             "comment": { "type": "array", "items": { "type": "string" } }
           },

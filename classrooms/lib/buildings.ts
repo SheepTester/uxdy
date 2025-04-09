@@ -6,7 +6,7 @@ export type BuildingDatum = {
   code: string
   college: string
   location: Location
-  images: string[]
+  images: { url: string; size: [number, number] }[]
 }
 export const buildings: Record<string, BuildingDatum> = {}
 for (const [college, collegeBldgs] of Object.entries(buildingData.colleges)) {
@@ -20,7 +20,7 @@ for (const [college, collegeBldgs] of Object.entries(buildingData.colleges)) {
       code,
       college,
       location: [location[0], location[1]],
-      images
+      images: images.map(({ url, size }) => ({ url, size: [size[0], size[1]] }))
     }
   }
 }

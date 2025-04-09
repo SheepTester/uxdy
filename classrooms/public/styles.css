@@ -782,8 +782,9 @@ input[type='checkbox']:checked:hover {
 }
 .building-image {
   width: 100%;
+  height: auto;
   border-radius: 10px;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, opacity 0.2s;
 }
 .building-image-link:hover .building-image {
   box-shadow: var(--card-shadow-hover);

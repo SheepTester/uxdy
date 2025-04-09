@@ -29,7 +29,7 @@ function BuildingPanelContent ({
 
   // Make Imgur compress the image.
   // https://thomas.vanhoutte.be/miniblog/imgur-thumbnail-trick/
-  const imageUrl = images[0]?.replace(/\.jpeg$/, 'l.jpeg')
+  const imageUrl = images[0]?.url.replace(/\.jpeg$/, 'l.jpeg')
 
   return (
     <>
@@ -99,10 +99,10 @@ function BuildingPanelContent ({
           {images.length > 0 ? (
             <div class='building-images'>
               {images.map(image => {
-                const imageUrl = image.replace(/\.jpeg$/, 'l.jpeg')
+                const imageUrl = image.url.replace(/\.jpeg$/, 'l.jpeg')
                 return (
                   <a
-                    href={image}
+                    href={image.url}
                     class='building-image-link'
                     key={imageUrl}
                     target='_blank'
@@ -111,6 +111,8 @@ function BuildingPanelContent ({
                       class='building-image'
                       src={imageUrl}
                       loading='lazy'
+                      width={image.size[0]}
+                      height={image.size[1]}
                     />
                   </a>
                 )

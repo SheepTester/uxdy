@@ -11,11 +11,11 @@
         "location": [32.88665760836001, -117.24102406579628],
         "name": "Otterson Hall",
         "images": [
-          "https://i.imgur.com/2DncCdV.jpeg",
-          "https://i.imgur.com/nuuiXO9.jpeg",
-          "https://i.imgur.com/ByRotXZ.jpeg",
-          "https://i.imgur.com/rh1PE4K.jpeg",
-          "https://i.imgur.com/k8Bubgx.jpeg"
+          { "url": "https://i.imgur.com/2DncCdV.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/nuuiXO9.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/ByRotXZ.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/rh1PE4K.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/k8Bubgx.jpeg", "size": [3024, 4032] }
         ]
       },
       "SEVW2": {
@@ -27,32 +27,32 @@
         "location": [32.88825009555447, -117.24173440393453],
         "name": "Seventh East Ecoflats 3",
         "images": [
-          "https://i.imgur.com/RFVU7xr.jpeg",
-          "https://i.imgur.com/81Y5Bqh.jpeg",
-          "https://i.imgur.com/z85Z6w3.jpeg",
-          "https://i.imgur.com/K7KBhkk.jpeg",
-          "https://i.imgur.com/46FqmYp.jpeg",
-          "https://i.imgur.com/A7z04lV.jpeg"
+          { "url": "https://i.imgur.com/RFVU7xr.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/81Y5Bqh.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/z85Z6w3.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/K7KBhkk.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/46FqmYp.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/A7z04lV.jpeg", "size": [4032, 3024] }
         ]
       },
       "SEVE4": {
         "location": [32.88807303667593, -117.2417902045747],
         "name": "Seventh East Ecoflats 4",
         "images": [
-          "https://i.imgur.com/rvX3WRu.jpeg",
-          "https://i.imgur.com/3HtM3MY.jpeg",
-          "https://i.imgur.com/7qsGG1G.jpeg",
-          "https://i.imgur.com/A7z04lV.jpeg"
+          { "url": "https://i.imgur.com/rvX3WRu.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/3HtM3MY.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/7qsGG1G.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/A7z04lV.jpeg", "size": [4032, 3024] }
         ]
       },
       "WFH": {
         "location": [32.886967814911024, -117.24173638805067],
         "name": "Wells Fargo Hall",
         "images": [
-          "https://i.imgur.com/JwSFFD5.jpeg",
-          "https://i.imgur.com/wd4xodE.jpeg",
-          "https://i.imgur.com/gPAVIsw.jpeg",
-          "https://i.imgur.com/k8Bubgx.jpeg"
+          { "url": "https://i.imgur.com/JwSFFD5.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/wd4xodE.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/gPAVIsw.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/k8Bubgx.jpeg", "size": [3024, 4032] }
         ]
       }
     },
@@ -61,44 +61,46 @@
         "location": [32.88423744331073, -117.24213984468823],
         "name": "Asante House",
         "images": [
-          "https://i.imgur.com/41b7QoK.jpeg",
-          "https://i.imgur.com/cg9qmez.jpeg",
-          "https://i.imgur.com/KAX1Krl.jpeg"
+          { "url": "https://i.imgur.com/41b7QoK.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/cg9qmez.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/KAX1Krl.jpeg", "size": [4032, 3024] }
         ]
       },
       "ERCA": {
         "location": [32.886087113975414, -117.24205254723678],
         "name": "ERC Administration",
         "images": [
-          "https://i.imgur.com/zTuN3ki.jpeg",
-          "https://i.imgur.com/K38yRo7.jpeg",
-          "https://i.imgur.com/xsRVr2m.jpeg",
-          "https://i.imgur.com/jQdIpgH.jpeg"
+          { "url": "https://i.imgur.com/zTuN3ki.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/K38yRo7.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/xsRVr2m.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/jQdIpgH.jpeg", "size": [4032, 3024] }
         ]
       },
       "GREAT": {
         "location": [32.883944240936444, -117.24193249617227],
         "name": "Great Hall",
         "images": [
-          "https://i.imgur.com/2iS1TGa.jpeg",
-          "https://i.imgur.com/OKLA6JX.jpeg",
-          "https://i.imgur.com/2v7svKU.jpeg"
+          { "url": "https://i.imgur.com/2iS1TGa.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/OKLA6JX.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/2v7svKU.jpeg", "size": [4032, 3024] }
         ]
       },
       "LASB": {
         "location": [32.88557327735999, -117.2413567320843],
         "name": "Latin American Studies Building",
-        "images": ["https://i.imgur.com/kP1FInU.jpeg"]
+        "images": [
+          { "url": "https://i.imgur.com/kP1FInU.jpeg", "size": [4032, 3024] }
+        ]
       },
       "RBC": {
         "location": [32.88427044449085, -117.2408680383893],
         "name": "Robinson Building Complex",
         "images": [
-          "https://i.imgur.com/SDNf4ci.jpeg",
-          "https://i.imgur.com/jQMCHrY.jpeg",
-          "https://i.imgur.com/G0GLZQD.jpeg",
-          "https://i.imgur.com/XrAZzhh.jpeg",
-          "https://i.imgur.com/1ysjMHf.jpeg"
+          { "url": "https://i.imgur.com/SDNf4ci.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/jQMCHrY.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/G0GLZQD.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/XrAZzhh.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/1ysjMHf.jpeg", "size": [4032, 3024] }
         ],
         "comment": [
           "https://gps.ucsd.edu/_files/misc/GPS-Printable-Map-2015.pdf",
@@ -114,10 +116,10 @@
         "location": [32.88391338508008, -117.24045720071513],
         "name": "Social Sciences Building",
         "images": [
-          "https://i.imgur.com/bHveajb.jpeg",
-          "https://i.imgur.com/0V90Tca.jpeg",
-          "https://i.imgur.com/5A2kawY.jpeg",
-          "https://i.imgur.com/t15im8k.jpeg"
+          { "url": "https://i.imgur.com/bHveajb.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/0V90Tca.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/5A2kawY.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/t15im8k.jpeg", "size": [4032, 3024] }
         ]
       }
     },
@@ -126,74 +128,76 @@
         "location": [32.880517237245954, -117.23939317415764],
         "name": "Cognitive Science Building",
         "images": [
-          "https://i.imgur.com/CXa715U.jpeg",
-          "https://i.imgur.com/6NiZ46R.jpeg",
-          "https://i.imgur.com/wSSxyyj.jpeg",
-          "https://i.imgur.com/fSMNNuc.jpeg",
-          "https://i.imgur.com/riutYQz.jpeg",
-          "https://i.imgur.com/pa0BSpr.jpeg",
-          "https://i.imgur.com/jZvJO05.jpeg"
+          { "url": "https://i.imgur.com/CXa715U.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/6NiZ46R.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/wSSxyyj.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/fSMNNuc.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/riutYQz.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/pa0BSpr.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/jZvJO05.jpeg", "size": [4032, 3024] }
         ]
       },
       "ECON": {
         "location": [32.88235588485967, -117.24040328432459],
         "name": "Economics Building",
         "images": [
-          "https://i.imgur.com/MTxt62o.jpeg",
-          "https://i.imgur.com/iQIL8bu.jpeg",
-          "https://i.imgur.com/xnokzUN.jpeg",
-          "https://i.imgur.com/YY7YmrA.jpeg"
+          { "url": "https://i.imgur.com/MTxt62o.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/iQIL8bu.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/xnokzUN.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/YY7YmrA.jpeg", "size": [4032, 3024] }
         ]
       },
       "PETER": {
         "location": [32.879984046654364, -117.2402525268966],
         "name": "Peterson Hall",
         "images": [
-          "https://i.imgur.com/7O3YLwu.jpeg",
-          "https://i.imgur.com/kZeE8oF.jpeg",
-          "https://i.imgur.com/ryxGEki.jpeg",
-          "https://i.imgur.com/JWDIvEy.jpeg",
-          "https://i.imgur.com/ZwBOssV.jpeg"
+          { "url": "https://i.imgur.com/7O3YLwu.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/kZeE8oF.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/ryxGEki.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/JWDIvEy.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/ZwBOssV.jpeg", "size": [4032, 3024] }
         ]
       },
       "SEQUO": {
         "location": [32.88203974495475, -117.24103633144476],
         "name": "Sequoyah Hall",
         "images": [
-          "https://i.imgur.com/YXgBI1O.jpeg",
-          "https://i.imgur.com/UJa4KNw.jpeg",
-          "https://i.imgur.com/NUqDM5a.jpeg",
-          "https://i.imgur.com/f7EFZpT.jpeg",
-          "https://i.imgur.com/7zLoJjJ.jpeg",
-          "https://i.imgur.com/KBUySt6.jpeg"
+          { "url": "https://i.imgur.com/YXgBI1O.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/UJa4KNw.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/NUqDM5a.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/f7EFZpT.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/7zLoJjJ.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/KBUySt6.jpeg", "size": [4032, 3024] }
         ]
       },
       "SOLIS": {
         "location": [32.880935740253626, -117.23964750230745],
         "name": "Solís Hall",
         "images": [
-          "https://i.imgur.com/bZzkyvr.jpeg",
-          "https://i.imgur.com/EeChtxt.jpeg",
-          "https://i.imgur.com/CXa715U.jpeg"
+          { "url": "https://i.imgur.com/bZzkyvr.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/EeChtxt.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/CXa715U.jpeg", "size": [4032, 3024] }
         ]
       },
       "SSRB": {
         "location": [32.88075657728253, -117.240142743495],
         "name": "Social Sciences Research Building",
         "images": [
-          "https://i.imgur.com/ktWIzDA.jpeg",
-          "https://i.imgur.com/suB1Zw2.jpeg",
-          "https://i.imgur.com/suB1Zw2.jpeg",
-          "https://i.imgur.com/batB9YN.jpeg",
-          "https://i.imgur.com/gNdZy7z.jpeg",
-          "https://i.imgur.com/wOK32RL.jpeg",
-          "https://i.imgur.com/2Ne0Zz3.jpeg"
+          { "url": "https://i.imgur.com/ktWIzDA.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/suB1Zw2.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/suB1Zw2.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/batB9YN.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/gNdZy7z.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/wOK32RL.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/2Ne0Zz3.jpeg", "size": [4032, 3024] }
         ]
       },
       "TM102": {
         "location": [32.88134401507817, -117.23933111579409],
         "name": "Thurgood Marshall 102",
-        "images": ["https://i.imgur.com/gGIHRxo.jpeg"]
+        "images": [
+          { "url": "https://i.imgur.com/gGIHRxo.jpeg", "size": [4032, 3024] }
+        ]
       },
       "UNEXG": {
         "location": [32.88229931064555, -117.24356956315178],
@@ -217,57 +221,57 @@
         "location": [32.880720265920914, -117.24142517100402],
         "name": "Catalyst",
         "images": [
-          "https://i.imgur.com/Wgtxcio.jpeg",
-          "https://i.imgur.com/TApNHHe.jpeg",
-          "https://i.imgur.com/UzvzE2n.jpeg",
-          "https://i.imgur.com/PgRu7iI.jpeg",
-          "https://i.imgur.com/brkGKmT.jpeg",
-          "https://i.imgur.com/MzO8kdg.jpeg"
+          { "url": "https://i.imgur.com/Wgtxcio.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/TApNHHe.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/UzvzE2n.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/PgRu7iI.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/brkGKmT.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/MzO8kdg.jpeg", "size": [4032, 3024] }
         ]
       },
       "JEANN": {
         "location": [32.8799296621332, -117.24119652096547],
         "name": "The Jeannie",
         "images": [
-          "https://i.imgur.com/S7hWyFi.jpeg",
-          "https://i.imgur.com/Gr72SGn.jpeg",
-          "https://i.imgur.com/jcmweDB.jpeg",
-          "https://i.imgur.com/7g2ddgc.jpeg",
-          "https://i.imgur.com/H3pf35p.jpeg",
-          "https://i.imgur.com/WXEOHoX.jpeg",
-          "https://i.imgur.com/0SCGaj1.jpeg"
+          { "url": "https://i.imgur.com/S7hWyFi.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Gr72SGn.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/jcmweDB.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/7g2ddgc.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/H3pf35p.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/WXEOHoX.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/0SCGaj1.jpeg", "size": [4032, 3024] }
         ]
       },
       "MOS": {
         "location": [32.88001190738399, -117.24163094823878],
         "name": "Mosaic",
         "images": [
-          "https://i.imgur.com/mMpazXy.jpeg",
-          "https://i.imgur.com/kOoJMGj.jpeg",
-          "https://i.imgur.com/uYLVGh5.jpeg",
-          "https://i.imgur.com/PiC2Cb8.jpeg",
-          "https://i.imgur.com/FHpBJYo.jpeg",
-          "https://i.imgur.com/6woeDzV.jpeg",
-          "https://i.imgur.com/6woeDzV.jpeg"
+          { "url": "https://i.imgur.com/mMpazXy.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/kOoJMGj.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/uYLVGh5.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/PiC2Cb8.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/FHpBJYo.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/6woeDzV.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/6woeDzV.jpeg", "size": [4032, 3024] }
         ]
       },
       "RWAC": {
         "location": [32.880374742852574, -117.24106684310492],
         "name": "Ridge Walk Academic Complex",
         "images": [
-          "https://i.imgur.com/wzZrECe.jpeg",
-          "https://i.imgur.com/rHbydi1.jpeg",
-          "https://i.imgur.com/bckfXJi.jpeg",
-          "https://i.imgur.com/6hH79mc.jpeg",
-          "https://i.imgur.com/OHUnhy9.jpeg",
-          "https://i.imgur.com/jBTe18L.jpeg",
-          "https://i.imgur.com/cga1K75.jpeg",
-          "https://i.imgur.com/ltI4q8O.jpeg",
-          "https://i.imgur.com/8yGvvrA.jpeg",
-          "https://i.imgur.com/PKQ0Eda.jpeg",
-          "https://i.imgur.com/GJlru9N.jpeg",
-          "https://i.imgur.com/pvCEee4.jpeg",
-          "https://i.imgur.com/U817BWw.jpeg"
+          { "url": "https://i.imgur.com/wzZrECe.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/rHbydi1.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/bckfXJi.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/6hH79mc.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/OHUnhy9.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/jBTe18L.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/cga1K75.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/ltI4q8O.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/8yGvvrA.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/PKQ0Eda.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/GJlru9N.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/pvCEee4.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/U817BWw.jpeg", "size": [4032, 3024] }
         ]
       }
     },
@@ -276,75 +280,77 @@
         "location": [32.87900949086575, -117.24105009713044],
         "name": "Applied Physics and Mathematics",
         "images": [
-          "https://i.imgur.com/89vhOWC.jpeg",
-          "https://i.imgur.com/1xFYiGu.jpeg",
-          "https://i.imgur.com/89vhOWC.jpeg",
-          "https://i.imgur.com/FloMKYA.jpeg"
+          { "url": "https://i.imgur.com/89vhOWC.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/1xFYiGu.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/89vhOWC.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/FloMKYA.jpeg", "size": [4032, 3024] }
         ]
       },
       "BIO": {
         "location": [32.878428690703146, -117.24103674033825],
         "name": "Biology Building",
         "images": [
-          "https://i.imgur.com/voBOeaq.jpeg",
-          "https://i.imgur.com/7fdINBO.jpeg",
-          "https://i.imgur.com/BklsyEi.jpeg"
+          { "url": "https://i.imgur.com/voBOeaq.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/7fdINBO.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/BklsyEi.jpeg", "size": [4032, 3024] }
         ]
       },
       "HSS": {
         "location": [32.87834508545459, -117.24168835799722],
         "name": "Humanities and Social Sciences Building",
         "images": [
-          "https://i.imgur.com/Lue4Hz0.jpeg",
-          "https://i.imgur.com/ESTU5K4.jpeg",
-          "https://i.imgur.com/hoq0JCh.jpeg",
-          "https://i.imgur.com/q36eBkZ.jpeg"
+          { "url": "https://i.imgur.com/Lue4Hz0.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/ESTU5K4.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/hoq0JCh.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/q36eBkZ.jpeg", "size": [3024, 4032] }
         ]
       },
       "LEDDN": {
         "location": [32.87876783002103, -117.24168242455174],
         "name": "Ledden Auditorium",
         "images": [
-          "https://i.imgur.com/TeEhzeV.jpeg",
-          "https://i.imgur.com/BklsyEi.jpeg",
-          "https://i.imgur.com/TqvKBYJ.jpeg"
+          { "url": "https://i.imgur.com/TeEhzeV.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/BklsyEi.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/TqvKBYJ.jpeg", "size": [4032, 3024] }
         ]
       },
       "MANDE": {
         "location": [32.877812337766414, -117.23998508397895],
         "name": "Mandeville Center",
         "images": [
-          "https://i.imgur.com/2yXTr9k.jpeg",
-          "https://i.imgur.com/w93BY9I.jpeg",
-          "https://i.imgur.com/4MCnqQs.jpeg",
-          "https://i.imgur.com/kUJwqWS.jpeg",
-          "https://i.imgur.com/vcZNcYB.jpeg",
-          "https://i.imgur.com/aW79Stz.jpeg",
-          "https://i.imgur.com/Xb8Lgc3.jpeg"
+          { "url": "https://i.imgur.com/2yXTr9k.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/w93BY9I.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/4MCnqQs.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/kUJwqWS.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/vcZNcYB.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/aW79Stz.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Xb8Lgc3.jpeg", "size": [4032, 3024] }
         ]
       },
       "MCGIL": {
         "location": [32.87900601797463, -117.24205773606351],
         "name": "McGill Hall",
         "images": [
-          "https://i.imgur.com/ean0Xw4.jpeg",
-          "https://i.imgur.com/FAyAZ2g.jpeg",
-          "https://i.imgur.com/oKUKr7n.jpeg",
-          "https://i.imgur.com/RyCAZpz.jpeg"
+          { "url": "https://i.imgur.com/ean0Xw4.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/FAyAZ2g.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/oKUKr7n.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/RyCAZpz.jpeg", "size": [4032, 3024] }
         ]
       },
       "MNDLR": {
         "location": [32.87928595670899, -117.24214505416418],
         "name": "Mandler Hall",
         "images": [
-          "https://i.imgur.com/wHkcEkv.jpeg",
-          "https://i.imgur.com/VjGXYpA.jpeg"
+          { "url": "https://i.imgur.com/wHkcEkv.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/VjGXYpA.jpeg", "size": [4032, 3024] }
         ]
       },
       "RECGM": {
         "location": [32.87672837413399, -117.24124478552716],
         "name": "Recreation Gym",
-        "images": ["https://i.imgur.com/qRSwZXl.jpeg"]
+        "images": [
+          { "url": "https://i.imgur.com/qRSwZXl.jpeg", "size": [4032, 3024] }
+        ]
       },
       "STCTR": {
         "location": [32.87752027586717, -117.23974942056223],
@@ -366,65 +372,67 @@
         "location": [32.876084946774036, -117.24038814500676],
         "name": "Bonner Hall",
         "images": [
-          "https://i.imgur.com/O46bvAl.jpeg",
-          "https://i.imgur.com/C9iPmC5.jpeg",
-          "https://i.imgur.com/PAzV1gB.jpeg"
+          { "url": "https://i.imgur.com/O46bvAl.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/C9iPmC5.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/PAzV1gB.jpeg", "size": [4032, 3024] }
         ]
       },
       "GH": {
         "location": [32.87374584111353, -117.24092662366324],
         "name": "Galbraith Hall",
         "images": [
-          "https://i.imgur.com/cRjQv3U.jpeg",
-          "https://i.imgur.com/diEDnqe.jpeg",
-          "https://i.imgur.com/LkEDdjA.jpeg",
-          "https://i.imgur.com/5ZlmhSL.jpeg"
+          { "url": "https://i.imgur.com/cRjQv3U.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/diEDnqe.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/LkEDdjA.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/5ZlmhSL.jpeg", "size": [4032, 3024] }
         ]
       },
       "MAYER": {
         "location": [32.87528696893803, -117.24019479635555],
         "name": "Mayer Hall",
         "images": [
-          "https://i.imgur.com/EdHd4Ud.jpeg",
-          "https://i.imgur.com/RnOIVMS.jpeg"
+          { "url": "https://i.imgur.com/EdHd4Ud.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/RnOIVMS.jpeg", "size": [4032, 3024] }
         ]
       },
       "MYR-A": {
         "location": [32.87536189399691, -117.23970412241734],
         "name": "Mayer Hall Addition",
-        "images": ["https://i.imgur.com/GWhZi3j.jpeg"]
+        "images": [
+          { "url": "https://i.imgur.com/GWhZi3j.jpeg", "size": [4032, 3024] }
+        ]
       },
       "NSB": {
         "location": [32.87527130105447, -117.24282324774462],
         "name": "Natural Sciences Building",
         "images": [
-          "https://i.imgur.com/gHCTVsy.jpeg",
-          "https://i.imgur.com/p0Gb9tw.jpeg",
-          "https://i.imgur.com/R6YKwCR.jpeg",
-          "https://i.imgur.com/LJyRUbq.jpeg",
-          "https://i.imgur.com/Dj4bcaH.jpeg",
-          "https://i.imgur.com/7swuR0z.jpeg"
+          { "url": "https://i.imgur.com/gHCTVsy.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/p0Gb9tw.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/R6YKwCR.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/LJyRUbq.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Dj4bcaH.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/7swuR0z.jpeg", "size": [4032, 3024] }
         ]
       },
       "PACIF": {
         "location": [32.87595284128824, -117.24210006678864],
         "name": "Pacific Hall",
         "images": [
-          "https://i.imgur.com/icFVT7s.jpeg",
-          "https://i.imgur.com/ql0yrzo.jpeg",
-          "https://i.imgur.com/7swuR0z.jpeg",
-          "https://i.imgur.com/SZBGFAD.jpeg",
-          "https://i.imgur.com/O57GZsU.jpeg",
-          "https://i.imgur.com/gHurrsx.jpeg"
+          { "url": "https://i.imgur.com/icFVT7s.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/ql0yrzo.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/7swuR0z.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/SZBGFAD.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/O57GZsU.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/gHurrsx.jpeg", "size": [3024, 4032] }
         ]
       },
       "REV": {
         "location": [32.87480385710217, -117.24096166711239],
         "name": "Revelle Plaza",
         "images": [
-          "https://i.imgur.com/C1hf2i4.jpeg",
-          "https://i.imgur.com/WswaxG1.jpeg",
-          "https://i.imgur.com/xgdoadK.jpeg"
+          { "url": "https://i.imgur.com/C1hf2i4.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/WswaxG1.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/xgdoadK.jpeg", "size": [4032, 3024] }
         ],
         "comment": ["Revelle Plaza Outdoor Classroom"]
       },
@@ -432,41 +440,40 @@
         "location": [32.87457496393089, -117.2425008415767],
         "name": "Revelle Commons",
         "images": [
-          "https://i.imgur.com/LC6z27w.jpeg",
-          "https://i.imgur.com/cZOtJyZ.jpeg",
-          "https://i.imgur.com/M8mLc0O.jpeg",
-          "https://i.imgur.com/tkfsNCA.jpeg"
+          { "url": "https://i.imgur.com/LC6z27w.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/cZOtJyZ.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/M8mLc0O.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/tkfsNCA.jpeg", "size": [4032, 3024] }
         ]
       },
       "TATA": {
         "location": [32.876460769081355, -117.24152230144844],
         "name": "Tata Hall",
         "images": [
-          "https://i.imgur.com/xgg8MgX.jpeg",
-          "https://i.imgur.com/RXHiy6H.jpeg"
+          { "url": "https://i.imgur.com/xgg8MgX.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/RXHiy6H.jpeg", "size": [4032, 3024] }
         ]
       },
       "UREY": {
         "location": [32.875555403867246, -117.2412962102085],
         "name": "Urey Hall",
         "images": [
-          "https://i.imgur.com/GHh8eKi.jpeg",
-          "https://i.imgur.com/WJoatRZ.jpeg",
-          "https://i.imgur.com/tw8jQvV.jpeg",
-          "https://i.imgur.com/x25Ffeu.jpeg",
-
-          "https://i.imgur.com/eeDOB4E.jpeg",
-          "https://i.imgur.com/v8NnQ5W.jpeg"
+          { "url": "https://i.imgur.com/GHh8eKi.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/WJoatRZ.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/tw8jQvV.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/x25Ffeu.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/eeDOB4E.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/v8NnQ5W.jpeg", "size": [4032, 3024] }
         ]
       },
       "YORK": {
         "location": [32.87454593562147, -117.24000502137861],
         "name": "York Hall",
         "images": [
-          "https://i.imgur.com/ZSk3HVG.jpeg",
-          "https://i.imgur.com/OlQ1P94.jpeg",
-          "https://i.imgur.com/nSvISfv.jpeg",
-          "https://i.imgur.com/NY73bP9.jpeg"
+          { "url": "https://i.imgur.com/ZSk3HVG.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/OlQ1P94.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/nSvISfv.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/NY73bP9.jpeg", "size": [4032, 3024] }
         ],
         "comment": [
           "Herbert F. York Undergraduate Sciences Building",
@@ -479,20 +486,20 @@
         "location": [32.87186729617818, -117.24003377110412],
         "name": "Molli and Arthur Wagner Dance Building",
         "images": [
-          "https://i.imgur.com/IjcxcYu.jpeg",
-          "https://i.imgur.com/mZqSm9K.jpeg",
-          "https://i.imgur.com/Ff2omog.jpeg",
-          "https://i.imgur.com/Cd9qF5k.jpeg"
+          { "url": "https://i.imgur.com/IjcxcYu.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/mZqSm9K.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Ff2omog.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Cd9qF5k.jpeg", "size": [4032, 3024] }
         ]
       },
       "MWEIS": {
         "location": [32.87095079844769, -117.24121579783444],
         "name": "Mandell Weiss Theatre",
         "images": [
-          "https://i.imgur.com/hFfdmH0.jpeg",
-          "https://i.imgur.com/axNZj29.jpeg",
-          "https://i.imgur.com/7XrSpQc.jpeg",
-          "https://i.imgur.com/U1yMrNx.jpeg"
+          { "url": "https://i.imgur.com/hFfdmH0.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/axNZj29.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/7XrSpQc.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/U1yMrNx.jpeg", "size": [4032, 3024] }
         ],
         "comment": [
           "According to http://m.ucsd.edu/maps/static/location/5?query=&no_server_init it's the theater not forum"
@@ -510,8 +517,8 @@
         "location": [32.87110810161448, -117.24052277636109],
         "name": "Sheila and Hughes Potiker Theatre",
         "images": [
-          "https://i.imgur.com/g5FaydY.jpeg",
-          "https://i.imgur.com/sUsYzqf.jpeg"
+          { "url": "https://i.imgur.com/g5FaydY.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/sUsYzqf.jpeg", "size": [4032, 3024] }
         ],
         "comment": [
           "This is the building with the big glass windows that say 'La Jolla Playhouse.' It's labelled as La Jolla Playhouse on the map."
@@ -533,38 +540,38 @@
         "location": [32.88168612813114, -117.2352758424052],
         "name": "Jacobs Hall",
         "images": [
-          "https://i.imgur.com/KqK2iLM.jpeg",
-          "https://i.imgur.com/6vAmVAz.jpeg",
-          "https://i.imgur.com/TAqZDMr.jpeg",
-          "https://i.imgur.com/5heLBXk.jpeg",
-          "https://i.imgur.com/z9nZx9E.jpeg"
+          { "url": "https://i.imgur.com/KqK2iLM.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/6vAmVAz.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/TAqZDMr.jpeg", "size": [3024, 4032] },
+          { "url": "https://i.imgur.com/5heLBXk.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/z9nZx9E.jpeg", "size": [4032, 3024] }
         ]
       },
       "EBU2": {
         "location": [32.88116494369773, -117.23334050065942],
         "name": "Engineering Building Unit II",
         "images": [
-          "https://i.imgur.com/hABuTPh.jpeg",
-          "https://i.imgur.com/W3BFNPh.jpeg"
+          { "url": "https://i.imgur.com/hABuTPh.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/W3BFNPh.jpeg", "size": [4032, 3024] }
         ]
       },
       "EBU3B": {
         "location": [32.8817383470234, -117.23358830529953],
         "name": "Computer Science and Engineering Building",
         "images": [
-          "https://i.imgur.com/cIKcb6i.jpeg",
-          "https://i.imgur.com/840Ijht.jpeg",
-          "https://i.imgur.com/EHbekQN.jpeg",
-          "https://i.imgur.com/989kevK.jpeg"
+          { "url": "https://i.imgur.com/cIKcb6i.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/840Ijht.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/EHbekQN.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/989kevK.jpeg", "size": [4032, 3024] }
         ]
       },
       "FAH": {
         "location": [32.883557123107536, -117.23496426482438],
         "name": "Franklin Antonio Hall",
         "images": [
-          "https://i.imgur.com/MGZugul.jpeg",
-          "https://i.imgur.com/dMr7V2X.jpeg",
-          "https://i.imgur.com/TbzWfMa.jpeg"
+          { "url": "https://i.imgur.com/MGZugul.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/dMr7V2X.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/TbzWfMa.jpeg", "size": [4032, 3024] }
         ]
       },
       "HDSI": {
@@ -576,14 +583,16 @@
       "PFBH": {
         "location": [32.88173836638747, -117.2343791731388],
         "name": "Powell-Focht Bioengineering Hall",
-        "images": ["https://i.imgur.com/lYP4GT9.jpeg"]
+        "images": [
+          { "url": "https://i.imgur.com/lYP4GT9.jpeg", "size": [4032, 3024] }
+        ]
       },
       "WARR": {
         "location": [32.88114818094256, -117.23504265009306],
         "name": "Warren Mall",
         "images": [
-          "https://i.imgur.com/zqg1cHJ.jpeg",
-          "https://i.imgur.com/zlTUVJf.jpeg"
+          { "url": "https://i.imgur.com/zqg1cHJ.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/zlTUVJf.jpeg", "size": [4032, 3024] }
         ],
         "comment": ["Warren Mall Outdoor Classroom"]
       },
@@ -591,17 +600,17 @@
         "location": [32.88059104682919, -117.23436049332548],
         "name": "Warren Lecture Hall",
         "images": [
-          "https://i.imgur.com/YEaKlBF.jpeg",
-          "https://i.imgur.com/Kdv8YiX.jpeg"
+          { "url": "https://i.imgur.com/YEaKlBF.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Kdv8YiX.jpeg", "size": [4032, 3024] }
         ]
       },
       "WSAC": {
         "location": [32.88246082957613, -117.23329893891902],
         "name": "Warren Student Activities Center",
         "images": [
-          "https://i.imgur.com/DRjFAFy.jpeg",
-          "https://i.imgur.com/Q3u5WgD.jpeg",
-          "https://i.imgur.com/Byuu0Vw.jpeg"
+          { "url": "https://i.imgur.com/DRjFAFy.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Q3u5WgD.jpeg", "size": [4032, 3024] },
+          { "url": "https://i.imgur.com/Byuu0Vw.jpeg", "size": [4032, 3024] }
         ]
       }
     },
@@ -645,8 +654,8 @@
       },
       "P416": {
         "location": [32.87775532737337, -117.23812995691154],
-        "name": "Center Hall",
-        "images": ["Parking Lot P416"],
+        "name": "Parking Lot P416",
+        "images": [],
         "comment": ["P416 Outdoor Classroom"]
       },
       "PRICE": {
