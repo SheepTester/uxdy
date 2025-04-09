@@ -313,6 +313,7 @@ input[type='checkbox']:checked:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  transition: opacity 0.2s, visibility 0.2s;
 }
 @media (max-width: 690px) {
   .corner {
@@ -324,6 +325,13 @@ input[type='checkbox']:checked:hover {
     gap: 10px;
     flex-direction: column-reverse;
     align-items: flex-start;
+  }
+}
+/* To prevent user from opening date panel while building panel is open */
+@media (max-width: 950px) {
+  .bottom-panel-open {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 .date-time-button {
@@ -339,13 +347,6 @@ input[type='checkbox']:checked:hover {
 .date-time-button:disabled {
   box-shadow: none;
   border-radius: 15px;
-}
-/* To prevent user from opening date panel while building panel is open */
-@media (max-width: 950px) {
-  .bottom-panel-open {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 .showing-schedule-wrapper {
   margin: 0;

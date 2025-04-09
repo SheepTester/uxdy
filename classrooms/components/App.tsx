@@ -235,7 +235,6 @@ export function App ({ title }: AppProps) {
     setRealTime(view.term === null)
     setMoment(fromMoment(view.term ?? now(), view.term === null))
     setShowResults(!!view.searching)
-    console.log(view.term) // TEMP
     if (view.type === 'default') {
       setModal(null)
       setBuildingCode(null)
@@ -357,10 +356,11 @@ export function App ({ title }: AppProps) {
           visible={!noticeVisible}
         />
         <ResultModal view={modalView} open={modal !== null} />
-        <div class='corner'>
+        <div
+          class={`corner ${buildingPanelVisible ? 'bottom-panel-open' : ''}`}
+        >
           <DateTimeButton
             onClick={() => setShowDatePanel(true)}
-            bottomPanelOpen={buildingPanelVisible}
             disabled={datePanelVisible}
           />
           <TermStatus status={state?.status} visible={!noticeVisible} />

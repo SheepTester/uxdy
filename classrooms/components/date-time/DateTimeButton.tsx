@@ -15,25 +15,16 @@ const dateFormat = new Intl.DateTimeFormat([], {
 
 export type DateTimeButtonProps = {
   onClick: () => void
-  bottomPanelOpen: boolean
   disabled: boolean
 }
-export function DateTimeButton ({
-  onClick,
-  bottomPanelOpen,
-  disabled
-}: DateTimeButtonProps) {
+export function DateTimeButton ({ onClick, disabled }: DateTimeButtonProps) {
   const {
     date,
     time,
     currentTerm: { year, season, current, week }
   } = useMoment()
   return (
-    <button
-      class={`date-time-button ${bottomPanelOpen ? 'bottom-panel-open' : ''}`}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <button class='date-time-button' onClick={onClick} disabled={disabled}>
       <p class='showing-schedule-wrapper'>
         <span class='showing-schedule-text'>Showing schedule for</span>
         <div class='date-time'>
