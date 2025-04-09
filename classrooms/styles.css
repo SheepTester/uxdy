@@ -313,6 +313,7 @@ input[type='checkbox']:checked:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  transition: opacity 0.2s, visibility 0.2s;
 }
 @media (max-width: 690px) {
   .corner {
@@ -324,6 +325,13 @@ input[type='checkbox']:checked:hover {
     gap: 10px;
     flex-direction: column-reverse;
     align-items: flex-start;
+  }
+}
+/* To prevent user from opening date panel while building panel is open */
+@media (max-width: 950px) {
+  .bottom-panel-open {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 .date-time-button {
@@ -339,12 +347,6 @@ input[type='checkbox']:checked:hover {
 .date-time-button:disabled {
   box-shadow: none;
   border-radius: 15px;
-}
-@media (max-width: 950px) {
-  .bottom-panel-open {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 .showing-schedule-wrapper {
   margin: 0;
@@ -716,7 +718,7 @@ input[type='checkbox']:checked:hover {
 .list-view .room-number {
   opacity: 0;
 }
-.building-image {
+.building-header-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -724,12 +726,14 @@ input[type='checkbox']:checked:hover {
   height: 100%;
   object-fit: cover;
   opacity: 0.5;
-  transition: opacity 0.5s;
 }
-.schedule-view .building-image {
+.schedule-view .building-header-image {
   opacity: 0;
 }
-.building-image-loading {
+.image {
+  transition: opacity 0.5s;
+}
+.image-loading {
   opacity: 0;
   transition: none;
 }
@@ -755,6 +759,35 @@ input[type='checkbox']:checked:hover {
   visibility: hidden;
   opacity: 0;
   margin-left: -48px;
+}
+.building-images {
+  padding: 0 20px;
+  padding-top: 20px;
+  column-width: 200px;
+  column-gap: 20px;
+  column-fill: balance;
+}
+.building-image-link {
+  display: block;
+  margin-bottom: 20px;
+}
+@media (max-width: 690px) {
+  .building-images {
+    padding: 0 10px;
+    padding-top: 10px;
+  }
+  .building-image-link {
+    margin-bottom: 10px;
+  }
+}
+.building-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: box-shadow 0.2s, opacity 0.2s;
+}
+.building-image-link:hover .building-image {
+  box-shadow: var(--card-shadow-hover);
 }
 
 .empty {
@@ -1317,6 +1350,34 @@ input[type='checkbox']:checked:hover {
 }
 .meeting-date {
   width: 180px;
+}
+.live-marker {
+  background-color: var(--active);
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0.2em 0.25em;
+  border-radius: 50%;
+  position: relative;
+}
+.live-marker::after {
+  content: '';
+  background-color: var(--active);
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: live 1s infinite;
+}
+@keyframes live {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 .location {
   width: 80px;
