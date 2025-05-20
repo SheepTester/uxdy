@@ -53,7 +53,7 @@ jobs:
           do
             export TERM="$quarter$YEAR"
             echo "Scraping $TERM"
-            deno task classrooms:scrape-to-file
+            deno task classrooms:scrape-to-file || true
           done
       - name: Upload scraped data
         uses: actions/upload-artifact@v4
