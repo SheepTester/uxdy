@@ -1,5 +1,5 @@
-V41744137566508
-AAPI198  Directed Group Studies
+V41747709822056
+AAPI198  Directed Group Studies	/courses/AAPI.html#aapi198
  A00GROW: AAPI Community Stories	Amanda Lee Albaniel,Solomon
 9999TBA  TBA  INTBA  TBA TBA A00
 AAS 10   Intro/African-American Studies	/courses/AASM.html#aas10
@@ -1020,6 +1020,8 @@ BENG298L Laboratory Research Rotation	/courses/BENG.html#beng298l
 9999TBA  TBA  INTBA  TBA TBA 011
  012	Tzyy-Ping,Jung
 9999TBA  TBA  INTBA  TBA TBA 012
+ 013	Robin,Knight
+9999TBA  TBA  INTBA  TBA TBA 013
 BENG299  Graduate Research	/courses/BENG.html#beng299
  001	Ludmil B,Alexandrov
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -4466,7 +4468,7 @@ CHEM298  Special Study in Chemistry	/courses/CHEM.html#chem298
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Galia T,Debelouchina
 9999TBA  TBA  INTBA  TBA TBA 002
- 003	Michael,Galperin
+ 003	Daniel J.,Donoghue
 9999TBA  TBA  INTBA  TBA TBA 003
  004	Andrew C,Kummel
 9999TBA  TBA  INTBA  TBA TBA 004
@@ -4527,7 +4529,7 @@ CHEM299  Research in Chemistry	/courses/CHEM.html#chem299
 9999TBA  TBA  INTBA  TBA TBA 024
  025	Partho,Ghosh
 9999TBA  TBA  INTBA  TBA TBA 025
- 026	Michael K.,Gilson
+ 026	Daniel J.,Donoghue
 9999TBA  TBA  INTBA  TBA TBA 026
  027	Kamil,Godula
 9999TBA  TBA  INTBA  TBA TBA 027
@@ -6198,7 +6200,7 @@ CSE 210  Principle/Software Engineering	/courses/CSE.html#cse210
 CSE 219  Design at Large	/courses/CSE.html#cse219
  A00	Kristen Marie,Vaccaro
 0000DIB  3    SE208  16001750A00
-CSE 220  Operating Systems Principles
+CSE 220  Operating Systems Principles	/courses/CSE.html#cse220
 :A00	Joseph,Pasquale
 0140WLH  5    DI2001 17001750A01
 CTL  13   LE0125 17001820A00
@@ -7733,7 +7735,7 @@ SOLIS13   LE107  12001250A00
 0054CENTR5    LA222  08000850B010054CENTR5    LA222  09000950B020054PCYNH3    LA121  19001950B030054MANDE3    LAB150 15001550B040054PETER3    LA102  16001650B05
 SOLIS13   LE107  13001350B00
 20250315CTL  FI0125 15001759
-ECON86   10x10 Career Lessons
+ECON86   10x10 Career Lessons	/courses/ECON.html#econ86
  A00	Marc,Muendler
 0100PODEM2    SE1A20 17001850A00
 ECON100A Microeconomics A	/courses/ECON.html#econ100a
@@ -8125,7 +8127,7 @@ EDS 149  Prof. Learning in Practice	/courses/EDS.html#eds149
 0020TBA  TBA  PRTBA  TBA TBA A00
  B00	Erica M.,Heinzman
 0020TBA  TBA  PRTBA  TBA TBA B00
-EDS 162  Building Equitable Learning
+EDS 162  Building Equitable Learning	/courses/EDS.html#eds162
 .A00	Andrew,Phuong
 0020MANDE4    DIB146 18301920A01
 MANDE3    LEB146 17001950A00
@@ -8263,10 +8265,10 @@ EDS 299  Dissertation Research	/courses/EDS.html#eds299
 0010TBA  TBA  INTBA  TBA TBA 015
  016	Shana R,Cohen
 0010TBA  TBA  INTBA  TBA TBA 016
-EDS 324ARTeaching Impacts of Technology
+EDS 324ARTeaching Impacts of Technology	/courses/EDS.html#eds324ar
  A00	Elizabeth A,Simon
 0015TBA  TBA  LETBA  TBA TBA A00
-EDS 324BRCT & Block-Based Programming
+EDS 324BRCT & Block-Based Programming	/courses/EDS.html#eds324br
  A00	Emi,Eguchi
 0010TBA  TBA  LETBA  TBA TBA A00
 EDS 352B Bilingual Instr Practices II	/courses/EDS.html#eds352b
@@ -9186,11 +9188,11 @@ HINE125  Jews in Greek and Roman World	/courses/HIST.html#hine125
 HINE186  Topics/Middle Eastern History	/courses/HIST.html#hine186
  A00Middle East Conflict	Deborah,Hertz	Hasan,Kayali
 0015RWAC 4    SE0935 09001150A00
-HISA110  Modern India and South Asia
+HISA110  Modern India and South Asia	/courses/HIST.html#hisa110
 'A00	Aniket,De
 0050YORK 24   LE4080A15301650A00
 20250318YORK FI4080A15001759
-HISA144  Topics in South Asian History
+HISA144  Topics in South Asian History	/courses/HIST.html#hisa144
 HISC109  Invention of Tropical Disease	/courses/HIST.html#hisc109
 'A00	Claire Ellen,Edington
 0050YORK 24   LE4080A12301350A00
@@ -10103,7 +10105,7 @@ LTCO299  Dissertation	/courses/LIT.html#ltco299
 9999TBA  TBA  INTBA  TBA TBA 005
  006	Kathryn A,Walkiewicz
 9999TBA  TBA  INTBA  TBA TBA 006
-LTCS11   Legends/Fantasy/Sci-Fi
+LTCS11   Legends/Fantasy/Sci-Fi	/courses/LIT.html#ltcs11
  A00	Lisa,Lampert-Weissig
 0040SOLIS24   LE109  11001220A00
 LTCS87   First-year Seminar	/courses/LIT.html#ltcs87
@@ -10363,15 +10365,15 @@ LTSP2C   Intermediate Spanish III	/courses/LIT.html#ltsp2c
 .A00	Toni,Lampell
 0028RWAC 24   DI0291 11001150A01
 CENTR135  LE220  11001150A00
-LTSP2F   Spanish Heritage Learners II
+LTSP2F   Spanish Heritage Learners II	/courses/LIT.html#ltsp2f
  A00	Alexandra L,Mastromartino
 0025RWAC 135  LE0372 10001050A00
-LTSP3F   Spanish Heritage Learners III
+LTSP3F   Spanish Heritage Learners III	/courses/LIT.html#ltsp3f
  A00	Noelia,Dominguez
 0025WLH  135  LE2209 11001150A00
  B00	Noelia,Dominguez
 0025WLH  135  LE2209 12001250B00
-LTSP100F Adv Span Heritage Lang & Cult
+LTSP100F Adv Span Heritage Lang & Cult	/courses/LIT.html#ltsp100f
  A00	Carol,Arcos Herrera
 0025RWAC 135  LE0374 11001150A00
  B00	Noelia,Dominguez
@@ -10408,7 +10410,7 @@ LTSP299  Dissertation	/courses/LIT.html#ltsp299
 LTTH210B Literary Theory	/courses/LIT.html#ltth210b
  B00	John D,Blanco
 0015RWAC 1    SE0374 15001750B00
-LTWL11   Health and Literature
+LTWL11   Health and Literature	/courses/LIT.html#ltwl11
  A00	Amrita,Dhar
 0040SOLIS135  LE109  13001350A00
 LTWL19B  Intro/Ancient Greeks & Romans	/courses/LIT.html#ltwl19b
@@ -10472,31 +10474,31 @@ LTWR8B   Writing Poetry	/courses/LIT.html#ltwr8b
 0028RWAC 5    DI0291 10001050A010028RWAC 5    DI0291 11001150A020028RWAC 5    DI0291 12001250A030028RWAC 5    DI0291 13001350A04
 CSB  24   LE001  11001220A00TBA  TBA  LATBA  TBA TBA A50
 20250320CSB  FI001  11301429
-LTWR101C Writing Fiction/Spanish Craft
+LTWR101C Writing Fiction/Spanish Craft	/courses/LIT.html#ltwr101c
  A00	Nadia,Villafuerte Vazquez
 0030RWAC 135  LE0292 14001450A00
-LTWR109C Children's Literature Craft
+LTWR109C Children's Literature Craft	/courses/LIT.html#ltwr109c
  A00	Christopher,Terry
 0031RWAC 13   LE0292 09301050A00
-LTWR110C Screen Writing Craft
+LTWR110C Screen Writing Craft	/courses/LIT.html#ltwr110c
  A00	Christopher,Terry
 0030RWAC 13   LE0292 08000920A00
-LTWR113C Intercultural Writing Craft
+LTWR113C Intercultural Writing Craft	/courses/LIT.html#ltwr113c
  A00	Amy Sara,Carroll
 0030RWAC 3    LE0292 17001950A00
-LTWR114W Graphic Texts Workshop
+LTWR114W Graphic Texts Workshop	/courses/LIT.html#ltwr114w
  A00	Anna Joy,Springer
 0015RWAC 4    SE0371 17001950A00
-LTWR115C Experimental Writing Craft
+LTWR115C Experimental Writing Craft	/courses/LIT.html#ltwr115c
  A00	Casandra,Lopez
 0030RWAC 135  LE0292 11001150A00
-LTWR120C Personal Narrative Craft
+LTWR120C Personal Narrative Craft	/courses/LIT.html#ltwr120c
  A00	Marco,Wilkinson
 0030RWAC 24   LE0292 08000920A00
-LTWR121C Media Writing Craft
+LTWR121C Media Writing Craft	/courses/LIT.html#ltwr121c
  A00	Christopher,Terry
 0030RWAC 13   LE0292 12301350A00
-LTWR126W Creative Nonfiction Workshop
+LTWR126W Creative Nonfiction Workshop	/courses/LIT.html#ltwr126w
  A00	Casandra,Lopez
 0015RWAC 13   SE0371 14001520A00
 LTWR144  The Teaching of Writing	/courses/LIT.html#ltwr144
@@ -13557,7 +13559,7 @@ PHAR295  Pharmacolgy Research Discussns
 PHAR299  Independent Study Project
  001	Johannes,Schoeneberg
 9999TBA  TBA  INTBA  TBA TBA 001
-PHIL2    Puzzles and Paradoxes
+PHIL2    Puzzles and Paradoxes	/courses/PHIL.html#phil2
 :A00	Alexander William,Kocurek
 0033TBA  TBA  DITBA  TBA TBA A01
 RWAC 24   LE0426 09301050A00
@@ -13602,7 +13604,7 @@ PHIL51   Climate Ethics	/courses/PHIL.html#phil51
 'A00	Karenc,Kovaka
 0123LEDDN13   LEAUD  17001820A00
 20250317LEDDNFIAUD  19002159
-PHIL65   Language and Power
+PHIL65   Language and Power	/courses/PHIL.html#phil65
 'A00	Rachel Etta,Rudolph
 0031RWAC 24   LE0426 14001520A00
 20250320RWAC FI0426 15001759
@@ -14226,7 +14228,7 @@ PHYS130C Quantum Physics III	/courses/PHYS.html#phys130c
 0060WLH  2    DI2111 18001850A01
 PCYNH135  LE121  09000950A00
 20250319PCYNHFI121  08001059
-PHYS136  Nuclear Physics
+PHYS136  Nuclear Physics	/courses/PHYS.html#phys136
 'A00	Benjamin,Grinstein
 0050YORK 135  LE4080A15001550A00
 20250319YORK FI4080A15001759
@@ -14637,7 +14639,7 @@ POLI137  Sports Analytics Apprch/SocSci	/courses/POLI.html#poli137
 'A00	Sebastian,Saiegh
 0056CSB  135  LE004  09000950A00
 20250319CSB  FI004  08001059
-POLI138  Populist Parties and Democracy
+POLI138  Populist Parties and Democracy	/courses/POLI.html#poli138
 'A00	Matthew William,Draper
 0120CSB  24   LE001  14001520A00
 20250320CSB  FI001  15001759
@@ -15504,7 +15506,7 @@ RMAS429  Radiation Therapy Clerkship
 RMED296  Independent Study
  001	Antoni,Duleba
 0010TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Sheila Krishnan,Mody
 0010TBA  TBA  INTBA  TBA TBA 002
  003
 0010TBA  TBA  INTBA  TBA TBA 003
@@ -15650,7 +15652,7 @@ MGT 121A Innovation to Market A	/courses/MGT.html#mgt121a
 'A00	Jeffrey David,Klaas
 0098OTRSN1    LE1S11417001950A00
 20250317TBA  FITBA  19002159
-MGT 123  Business/Hlthcare&LifeSciences
+MGT 123  Business/Hlthcare&LifeSciences	/courses/MGT.html#mgt123
 'A00	Magnus Roland,Felke
 0098OTRSN4    LE1S11418302120A00
 20250318TBA  FITBA  19002159
@@ -15801,6 +15803,8 @@ MGT 198  Directed Group Study	/courses/MGT.html#mgt198
 MGT 199  Directed Independent Study	/courses/MGT.html#mgt199
  001	Travis Dean,Chamberlain
 9999TBA  TBA  INTBA  TBA TBA 001
+ 002	William H,Molloie Jr.
+9999TBA  TBA  INTBA  TBA TBA 002
 MGT 241  Decision and Risk Analysis
  A00	Sanjiv,Erat	Jon P,Wade
 0000TBA  56   LETBA  09001800A00
@@ -15876,7 +15880,7 @@ MGT 404  Accounting	/courses/MGT.html#mgt404
 'A00	Marcus Raymond,Brooks
 0060OTRSN2    LE4E10618302120A00
 20250318OTRSNFI4E10618302130
-MGT 404R Accounting
+MGT 404R Accounting	/courses/MGT.html#mgt404r
  A00	Eric,Floyd
 0098OTRSN6    LE1E10613001700A00
 MGT 408  Finance	/courses/MGT.html#mgt408
@@ -15903,7 +15907,7 @@ MGT 413  Operations Management	/courses/MGT.html#mgt413
 'B00	Shirin,Shahsavand
 0060OTRSN2    LE4E10614001650B00
 20250318OTRSNFI4E10611301430
-MGT 413R Operations Management
+MGT 413R Operations Management	/courses/MGT.html#mgt413r
  A00	Danqi,Luo
 0098OTRSN6    LE1E10608001200A00
 MGT 414  Rady Action Project	/courses/MGT.html#mgt414
@@ -15919,7 +15923,7 @@ MGT 415  New Venture Development
 MGT 419  Global Business Immersion	/courses/MGT.html#mgt419
  A00Singapore Immersion	Ayelet,Gneezy
 0000TBA  TBA  LETBA  TBA TBA A00
-MGT 420R Negotiation
+MGT 420R Negotiation	/courses/MGT.html#mgt420r
  A00	Uri,Gneezy
 0098TBA  TBA  LETBA  TBA TBA A00
 MGT 421  CEO & Corporate Governance	/courses/MGT.html#mgt421
@@ -16011,7 +16015,7 @@ MGTA458  Experiments for BusAnalytics	/courses/MGT.html#mgta458
  B00	Erik Barry,Johnson
 0098OTRSN6    SE1E10708001200B00
 MGTA466  Scalable Analytics	/courses/MGT.html#mgta466
- A00	Mai Huong,Nguyen
+ A00	Mai H.,Nguyen
 0098OTRSN3    LE1E10714001650A00
 MGTF403  Advanced Financial Risk Mgmt	/courses/MGT.html#mgtf403
 'A00	Rossen,Valkanov
@@ -17433,61 +17437,61 @@ SOMI235  Healthy Minds, Healthy Bodies
 SOMI421  Subinternship Palliative Med
  A00	Paula Michelle,Mesarwi
 0004TBA  TBA  CLTBA  TBA TBA A00
-PH  40   Introduction to Public Health
+PH  40   Introduction to Public Health	/courses/PH.html#ph40
 'A00	Britta Ann,Larsen
 0135CENTR24   LE109  14001520A00
 20250320CENTRFI109  15001759
-PH  45   Intro: Public Health Research
+PH  45   Intro: Public Health Research	/courses/PH.html#ph45
 :A00	Matthew David,Stone
 0037APM  3    DI2301 10001050A010037APM  3    DI2301 11001150A02
 CENTR24   LE109  17001820A00
 20250320CENTRFI109  19002159
-PH  91   Topics in Public Health
+PH  91   Topics in Public Health	/courses/PH.html#ph91
  A00	Maralee Mae,Harrell
 0070WLH  24   LE2111 12301350A00
-PH  95   Medical School Prep 101
+PH  95   Medical School Prep 101	/courses/PH.html#ph95
  A00	Britta Ann,Larsen
 0040CSC  3    SE103  11001150A00
-PH  98   Directed Group Study
-PH  99   Independent Study
+PH  98   Directed Group Study	/courses/PH.html#ph98
+PH  99   Independent Study	/courses/PH.html#ph99
  001	Alexandra K,Heaney
 9999TBA  TBA  INTBA  TBA TBA 001
-PH  101  Epidemiology
+PH  101  Epidemiology	/courses/PH.html#ph101
 'A00	Gene Brian,Tan
 0068PSB  24   LE1160 11001220A00
 20250320PSB  FIAUD  11301429
 'B00	Lindsay Morgan,Miller
 0075PSB  24   LEEDC2 15301650B00
 20250318PSB  FIEDC2 15001759
-PH  102  Biostatistics in Public Health
+PH  102  Biostatistics in Public Health	/courses/PH.html#ph102
 :A00	Brinda Kanti,Rana
 0035WLH  1    LA2112 11001150A010035WLH  1    LA2112 12001250A02
 RWAC 24   LE0121 15301650A00
 20250318RWAC FI0121 15001759
-PH  110  HealthBehavior/Chronic Disease
+PH  110  HealthBehavior/Chronic Disease	/courses/PH.html#ph110
 'A00	Sheri R,Hartman
 0070WLH  24   LE2205 08000920A00
 20250320WLH  FI2205 08001059
 'B00	Sheri R,Hartman
 0070WLH  24   LE2205 09301050B00
 20250318WLH  FI2205 08001059
-PH  120  Health Policies/Lifestyles
+PH  120  Health Policies/Lifestyles	/courses/PH.html#ph120
 'A00	Kanya Claudine,Long
 0094SOLIS24   LE104  12301350A00
 20250318SOLISFI104  11301429
-PH  130  Environment/OccupationalHealth
+PH  130  Environment/OccupationalHealth	/courses/PH.html#ph130
 'A00	Georgia Lyn,Kayser
 0072RWAC 24   LE0121 14001520A00
 20250320RWAC FI0121 15001759
-PH  161  ClinicalNutrition/PublicHealth
+PH  161  ClinicalNutrition/PublicHealth	/courses/PH.html#ph161
 'A00	Christine E.,Zoumas-Morse
 0065PSB  5    LE1120 09001150A00
 20250319PSB  FI1120 08001050
-PH  172  Immunizations & Public Health
+PH  172  Immunizations & Public Health	/courses/PH.html#ph172
 'A00	Margaret Angela Kapp,Ryan
 0044MANDE24   LEB150 17001820A00
 20250320MANDEFIB150 19002159
-PH  193  Public Health Capstone I
+PH  193  Public Health Capstone I	/courses/PH.html#ph193
 'A00	Christine E.,Zoumas-Morse
 0032SOLIS24   LE111  12301350A00
 20250318SOLISFI111  11301429
@@ -17506,11 +17510,11 @@ PH  193  Public Health Capstone I
 'F00	Becky,Marquez
 0033PCYNH5    LE245  09001150F00
 20250319PCYNHFI245  08001059
-PH  194  Public Health Capstone II
+PH  194  Public Health Capstone II	/courses/PH.html#ph194
 'A00	Annie Lu,Nguyen
 0000HSS  4    LE1315 17001950A00
 20250320HSS  FI1305 19002159
-PH  195  Instruction in Public Health
+PH  195  Instruction in Public Health	/courses/PH.html#ph195
  001	Britta Ann,Larsen
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Gene Brian,Tan
@@ -17529,14 +17533,14 @@ PH  195  Instruction in Public Health
 9999TBA  TBA  INTBA  TBA TBA 008
  009	Margaret Angela Kapp,Ryan
 9999TBA  TBA  INTBA  TBA TBA 009
-PH  196AHHonors Practicum I
+PH  196AHHonors Practicum I	/courses/PH.html#ph196ah
 .A00	Nancy Jeanne,Binkin
 0020TBA  TBA  FWTBA  TBA TBA A01
 PCYNH24   PR245  12301350A00
-PH  198  Directed Group Study
+PH  198  Directed Group Study	/courses/PH.html#ph198
  001	Steven D.,Edland
 9999TBA  TBA  INTBA  TBA TBA 001
-PH  199  Independent Study
+PH  199  Independent Study	/courses/PH.html#ph199
  001	Becky,Marquez
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Eric Craig,Leas
@@ -17556,39 +17560,39 @@ PH  199  Independent Study
 PH  480  Intro: Grant Writing (Non-NIH)
  001	Victoria D.,Ojeda
 0000MET  4    LE304  13001550001
-PHB 222  Biostatistical Methods II
+PHB 222  Biostatistical Methods II	/courses/PH.html#phb222
  A00	Karen Sue,Messer
 0050MET  24   LE200  14001520A00
-PHB 226  Stat Mthds/Observation Studies
+PHB 226  Stat Mthds/Observation Studies	/courses/PH.html#phb226
  A00	Xin,Tu
 0025LFFB 13   LE107  14001520A00
-PHB 241  Biostatistics Rotations
+PHB 241  Biostatistics Rotations	/courses/PH.html#phb241
  A00	Armin,Schwartzman
 9999TBA  TBA  PRTBA  TBA TBA A00
  B00	Sonia,Jain
 9999TBA  TBA  PRTBA  TBA TBA B00
  C00	Xin,Tu
 9999TBA  TBA  PRTBA  TBA TBA C00
-PHB 243B PracticumBiostatistics B
+PHB 243B PracticumBiostatistics B	/courses/PH.html#phb243b
 .A00	Ronald G,Thomas
 0020TBA  TBA  PRTBA  TBA TBA A01
 MET  13   LE315  09001020A00
-PHB 244B Foundations in Biostatistics B
+PHB 244B Foundations in Biostatistics B	/courses/PH.html#phb244b
 'B00	Florin,Vaida
 0046MET  13   LE143  11001220B00
 20250317MET  FI143  11301429
-PHB 280  Biostat Journal Club
+PHB 280  Biostat Journal Club	/courses/PH.html#phb280
  B00	Loki,Natarajan
 0038BRF2 3    SE4103 15301730B00
  C00	Loki,Natarajan
 0039MET  2    SE141  16001800C00
-PHB 281  Biostatistics Seminar Series
+PHB 281  Biostatistics Seminar Series	/courses/PH.html#phb281
  A00	Xinlian,Zhang	Jingjing,Zou
 0065TBA  3    SETBA  13001350A00
-PHB 291  Special Topics/Biostatistics
+PHB 291  Special Topics/Biostatistics	/courses/PH.html#phb291
  A00Statistical Leadership	Ramon,De La Paz Hernandez
 0025BRF2 24   SE2A03 08001000A00
-PHB 298  Independent Study
+PHB 298  Independent Study	/courses/PH.html#phb298
  001	Wesley Kurt,Thompson
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Loki,Natarajan
@@ -17607,7 +17611,7 @@ PHB 298  Independent Study
 9999TBA  TBA  INTBA  TBA TBA 008
  009	Xin,Tu
 9999TBA  TBA  INTBA  TBA TBA 009
-PHB 299  Dissertation Research
+PHB 299  Dissertation Research	/courses/PH.html#phb299
  001	David R,Strong
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Armin,Schwartzman
