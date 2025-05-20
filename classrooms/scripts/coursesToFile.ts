@@ -103,7 +103,6 @@ async function coursesToFile (
       await print(group.code)
       if (includeDateRange) {
         if (!group.dateRange) {
-          console.log(group)
           throw new TypeError(
             `Summer session ${course.code} ${group.code} does not have date range.`
           )

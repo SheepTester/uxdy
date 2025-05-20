@@ -91,12 +91,16 @@ export type Course = {
 
 function getDateRange (
   course: ScrapedCourse,
-  letter: string
+  index: number
 ): { start: Day; end: Day } | undefined {
+  if (course.dateRanges.length > 0 && index >= course.dateRanges.length) {
+    throw new RangeError(
+      `Date ranges are available, but index ${index} is not in dateRanges.`
+    )
+  }
   // Assumes numeric group codes start at 001, so only NaN (for +'A' etc) will
   // be falsy. TODO: Are groups guaranteed to be in order?
-  const dateRange =
-    course.dateRanges[(+letter || (letter.codePointAt(0) ?? 0) - 0x40) - 1]
+  const dateRange = course.dateRanges[index]
   return dateRange
     ? { start: Day.from(...dateRange[0]), end: Day.from(...dateRange[1]) }
     : undefined
@@ -106,7 +110,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
   for (const course of result.courses) {
     const groups: Record<string, Group> = {}
     let lastGroup: Group | null = null
-    for (const section of course.sections) {
+    for (const [i, section] of course.sections.entries()) {
       if (section.cancelled) {
         continue
       }
@@ -150,7 +154,7 @@ export function groupSections (result: ScrapedResult): Record<string, Course> {
           first,
           last
         })),
-        dateRange: getDateRange(course, letter),
+        dateRange: getDateRange(course, i),
         coscheduled: []
       }
       lastGroup = groups[letter]
