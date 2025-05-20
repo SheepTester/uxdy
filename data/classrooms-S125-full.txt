@@ -1,4 +1,4 @@
-V41747754979193
+V41747757668885
 ANAR104  Intro GIS for Anth & Arch	/courses/ANTH.html#anar104
 :A00
 0030TBA  TBA  LATBA  TBA TBA A01
@@ -1286,7 +1286,7 @@ MUS 11   Folk Music	/courses/MUS.html#mus11
 
 RCLAS13   LER49  08001050A00
 20250801TBA  FITBA  08001059
- A01Food in E.Asian Media & Beyond
+ A01Japan/Geopolitics/Indo-Pacific
 0025RCLAS13   DIR49  11001150A010025RCLAS13   DIR50  11001150A02
 MUS 13   Worlds of Music	/courses/MUS.html#mus13
 :A00
