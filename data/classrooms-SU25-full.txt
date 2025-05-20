@@ -1,4 +1,4 @@
-V41744186001946
+V41747754976120
 ANES296  Independent Study
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -244,6 +244,11 @@ SPPS441  Nephrology APPE
 9999TBA  TBA  CLTBA  TBA TBA A00
  B00	Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS442  Specialty Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
 SPPS447  Compounding Pharmacy APPE
  A00	Ila Maewal,Saunders
 9999TBA  TBA  CLTBA  TBA TBA A00
@@ -275,7 +280,7 @@ DERM436  Pediatric Dermatology
  A00	Dawn Zhang,Eichenfield
 0010TBA  TBA  CLTBA  TBA TBA A00
 DERM496  Clinical Independent Study
- 001
+ 001	Robert Anthony,Dorschner
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -316,22 +321,24 @@ EMED473  Subint: Diving/Hyperbaric Med
 EMED496  Clinical Independent Study
  001	Brenna Louise,Hogue
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Brenna Louise,Hogue
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 FPM 286  Free Clinic II
  A00	Michelle Lee,Johnson
 0000TBA  TBA  CLTBA  TBA TBA A00
+ B00	Michelle Lee,Johnson
+0000TBA  TBA  CLTBA  TBA TBA B00
 FPM 296  Community Med Independnt Rsrch
- 001
+ 001	Natalie,Rodriguez
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 FPM 299  Comm/Fam Med Indepndnt Stu-ISP
- 001
+ 001	Maria Rosario Gorrez,Araneta
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -394,17 +401,19 @@ DERM436T Pediatric Derm Selective
 MED 296  Independent Research
  001	Neil C.,Chi
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Luis R.,Castellanos
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 MED 299  Medicine Independnt Study Proj
- 001
+ 001	John,Ayers
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Samir,Gupta
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Phillipp,Hartmann
 0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Ida Ching-Yuen,Wong
+0005TBA  TBA  INTBA  TBA TBA 004
 MED 401  Medicine Core Clerkship
  A00	Brian K,Kwan
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -516,9 +525,9 @@ NEU 296  Neurosciences Resrch Rotation
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 NEU 299  Independent Study
- 001
+ 001	Sharona,Ben-Haim
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Anuja Vora,Jindal
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -535,9 +544,9 @@ NEU 427T Neurology Outpatient Selective
  A00	Jamie Nicole,LaBuzetta
 0010TBA  TBA  CLTBA  TBA TBA A00
 NEU 496  Clinical Independent Study
- 001
+ 001	David Raf,Santiago-Dieppa
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	David Raf,Santiago-Dieppa
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -557,9 +566,9 @@ OBG 432  Subintrnshp/Obstetrics&Gynecol
  A00	Jerasimos,Ballas
 0010TBA  TBA  CLTBA  TBA TBA A00
 OBG 496  Clinical Independent Study
- 001
+ 001	Nathan Lee,Scott
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	David Alan,Klein
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -595,9 +604,9 @@ OPTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Sally Liu,Baxter
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Nathan Lee,Scott
 0005TBA  TBA  INTBA  TBA TBA 003
- 004
+ 004	Shyamanga,Borooah
 0005TBA  TBA  INTBA  TBA TBA 004
  005
 0005TBA  TBA  INTBA  TBA TBA 005
@@ -647,9 +656,9 @@ ORTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Eric W.,Edmonds
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	David Ryan,Bakal
 0005TBA  TBA  INTBA  TBA TBA 003
- 004
+ 004	David Ryan,Bakal
 0005TBA  TBA  INTBA  TBA TBA 004
  005
 0005TBA  TBA  INTBA  TBA TBA 005
@@ -892,7 +901,7 @@ PSY 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 002
  003	Michelle Lin,Wu
 0005TBA  TBA  INTBA  TBA TBA 003
- 004
+ 004	Yash,Joshi
 0005TBA  TBA  INTBA  TBA TBA 004
  005
 0005TBA  TBA  INTBA  TBA TBA 005
@@ -900,7 +909,7 @@ RAD 296  Radiology Independent Research
  001
 0005TBA  TBA  INTBA  TBA TBA 001
 RAD 299  Radiology Independent Study
- 001
+ 001	Michael Adam,Taddonio
 0005TBA  TBA  INTBA  TBA TBA 001
 RAD 401  General Radiology
  A00	Nikdokht,Farid
@@ -927,9 +936,9 @@ RAD 434T Chest Radiology Selective
  A00	Andrew C,Yen
 0010TBA  TBA  CLTBA  TBA TBA A00
 RAD 496  Clinical Independent Study
- 001
+ 001	Haydee,Ojeda-Fournier
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Andrew C,Yen
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -949,17 +958,17 @@ RMAS429T Radiation Therapy Selective
  A00	Michael Vincent,Sherer
 0010TBA  TBA  CLTBA  TBA TBA A00
 RMAS496  Clinical Independent Study
- 001
+ 001	Michael Vincent,Sherer
 0005TBA  TBA  INTBA  TBA TBA 001
 RMED296  Independent Study
- 001
+ 001	Audra Robertson,Meadows
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 RMED299  Repro Med Indepen Study Projct
- 001
+ 001	Hui-Chun Irene,Su
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -985,8 +994,10 @@ SURG296  Surgery Independent Research
  001
 0005TBA  TBA  INTBA  TBA TBA 001
 SURG299  Surgery Independent Study Proj
- 001
+ 001	Winta Tsegay,Mehtsun
 0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Geoffroy Pierre Jean,Noel
+0005TBA  TBA  INTBA  TBA TBA 002
 SURG401  Surgery Core Clerkship
  A00	Joel M,Baumgartner
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -1056,11 +1067,11 @@ SURG466  Subinternship in Burn Surgery
 SURG496  Clinical Independent Study
  001	Christopher,Reid
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Ava,Agha Hosseini
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Ann Catherine,Gaffey
 0005TBA  TBA  INTBA  TBA TBA 003
- 004
+ 004	Ann Catherine,Gaffey
 0005TBA  TBA  INTBA  TBA TBA 004
  005
 0005TBA  TBA  INTBA  TBA TBA 005
@@ -1085,9 +1096,13 @@ UROL496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Ithaar,Derweesh
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Aditya,Bagrodia
 0005TBA  TBA  INTBA  TBA TBA 003
  004
 0005TBA  TBA  INTBA  TBA TBA 004
  005
 0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Yahir Ami,Santiago-Lastra
+0005TBA  TBA  INTBA  TBA TBA 006
+ 007	Yahir Ami,Santiago-Lastra
+0005TBA  TBA  INTBA  TBA TBA 007
