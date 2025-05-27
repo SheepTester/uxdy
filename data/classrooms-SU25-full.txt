@@ -1,4 +1,4 @@
-V41747757665289
+V41748310370646
 ANES296  Independent Study
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -548,7 +548,7 @@ NEU 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	David Raf,Santiago-Dieppa
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Jamie Nicole,LaBuzetta
 0005TBA  TBA  INTBA  TBA TBA 003
 OBG 401  Obstetrcs&Gyneclgy Cor Clrkshp
  A00	David Alan,Klein
@@ -608,7 +608,7 @@ OPTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 003
  004	Shyamanga,Borooah
 0005TBA  TBA  INTBA  TBA TBA 004
- 005
+ 005	Sally Liu,Baxter
 0005TBA  TBA  INTBA  TBA TBA 005
 ORTH296  Orthopaedics Independent Rsrch
  001
@@ -921,7 +921,7 @@ RAD 412  Intro Intervent Radiology Sel
  A00	Michael Adam,Taddonio
 0010TBA  TBA  CLTBA  TBA TBA A00
 RAD 427  Vascular Radiology
- A00	Michael Adam,Taddonio
+ A00	Rupal,Parikh
 0010TBA  TBA  CLTBA  TBA TBA A00
 RAD 428  Body Imaging Elective
  A00	Cairine,McNamee
@@ -970,7 +970,7 @@ RMED296  Independent Study
 RMED299  Repro Med Indepen Study Projct
  001	Hui-Chun Irene,Su
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Pratibha Sareen,Binder
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -987,6 +987,9 @@ SOMI220  Core Topics in Biomedical Sci
 .A00	Stephen David,Schneid
 0000TBA  TBA  LETBA  TBA TBA A00
 TBA  TBA  DITBA  TBA TBA A01
+SOMI296  Independent Study
+ 001	Sean Jeffrey,Evans
+9999TBA  TBA  INTBA  TBA TBA 001
 SOMI421  Subinternship Palliative Med
  A00	Paula Michelle,Mesarwi
 0010TBA  TBA  CLTBA  TBA TBA A00

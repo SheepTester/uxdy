@@ -1,4 +1,4 @@
-V41747757681558
+V41748310387226
 AIP 197  Academic Internship Program	/courses/AIP.html#aip197
  0012025063020250906	Emanuel Ignacio,Vespa
 9999TBA  TBA  ITTBA  TBA TBA 001
@@ -8,6 +8,12 @@ AIP 197  Academic Internship Program	/courses/AIP.html#aip197
 9999TBA  TBA  ITTBA  TBA TBA 003
  0042025063020250906	Cory Matthew,Root
 9999TBA  TBA  ITTBA  TBA TBA 004
+ 0052025063020250906	Stacey,Brydges
+9999TBA  TBA  ITTBA  TBA TBA 005
+ 0062025063020250906	Michael Christopher,Reher
+9999TBA  TBA  ITTBA  TBA TBA 006
+ 0072025063020250906	Jennifer Rebecca,Taylor
+9999TBA  TBA  ITTBA  TBA TBA 007
 ANTH289S Tanzania Anthropogny StudyTour	/courses/ANTH.html#anth289s
 .A002025063020250719	Pascal,Gagneux
 0012TBA  TBA  LETBA  TBA TBA A00
@@ -65,11 +71,16 @@ CLRE260  Directed Studies in Clin Rsrch	/courses/CLRE.html#clre260
 CLRE297  Independent Study Proj-2 units	/courses/CLRE.html#clre297
  0012025063020250906	Raphael Eduardo,Cuomo
 9999TBA  TBA  INTBA  TBA TBA 001
+COGS197  Cognitive Science Internship	/courses/COGS.html#cogs197
+ 0012025063020250906	David Joel,Kirsh
+9999TBA  TBA  ITTBA  TBA TBA 001
 COGS199  Special Project	/courses/COGS.html#cogs199
  0012025063020250906	Steven James,Barrera
 9999TBA  TBA  INTBA  TBA TBA 001
  0022025063020250823	Shannon Elizabeth,Ellis
 9999TBA  TBA  INTBA  TBA TBA 002
+ 0032025063020250906	Christine M.,Johnson
+9999TBA  TBA  INTBA  TBA TBA 003
 CSE 191  Semnr/Computer Sci & Engineer	/courses/CSE.html#cse191
  A002025063020250906	Mor Mia,Minnes Kemp
 9999TBA  TBA  SETBA  TBA TBA A00
@@ -300,6 +311,8 @@ MAE 197  Engineering Internship	/courses/MAE.html#mae197
 MAE 299  Graduate Research	/courses/MAE.html#mae299
  0012025063020250906	Tania,Morimoto
 9999TBA  TBA  INTBA  TBA TBA 001
+ 0022025063020250906	Renkun,Chen
+9999TBA  TBA  INTBA  TBA TBA 002
 MATH2    Intro to College Mathematics	/courses/MATH.html#math2
 .A002025063020250906
 0035TBA  TBA  INTBA  TBA TBA A01
@@ -419,9 +432,9 @@ MGTA444  Business Analytics Consulting	/courses/MGT.html#mgta444
 0060OTRSN3    LE4E10618002100A00
 OTRSN6    LE4E10609001500A00
 MGTA451  AnalyticsinMarketing,Fin&Ops	/courses/MGT.html#mgta451
- A002025082520250920	Hyo Duk,Shin
+ A002025082520250920	Hyo Duk,Shin	Krisztina,Buti	Kenneth C,Wilbur
 0000TBA  TBA  SETBA  TBA TBA A00
- B002025082520250920	Hyo Duk,Shin
+ B002025082520250920	Hyo Duk,Shin	Kenneth C,Wilbur	Krisztina,Buti
 0000TBA  TBA  SETBA  TBA TBA B00
 MGTA464  SQL and ETL	/courses/MGT.html#mgta464
  A002025081120250830	Johan Lars,Perols
@@ -473,5 +486,5 @@ EAP 100  Education Abroad Program	/curric/EAP.html
  A002025063020250906
 9999TBA  TBA  SATBA  TBA TBA A00
 WES 237B Software for Embedded Systems	/courses/MAS.html#wes237b
- A002025063020250906
+ A002025063020250906	Janarbek,Matai
 0020TBA  TBA  LETBA  TBA TBA A00

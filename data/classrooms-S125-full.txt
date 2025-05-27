@@ -1,4 +1,4 @@
-V41747757668885
+V41748310374576
 ANAR104  Intro GIS for Anth & Arch	/courses/ANTH.html#anar104
 :A00
 0030TBA  TBA  LATBA  TBA TBA A01
@@ -8,6 +8,10 @@ ANAR116  Sea Level Change - Israel	/courses/ANTH.html#anar116
 'A00	Gilad,Shtienberg
 0036PODEM13   LE0132 11001350A00
 20250801TBA  FITBA  11301429
+ANAR117  Archaeology Field&Lab, SoCal	/courses/ANTH.html#anar117
+.A00	Paul S,Goldstein
+0000TBA  TBA  FWTBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
 ANAR120  Documenting Climate Change	/courses/ANTH.html#anar120
 'A00
 0020SSB  24   LE106  11001350A00
@@ -83,6 +87,9 @@ ANTH23   Debating Multiculturalism	/courses/ANTH.html#anth23
 0100RCLAS24   DIR02  11001150A01
 RCLAS24   LER02  08001050A00
 20250802TBA  FITBA  08001059
+ANTH43   Intro/Bio & Culture of Race	/courses/ANTH.html#anth43
+ A00	Amy L,Non
+0030RCLAS24   LER10  11001350A00
 ANTH101  Foundations/Social Complexity	/courses/ANTH.html#anth101
 :A00	Guillermo,Algaze
 0050RCLAS13   DIR04  11001150A01
@@ -96,13 +103,17 @@ ANTH103  Sociocultural Anthropology	/courses/ANTH.html#anth103
 'A00	Saiba,Varma
 0040RCLAS24   LER04  11001350A00
 20250802TBA  FITBA  11301429
+ANTH108  IndigPpls, Develop,& ClimChng	/courses/ANTH.html#anth108
+'A00
+0020HSS  24   LE2154 17001950A00
+20250802TBA  FITBA  19002159
 BENG125  Modeling & Computatio/Bioengr	/courses/BENG.html#beng125
 :A00	Jeff M,Hasty
 0030RCLAS2    DIR05  12301420A01
 RCLAS24   LER05  09301220A00RCLAS4    LER23  12301420A00
 20250802TBA  FITBA  08001059
 BENG168  Biomolecular Engineering	/courses/BENG.html#beng168
-:A00
+:A00	Yiyan,Yu
 0030CENTR3    DI218  14001550A01
 CENTR13   LE218  11001350A00CENTR1    LE218  14001550A00
 20250801TBA  FITBA  11301429
@@ -125,7 +136,7 @@ BICD140  Immunology	/courses/BIOL.html#bicd140
 PODEM24   LE1A18 11001350A00
 20250802TBA  FITBA  11301429
 BIEB126  Plant Ecology	/courses/BIOL.html#bieb126
-:A00
+:A00	Karagan Lu,Smith
 0038SOLIS13   DI111  13001350A010038SOLIS13   DI111  14001450A020037SOLIS24   DI111  13001350A030037SOLIS24   DI111  14001450A04
 PCYNH1234 LE106  11001220A00
 20250801TBA  FITBA  11301429
@@ -231,6 +242,8 @@ BISP199  Individual Research for Ugrads	/courses/BIOL.html#bisp199
 9999TBA  TBA  INTBA  TBA TBA 010
  011	Nicholas,Spitzer
 9999TBA  TBA  INTBA  TBA TBA 011
+ 012	Omar Sultan,Akbari
+9999TBA  TBA  INTBA  TBA TBA 012
 CAT 125GSPublic Rhetoric & Prac Comm GS	/courses/CAT.html#cat125gs
 .A00	Phoebe Malan,Bronstein
 0025TBA  TBA  DITBA  TBA TBA A01
@@ -265,7 +278,7 @@ CGS 114  Gender,Race,Ethnicity & Class	/courses/CGS.html#cgs114
 0015CENTR13   LE201  14001650A00
 20250801TBA  FITBA  15001759
 CGS 137  Latina Issues & Cultural Prod.	/courses/CGS.html#cgs137
-'A00
+'A00	Antonio Caliban,Catrileo
 0013RCLAS13   LER01  17001950A00
 20250801TBA  FITBA  19002159
 CHEM6A   General Chemistry I	/courses/CHEM.html#chem6a
@@ -376,7 +389,7 @@ RCLAS24   LER56  11001350A00
 20250802TBA  FITBA  11301429
 COGS101B Learning, Memory and Attention	/courses/COGS.html#cogs101b
 :A00
-0046RCLAS13   DIR69  14001450A01
+0048RCLAS13   DIR69  14001450A01
 RCLAS13   LER69  11001350A00
 20250801TBA  FITBA  11301429
 COGS107A Neuroanatomy and Physiology	/courses/COGS.html#cogs107a
@@ -403,6 +416,9 @@ COGS189  Brain Computer Interfaces	/courses/COGS.html#cogs189
 'A00
 0040RCLAS1234 LER06  12301350A00
 20250801TBA  FITBA  11301429
+COGS197  Cognitive Science Internship	/courses/COGS.html#cogs197
+ 001	Christine M.,Johnson
+9999TBA  TBA  ITTBA  TBA TBA 001
 COGS199  Special Project	/courses/COGS.html#cogs199
  001	Christine M.,Johnson
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -443,7 +459,7 @@ COMM106M Advertising & Society	/courses/COMM.html#comm106m
 0040RCLAS13   LER18  14001650A00
 20250801TBA  FITBA  15001759
 COMM109P MC: Propaganda and Persuasion	/courses/COMM.html#comm109p
-'A00
+'A00	Marwa Ismaile,Abdalla
 0040RCLAS24   LER100 14001650A00
 20250802TBA  FITBA  15001759
 COMM110M LLC: Comm & Community	/courses/COMM.html#comm110m
@@ -463,7 +479,7 @@ COMM171  Environmental Communication	/courses/COMM.html#comm171
 0030RCLAS24   SER17  14001650A00
 20250802TBA  FITBA  15001759
 COMM190  Junior Seminar in Comm	/courses/COMM.html#comm190
- A00
+ A00	Tony Hyunduck,Cho
 0023RCLAS13   SER101 14001650A00
  B00
 0023RCLAS13   SER19  11001350B00
@@ -484,7 +500,7 @@ CSE 11   Accel. Intro to Programming	/courses/CSE.html#cse11
 RCLAS13   LER02  08001050A00
 20250801TBA  FITBA  08001059
 CSE 20   Discrete Mathematics	/courses/CSE.html#cse20
-:B00
+:B00	Vikram,Sirupurapu
 0050WLH  5    DI2205 14001550B01
 DIB  13   LE121  14001650B00
 20250801TBA  FITBA  15001759
@@ -554,7 +570,7 @@ DOC 100D Promises&Contradictions/USCult	/courses/DOC.html#doc100d
 0025RCLAS13   LER03  14001650A00
 20250801TBA  FITBA  15001759
 DSC 10   Principles of Data Science	/courses/DSC.html#dsc10
-:A00
+:A00	Samantha,Chen
 0050CSB  1    DI005  13001450A01
 CSB  1235 LE005  09301050A00CSB  1    LA005  15001650A50
 20250802TBA  FITBA  08001059
@@ -564,7 +580,7 @@ DSC 20   Prgrmng/DataStruc for Data Sci	/courses/DSC.html#dsc20
 PODEM13   LE1A18 17001950A00
 20250801TBA  FITBA  19002159
 DSC 40A  Theor Fndtns of Data Sci I	/courses/DSC.html#dsc40a
-:A00
+:A00	Sawyer Jack,Robertson
 0050WLH  3    DI2207 14001550A01
 WLH  13   LE2205 11001350A00
 20250801TBA  FITBA  11301429
@@ -604,12 +620,12 @@ ECON1    Principles of Microeconomics	/courses/ECON.html#econ1
 RWAC 1234 LE0121 12301350A00
 20250802TBA  FITBA  08001059
 ECON3    Principles of Macroeconomics	/courses/ECON.html#econ3
-:A00
+:A00	Vafa,Behnam Roudsari
 0050RWAC 3    DI0115 16001750A01
 CSB  24   LE005  11001350A00
 20250801TBA  FITBA  15001759
 ECON5    Data Analytics/Social Sciences	/courses/ECON.html#econ5
-:A00
+:A00	Idaliya,Grigoryeva
 0045RWAC 5    LA0115 14001550A01
 RWAC 13   LE0115 11001350A00
 20250802TBA  FITBA  11301429
@@ -657,7 +673,7 @@ WLH  13   LE2204 14001650A00
 WLH  24   LE2205 14001650B00
 20250709CSB  MI002  1000112020250802TBA  FITBA  08001059
 ECON121  Applied Econometrics & Data	/courses/ECON.html#econ121
-'A00
+'A00	Idaliya,Grigoryeva
 0035RWAC 24   LE0103 11001350A00
 20250802TBA  FITBA  15001759
 ECON129  Cities, Inequality, Innovation	/courses/ECON.html#econ129
@@ -764,12 +780,12 @@ ETHN122A AsianAmerican Culture & Health	/courses/ETHN.html#ethn122a
 0030RCLAS24   LER42  11001350A00
 20250802TBA  FITBA  11301429
 ETHN137  Latina Issues & Cultural Prod.	/courses/ETHN.html#ethn137
-'A00
+'A00	Antonio Caliban,Catrileo
 0013RCLAS13   LER01  17001950A00
 20250801TBA  FITBA  19002159
 ETHN168  Comparative Ethnic Literature	/courses/ETHN.html#ethn168
-'A00
-0010RCLAS13   LER11  17001950A00
+'A00	Manuel Antonio,Carrion Lira
+0009RCLAS13   LER11  17001950A00
 20250801TBA  FITBA  19002159
 ETHN171  Ethnic Studies and Education	/courses/ETHN.html#ethn171
 'A00	Tricia Meghan,Gallagher-Geurtsen
@@ -796,7 +812,7 @@ GSS 22   LatinAm Carib History Culture	/courses/GSS.html#gss22
 0020RCLAS24   LER35  11001350A00
 20250802TBA  FITBA  11301429
 HIEA132  Hist/People's Republic/China	/courses/HIST.html#hiea132
-'A00
+'A00	Yixue,Yang
 0032SOLIS24   LE109  14001650A00
 20250802TBA  FITBA  15001759
 HIEU102  Roman History	/courses/HIST.html#hieu102
@@ -821,7 +837,7 @@ HIEU144P Topics: Pre-Modern Euro Hist	/courses/HIST.html#hieu144p
  A00Emperors of Rome
 0032TBA  TBA  LETBA  TBA TBA A00
 HIEU147  Europe and the World I	/courses/HIST.html#hieu147
- A00
+ A00	Rebecca Joy,Shoup
 0032TBA  TBA  LETBA  TBA TBA A00
 HIEU154GSMod German/Bismarck to Hitler	/courses/HIST.html#hieu154gs
  A00	Frank Peter,Biess
@@ -857,11 +873,11 @@ HINE129  Hist of Mideast:Late Medieval	/courses/HIST.html#hine129
  A00	Nir,Shafir
 0032TBA  TBA  LETBA  TBA TBA A00
 HISC105  History of Environmentalism	/courses/HIST.html#hisc105
-'A00
+'A00	Niall,Chithelen
 0032RCLAS13   LER06  14001650A00
 20250801TBA  FITBA  15001759
 HITO115  The Global Cold War	/courses/HIST.html#hito115
-'A00
+'A00	Jordan,Buchanan Downie
 0032RCLAS13   LER18  08001050A00
 20250801TBA  FITBA  08001059
 HITO155  Race/Sport/Inequality 20th Cen	/courses/HIST.html#hito155
@@ -1006,7 +1022,7 @@ LTCS108  Gender, Race, & Artificial Int	/courses/LIT.html#ltcs108
 0015CENTR24   LE207  11001350A00
 LTCS130  Gender,Race/Ethn,Class&Culture	/courses/LIT.html#ltcs130
 'A00Testimonial Lit in LatinAm
-0025HSS  13   LE2321 14001650A00
+0025RCLAS13   LER26  14001650A00
 20250801TBA  FITBA  15001759
 LTCS172GSTopics/Screening Race/Ethnicty
  A00Imagining France: TV & Film	Phoebe Malan,Bronstein
@@ -1023,8 +1039,8 @@ LTEN158  Modern American Literature	/courses/LIT.html#lten158
 0025HSS  24   LE2321 08001050A00
 20250802TBA  FITBA  08001059
 LTEN178  Comparative Ethnic Literature	/courses/LIT.html#lten178
-'A00Intro to Native/Indigenous Gen
-0015RCLAS13   LER11  17001950A00
+'A00Intro to Native/Indigenous Gen	Manuel Antonio,Carrion Lira
+0016RCLAS13   LER11  17001950A00
 20250801TBA  FITBA  19002159
 LTEN181  Asian American Literature	/courses/LIT.html#lten181
 'A00Fermented Family: Kinship in A
@@ -1050,7 +1066,7 @@ LTWL120  Popular Literature and Culture	/courses/LIT.html#ltwl120
 20250801TBA  FITBA  19002159
 LTWL155  Gender Studies	/courses/LIT.html#ltwl155
 'A00Food in E.Asian Media & Beyond
-0025CENTR24   LE201  17001950A00
+0025RCLAS24   LER19  17001950A00
 20250802TBA  FITBA  19002159
 LTWL180GSFilm Studies&Lit:Film History
  A00
@@ -1099,7 +1115,7 @@ MAE 131A Solid Mechanics I	/courses/MAE.html#mae131a
 RCLAS13   LER141 12301320A00
 20250801TBA  FITBA  11301429
 MAE 142  Dynmcs&Control/Aerospace Vehic	/courses/MAE.html#mae142
-:A00
+:A00	Raymond Angelo Ratto,Young
 0040WLH  1234 LE2113 09301050A00
 WLH  5    LE2113 09001050A00
 20250802TBA  FITBA  08001059
@@ -1283,16 +1299,10 @@ RCLAS13   LER49  14001650A00
 20250801TBA  FITBA  15001759
 MUS 11   Folk Music	/courses/MUS.html#mus11
 :A00AustralianMus
-
+0025RCLAS13   DIR49  11001150A010025RCLAS13   DIR50  11001150A02
 RCLAS13   LER49  08001050A00
 20250801TBA  FITBA  08001059
- A01Japan/Geopolitics/Indo-Pacific
-0025RCLAS13   DIR49  11001150A010025RCLAS13   DIR50  11001150A02
 MUS 13   Worlds of Music	/courses/MUS.html#mus13
-:A00
-0025RCLAS24   DIR49  11001150A010025RCLAS24   DIR50  11001150A02
-RCLAS24   LER49  09301050A00
-20250802TBA  FITBA  08001059
 MUS 15   Popular Music	/courses/MUS.html#mus15
 :A00JPNAnimeNatlDes
 0025RCLAS13   DIR51  14001450A010025RCLAS13   DIR52  14001450A02
@@ -1310,9 +1320,6 @@ MUS 80   Special Topics in Music	/courses/MUS.html#mus80
 'B00Perf Silence
 0025RCLAS24   SER53  14001650B00
 20250802TBA  FITBA  15001759
-'C00
-0025RCLAS24   SER58  11001350C00
-20250802TBA  FITBA  11301429
 MUS 130  Chamber Music Performance	/courses/MUS.html#mus130
 CENG100  Material and Energy Balances	/courses/NANO.html#ceng100
 :A00	Justin Paul,Opatkiewicz
@@ -1365,7 +1372,7 @@ PHIL100  Plato	/courses/PHIL.html#phil100
 20250801TBA  FITBA  15001759
 PHIL131  Topics in Metaphysics	/courses/PHIL.html#phil131
 'A00	Eric,Watkins
-0030RCLAS13   LER10  14001650A00
+0045RCLAS13   LER10  14001650A00
 20250801TBA  FITBA  15001759
 PHIL145  Philosophy of Science	/courses/PHIL.html#phil145
 'A00
@@ -1409,7 +1416,7 @@ PHYS1AL  Mechanics Laboratory	/courses/PHYS.html#phys1al
  002	Philbert S,Tsai
 0030MAYER24   LA2306 14301620002
 PHYS1B   Electricity and Magnetism	/courses/PHYS.html#phys1b
-'A00
+'A00	Anthony Vizcaino,Aportela
 0240YORK 1234 LE2722 09301050A00
 20250801TBA  FITBA  08001059
 PHYS1BL  Electricity & Magnetism Lab	/courses/PHYS.html#phys1bl
@@ -1461,12 +1468,12 @@ POLI5    Data Analytics/Social Science	/courses/POLI.html#poli5
 0025RCLAS24   LER32  11001350A00
 20250802TBA  FITBA  11301429
 POLI5D   Data Analytics/Social Sciences	/courses/POLI.html#poli5d
-:A00
+:A00	Idaliya,Grigoryeva
 0005RWAC 5    LA0115 14001550A01
 RWAC 13   LE0115 11001350A00
 20250802TBA  FITBA  11301429
 POLI10   Intro/Poli Sci:Amer Politics	/courses/POLI.html#poli10
-'A00
+'A00	Anthony Michael,Anderson
 0035RCLAS1234 LER11  15301650A00
 20250801TBA  FITBA  15001759
 POLI13R  Power and Justice
@@ -1525,7 +1532,7 @@ POLI120H European Integration	/courses/POLI.html#poli120h
 0035RCLAS13   LER47  11001350A00
 20250801TBA  FITBA  11301429
 POLI130B Politics/People's Rep of China	/courses/POLI.html#poli130b
-'A00
+'A00	Adam,Wu
 0025HSS  13   LE1305 11001350A00
 20250801TBA  FITBA  11301429
 POLI130G Politics of Modern India	/courses/POLI.html#poli130g
@@ -1551,7 +1558,7 @@ POLI142A United States Foreign Policy	/courses/POLI.html#poli142a
 20250801TBA  FITBA  15001759
 POLI144E Politics/International Trade	/courses/POLI.html#poli144e
  A00
-0030CENTR24   SE217B 17001950A00
+0030RCLAS24   SER18  17001950A00
 POLI145C Interntnl Reltn After Cold War	/courses/POLI.html#poli145c
 'A00	David Lee,Fisk
 0025RCLAS24   LER36  11001350A00
@@ -1620,7 +1627,7 @@ PSYC122  Mechanisms of Animal Behavior	/courses/PSYC.html#psyc122
 0050RCLAS24   LER13  08001050A00
 20250802TBA  FITBA  08001059
 PSYC123  Cognitive Control/Frontal Lobe	/courses/PSYC.html#psyc123
-'A00
+'A00	Pria Lauren,Daniel
 0030SOLIS13   LE109  11001350A00
 20250801TBA  FITBA  11301429
 PSYC131  Scientific Racism	/courses/PSYC.html#psyc131
@@ -1671,11 +1678,16 @@ PSYC193L Psychology Laboratory Topics	/courses/PSYC.html#psyc193l
 0030RCLAS13   LAR31  10001050A01
 RCLAS13   LER12  08000950A00
 20250801TBA  FITBA  08001059
+PSYC195  Instruction in Psychology	/courses/PSYC.html#psyc195
+ 001	Gail D.,Heyman
+9999TBA  TBA  INTBA  TBA TBA 001
 PSYC199  Independent Study	/courses/PSYC.html#psyc199
  001	Matthew,Shtrahman
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Dhananjaya,Mukku
 9999TBA  TBA  INTBA  TBA TBA 002
+ 003	Lindsey Jane,Powell
+9999TBA  TBA  INTBA  TBA TBA 003
 RELI161GSAnc Gk Drama,Politics,Religion
  A00	Babak,Rahimi
 0020TBA  TBA  LETBA  TBA TBA A00
@@ -1718,7 +1730,7 @@ MGT 181  Enterprise Finance	/courses/MGT.html#mgt181
 20250802TBA  FITBA  19002159
 MGT 429  Topics in Corporate Governance	/courses/MGT.html#mgt429
 'A00Leadership in a Crisis	Blair L.,Sadler
-0036WFH  3    LE3N12918302120A00
+0035WFH  3    LE3N12918302120A00
 20250801TBA  FITBA  19002159
 MGT 449  Topics/Operations & Technology	/courses/MGT.html#mgt449
 SE  1    Intro. to Structures & Design	/courses/SE.html#se1
@@ -1732,7 +1744,7 @@ SE  101A Mechanics I: Statics	/courses/SE.html#se101a
 RCLAS1234 LER43  11001220A00
 20250801TBA  FITBA  11301429
 SE  101C Mechanics III: Vibrations	/courses/SE.html#se101c
-:A00
+:A00	Kaixin,Chen
 0040WLH  24   DI2114 14001450A01
 WLH  24   LE2114 11001350A00
 20250802TBA  FITBA  11301429
@@ -1788,7 +1800,7 @@ RCLAS13   LER60  08001050A00
 20250801TBA  FITBA  08001059
 SOCI2    The Study of Society	/courses/SOC.html#soci2
 :A00	Danielle,Raudenbush
-0030RCLAS13   DIR60  11001150A010030RCLAS13   DIR60  12001250A02
+0030RCLAS13   DIR60  11001150A010000RCLAS13   DIR60  12001250A02
 RCLAS24   LER60  08001050A00
 20250802TBA  FITBA  08001059
 SOCI40   Sociology/Health Care Issues	/courses/SOC.html#soci40
@@ -1820,7 +1832,7 @@ SOCI108  Survey Research Design	/courses/SOC.html#soci108
 0030RCLAS13   LER61  14001650A00
 20250801TBA  FITBA  15001759
 SOCI111  Local Lives, Global Problems	/courses/SOC.html#soci111
-'A00
+'A00	Eunchong,Cho
 0045RCLAS13   LER61  08001050A00
 20250801TBA  FITBA  08001059
 SOCI114  Sociology of Humor	/courses/SOC.html#soci114
@@ -1890,15 +1902,15 @@ SOCI184  Gender and Film	/courses/SOC.html#soci184
 20250801TBA  FITBA  11301429
 PH  40   Introduction to Public Health	/courses/PH.html#ph40
 'A00
-0055RCLAS24   LER13  11001350A00
+0060RCLAS24   LER13  11001350A00
 20250802TBA  FITBA  11301429
 PH  91   Topics in Public Health	/courses/PH.html#ph91
 'A00Health Promotion	Christine E.,Zoumas-Morse
-0040RCLAS13   LER24  11001350A00
+0050RCLAS13   LER24  11001350A00
 20250801TBA  FITBA  11301429
 PH  161  ClinicalNutrition/PublicHealth	/courses/PH.html#ph161
 'A00	Christine E.,Zoumas-Morse
-0040RCLAS24   LER03  14001650A00
+0080RCLAS24   LER03  14001650A00
 20250802TBA  FITBA  15001759
 SYN 1    Communicating/Changing Planet	/courses/SYN.html#syn1
 SYN 1R   Communicating/Changing Planet	/courses/SYN.html#syn1r
@@ -2110,11 +2122,11 @@ VIS 108  Advanced Projects in Art	/courses/VIS.html#vis108
  A00Chinese Calligraphy
 0015MANDE13   ST219  14001650A00
 VIS 125A Twentieth Century Art	/courses/VIS.html#vis125a
-'A00
+'A00	Hande,Sever
 0075RCLAS13   LER35  14001650A00
 20250801TBA  FITBA  15001759
 VIS 129D Seminar/Art History/Americas	/courses/VIS.html#vis129d
-'A00
+'A00	Andrea,Chavarin
 0015RCLAS24   SER52  11001350A00
 20250802TBA  FITBA  11301429
 VIS 160B Senior Proj/Computing Arts II	/courses/VIS.html#vis160b
@@ -2134,7 +2146,7 @@ WCWP10B  The Writing Course B	/courses/WARR.html#wcwp10b
  C00	Jeffrey C,Gagnon
 0015EBU3B24   SE1124 11001350C00
  D00
-0000WSAC 24   SE132  11001350D00
+0015RCLAS24   SER09  11001350D00
  E00	Jeffrey C,Gagnon
 0015WSAC 24   SE132  08001050E00
 WCWP100  Academic Writing	/courses/WARR.html#wcwp100
