@@ -1,4 +1,4 @@
-V41748310370646
+V41749456778236
 ANES296  Independent Study
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -282,7 +282,7 @@ DERM436  Pediatric Dermatology
 DERM496  Clinical Independent Study
  001	Robert Anthony,Dorschner
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Shang I Brian,Jiang
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -294,7 +294,7 @@ EMED296  Independent Reseach
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 EMED299  Independent Study Project
- 001
+ 001	Christanne Hoffman,Coffey
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -325,7 +325,7 @@ EMED496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
-FPM 286  Free Clinic II
+FPM 286  Free Clinic II	/courses/FMPH.html#fpm286
  A00	Michelle Lee,Johnson
 0000TBA  TBA  CLTBA  TBA TBA A00
  B00	Michelle Lee,Johnson
@@ -511,20 +511,20 @@ MED 468  Med Act Intnsp/Scrps/Mercy/Grn
  A00	Joseph,Abdelmalek
 0010TBA  TBA  CLTBA  TBA TBA A00
 MED 496  Clinical Independent Study
- 001
+ 001	Brian K,Kwan
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Gabriel Arturo,Wagner
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
-NEU 296  Neurosciences Resrch Rotation
+NEU 296  Neurosciences Resrch Rotation	/courses/NEU.html#neu296
  001	Sean Jeffrey,Evans
 0020TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
-NEU 299  Independent Study
+NEU 299  Independent Study	/courses/NEU.html#neu299
  001	Sharona,Ben-Haim
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Anuja Vora,Jindal
@@ -570,7 +570,7 @@ OBG 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	David Alan,Klein
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Julia,Cormano
 0005TBA  TBA  INTBA  TBA TBA 003
  004
 0005TBA  TBA  INTBA  TBA TBA 004
@@ -672,7 +672,7 @@ PAE 211  The PA Profession
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 212  The Physical Exam
-.A00	Elias,Villarreal Jr.
+.A00	Heather Christine,Gebauer
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 213  Human Anatomy
@@ -714,10 +714,10 @@ PAE 256  Health Promotion/Disease Prev
 PAE 290  Didactic Capstone
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  SETBA  TBA TBA A00
-PATH296  Pathology Independent Research
+PATH296  Pathology Independent Research	/courses/PATH.html#path296
  001
 0005TBA  TBA  INTBA  TBA TBA 001
-PATH299  Path/Independent Study Project
+PATH299  Path/Independent Study Project	/courses/PATH.html#path299
  001
 0005TBA  TBA  INTBA  TBA TBA 001
 PATH401A Pathology Clerkship/Autopsy
@@ -911,6 +911,8 @@ RAD 296  Radiology Independent Research
 RAD 299  Radiology Independent Study
  001	Michael Adam,Taddonio
 0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Nikdokht,Farid
+0005TBA  TBA  INTBA  TBA TBA 002
 RAD 401  General Radiology
  A00	Nikdokht,Farid
 0010TBA  TBA  CLTBA  TBA TBA A00
@@ -963,7 +965,7 @@ RMAS496  Clinical Independent Study
 RMED296  Independent Study
  001	Audra Robertson,Meadows
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Sarah Helene,Averbach
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -974,6 +976,9 @@ RMED299  Repro Med Indepen Study Projct
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
+SOMC244  Comp Rev & Prep-USMLE Step 1
+ 001	Sean Jeffrey,Evans
+0020TBA  TBA  INTBA  TBA TBA 001
 SOMC400A Master Clinician Clerkship A
  A00	Christopher Ray,Cannavino
 0160TBA  TBA  CLTBA  TBA TBA A00
@@ -994,7 +999,7 @@ SOMI421  Subinternship Palliative Med
  A00	Paula Michelle,Mesarwi
 0010TBA  TBA  CLTBA  TBA TBA A00
 SURG296  Surgery Independent Research
- 001
+ 001	Jason Keith,Sicklick
 0005TBA  TBA  INTBA  TBA TBA 001
 SURG299  Surgery Independent Study Proj
  001	Winta Tsegay,Mehtsun
@@ -1076,7 +1081,7 @@ SURG496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 003
  004	Ann Catherine,Gaffey
 0005TBA  TBA  INTBA  TBA TBA 004
- 005
+ 005	Martin Huy,Pham
 0005TBA  TBA  INTBA  TBA TBA 005
 UROL296  Independent Study
  001
