@@ -1,4 +1,4 @@
-V41749456772310
+V41749780818651
 AAS 10R  Intro/African-American Studies
 .A00	Elizabeth Annette,Butler
 0034RCLAS3    DIR04  12001250A010034RCLAS3    DIR04  13001350A02
@@ -7315,7 +7315,7 @@ ECE 125B Intro to Power Electronics II	/courses/ECE.html#ece125b
 :A00	Gholamreza,Esmaili
 0024WLH  3    LA2213B14001650A500024WLH  4    LA2213B17001950A51
 RWAC 3    LE0103 17001950A00WLH  1    DI2207 20002050A01
-20250613RWAC FI0103 19002159
+20250613RWAC RE0103 1800185020250613RWAC FI0103 19002159
 ECE 134  Electrnc Materls Sci/Integ Cir	/courses/ECE.html#ece134
 'A00	Tse Nga,Ng
 0030CENTR24   LE205  14001520A00
@@ -13214,7 +13214,7 @@ PAE 242  Clinical Medicine III
  A00	Nicole Anne,Davis
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 243  Pharmacotherapeutics III
- A00	Elias,Villarreal Jr.
+ A00	Nicole Anne,Davis
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 244  Behavioral & Mental Health
  A00	Brittany,Pierce
@@ -18107,7 +18107,7 @@ USP 145  Aging-Social & Health Policy	/courses/USP.html#usp145
 USP 150  Real Estate/Law & Regulation	/courses/USP.html#usp150
 'A00	Michael Joseph,Holmes
 0070RWAC 24   LE0116 14001520A00
-20250610RWAC FI0116 15001759
+20250610PODEMFI1A18 15001759
 USP 151  Real Estate Plan & Development	/courses/USP.html#usp151
 'A00	Christopher N,Clark
 0049CSB  24   LE004  15301650A00
