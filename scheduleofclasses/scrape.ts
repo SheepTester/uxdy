@@ -298,7 +298,8 @@ export async function * getCourseIterator (
           new Error(
             `Missing results wrapper for ${getUrl(term, departments, page)}`
           )
-        )
+        ),
+      url: getUrl(term, departments, page)
     }
   }
   const responseQueue = [fetchPage(startPage)]
@@ -327,7 +328,8 @@ export async function * getCourseIterator (
   let lastNumber: string | null = null
   let noteState: NoteState = { type: 'none' }
   while (responseQueue.length > 0) {
-    const { page, form } = await responseQueue.shift()!
+    const { page, form, url } = await responseQueue.shift()!
+    console.error('>', url)
 
     const rows =
       form.querySelector('.tbrdr')?.children[1].children ??
@@ -758,18 +760,21 @@ if (import.meta.main) {
     progress: true
   })) {
     if (type === 'course') {
+      console.error(type, item.subject, item.number, item.description)
       if (course) {
         console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
         first = false
       }
       course = { ...item, sections: [], dateRanges: [] }
     } else if (type === 'section') {
+      console.error(type, item.section.toString(), item.type)
       if (course) {
         course.sections.push(item)
       } else {
         console.error('?? Received `section` before course')
       }
     } else {
+      console.error(type, item)
       if (course) {
         course.dateRanges.push(item)
       } else {
