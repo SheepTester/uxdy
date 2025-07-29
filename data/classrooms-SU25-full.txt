@@ -1,8 +1,8 @@
-V41750299279322
+V41753769407107
 ANES296  Independent Study
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Rodney A,Gabriel
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -267,7 +267,7 @@ DERM296  Independent Study
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 DERM299  Independent Study Project
- 001
+ 001	Genevieve Jung,Kaunitz
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -296,7 +296,7 @@ EMED296  Independent Reseach
 EMED299  Independent Study Project
  001	Christanne Hoffman,Coffey
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Brenna Louise,Hogue
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -310,7 +310,7 @@ EMED423  Elective in Medical Toxicology
  A00	Aaron B.,Schneir
 0010TBA  TBA  CLTBA  TBA TBA A00
 EMED425  Point-of-Care Ultrasound
- A00	Rachna,Subramony
+ A00	Elaine,Yu
 0010TBA  TBA  CLTBA  TBA TBA A00
 EMED427  Wilderness Medicine Elective
  A00	Christanne Hoffman,Coffey
@@ -340,7 +340,7 @@ FPM 296  Community Med Independnt Rsrch
 FPM 299  Comm/Fam Med Indepndnt Stu-ISP
  001	Maria Rosario Gorrez,Araneta
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Michelle Lee,Johnson
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -515,8 +515,12 @@ MED 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Gabriel Arturo,Wagner
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Joseph David,Diaz
 0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Ryan James,Moran
+0005TBA  TBA  INTBA  TBA TBA 004
+ 005	Brenna Louise,Hogue
+0005TBA  TBA  INTBA  TBA TBA 005
 NEU 296  Neurosciences Resrch Rotation	/courses/NEU.html#neu296
  001	Sean Jeffrey,Evans
 0020TBA  TBA  INTBA  TBA TBA 001
@@ -572,9 +576,9 @@ OBG 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 002
  003	Julia,Cormano
 0005TBA  TBA  INTBA  TBA TBA 003
- 004
+ 004	Jessica,Kingston
 0005TBA  TBA  INTBA  TBA TBA 004
- 005
+ 005	Audra Robertson,Meadows
 0005TBA  TBA  INTBA  TBA TBA 005
 OPTH296  Independent Study
  001
@@ -610,6 +614,12 @@ OPTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 004
  005	Sally Liu,Baxter
 0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Jeffrey Ewing,Lee
+0005TBA  TBA  INTBA  TBA TBA 006
+ 007	Nathan Lee,Scott
+0005TBA  TBA  INTBA  TBA TBA 007
+ 008	Natalie,Afshari
+0005TBA  TBA  INTBA  TBA TBA 008
 ORTH296  Orthopaedics Independent Rsrch
  001
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -618,7 +628,7 @@ ORTH296  Orthopaedics Independent Rsrch
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 ORTH299  Independent Study Project(ISP)
- 001
+ 001	Alexandra K.,Schwartz
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -660,58 +670,58 @@ ORTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 003
  004	David Ryan,Bakal
 0005TBA  TBA  INTBA  TBA TBA 004
- 005
+ 005	Pritha B,Dalal
 0005TBA  TBA  INTBA  TBA TBA 005
-PAE 200  Special Topics I
+PAE 200  Special Topics I	/courses/PAS.html#pae200
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  INTBA  TBA TBA A00
-PAE 210  Professional Practice I
+PAE 210  Professional Practice I	/courses/PAS.html#pae210
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 211  The PA Profession
+PAE 211  The PA Profession	/courses/PAS.html#pae211
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 212  The Physical Exam
+PAE 212  The Physical Exam	/courses/PAS.html#pae212
 .A00	Heather Christine,Gebauer
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
-PAE 213  Human Anatomy
+PAE 213  Human Anatomy	/courses/PAS.html#pae213
 .A00	Elias,Villarreal Jr.
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
-PAE 214  Human Phys & Pathophys I
+PAE 214  Human Phys & Pathophys I	/courses/PAS.html#pae214
  A00	Heather Christine,Gebauer
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 215  The Medical Interview
+PAE 215  The Medical Interview	/courses/PAS.html#pae215
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 216  EBM in Practice
+PAE 216  EBM in Practice	/courses/PAS.html#pae216
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 250  Tech Skills & Procedures II
+PAE 250  Tech Skills & Procedures II	/courses/PAS.html#pae250
 .A00	Elias,Villarreal Jr.
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
-PAE 251  Concepts in Emergency Medicine
+PAE 251  Concepts in Emergency Medicine	/courses/PAS.html#pae251
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 252  Clinical Medicine IV
+PAE 252  Clinical Medicine IV	/courses/PAS.html#pae252
  A00	Nicole Anne,Davis
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 253  Pharmacotherapeutics IV
+PAE 253  Pharmacotherapeutics IV	/courses/PAS.html#pae253
  A00	Nicole Anne,Davis
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 254  Clinical Inquiry & Research
+PAE 254  Clinical Inquiry & Research	/courses/PAS.html#pae254
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 255  Clinical Reasoning IV
+PAE 255  Clinical Reasoning IV	/courses/PAS.html#pae255
 .A00	Heather Christine,Gebauer
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
-PAE 256  Health Promotion/Disease Prev
+PAE 256  Health Promotion/Disease Prev	/courses/PAS.html#pae256
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 290  Didactic Capstone
+PAE 290  Didactic Capstone	/courses/PAS.html#pae290
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  SETBA  TBA TBA A00
 PATH296  Pathology Independent Research	/courses/PATH.html#path296
@@ -842,7 +852,7 @@ PSY 296  Independnt Readngs/Stdy in Psy
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 PSY 299  Psychiatry Independnt Stdy Pro
- 001
+ 001	Yash,Joshi
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -906,8 +916,10 @@ PSY 496  Clinical Independent Study
  005
 0005TBA  TBA  INTBA  TBA TBA 005
 RAD 296  Radiology Independent Research
- 001
+ 001	Aman,Khurana
 0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Tyler Michael,Seibert
+0005TBA  TBA  INTBA  TBA TBA 002
 RAD 299  Radiology Independent Study
  001	Michael Adam,Taddonio
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -942,7 +954,7 @@ RAD 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Andrew C,Yen
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Michael Adam,Taddonio
 0005TBA  TBA  INTBA  TBA TBA 003
 RMAS296  Independent Research
  001
@@ -974,7 +986,7 @@ RMED299  Repro Med Indepen Study Projct
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Pratibha Sareen,Binder
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Gina Elaine,Reggiardo
 0005TBA  TBA  INTBA  TBA TBA 003
 SOMC244  Comp Rev & Prep-USMLE Step 1
  001	Sean Jeffrey,Evans
@@ -1083,6 +1095,12 @@ SURG496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 004
  005	Martin Huy,Pham
 0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Ava,Agha Hosseini
+0005TBA  TBA  INTBA  TBA TBA 006
+ 007	Charles Stuart,Coffey
+0005TBA  TBA  INTBA  TBA TBA 007
+ 008	Charles Stuart,Coffey
+0005TBA  TBA  INTBA  TBA TBA 008
 UROL296  Independent Study
  001
 0005TBA  TBA  INTBA  TBA TBA 001
