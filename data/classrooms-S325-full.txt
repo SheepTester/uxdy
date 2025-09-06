@@ -1,4 +1,7 @@
-V41753769424709
+V41757124649844
+AAS 198  Directed Group Study	/courses/AASM.html#aas198
+ 0012025063020250823	Dennis R.,Childs
+0002TBA  TBA  INTBA  TBA TBA 001
 AAS 199  Independent Study	/courses/AASM.html#aas199
  0012025063020250823	Dennis R.,Childs
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -121,7 +124,7 @@ AIP 197P Public Service Internship	/courses/AIP.html#aip197p
 9999TBA  TBA  ITTBA  TBA TBA 002
 ANAR135S Ancient Mediterranean Civ	/courses/ANTH.html#anar135s
  A002025090820250920	Geoffrey E.,Braswell
-0000TBA  TBA  LETBA  TBA TBA A00
+0026TBA  TBA  LETBA  TBA TBA A00
 ANTH199  Independent Study	/courses/ANTH.html#anth199
  0012025063020250823	Joseph D.,Hankins
 9999TBA  TBA  TUTBA  TBA TBA 001
@@ -639,8 +642,8 @@ MGT 402  Management Communications	/courses/MGT.html#mgt402
 MGT 406  Leadership Skills/Tech Firms	/courses/MGT.html#mgt406
  A002025082520250920	Christopher S,Oveis
 0000TBA  TBA  LETBA  TBA TBA A00
- C002025063020250906	Christopher S,Oveis
-0000TBA  TBA  LETBA  TBA TBA C00
+ D002025090820250920	Christopher S,Oveis
+0000TBA  TBA  LETBA  TBA TBA D00
 MGT 417  Current Business Law Issues	/courses/MGT.html#mgt417
 'A002025063020250906	Michael Cullen,Parme
 0060OTRSN1    LE4E10618302120A00

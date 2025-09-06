@@ -1,4 +1,4 @@
-V41753769407107
+V41757124632100
 ANES296  Independent Study
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -9,7 +9,7 @@ ANES296  Independent Study
 ANES299  Anes/Independent Study Project
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Joel Patrick,Castellanos
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -403,7 +403,7 @@ MED 296  Independent Research
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Luis R.,Castellanos
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Luis R.,Castellanos
 0005TBA  TBA  INTBA  TBA TBA 003
 MED 299  Medicine Independnt Study Proj
  001	John,Ayers
@@ -533,7 +533,7 @@ NEU 299  Independent Study	/courses/NEU.html#neu299
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Anuja Vora,Jindal
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Shifteh,Sattar
 0005TBA  TBA  INTBA  TBA TBA 003
 NEU 401  Neurology Core Clerkship
  A00	Jamie Nicole,LaBuzetta
@@ -1007,6 +1007,8 @@ TBA  TBA  DITBA  TBA TBA A01
 SOMI296  Independent Study
  001	Sean Jeffrey,Evans
 9999TBA  TBA  INTBA  TBA TBA 001
+ 002	Sean Jeffrey,Evans
+0005TBA  TBA  INTBA  TBA TBA 002
 SOMI421  Subinternship Palliative Med
  A00	Paula Michelle,Mesarwi
 0010TBA  TBA  CLTBA  TBA TBA A00

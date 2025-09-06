@@ -1,4 +1,4 @@
-V41753769411004
+V41757124635987
 ANAR104  Intro GIS for Anth & Arch	/courses/ANTH.html#anar104
 ANAR116  Sea Level Change - Israel	/courses/ANTH.html#anar116
 ANAR117  Archaeology Field&Lab, SoCal	/courses/ANTH.html#anar117
@@ -48,7 +48,7 @@ ANSC148  Global Health&Cultrl Diversity	/courses/ANTH.html#ansc148
 20250801RCLASFIR21  19002159
 ANSC165  Contemporary South Asia	/courses/ANTH.html#ansc165
 ANSC166  Film and Culture in Asia	/courses/ANTH.html#ansc166
-'A00	Dylan Jam,Hallingstad Obrien
+'A00	Dylan James,Hallingstad O'Brien
 0100RCLAS24   LER01  18002050A00
 20250802RCLASFIR01  19002159
 ANSC190GSMedicine&Healing in South Asia	/courses/ANTH.html#ansc190gs
@@ -429,6 +429,10 @@ CHEM199  Reading and Research	/courses/CHEM.html#chem199
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Lalit,Deshmukh
 9999TBA  TBA  INTBA  TBA TBA 002
+ 003	Navtej,Toor
+9999TBA  TBA  INTBA  TBA TBA 003
+ 004	Judy E.,Kim
+9999TBA  TBA  INTBA  TBA TBA 004
 CHIN169A Medical Chinese I	/courses/CHIN.html#chin169a
 COGS3    Introduction to Computing	/courses/COGS.html#cogs3
 :A00	Mary E. T.,Boyle
@@ -551,11 +555,11 @@ COMM106M Advertising & Society	/courses/COMM.html#comm106m
 20250801RCLASFIR18  15001759
 COMM109P MC: Propaganda and Persuasion	/courses/COMM.html#comm109p
 'A00	Marwa Ismaile,Abdalla
-0040RCLAS24   LER100 14001650A00
+0030RCLAS24   LER100 14001650A00
 20250802RCLASFIR100 15001759
 COMM110M LLC: Comm & Community	/courses/COMM.html#comm110m
 'A00	Camille E,Campion
-0040RCLAS24   LER20  11001350A00
+0030RCLAS24   LER20  11001350A00
 20250802RCLASFIR01  11301429
 COMM137  Black Women Filmmakers	/courses/COMM.html#comm137
 'A00	Nicoletta,Vangelisti
@@ -606,7 +610,7 @@ RCLAS24   LER08  11001350A00RCLAS5    DIR77  13001450A01
 :B00	Olivia,Weng
 0050EBU3B3    LAB250 14001750B50
 CSB  1234 LE004  11001220B00CSB  24   DI004  14001450B01
-20250801CSB  FI004  11301429
+20250801TBA  FITBA  11301429
 CSE 100  Advanced Data Structures	/courses/CSE.html#cse100
 :A00	Andrew John,Leverentz
 0050DIB  13   DI122  13001350A010050DIB  13   DI122  14001450A02
@@ -712,7 +716,7 @@ ECE 65   Components & Circuits Lab	/courses/ECE.html#ece65
 :A00	Andrew S,Saad
 0025WLH  13   LA2213A18002050A500025WLH  13   LA2215 18002050A51
 WLH  24   LE2207 18002050A00PCYNH3    DI120  16001750A01
-20250802WLH  FI2207 19002159
+20250801WLH  RE2207 1200135020250802WLH  FI2207 19002159
 ECE 198  Direct Group Study	/courses/ECE.html#ece198
  001	Robert Wendell,Heath Jr.
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -1197,6 +1201,8 @@ EBU2 5    LE479  09301120A00
 MAE 197  Engineering Internship	/courses/MAE.html#mae197
  001	Prabhakar,Bandaru
 9999TBA  TBA  ITTBA  TBA TBA 001
+ 002	Nathan Joseph,Delson
+9999TBA  TBA  ITTBA  TBA TBA 002
 MAE 199  Independent Study/Undergrads	/courses/MAE.html#mae199
  001	Tania,Morimoto
 9999TBA  TBA  INTBA  TBA TBA 001
