@@ -1,4 +1,4 @@
-V41749780818651
+V41757124693795
 AAS 10R  Intro/African-American Studies
 .A00	Elizabeth Annette,Butler
 0034RCLAS3    DIR04  12001250A010034RCLAS3    DIR04  13001350A02
@@ -829,7 +829,7 @@ BENG187D BENG Design Proj:Presentation	/courses/BENG.html#beng187d
 0060CENTR1    LE222  12001250B00
  C00	Alyssa C,Taylor Amos
 0060CENTR1    LE222  13001350C00
-BENG190  Special Topics in BENG
+BENG190  Special Topics in BENG	/courses/BENG.html#beng190
  A00Introduction to Python	Reem I,Khojah
 0040PFBH 23   LE161  11001220A00
 BENG193  Clinical Exp in Bioengineering	/courses/BENG.html#beng193
@@ -2732,7 +2732,7 @@ WLH  135  LE2205 14001450A00
 BIEB159  Microbiome Function Laboratory	/courses/BIOL.html#bieb159
  A00	Sara,Jackrel
 0000YORK 35   LA3050 09001250A00
-BIEB164  Behav Ecology & Conservation
+BIEB164  Behav Ecology & Conservation	/courses/BIOL.html#bieb164
 .A00	Shermin,De Silva
 0061RCLAS4    DIR18  08000850A010061RCLAS3    DIR18  16001650A020061RCLAS2    DIR18  11001150A030062RCLAS2    DIR18  14001450A04
 FAH  135  LE1301 15001550A00
@@ -6263,11 +6263,11 @@ CSE 252D Advanced Computer Vision	/courses/CSE.html#cse252d
 'A00	Manmohan Krishna,Chandraker
 0000WLH  35   LE2111 17001820A00
 20250613WLH  FI2111 19002159
-CSE 253  Machine Learning for Music
+CSE 253  Machine Learning for Music	/courses/CSE.html#cse253
 .A00	Julian John,McAuley
 0196TBA  TBA  DITBA  TBA TBA A01
 WLH  24   LE2001 09301050A00
-CSE 253R Machine Learning for Music
+CSE 253R Machine Learning for Music	/courses/CSE.html#cse253r
 .A00	Julian John,McAuley
 0650TBA  TBA  DITBA  TBA TBA A01
 RCLAS24   LER03  09301050A00
@@ -8615,19 +8615,19 @@ ETHN500  Apprntice Teaching/Ethn Stdies	/courses/ETHN.html#ethn500
 ETIM289  Interdis Methds Sem Spec Topic	/courses/ETHN.html#etim289
  A00	Curtis F.,Marez
 0015TBA  4    SETBA  14001650A00
-FILM71   Fundamentals of Cinematography	/courses/FILM.html#film71
+FILM71   Fundamentals of Cinematography	/courses/CIN.html#film71
 .A00	Joanne Moeun,Park
 0022MCC  3    LA140  15001650A01
 RWAC 1    LE0624 15001750A00
-FILM72   Fundamentals of Directing	/courses/FILM.html#film72
+FILM72   Fundamentals of Directing	/courses/CIN.html#film72
 .A00	Christopher Mason,Johnson
 0022MANDE4    LAB206 09301120A01
 MANDE2    LEB206 09301220A00
-FILM73   Fundamentals of Editing	/courses/FILM.html#film73
+FILM73   Fundamentals of Editing	/courses/CIN.html#film73
 .A00	Jackson Stanford,Kroopf
 0022MANDE4    LAB206 12301420A01
 MANDE2    LEB206 12301520A00
-FILM87   First-year Seminar	/courses/FILM.html#film87
+FILM87   First-year Seminar	/courses/CIN.html#film87
  A00	Babak,Rahimi
 0020MCC  2    SE221  09000950A00
  B00	Babak,Rahimi
@@ -9624,7 +9624,7 @@ LIGN113  Hearing Sci.&Hearing Disorders	/courses/LING.html#lign113
 'A00	William Francis,Styler
 0105FAH  135  LE1101 09000950A00
 20250611FAH  FI1101 08001059
-LIGN117  The Language Code
+LIGN117  The Language Code	/courses/LING.html#lign117
 'A00	Andrew Scott,Kehler
 0050RWAC 135  LE0115 13001350A00
 20250612RWAC FI0115 11301429
@@ -11395,6 +11395,8 @@ MATH199H Honors/Thesis Resrch/Undergrad	/courses/MATH.html#math199h
 9999TBA  TBA  INTBA  TBA TBA 009
  010	Steven V,Sam
 9999TBA  TBA  INTBA  TBA TBA 010
+ 011	Joshua R,Frisch
+9999TBA  TBA  INTBA  TBA TBA 011
 MATH200C Algebra III	/courses/MATH.html#math200c
 'A00	Alireza,Salehi Golsefidy
 0020APM  24   LE5402 09301050A00
@@ -11845,9 +11847,9 @@ MCWP40   Critical Writing	/courses/MCWP.html#mcwp40
  008	Carrie King,Wastal
 0015HSS  13   TU3027 09301050008
  009	Vincent Minhduc,Pham
-0000HSS  24   TU1106B14001520009
+0020HSS  24   TU1106B14001520009
  010	Vincent Minhduc,Pham
-0000HSS  24   TU1106B15301650010
+0020HSS  24   TU1106B15301650010
 MCWP50   Critical Writing	/courses/MCWP.html#mcwp50
  001	Jason Michael,Bartulis
 0020HSS  24   SE1305 12301350001
@@ -12782,7 +12784,7 @@ NANO174  Mech. Behavior of Materials	/courses/NANO.html#nano174
 'A00	Marc,Meyers
 0050PCYNH135  LE120  10001050A00
 20250609PCYNHFI120  08001059
-NANO181R Data Sci/Materials Sci Online
+NANO181R Data Sci/Materials Sci Online	/courses/NANO.html#nano181r
  A00	Shyue Ping,Ong
 0050RCLAS24   LER04  09301050A00
 NANO199  Independent Study/Undergrad	/courses/NANO.html#nano199
@@ -12813,7 +12815,7 @@ NANO279  Adv Electrochemical Energy Eng	/courses/NANO.html#nano279
 'A00	Ping,Liu
 0050YORK 24   LE4080A08000920A00
 20250612YORK FI4080A08001059
-NANO281R Data Sci/Materials Sci Online
+NANO281R Data Sci/Materials Sci Online	/courses/NANO.html#nano281r
  A00	Shyue Ping,Ong
 0100RCLAS24   LER04  09301050A00
 NANO282  Professional Development	/courses/NANO.html#nano282
@@ -12961,7 +12963,7 @@ NEUG221  Advanced Topics/Neuroscience	/courses/NEU.html#neug221
  B00	Stephanie Carole,Dulawa
 0008MET  3    LE221  09001050B00
 NEUG280  Minor Proposition	/courses/NEU.html#neug280
- A00	Xu,Chen
+ A00	Xu,Chen	William,Mobley	Giordano,De Guglielmo
 0012LFFB 1    LE107  09001150A00
 NEUG296  Neurosciences ResearchRotation	/courses/NEU.html#neug296
  A00	Brenda Laurie,Bloodgood
@@ -13203,27 +13205,27 @@ ORTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
-PAE 240  Professional Practice IV
+PAE 240  Professional Practice IV	/courses/PAS.html#pae240
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 241  Tech Skills & Procedures I
+PAE 241  Tech Skills & Procedures I	/courses/PAS.html#pae241
 .A00	Elias,Villarreal Jr.
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
-PAE 242  Clinical Medicine III
+PAE 242  Clinical Medicine III	/courses/PAS.html#pae242
  A00	Nicole Anne,Davis
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 243  Pharmacotherapeutics III
+PAE 243  Pharmacotherapeutics III	/courses/PAS.html#pae243
  A00	Nicole Anne,Davis
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 244  Behavioral & Mental Health
+PAE 244  Behavioral & Mental Health	/courses/PAS.html#pae244
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
-PAE 245  Clinical Reasoning III
+PAE 245  Clinical Reasoning III	/courses/PAS.html#pae245
 .A00	Heather Christine,Gebauer
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
-PAE 246  Rehab Med & Palliative Care
+PAE 246  Rehab Med & Palliative Care	/courses/PAS.html#pae246
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
 PATH199  Independent Study
@@ -13241,7 +13243,7 @@ PATH296  Pathology Independent Research	/courses/PATH.html#path296
  003
 0005TBA  TBA  INTBA  TBA TBA 003
 PATH299  Path/Independent Study Project	/courses/PATH.html#path299
- 001
+ 001	Richard,Klemke
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -14388,7 +14390,7 @@ POLI120D Germany: Division	/courses/POLI.html#poli120d
 'A00	Jan Eric,Hansen
 0050RWAC 135  LE0103 09000950A00
 20250611RWAC FI0103 08001059
-POLI121D Digital Politics
+POLI121D Digital Politics	/courses/POLI.html#poli121d
 'A00	Margaret Earling,Roberts
 0147CENTR24   LE109  09301050A00
 20250610CENTRFI109  08001059
@@ -15172,7 +15174,7 @@ PSYC500  Apprentice Teaching	/courses/PSYC.html#psyc500
  024	Catherine Walsh,Tallman
 9999TBA  TBA  INTBA  TBA TBA 024
 RAD 296  Radiology Independent Research
- 001
+ 001	Albert,Hsiao
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -15696,7 +15698,7 @@ MGT 459  Topics in Innovation	/courses/MGT.html#mgt459
 'C00Venture Innov & Growth Strat	Viswanathan,Krishnan
 0098OTRSN0    LE1E10612301830C00
 20250608OTRSNFI1E10612301530
-MGT 477R Consumer Behavior
+MGT 477R Consumer Behavior	/courses/MGT.html#mgt477r
 :A00	Wei,Liu
 0098OTRSN5    LE1E10610001200A00
 TBA  0    LETBA  10001200A00
@@ -15707,7 +15709,7 @@ MGT 478  Marketing Communications	/courses/MGT.html#mgt478
 'A00	Katarzyna Beata,Jasko
 0036WFH  3    LE3N12918302120A00
 20250611WFH  FI3N12918302130
-MGT 486  Real Estate Finance
+MGT 486  Real Estate Finance	/courses/MGT.html#mgt486
 'A00	Carlos,Avenancio-Leon
 0060OTRSN1    LE4E10611001350A00
 20250609OTRSNFI4E10611301430
@@ -17721,7 +17723,7 @@ TDGE25   Public Speaking	/courses/THEA.html#tdge25
 'D00	Carla Kelso,Harting
 0020GH   24   LA247  15301650D00
 20250609GH   FI247  15001759
-TDGE40   Dance and Social Movement(s)
+TDGE40   Dance and Social Movement(s)	/courses/THEA.html#tdge40
 .A00	Jade Yukana,Power
 0030GH   5    DI247  10001050A020030GH   5    DI247  11001150A03
 CSB  24   LE005  12301350A00
