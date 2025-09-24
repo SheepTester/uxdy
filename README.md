@@ -1,14 +1,44 @@
+[**Scrape schedules**](https://github.com/SheepTester/uxdy/actions/workflows/scrape.yml)
+
 > [!IMPORTANT]
-> The frontend for UCSD classroom schedules has been moved out of this monorepo to **[SheepTester/ucsd-classrooms](https://github.com/SheepTester/ucsd-classrooms)**.
-> If you want, you can scroll down for its original README: [UCSD classroom schedules](#ucsd-classroom-schedules)
-> 
+> The frontend for UCSD classroom schedules has been moved to **[SheepTester/ucsd-classrooms](https://github.com/SheepTester/ucsd-classrooms)**.
 > This repo remains active for _scraping_ classroom schedules.
+
+This is a monorepo mostly for scraping UCSD class schedules.
+It also contains code related to a few other, fairly unrelated projects—it was originally meant to be for a personal class schedule app.
+
+The UCSD classrooms website's scraper sits in `scheduleofclasses` (`webreg-scraping` is no longer used), and its original frontend is in `classrooms`.
+
+- `classrooms` - classrooms website
+- `dependencies` - scraping the [course catalog](https://catalog.ucsd.edu/front/courses.html) for prereqs
+- `scheduleofclasses` - scraping the [Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) for class schedules
+- `scripts` - deploying to GitHub Pages
+- `src` & `static` - personal schedule app
+- `terms` - predicting UCSD term dates
+- `util` - utils for classroom schedule scraping and website
+- `webreg-scraping` - scraping [WebReg](https://act.ucsd.edu/webreg2/start) for class schedules
+
+> [!CAUTION]
+>
+> This repo uses Deno 1.x. Since the `deno bundle` command has since been deprecated and removed, you must downgrade to Deno 1.x.
+>
+> If you don't have Deno installed already, set `deno_version` to specify the version to install.
+>
+> ```shell
+> $ export deno_version=v1.46.3
+> $ sudo apt-get install unzip -y
+> $ curl -fsSL https://deno.land/install.sh | sh
+> ```
+>
+> If you already have Deno installed, you can use `deno upgrade` to downgrade (??).
+>
+> ```shell
+> $ deno upgrade 1.46.3
+> ```
 
 # uxdy
 
 What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦
-
-[**Scrape schedules**](https://github.com/SheepTester/uxdy/actions/workflows/scrape.yml)
 
 ## Development
 
@@ -86,32 +116,6 @@ import(
 # UCSD classroom schedules
 
 [Live](https://sheeptester.github.io/uxdy/classrooms/)
-
-> [!NOTE]
->
-> This repo contains code related to other, fairly unrelated projects.
-> The code for the classrooms website sits in two directories:
->
-> - `scheduleofclasses/` - web scraping
-> - `classrooms/` - web app
-
-> [!CAUTION]
->
-> This repo uses Deno 1.x. Since the `deno bundle` command has since been deprecated and removed, you must downgrade to Deno 1.x.
->
-> If you don't have Deno installed already, set `deno_version` to specify the version to install.
->
-> ```shell
-> $ export deno_version=v1.46.3
-> $ sudo apt-get install unzip -y
-> $ curl -fsSL https://deno.land/install.sh | sh
-> ```
->
-> If you already have Deno installed, you can use `deno upgrade` to switch versions.
->
-> ```shell
-> $ deno upgrade 1.46.3
-> ```
 
 ```sh
 # In the repo root directory
