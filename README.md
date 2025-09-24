@@ -1,4 +1,4 @@
-> [!WARNING]
+> [!IMPORTANT]
 > The frontend for UCSD classroom schedules has been moved out of this monorepo to **[SheepTester/ucsd-classrooms](https://github.com/SheepTester/ucsd-classrooms)**.
 > If you want, you can scroll down for its original README: [UCSD classroom schedules](#ucsd-classroom-schedules)
 > 
