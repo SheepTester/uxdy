@@ -1,4 +1,4 @@
-V41757124632100
+V41758767324967
 ANES296  Independent Study
  001	Preetham John,Suresh
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -424,7 +424,7 @@ MED 426  Coronary Care Unit Clerkship
  A00	Luis R.,Castellanos
 0010TBA  TBA  CLTBA  TBA TBA A00
 MED 426T Coronary Care Selective
- A00
+ A00	Luis R.,Castellanos
 0010TBA  TBA  CLTBA  TBA TBA A00
 MED 429  Intensive Clerkship/Ambul Med
  A00	Patricia Suzanne,Hlavin

@@ -1,4 +1,4 @@
-V41757124642924
+V41758767334573
 AAS 10   Intro/African-American Studies	/courses/AASM.html#aas10
 :A00	Dennis R.,Childs
 0008TBA  TBA  DITBA  TBA TBA A01
@@ -1478,6 +1478,9 @@ NANO199  Independent Study/Undergrad	/courses/NANO.html#nano199
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Oscar,Vazquez Mena
 9999TBA  TBA  INTBA  TBA TBA 002
+NEU 199  Independent Study	/courses/NEU.html#neu199
+ 001	Eric,Halgren
+0000TBA  TBA  INTBA  TBA TBA 001
 PHIL1    Introduction to Philosophy	/courses/PHIL.html#phil1
 'A00	Huadian,Liu
 0030RWAC 24   LE0472 14001650A00
