@@ -1,4 +1,4 @@
-V41765402275790
+V41766564723410
 AAPI87   First-year Seminar	/courses/AAPI.html#aapi87
  A00	Amanda Lee Albaniel,Solomon
 0020TBA  2    SETBA  12001300A00
@@ -2759,6 +2759,8 @@ BILD99H  Independent Study
 9999TBA  TBA  INTBA  TBA TBA 006
  007	Rommie E,Amaro
 9999TBA  TBA  INTBA  TBA TBA 007
+ 008	Vineet,Augustine
+9999TBA  TBA  INTBA  TBA TBA 008
 BIMM100  Molecular Biology	/courses/BIOL.html#bimm100
 :A00	Jens,Lykke-Andersen
 0056PCYNH1    DI120  08000850A010056PCYNH1    DI120  17001750A020056PCYNH3    DI120  15001550A030056CSB  5    DI005  12001250A04
@@ -18127,7 +18129,7 @@ VIS 243  Aesthetic Theory	/courses/VIS.html#vis243
  A00	Jordan M,Rose
 0015VAF  2    SE366  15301820A00
 VIS 255  Seminar in Contemporary Art	/courses/VIS.html#vis255
- A00	Monique Luise,Vangenderen
+ A00	Jill,Dawsey
 0015VAF  1    SE366  12001450A00
 VIS 295  Individual Studies/Grad Studnt	/courses/VIS.html#vis295
  001	Nicole L,Miller
