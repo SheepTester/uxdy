@@ -16,7 +16,6 @@ async function getPage (path: string): Promise<HTMLDocument> {
       throw err
     }
 
-    console.log(`Fetching ${path}`)
     const response = await fetch(new URL(path, HOST).toString())
     if (response.ok) {
       const html = await response.text()
@@ -24,7 +23,7 @@ async function getPage (path: string): Promise<HTMLDocument> {
       await Deno.writeTextFile(cachePath, html)
       return html
     } else {
-      throw new Error(`HTTP ${response.status} error`)
+      throw new Error(`URL: ${path}\nHTTP ${response.status} error`)
     }
   })
 
@@ -134,7 +133,7 @@ for (const path of courseListLinks) {
       )
       const nonAscii = rawCourseName.replace(/[\u0000-\u007f]/g, '')
       if (nonAscii.length > 0) {
-        console.log(
+        console.warn(
           'Course name contains non-ASCII characters:',
           Array.from(
             nonAscii,
@@ -172,19 +171,19 @@ for (const path of courseListLinks) {
       unitsRaw === null
         ? null
         : (unitsZeroable ? unitsRaw.slice(0, -2) : unitsRaw)
-            .split(/, (?:or )?| or |[/-]/)
-            .map(unitRange => {
-              const [start, end] = unitRange.split(/–| to /)
-              if (end) {
-                const units = []
-                for (let unit = +start; unit <= +end; unit++) {
-                  units.push(unit)
-                }
-                return units
-              } else {
-                return [+start]
+          .split(/, (?:or )?| or |[/-]/)
+          .map(unitRange => {
+            const [start, end] = unitRange.split(/–| to /)
+            if (end) {
+              const units = []
+              for (let unit = +start; unit <= +end; unit++) {
+                units.push(unit)
               }
-            })
+              return units
+            } else {
+              return [+start]
+            }
+          })
 
     let description =
       (courseName.nextElementSibling?.tagName === 'P'

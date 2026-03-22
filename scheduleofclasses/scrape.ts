@@ -65,7 +65,7 @@ const fetchHtml = (url: string) =>
     .then(r =>
       r.ok
         ? r.text()
-        : Promise.reject(new Error(`HTTP ${r.status} error: ${url}`))
+        : Promise.reject(new Error(`URL: ${url}\nHTTP ${r.status} error`))
     )
     .then(
       html =>
@@ -141,7 +141,7 @@ export type ScrapedSection =
         id: number
       } | null
       type: string
-      section: string
+      section: string | Day
       note?: string
     }
 
@@ -328,19 +328,20 @@ export async function * getCourseIterator (
   let lastNumber: string | null = null
   let noteState: NoteState = { type: 'none' }
   while (responseQueue.length > 0) {
-    const { page, form, url } = await responseQueue.shift()!
-    console.error('>', url)
+    const { page, form } = await responseQueue.shift()!
 
     const rows =
       form.querySelector('.tbrdr')?.children[1].children ??
       unwrap(new Error('Missing results table'))
     for (const row of rows) {
-      // Course header, but with less info, which precedes red notes
+      // Course header, but with less info, which precedes red notes (see below
+      // for example)
       if (row.querySelector('.crsheader') && row.children.length === 3) {
+        const [_blankCell, courseNumberCell, _courseTitleCell] = row.children
         if (noteState.type === 'none') {
           noteState = {
             type: 'expect-note',
-            number: row.children[1].textContent
+            number: courseNumberCell.textContent
           }
         } else {
           throw new TypeError(
@@ -350,13 +351,15 @@ export async function * getCourseIterator (
         continue
       }
 
-      // Red notes describe a course.
+      // Red notes describe a course. Example:
+      // https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=S295&tabNum=tabs-dept&selectedDepartments=SOC
       if (row.querySelector('.nonenrtxt') && row.children.length === 2) {
+        const [_blankCell, noteCell] = row.children
         if (noteState.type === 'expect-note') {
           noteState = {
             type: 'note',
             number: noteState.number,
-            content: row.children[1].textContent.trim().replaceAll(/\s+/g, ' ')
+            content: noteCell.textContent.trim().replaceAll(/\s+/g, ' ')
           }
         } else {
           throw new TypeError(`Invalid state '${noteState.type}' for a note.`)
@@ -368,15 +371,20 @@ export async function * getCourseIterator (
         )
       }
 
-      // Black notes describe a section. You can see examples for S123 COMM
-      // 101T and cancelled CSE sections in FA95. They describe the section
-      // row before it.
+      // Black notes describe a section. You can see examples for S123 COMM 101T
+      // and cancelled CSE sections in FA95. They describe the section row
+      // before it. Example:
+      // https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=FA95&tabNum=tabs-dept&selectedDepartments=COMM
       if (row.className === 'nonenrtxt' && row.children.length === 2) {
+        const [_blankCell, _noteCell] = row.children
         if (noteState.type === 'note-taken') {
+          // This signals that the note was already read while processing the
+          // course row before it
           noteState = { type: 'none' }
         } else {
-          console.warn(subject, lastNumber)
-          throw new TypeError(`Invalid state '${noteState.type}' for a note.`)
+          throw new TypeError(
+            `Invalid state '${noteState.type}' for a note (was at ${subject} ${lastNumber}).`
+          )
         }
         continue
       }
@@ -405,7 +413,9 @@ export async function * getCourseIterator (
         if (!subject) {
           throw new Error('No subject')
         }
-        const courseInfo = row.children[2].textContent
+        const [restrictionCell, numberCell, courseInfoCell, _linksCell] =
+          row.children
+        const courseInfo = courseInfoCell.textContent
           .trim()
           .replaceAll(/\s+/g, ' ')
         const dateRangeMatch = courseInfo.match(
@@ -439,7 +449,7 @@ export async function * getCourseIterator (
           )
         }
 
-        const number = row.children[1].textContent
+        const number = numberCell.textContent
         const note =
           noteState.type === 'note'
             ? noteState.number === number
@@ -451,7 +461,7 @@ export async function * getCourseIterator (
               )
             : undefined
         noteState = { type: 'none' }
-        const catalogUrl = row.children[2]
+        const catalogUrl = courseInfoCell
           .querySelector('a')
           ?.getAttribute('href')
           ?.slice(26, -2)
@@ -462,7 +472,7 @@ export async function * getCourseIterator (
             : catalogUrl?.startsWith('http://www.ucsd.edu/catalog/')
               ? catalogUrl.replace('http://www.ucsd.edu/catalog', '')
               : catalogUrl
-        const restriction = row.children[0].textContent.trim()
+        const restriction = restrictionCell.textContent.trim()
         // ( 2 Units)
         // ( 2 /4 by 2 Units)
         // ( 1 -4 Units)
@@ -589,14 +599,6 @@ export async function * getCourseIterator (
           seatsLimit
         ] = tds
         if (days === 'Cancelled') {
-          if (sectionCodeOrDate.includes('/')) {
-            console.error(
-              'cancelled section is date',
-              subject,
-              lastNumber,
-              sectionCodeOrDate
-            )
-          }
           yield {
             page,
             pages: pageCount,
@@ -610,7 +612,11 @@ export async function * getCourseIterator (
                   }
                   : null,
               type: meetingType,
-              section: sectionCodeOrDate,
+              // SP96 BIPN 100 has both date and code
+              // https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=SP96&tabNum=tabs-crs&courses=BIPN%20100
+              section: sectionCodeOrDate.includes('/')
+                ? parseDate(sectionCodeOrDate)
+                : sectionCodeOrDate,
               note
             }
           }
@@ -698,6 +704,11 @@ export async function * getCourseIterator (
   }
 }
 
+/**
+ * IMPORTANT: `JSON.parse` is not enough. See `readCourses` for necessary
+ * reviver operations (for example, unlimited capacity is serialized into JSON
+ * as `null`).
+ */
 export type ScrapedResult = {
   scrapeTime: number
   /**
@@ -760,25 +771,27 @@ if (import.meta.main) {
     progress: true
   })) {
     if (type === 'course') {
-      console.error(type, item.subject, item.number, item.description)
       if (course) {
         console.log((first ? '[ ' : ', ') + JSON.stringify(course, null, '\t'))
         first = false
       }
       course = { ...item, sections: [], dateRanges: [] }
     } else if (type === 'section') {
-      console.error(type, item.section.toString(), item.type)
       if (course) {
         course.sections.push(item)
       } else {
-        console.error('?? Received `section` before course')
+        console.error(
+          '?? Received `section` before course',
+          type,
+          item.section.toString(),
+          item.type
+        )
       }
     } else {
-      console.error(type, item)
       if (course) {
         course.dateRanges.push(item)
       } else {
-        console.error('?? Received `date-range` before course')
+        console.error('?? Received `date-range` before course', type, item)
       }
     }
   }
