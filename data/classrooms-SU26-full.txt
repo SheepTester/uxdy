@@ -1,0 +1,1157 @@
+V41780635185523
+ANES296  Independent Study
+ 001	Brian M.,Ilfeld
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ANES299  Anes/Independent Study Project
+ 001	Rodney A,Gabriel
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ANES401  Anesthesiology Clerkship
+ A00	Lawrence,Weinstein
+0010TBA  TBA  CLTBA  TBA TBA A00
+ANES402  Pain Med Eval & Intervntnl Clk
+.A00	Gregory Robert,Polston
+0010TBA  TBA  CLTBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+ANES402T Pain Med Eval & Intervent Sel
+ A00	Gregory Robert,Polston
+0010TBA  TBA  CLTBA  TBA TBA A00
+ANES403  Critical Care Medicine Clerksp
+ A00	Angela,Meier
+0010TBA  TBA  CLTBA  TBA TBA A00
+ANES403T Anes Critical Care Med Sel
+ A00	Angela,Meier
+0010TBA  TBA  CLTBA  TBA TBA A00
+ANES410  Introduction to Anesthesiology
+ A00	Lawrence,Weinstein
+0010TBA  TBA  CLTBA  TBA TBA A00
+ANES496  Clinical Independent Study
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+SPPS199  Independent Study
+ 001	Dionicio R.,Siegel
+9999TBA  TBA  INTBA  TBA TBA 001
+ 002	Geoffrey A.,Chang
+9999TBA  TBA  INTBA  TBA TBA 002
+SPPS400A Acute Care Adv Pharm Pract Exp
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS400B Acute Care APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS401A Ambulatory Care APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS401B Ambulatory Care APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS402  Community Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS402E Community APPE Elective
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS403  Hospital Practice APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS406  Academia APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS407  HIV/AIDS APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS408  Anticoagulation APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS409  Cardiology APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS410  Discharge Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS411  Drug Information APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS412  Emergency Medicine APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS413  Food&Drug Administration APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS414  Geriatric Pharmacotherpy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS415  Hematology/Oncology APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS416  Home Infusion APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS418  Infectious Disease APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS419  Informatics APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS420  International APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS421  Investigational Drug Serv APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS422  Managed Care APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS423  Medical ICU APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS424  Medication Safety APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS425  Medication Therapy Mgmt APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS426  Neonatal ICU APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS427  Nuclear Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS428  Pain and Palliative Care APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS429  Pediatrics APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS430  Pharmacy Admin/Leadership APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS431  Pharmacy Benefits Mgmt APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS432  Pharmaceutical Industry APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS433  Poison Control APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS434  Psychiatry APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS435  Spinal Cord Injury APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS436  Surgical ICU APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS437  Transitions of Care APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS438  Transplant APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS440  Veterinary Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS441  Nephrology APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS442  Specialty Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS447  Compounding Pharmacy APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+SPPS496  Independent Study APPE
+ A00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA A00
+ B00	Ila Maewal,Saunders
+9999TBA  TBA  CLTBA  TBA TBA B00
+DERM296  Independent Study
+ 001	Reid P,Oldenburg
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+DERM299  Independent Study Project
+ 001	Laura S.,Romero
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+DERM428  Clinical Dermatology
+ A00	Jeremy Adam,Schneider
+0010TBA  TBA  CLTBA  TBA TBA A00
+DERM428T Clinical Dermatology Selective
+ A00	Jeremy Adam,Schneider
+0010TBA  TBA  CLTBA  TBA TBA A00
+DERM436  Pediatric Dermatology
+ A00	Dawn Zhang,Eichenfield
+0010TBA  TBA  CLTBA  TBA TBA A00
+DERM436T Pediatric Derm Selective
+ A00	Dawn Zhang,Eichenfield
+0010TBA  TBA  CLTBA  TBA TBA A00
+DERM496  Clinical Independent Study
+ 001	Reid P,Oldenburg
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+EMED296  Independent Reseach
+ 001	Andrew T.,Lafree
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Charles,Ginsberg
+0005TBA  TBA  INTBA  TBA TBA 002
+EMED299  Independent Study Project
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+EMED411  Clinical Emergency Medicine
+ A00	Brenna Louise,Hogue
+0010TBA  TBA  CLTBA  TBA TBA A00
+EMED420  Subinternship in Emergengy Med
+ A00	Brenna Louise,Hogue
+0010TBA  TBA  CLTBA  TBA TBA A00
+EMED423  Elective in Medical Toxicology
+ A00	Aaron B.,Schneir
+0010TBA  TBA  CLTBA  TBA TBA A00
+EMED425  Point-of-Care Ultrasound
+ A00	Elaine,Yu
+0010TBA  TBA  CLTBA  TBA TBA A00
+EMED427  Wilderness Medicine Elective
+ A00	Christanne Hoffman,Coffey
+0010TBA  TBA  CLTBA  TBA TBA A00
+EMED473  Subint: Diving/Hyperbaric Med
+ A00	Ian R.,Grover
+0010TBA  TBA  CLTBA  TBA TBA A00
+EMED496  Clinical Independent Study
+ 001	Brenna Louise,Hogue
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+FPM 286  Free Clinic II	/courses/FMPH.html#fpm286
+ A00	Michelle Lee,Johnson
+0000TBA  TBA  CLTBA  TBA TBA A00
+ B00	Michelle Lee,Johnson
+0000TBA  TBA  CLTBA  TBA TBA B00
+FPM 296  Community Med Independnt Rsrch
+ 001	Michelle Lee,Johnson
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+FPM 299  Comm/Fam Med Indepndnt Stu-ISP
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+FPM 401  Family Medicine Core Clerkship
+ A00	Allison,Lynch
+0050TBA  TBA  CLTBA  TBA TBA A00
+FPM 410  Intro to Underserved Medicine
+ A00	Michelle Lee,Johnson
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 411  Adolescent/School-Based Health
+ A00	Natalie,Rodriguez
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 412  Intro to Integrative Medicine
+ A00	Megan Elizabeth,Jolicoeur
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 413  Med Spanish/Future Clinicians
+.A00	Natalie,Rodriguez
+0010TBA  TBA  PRTBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00TBA  TBA  CLTBA  TBA TBA A50
+FPM 419  Medical Education Teaching Ele
+ A00	Natalie,Rodriguez
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 420  Indigenous Medicine Clerkship
+ A00	Tommi L.,Gaines
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 426  Family Medicine Clerkship
+.A00	Allison,Lynch
+0020TBA  TBA  CLTBA  TBA TBA A01
+TBA  TBA  SETBA  TBA TBA A00
+FPM 431  Sports Medicine
+ A00	Suraj Arthur,Acharya
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 431T Sports Medicine Selective
+ A00	Suraj Arthur,Acharya
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 432  Underserved Medicine Clerkship
+ A00	Michelle Lee,Johnson
+0020TBA  TBA  CLTBA  TBA TBA A00
+FPM 441  Family Medicine Subinternship
+ A00	Julia Christine,McPherson
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 442  Comm Based Family Med Subintrn
+ A00	Natalie,Rodriguez
+0010TBA  TBA  CLTBA  TBA TBA A00
+FPM 496  Clinical Independent Study
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+MED 296  Independent Research
+ 001	Neil C.,Chi
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Mary Kathleen,Lewinski
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Luis R.,Castellanos
+0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Leslie C.,Oyama
+0005TBA  TBA  INTBA  TBA TBA 004
+ 005	Joseph Anthony,Avalos
+0005TBA  TBA  INTBA  TBA TBA 005
+MED 299  Medicine Independnt Study Proj
+ 001	Gary T,Buckholz
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Luis R.,Castellanos
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Leslie C.,Oyama
+0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Brian K,Kwan
+0005TBA  TBA  INTBA  TBA TBA 004
+ 005	Samir,Gupta
+0005TBA  TBA  INTBA  TBA TBA 005
+MED 401  Medicine Core Clerkship
+ A00	Brian K,Kwan
+0050TBA  TBA  CLTBA  TBA TBA A00
+MED 410  Intro to Geriatric Medicine
+ A00	Ian Curtis,Neel
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 426  Coronary Care Unit Clerkship
+ A00	Luis R.,Castellanos
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 426T Coronary Care Selective
+ A00	Luis R.,Castellanos
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 429  Intensive Clerkship/Ambul Med
+ A00	Patricia Suzanne,Hlavin
+0020TBA  TBA  CLTBA  TBA TBA A00
+MED 429T Ambulatory Medicine Selective
+ A00	Patricia Suzanne,Hlavin
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 430  Clinical Cardiology
+ A00	William F.,Penny
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 430T Consultative Cardio Selective
+ A00	William F.,Penny
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 431  Clerkship/Infectious Diseases
+ A00	Elizabeth Brooking,Hastie
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 431T Infectious Disease Selective
+ A00	Elizabeth Brooking,Hastie
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 432  Clin Hematolgy/Oncolgy Clrkshp
+ A00	Ida Ching-Yuen,Wong
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 433  Clrkshp Clin Endocrinlgy-Metab
+ A00	Preethika Subas,Ekanayake
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 433T Clinic Endocrin & Metabol Sel
+ A00	Preethika Subas,Ekanayake
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 434  Intl Med Primary Care Clerkshp
+ A00	Joseph David,Diaz
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 434T Internal Med Primary Care Sel
+ A00	Joseph David,Diaz
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 435  Pulmonary Med Consul Clerkship
+ A00	Naveen,Gupta
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 435T Pulm Med Consult Selective
+ A00	Naveen,Gupta
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 438  Clin Pulmonary Physiology Lab
+ A00	Timothy A,Morris
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 438T Clinical Pulm Physio Lab Sel
+ A00	Timothy A,Morris
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 442  LGBTQ+ Healthcare
+ A00	Jill S,Blumenthal
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 444  Critical Care Med-VA Hospital
+ A00	Michael Tun Yin,Lam
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 452  Clinical Geriatrics
+ A00	Veronica Virgen,Gonzalez
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 453  Clerkship/Clinical Nephrology
+ A00	Janice,Park
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 453T Clinical Nephrology Selective
+ A00	Janice,Park
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 454  Clrkshp/Blood Marrow Stem Cell
+ A00	Ah-Reum,Jeong
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 455  Clerkship in Gastroenterology
+ A00	Fady,Youssef
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 455T Clinical Gastro Selective
+ A00	Fady,Youssef
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 457  Rheumatology Clinical Clerkshp
+ A00	Gregory D.,Middleton
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 457T Clinical Rheum Selective
+ A00	Gregory D.,Middleton
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 463  Clrkshp/Crit Care/Internal Med
+ A00	Amy Lynn,Bellinghausen
+0020TBA  TBA  CLTBA  TBA TBA A00
+MED 467  Med Acting Internshp-VAMC/UCSD
+ A00	Joseph,Abdelmalek
+0050TBA  TBA  CLTBA  TBA TBA A00
+MED 468  Med Act Intnsp/Scrps/Mercy/Grn
+ A00	Joseph,Abdelmalek
+0010TBA  TBA  CLTBA  TBA TBA A00
+MED 496  Clinical Independent Study
+ 001	Ryan James,Moran
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Harpreet,Bhatia
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+NEU 296  Neurosciences Resrch Rotation	/courses/NEU.html#neu296
+ 001	Sean Jeffrey,Evans
+0020TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+NEU 299  Independent Study	/courses/NEU.html#neu299
+ 001	Dominic Alexander,Ferrey
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+NEU 401  Neurology Core Clerkship
+ A00	Jamie Nicole,LaBuzetta
+0050TBA  TBA  CLTBA  TBA TBA A00
+NEU 426  Sub-Internship/Pediatric Neuro
+ A00	Michael R.,Zimbric
+0010TBA  TBA  CLTBA  TBA TBA A00
+NEU 426T Pediatric Neurology Selective
+ A00	Michael R.,Zimbric
+0010TBA  TBA  CLTBA  TBA TBA A00
+NEU 427  Neurology Out-Patient
+ A00	Jamie Nicole,LaBuzetta
+0010TBA  TBA  CLTBA  TBA TBA A00
+NEU 427T Neurology Outpatient Selective
+ A00	Jamie Nicole,LaBuzetta
+0010TBA  TBA  CLTBA  TBA TBA A00
+NEU 496  Clinical Independent Study
+ 001	Jamie Nicole,LaBuzetta
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+OBG 401  Obstetrcs&Gyneclgy Cor Clrkshp
+ A00	David Alan,Klein
+0050TBA  TBA  CLTBA  TBA TBA A00
+OBG 428  Subinternship In Perinatology
+ A00	Gladys A.,Ramos
+0010TBA  TBA  CLTBA  TBA TBA A00
+OBG 429  Family Planning/Women's Health
+ A00	Jessica,Kingston
+0010TBA  TBA  CLTBA  TBA TBA A00
+OBG 430  Subinternship/Gynecologc Oncol
+ A00	Michael Thomas,McHale
+0010TBA  TBA  CLTBA  TBA TBA A00
+OBG 432  Subintrnshp/Obstetrics&Gynecol
+ A00	Jerasimos,Ballas
+0010TBA  TBA  CLTBA  TBA TBA A00
+OBG 496  Clinical Independent Study
+ 001	Julia,Cormano
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	David Alan,Klein
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Sheila Krishnan,Mody
+0005TBA  TBA  INTBA  TBA TBA 003
+ 005	Danielle Michelle,Vachon
+0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Gina Elaine,Reggiardo
+0005TBA  TBA  INTBA  TBA TBA 006
+OPTH296  Independent Study
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+OPTH299  Ophthalmology Indepndnt Resrch
+ 001	Yunxiang,Liu
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+OPTH410  Intro Ophthalmology Selective
+ A00	Yunxiang,Liu
+0010TBA  TBA  CLTBA  TBA TBA A00
+OPTH425  Subinternship in Ophthalmology
+ A00	Yunxiang,Liu
+0010TBA  TBA  CLTBA  TBA TBA A00
+OPTH426  Ophthalmic Plast & Reconst Sur
+ A00	Don Osami,Kikkawa
+0010TBA  TBA  CLTBA  TBA TBA A00
+OPTH496  Clinical Independent Study
+ 001	Natalie,Afshari
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Natalie,Afshari
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Nathan Lee,Scott
+0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Sally Liu,Baxter
+0005TBA  TBA  INTBA  TBA TBA 004
+ORTH296  Orthopaedics Independent Rsrch
+ 001	Eric W.,Edmonds
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ORTH299  Independent Study Project(ISP)
+ 001	Alexandra K.,Schwartz
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ORTH425  Subinternship/Trauma Orthopaed
+ A00	Alexandra K.,Schwartz
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH426  Subin/Ambulatory Orthopaedics
+ A00	Alexandra K.,Schwartz
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH428  Subin/Reconstrctv Orthopaedics
+ A00	Scott Taber,Ball
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH429  Subint/Orthopaedic Spine Surg
+ A00	Vinko,Zlomislic
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH430  Subinternship in Hand Surgery
+ A00	Eric,Hentzen
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH431  Clrkshp/Pediatric Orthopaedics
+ A00	Matthew Robert,Schmitz
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH435  Orthopaedic Sports Medicine
+ A00	Bryan Terry,Leek
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH436  Adult Orthopaedics VA Sub-I
+ A00	Paul J.,Girard
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH450  Subint/Outpatient Physical Med
+ A00	Douglas Glenn,Chang
+0010TBA  TBA  CLTBA  TBA TBA A00
+ORTH496  Clinical Independent Study
+ 001	Alexandra K.,Schwartz
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Alexandra K.,Schwartz
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+ 004
+0005TBA  TBA  INTBA  TBA TBA 004
+ 005
+0005TBA  TBA  INTBA  TBA TBA 005
+PAE 200  Special Topics I	/courses/PAS.html#pae200
+ A00	Brittany,Pierce
+0030TBA  TBA  INTBA  TBA TBA A00
+PAE 210  Professional Practice I	/courses/PAS.html#pae210
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 211  The PA Profession	/courses/PAS.html#pae211
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 212  The Physical Exam	/courses/PAS.html#pae212
+.A00	Brittany,Pierce
+0030TBA  TBA  LATBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+PAE 213  Human Anatomy	/courses/PAS.html#pae213
+.A00	Brittany,Pierce
+0030TBA  TBA  LATBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+PAE 214  Human Phys & Pathophys I	/courses/PAS.html#pae214
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 215  The Medical Interview	/courses/PAS.html#pae215
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 216  EBM in Practice	/courses/PAS.html#pae216
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 250  Tech Skills & Procedures II	/courses/PAS.html#pae250
+.A00	Brittany,Pierce
+0030TBA  TBA  LATBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+PAE 251  Concepts in Emergency Medicine	/courses/PAS.html#pae251
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 252  Clinical Medicine IV	/courses/PAS.html#pae252
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 253  Pharmacotherapeutics IV	/courses/PAS.html#pae253
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 254  Clinical Inquiry & Research	/courses/PAS.html#pae254
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 255  Clinical Reasoning IV	/courses/PAS.html#pae255
+.A00	Brittany,Pierce
+0030TBA  TBA  LATBA  TBA TBA A01
+TBA  TBA  LETBA  TBA TBA A00
+PAE 256  Health Promotion/Disease Prev	/courses/PAS.html#pae256
+ A00	Brittany,Pierce
+0030TBA  TBA  LETBA  TBA TBA A00
+PAE 290  Didactic Capstone	/courses/PAS.html#pae290
+ A00	Brittany,Pierce
+0030TBA  TBA  SETBA  TBA TBA A00
+PAE 400  Special Topics II	/courses/PAS.html#pae400
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  INTBA  TBA TBA A00
+PAE 410  Family Medicine Rotation	/courses/PAS.html#pae410
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 411  Internal Medicine Rotation	/courses/PAS.html#pae411
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 412  Pediatric Medicine Rotation	/courses/PAS.html#pae412
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 420  Women's Health Rotation	/courses/PAS.html#pae420
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 430  Behavioral Health Rotation	/courses/PAS.html#pae430
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 440  Surgery Rotation	/courses/PAS.html#pae440
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 450  Emergency Medicine Rotation	/courses/PAS.html#pae450
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 451  Clinical Elective Rotation I	/courses/PAS.html#pae451
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 452  Clinical Elective Rotation II	/courses/PAS.html#pae452
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 453  Clinical Elective Rotation III	/courses/PAS.html#pae453
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  PRTBA  TBA TBA A00
+PAE 454  Independent Study Rotation	/courses/PAS.html#pae454
+ 001	Brittany,Pierce
+0030TBA  TBA  INTBA  TBA TBA 001
+ 002	Kelly Christine,Mercer
+0030TBA  TBA  INTBA  TBA TBA 002
+ 003	Heather Christine,Gebauer
+0030TBA  TBA  INTBA  TBA TBA 003
+ 004	Jamie Elizabeth,Ports
+0030TBA  TBA  INTBA  TBA TBA 004
+ A00	Jamie Elizabeth,Ports
+0030TBA  TBA  INTBA  TBA TBA A00
+PAE 489  I.S. for Clinical Concen	/courses/PAS.html#pae489
+ 001	Jamie Elizabeth,Ports
+0030TBA  TBA  INTBA  TBA TBA 001
+ 002	Brittany,Pierce
+0030TBA  TBA  INTBA  TBA TBA 002
+ 003	Kelly Christine,Mercer
+0030TBA  TBA  INTBA  TBA TBA 003
+ 004	Heather Christine,Gebauer
+0030TBA  TBA  INTBA  TBA TBA 004
+PAE 493  Clinical Capstone III	/courses/PAS.html#pae493
+ A00	Elias,Villarreal Jr.
+0030TBA  TBA  SETBA  TBA TBA A00
+PAE 494  Clinical Capstone IV	/courses/PAS.html#pae494
+ A00	Elias,Villarreal Jr.
+0030TBA  TBA  SETBA  TBA TBA A00
+PAE 495  Program to Practice	/courses/PAS.html#pae495
+ A00	Elias,Villarreal Jr.
+0030TBA  TBA  SETBA  TBA TBA A00
+PAE 496  Comprehensive Review	/courses/PAS.html#pae496
+ A00	Elias,Villarreal Jr.
+0030TBA  TBA  SETBA  TBA TBA A00
+PATH296  Pathology Independent Research	/courses/PATH.html#path296
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+PATH299  Path/Independent Study Project	/courses/PATH.html#path299
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+PATH401A Pathology Clerkship/Autopsy
+ A00	Hana Marie,Russo
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH401B Pathology Clerkship/Cytology
+ A00	Farnaz,Hasteh
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH401C Pathology Clerkship/Clinical
+ A00	Elizabeth S,Allen
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH401S Pathology Clerkship/Surgery
+ A00	Vera,Vavinskaya
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH410  Intro to Surgical Pathology
+ A00	Vera,Vavinskaya
+0020TBA  TBA  CLTBA  TBA TBA A00
+PATH411  Intro to Anatomic Pathology
+ A00	Lily,Jih
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH412  Intro to Ophthalmic Pathology
+ A00	Cole John,Ferguson
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH413  Intro to Neuropath Selective
+ A00	Vanessa Shareen,Goodwill
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH426  Pathology Clerkship/Pediatric
+ A00	Denise Michelle,Malicki
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH427  Ophthalmic Pathology
+ A00	Connor Richard,Zuraski
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH428  Pathology Clerkship/Forensic
+ A00	Vera,Vavinskaya
+0010TBA  TBA  CLTBA  TBA TBA A00
+PATH496  Clinical Independent Study
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+PEDS296  Pediatrics Independent Resrch
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+PEDS299  Pediatric Indepndnt Study Proj
+ 001	Jeffrey B.,Schwimmer
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+PEDS401  Pediatrics Core Clerkship
+ A00	Christopher Ray,Cannavino
+0050TBA  TBA  CLTBA  TBA TBA A00
+PEDS424  Subinternship in Ped Resp Med
+ A00	Daniel J,Lesser
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS424T Pediatric Respiratory Med Sel
+ A00	Daniel J,Lesser
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS426  Clin Clerkshp/Pediatric Cardio
+ A00	Brian Thomas,Fagan
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS427  Sub-Internship/Inpatient Peds
+ A00	Christopher Ray,Cannavino
+0020TBA  TBA  CLTBA  TBA TBA A00
+PEDS428  Subintrnshp/Neonatal/Perinatal
+ A00	Carlos Guillermo,Ramos
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS429  Subintrnshp/Pediatrc Emerg Med
+ A00	Ashley,Metcalf
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS430  Pediatric Infectious Diseases
+ A00	George Yenhsi,Liu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS431  Subinternship/Ambulatory Peds
+ A00	Lisa Marie,Mondzelewski
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS432  Clin Clerkship/Adolescent Med
+ A00	Angela Michelle,Barney
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS433  Elect/Clin Ped Hematolgy/Oncol
+ A00	Jennifer Caroline,Yu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS433T Clinical Peds Onc/Heme Sel
+ A00	Jennifer Caroline,Yu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS434  Clerkship/Pediatric Nephrology
+ A00	Elliot Alan,Perens
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS434T Pediatric Nephrology Selective
+ A00	Elliot Alan,Perens
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS435  Clin Pediatrc Gastroenterology
+ A00	Elizabeth Louise,Yu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS435T Clinical Peds Gastro Selective
+ A00	Elizabeth Louise,Yu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS437  Pediatrc Endocrinolgy&Diabetes
+ A00	Susan A,Phillips
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS437T Peds Endocrin & Diabetes Sel
+ A00	Susan A,Phillips
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS438  Peds Allergy Immuno Subintern
+ A00	Cathleen Ann,Collins
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS442  Child Advocacy & Forensic Med
+ A00	Natalie Christine,Laub
+0010TBA  TBA  CLTBA  TBA TBA A00
+PEDS496  Clinical Independent Study
+ 001	Christopher Ray,Cannavino
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Christopher Ray,Cannavino
+0005TBA  TBA  INTBA  TBA TBA 002
+PSY 296  Independnt Readngs/Stdy in Psy
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+PSY 299  Psychiatry Independnt Stdy Pro
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+PSY 401  Psychiatry Core Clerkship
+ A00	Yash,Joshi
+0050TBA  TBA  CLTBA  TBA TBA A00
+PSY 403  Adv Clin Psy Outpatient Electv
+ A00	Paige Alexandr,Sutherland
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 405  Sub-I in Interventional Psych
+ A00	Xia,Li
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 426T Geropsychiatry Selective
+ A00	Omar,Ghosn
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 427  Psychiatric Crisis Evaluation
+ A00	Michelle Anjali,Singh
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 427T Psych Crisis Evaluation Sel
+ A00	Michelle Anjali,Singh
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 429  Child Psychiatry
+ A00	Michelle Lin,Wu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 429T Child Psychiatry Selective
+ A00	Michelle Lin,Wu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 430  Consult/Liaison Psy Clerkship
+ A00	Alan,Hsu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 430T VA Consult Liaison Psych Sel
+ A00	Alan,Hsu
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 431  Inpatient Psy Subinternship
+.A00	Yash,Joshi
+0010TBA  TBA  LETBA  TBA TBA A00
+TBA  TBA  SETBA  TBA TBA A01
+PSY 431T Inpatient Psychiatry Selective
+ A00	Yash,Joshi
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 435  Subi/Inpat Alco-Drug Treatment
+ A00	Maryam,Soltani
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 435T Alcohol & Drug Treatment Sel
+ A00	Maryam,Soltani
+0010TBA  TBA  CLTBA  TBA TBA A00
+PSY 496  Clinical Independent Study
+ 001	Noe Anselmo,Caballero
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+ 004
+0005TBA  TBA  INTBA  TBA TBA 004
+RAD 296  Radiology Independent Research
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+RAD 299  Radiology Independent Study
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+RAD 401  General Radiology
+ A00	Nikdokht,Farid
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 411  Intro to Radiology Selective
+ A00	Nikdokht,Farid
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 412  Intro Intervent Radiology Sel
+ A00	Michael Adam,Taddonio
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 427  Vascular Radiology
+ A00	Rupal,Parikh
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 428  Body Imaging Elective
+ A00	Cairine,McNamee
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 434  Chest Radiology
+ A00	Andrew C,Yen
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 434T Chest Radiology Selective
+ A00	Andrew C,Yen
+0010TBA  TBA  CLTBA  TBA TBA A00
+RAD 496  Clinical Independent Study
+ 001	Julie Yajie,An
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Mahmoud,Malas
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Zachary,Berman
+0005TBA  TBA  INTBA  TBA TBA 003
+RMAS296  Independent Research
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+RMAS299  Independent Research Project
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+RMAS410  ClinicalRadiation OncSelective
+ A00	Michael Vincent,Sherer
+0010TBA  TBA  CLTBA  TBA TBA A00
+RMAS429  Radiation Therapy Clerkship
+ A00	Michael Vincent,Sherer
+0010TBA  TBA  CLTBA  TBA TBA A00
+RMAS429T Radiation Therapy Selective
+ A00	Michael Vincent,Sherer
+0010TBA  TBA  CLTBA  TBA TBA A00
+RMAS496  Clinical Independent Study
+ 001	Michael Vincent,Sherer
+0005TBA  TBA  INTBA  TBA TBA 001
+RMED296  Independent Study
+ 001	Audra Robertson,Meadows
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+RMED299  Repro Med Indepen Study Projct
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
+SOMC244  Comp Rev & Prep-USMLE Step 1
+ 001	Sean Jeffrey,Evans
+0020TBA  TBA  INTBA  TBA TBA 001
+SOMC400A Master Clinician Clerkship A
+ A00	Christopher Ray,Cannavino
+0160TBA  TBA  CLTBA  TBA TBA A00
+SOMI220  Core Topics in Biomedical Sci
+.A00	Stephen David,Schneid
+0000TBA  TBA  LETBA  TBA TBA A00
+TBA  TBA  DITBA  TBA TBA A01
+SOMI296  Independent Study
+ 002	Sean Jeffrey,Evans
+0005TBA  TBA  INTBA  TBA TBA 002
+SOMI421  Subinternship Palliative Med
+ A00	Paula Michelle,Mesarwi
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG296  Surgery Independent Research
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+SURG299  Surgery Independent Study Proj
+ 001	Katharine Moss,Hinchcliff
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+SURG401  Surgery Core Clerkship
+ A00	Joel M,Baumgartner
+0050TBA  TBA  CLTBA  TBA TBA A00
+SURG410  Intro to NeurosurgerySelective
+ A00	Sharona,Ben-Haim
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG411  Intro Head & Neck Surg Select
+ A00	Daniel John,Cates
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG413  Surg Apprenticeship Selective
+ A00	Christopher,Reid
+0020TBA  TBA  CLTBA  TBA TBA A00
+SURG425  Subinternship in Trauma Unit
+ A00	Jessica Lee,Weaver
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG425T Trauma Unit Selective
+ A00	Jessica Lee,Weaver
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG428  In Depth Elec/Surgical Oncolgy
+ A00	Michael,Bouvet
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG428T Surgical Oncology Selective
+ A00	Michael,Bouvet
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG430  ColorectalSurgerySubinternship
+ A00	Nicole Elizabeth,Lopez
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG430T Colorectal Surgery Selective
+ A00	Nicole Elizabeth,Lopez
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG431  Clerkship/Transplntn (Abdomnl)
+ A00	Jennifer Ann,Berumen
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG431T Surg Transplant (Abdomen) Sel
+ A00	Jennifer Ann,Berumen
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG432  Subintern/Ped Otolaryngology
+ A00	Matthew,Brigger
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG433  Subint/Otol-Head&Neck Surgery
+ A00	Andrew Me,Vahabzadeh-Hagh
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG437  Subin/Cardiothoracic Surgery
+ A00	Michael M.,Madani
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG437T Cardiothoracic Surg Selective
+ A00	Michael M.,Madani
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG438  Subint/Vasc&EndovascularSurg
+ A00	Ann Catherine,Gaffey
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG438T Vasc & Endovasc Surg Select
+ A00	Ann Catherine,Gaffey
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG445  Subinternship/Plastic Surgery
+ A00	Christopher,Reid
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG445T Plastic Surgery Selective
+ A00	Christopher,Reid
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG448  Subinternshp/Pediatric Surgery
+ A00	Hariharan,Thangarajah
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG448T Pediatric Surgery Selective
+ A00	Hariharan,Thangarajah
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG454  Subinternship/Neurosurgery UH
+ A00	Martin Huy,Pham
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG454T Neurosurgery Selective
+ A00	Martin Huy,Pham
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG466  Subinternship in Burn Surgery
+ A00	Jeanne G.,Lee
+0010TBA  TBA  CLTBA  TBA TBA A00
+SURG496  Clinical Independent Study
+ 001	Mahmoud,Malas
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Mahmoud,Malas
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Katharine Moss,Hinchcliff
+0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Christopher,Reid
+0005TBA  TBA  INTBA  TBA TBA 004
+ 005	Charles Stuart,Coffey
+0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Zhen Jason,Qian
+0005TBA  TBA  INTBA  TBA TBA 006
+ 007	Katharine Moss,Hinchcliff
+0005TBA  TBA  INTBA  TBA TBA 007
+ 008	Martin Huy,Pham
+0005TBA  TBA  INTBA  TBA TBA 008
+ 009	Martin Huy,Pham
+0005TBA  TBA  INTBA  TBA TBA 009
+UROL296  Independent Study
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+UROL299  Independent Study Project
+ 001
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+UROL412  Intro to Urology Selective
+ A00	Manoj,Monga
+0010TBA  TBA  CLTBA  TBA TBA A00
+UROL443  Subinternship in Urology
+ A00	Yahir Ami,Santiago-Lastra
+0010TBA  TBA  CLTBA  TBA TBA A00
+UROL496  Clinical Independent Study
+ 001	Yahir Ami,Santiago-Lastra
+0005TBA  TBA  INTBA  TBA TBA 001
+ 002
+0005TBA  TBA  INTBA  TBA TBA 002
+ 003
+0005TBA  TBA  INTBA  TBA TBA 003
