@@ -1,4 +1,4 @@
-V41775354110377
+V41780887035208
 AAPI198  Directed Group Studies	/courses/AAPI.html#aapi198
  002Filipino American Culture	Amanda Lee Albaniel,Solomon
 0020TBA  24   INTBA  16301750002
@@ -16695,7 +16695,7 @@ SOCG298  Independent Study	/courses/SOC.html#socg298
 9999TBA  TBA  INTBA  TBA TBA 001
  002	Martha,Lampland
 9999TBA  TBA  INTBA  TBA TBA 002
- 003	Richard Norris,Pitt
+ 003	Richard N,Pitt
 9999TBA  TBA  INTBA  TBA TBA 003
  004	Christena L.,Turner
 9999TBA  TBA  INTBA  TBA TBA 004
@@ -16728,7 +16728,7 @@ SOCG299  Thesis Research	/courses/SOC.html#socg299
 9999TBA  TBA  INTBA  TBA TBA 007
  008	Neil M,Gong
 9999TBA  TBA  INTBA  TBA TBA 008
- 009	Richard Norris,Pitt
+ 009	Richard N,Pitt
 9999TBA  TBA  INTBA  TBA TBA 009
  010	Christena L.,Turner
 9999TBA  TBA  INTBA  TBA TBA 010
@@ -16842,11 +16842,11 @@ SOCI127  Immigration, Race, & Ethnicity	/courses/SOC.html#soci127
 0070PETER135  LE103  15001550A00
 20260318PETERFI103  15001759
 SOCI130E Sociology of Higher Education	/courses/SOC.html#soci130e
-'B00	Richard Norris,Pitt
+'B00	Richard N,Pitt
 0050RWAC 24   LE0103 11001220B00
 20260319RWAC FI0103 11301429
 SOCI133E Sociology of Race & Ethnicity	/courses/SOC.html#soci133e
-'A00	Richard Norris,Pitt
+'A00	Richard N,Pitt
 0030SSB  24   LE101  14001520A00
 20260319SSB  FI101  15001759
 SOCI136E Soc/Mental Illness:Hist Apprch	/courses/SOC.html#soci136e
@@ -18432,6 +18432,9 @@ VIS 500  Apprentice Teaching	/courses/VIS.html#vis500
 0015TBA  TBA  INTBA  TBA TBA 001
  002	Malik Julian,Gaines
 0020TBA  TBA  INTBA  TBA TBA 002
+WARR99H  Independent Study	/courses/WARR.html#warr99h
+ 001	Eve Jihyun,Lee
+9999TBA  TBA  INTBA  TBA TBA 001
 WCWP10A  The Writing Course A	/courses/WARR.html#wcwp10a
  001	Walter,Merryman
 0021WSAC 13   SE132  09301050001
