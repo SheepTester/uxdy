@@ -148,6 +148,15 @@ export type ScrapedSection =
 /** `month` is 1-indexed. */
 export type DateTuple = [year: number, month: number, date: number]
 
+/**
+ * Courses are not unique. 001-type sections are listed in separate courses,
+ * while A00-type sections are grouped together so all the A00s are in one
+ * course, B00s in the next, and so on.
+ *
+ * Except it looks like once it reaches the 100s, the remaining sections are
+ * grouped:
+ * https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=FA00&tabNum=tabs-crs&courses=BGGN%20297&page=11
+ */
 export type ScrapedCourse = {
   subject: string
   subjectName: string
@@ -185,41 +194,42 @@ export type ScrapedCourse = {
 const BASE = 'https://act.ucsd.edu/scheduleOfClasses'
 
 // https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=SP23&selectedSubjects=CAT&selectedSubjects=SYN&page=1
+// https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudentResult.htm?selectedTerm=SP26&tabNum=tabs-dept&selectedDepartments=ANTH&page=13
 const getUrl = (term: string, departments: string[], page: number) =>
   `${BASE}/scheduleOfClassesStudentResult.htm?${new URLSearchParams([
     ['selectedTerm', term],
     ['tabNum', 'tabs-dept'],
-    ['_selectedSubjects', '1'],
-    ['schedOption1', 'true'],
-    ['_schedOption1', 'on'],
-    ['_schedOption11', 'on'],
-    ['_schedOption12', 'on'],
-    ['schedOption2', 'true'],
-    ['_schedOption2', 'on'],
-    ['_schedOption4', 'on'],
-    ['_schedOption5', 'on'],
-    ['_schedOption3', 'on'],
-    ['_schedOption7', 'on'],
-    ['_schedOption8', 'on'],
-    ['_schedOption13', 'on'],
-    ['_schedOption10', 'on'],
-    ['_schedOption9', 'on'],
-    ['schDay', 'M'],
-    ['_schDay', 'on'],
-    ['schDay', 'T'],
-    ['_schDay', 'on'],
-    ['schDay', 'W'],
-    ['_schDay', 'on'],
-    ['schDay', 'R'],
-    ['_schDay', 'on'],
-    ['schDay', 'F'],
-    ['_schDay', 'on'],
-    ['schDay', 'S'],
-    ['_schDay', 'on'],
-    ['schStartTime', '12:00'],
-    ['schStartAmPm', '0'],
-    ['schEndTime', '12:00'],
-    ['schEndAmPm', '0'],
+    // ['_selectedSubjects', '1'],
+    // ['schedOption1', 'true'],
+    // ['_schedOption1', 'on'],
+    // ['_schedOption11', 'on'],
+    // ['_schedOption12', 'on'],
+    // ['schedOption2', 'true'],
+    // ['_schedOption2', 'on'],
+    // ['_schedOption4', 'on'],
+    // ['_schedOption5', 'on'],
+    // ['_schedOption3', 'on'],
+    // ['_schedOption7', 'on'],
+    // ['_schedOption8', 'on'],
+    // ['_schedOption13', 'on'],
+    // ['_schedOption10', 'on'],
+    // ['_schedOption9', 'on'],
+    // ['schDay', 'M'],
+    // ['_schDay', 'on'],
+    // ['schDay', 'T'],
+    // ['_schDay', 'on'],
+    // ['schDay', 'W'],
+    // ['_schDay', 'on'],
+    // ['schDay', 'R'],
+    // ['_schDay', 'on'],
+    // ['schDay', 'F'],
+    // ['_schDay', 'on'],
+    // ['schDay', 'S'],
+    // ['_schDay', 'on'],
+    // ['schStartTime', '12:00'],
+    // ['schStartAmPm', '0'],
+    // ['schEndTime', '12:00'],
+    // ['schEndAmPm', '0'],
     ...departments.map(department => ['selectedDepartments', department]),
     ['page', String(page)]
   ])}`
