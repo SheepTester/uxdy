@@ -62,11 +62,14 @@ function parseTimeRange (timeRange: string): { start: number; end: number } {
 const parser = new DOMParser()
 const fetchHtml = (url: string) =>
   fetch(url)
-    .then(r =>
-      r.ok
-        ? r.text()
-        : Promise.reject(new Error(`URL: ${url}\nHTTP ${r.status} error`))
-    )
+    .then(async r => {
+      if (r.ok) {
+        return r.text()
+      } else {
+        console.error(await r.text().catch(() => '(failed to read text)'))
+        throw new Error(`URL: ${url}\nHTTP ${r.status} error`)
+      }
+    })
     .then(
       html =>
         parser.parseFromString(html, 'text/html') ??
@@ -295,7 +298,14 @@ export async function * getCourseIterator (
       ['selectedTerm', term]
     ])}`
   )
-    .then(r => r.json())
+    .then(async r => {
+      if (r.ok) {
+        return r.json()
+      } else {
+        console.error(await r.text().catch(() => '(failed to read text)'))
+        throw new Error(`HTTP ${r.status} error: ${r.url}`)
+      }
+    })
     .then((json: SubjectList) => json.map(({ code }) => code))
 
   const fetchPage = async (page: number) => {
