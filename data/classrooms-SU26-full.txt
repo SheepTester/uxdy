@@ -1,4 +1,4 @@
-V41780635185523
+V41782963890844
 ANES296  Independent Study
  001	Brian M.,Ilfeld
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -7,7 +7,7 @@ ANES296  Independent Study
 ANES299  Anes/Independent Study Project
  001	Rodney A,Gabriel
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Priya Goldie,Lewis
 0005TBA  TBA  INTBA  TBA TBA 002
 ANES401  Anesthesiology Clerkship
  A00	Lawrence,Weinstein
@@ -383,7 +383,7 @@ FPM 442  Comm Based Family Med Subintrn
  A00	Natalie,Rodriguez
 0010TBA  TBA  CLTBA  TBA TBA A00
 FPM 496  Clinical Independent Study
- 001
+ 001	William Wright,Andrew
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -400,6 +400,8 @@ MED 296  Independent Research
 0005TBA  TBA  INTBA  TBA TBA 004
  005	Joseph Anthony,Avalos
 0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Michael John,Wilkinson
+0005TBA  TBA  INTBA  TBA TBA 006
 MED 299  Medicine Independnt Study Proj
  001	Gary T,Buckholz
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -411,6 +413,8 @@ MED 299  Medicine Independnt Study Proj
 0005TBA  TBA  INTBA  TBA TBA 004
  005	Samir,Gupta
 0005TBA  TBA  INTBA  TBA TBA 005
+ 006	Ida Ching-Yuen,Wong
+0005TBA  TBA  INTBA  TBA TBA 006
 MED 401  Medicine Core Clerkship
  A00	Brian K,Kwan
 0050TBA  TBA  CLTBA  TBA TBA A00
@@ -574,6 +578,8 @@ OBG 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 005
  006	Gina Elaine,Reggiardo
 0005TBA  TBA  INTBA  TBA TBA 006
+ 007	Sarah Helene,Averbach
+0005TBA  TBA  INTBA  TBA TBA 007
 OPTH296  Independent Study
  001
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -660,47 +666,47 @@ PAE 211  The PA Profession	/courses/PAS.html#pae211
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 212  The Physical Exam	/courses/PAS.html#pae212
-.A00	Brittany,Pierce
+.A00	Kelly Christine,Mercer
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 213  Human Anatomy	/courses/PAS.html#pae213
-.A00	Brittany,Pierce
+.A00
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 214  Human Phys & Pathophys I	/courses/PAS.html#pae214
- A00	Brittany,Pierce
+ A00	Heather Christine,Gebauer
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 215  The Medical Interview	/courses/PAS.html#pae215
- A00	Brittany,Pierce
+ A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 216  EBM in Practice	/courses/PAS.html#pae216
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 250  Tech Skills & Procedures II	/courses/PAS.html#pae250
-.A00	Brittany,Pierce
+.A00	Elias,Villarreal Jr.
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 251  Concepts in Emergency Medicine	/courses/PAS.html#pae251
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 252  Clinical Medicine IV	/courses/PAS.html#pae252
- A00	Brittany,Pierce
+ A00	Kelly Christine,Mercer
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 253  Pharmacotherapeutics IV	/courses/PAS.html#pae253
- A00	Brittany,Pierce
+ A00	Kelly Christine,Mercer
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 254  Clinical Inquiry & Research	/courses/PAS.html#pae254
- A00	Brittany,Pierce
+ A00	Elias,Villarreal Jr.
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 255  Clinical Reasoning IV	/courses/PAS.html#pae255
-.A00	Brittany,Pierce
+.A00	Heather Christine,Gebauer
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 256  Health Promotion/Disease Prev	/courses/PAS.html#pae256
  A00	Brittany,Pierce
 0030TBA  TBA  LETBA  TBA TBA A00
 PAE 290  Didactic Capstone	/courses/PAS.html#pae290
- A00	Brittany,Pierce
+ A00	Elias,Villarreal Jr.
 0030TBA  TBA  SETBA  TBA TBA A00
 PAE 400  Special Topics II	/courses/PAS.html#pae400
  A00	Jamie Elizabeth,Ports
@@ -768,7 +774,7 @@ PAE 496  Comprehensive Review	/courses/PAS.html#pae496
  A00	Elias,Villarreal Jr.
 0030TBA  TBA  SETBA  TBA TBA A00
 PATH296  Pathology Independent Research	/courses/PATH.html#path296
- 001
+ 001	David Tevis,Pride
 0005TBA  TBA  INTBA  TBA TBA 001
 PATH299  Path/Independent Study Project	/courses/PATH.html#path299
  001
@@ -885,9 +891,9 @@ PEDS496  Clinical Independent Study
  002	Christopher Ray,Cannavino
 0005TBA  TBA  INTBA  TBA TBA 002
 PSY 296  Independnt Readngs/Stdy in Psy
- 001
+ 001	Desiree Nicolette,Shapiro
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Kush,Bhatt
 0005TBA  TBA  INTBA  TBA TBA 002
 PSY 299  Psychiatry Independnt Stdy Pro
  001
@@ -1005,7 +1011,7 @@ RMAS496  Clinical Independent Study
 RMED296  Independent Study
  001	Audra Robertson,Meadows
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Sarah Helene,Averbach
 0005TBA  TBA  INTBA  TBA TBA 002
 RMED299  Repro Med Indepen Study Projct
  001
@@ -1036,7 +1042,7 @@ SURG296  Surgery Independent Research
 SURG299  Surgery Independent Study Proj
  001	Katharine Moss,Hinchcliff
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Glenn Kham,Wakam
 0005TBA  TBA  INTBA  TBA TBA 002
 SURG401  Surgery Core Clerkship
  A00	Joel M,Baumgartner
@@ -1132,6 +1138,8 @@ SURG496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 008
  009	Martin Huy,Pham
 0005TBA  TBA  INTBA  TBA TBA 009
+ 010	Joel M,Baumgartner
+0005TBA  TBA  INTBA  TBA TBA 010
 UROL296  Independent Study
  001
 0005TBA  TBA  INTBA  TBA TBA 001
