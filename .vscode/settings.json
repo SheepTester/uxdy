@@ -1,5 +1,5 @@
 {
-  "prettier.prettierPath": "./node_modules/prettierx",
+  "prettier.prettierPath": "./node_modules/@sheeptester/prettier/index.cjs",
   "deno.enable": true,
   "deno.lint": false,
   "deno.config": "./deno.jsonc",
