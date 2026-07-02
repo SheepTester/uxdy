@@ -5,6 +5,18 @@ import { writeAll } from 'std/streams/write_all.ts'
 import { DOMParser, Element } from 'deno_dom/deno-dom-wasm.ts'
 import { Day } from '../util/Day.ts'
 
+/**
+ * it seems 503 errors can happen if jlinksessionidx/jlinkauthserver are absent
+ * in the cookie.
+ *
+ * this also happens organically to users who are unlucky to not get
+ * jlinksessionidx/jlinkauthserver properly set, which can be reproduced by
+ * repeatedly opening incognito. once you get a session that gets a 503 error,
+ * it persists even after reloading.
+ */
+const cookie =
+  'jlinkauthserver=cavouras; jlinksessionidx=zcf1090916d2e02f9c68187ee637a3847; itscookie=!ZvvVvFKkjpHQedzmKIFmpy6Mk6CRxa823S2iN4Z+GQ8VVaxoMfvxDhoBRwICPLYTmfxiLzZ1cWPwVMc=; TS01111c3f=01f0fc640dc511647cdfd3d9eb9ea7b1948ceffa2517150b9513b4c699b94fe9873528659496097b8ed91486a8549a928fdfbd65f20efbd5fc3841a817778bc53000958c00761b50d164edb3990fd18aa12a7f806f483d1256f418d47ef40f7d8bdc09c69d'
+
 // S for Saturday, SP23 BIPN 100
 // Sun for Sunday, SP23 MGT 404
 export const DAYS = ['Sun', 'M', 'Tu', 'W', 'Th', 'F', 'S']
@@ -61,7 +73,7 @@ function parseTimeRange (timeRange: string): { start: number; end: number } {
 
 const parser = new DOMParser()
 const fetchHtml = (url: string) =>
-  fetch(url)
+  fetch(url, { headers: { cookie } })
     .then(async r => {
       if (r.ok) {
         return r.text()
@@ -296,7 +308,8 @@ export async function * getCourseIterator (
   const departments = await fetch(
     `${BASE}/department-list.json?${new URLSearchParams([
       ['selectedTerm', term]
-    ])}`
+    ])}`,
+    { headers: { cookie } }
   )
     .then(async r => {
       if (r.ok) {
