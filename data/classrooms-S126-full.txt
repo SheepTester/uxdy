@@ -1,6 +1,6 @@
-V41782963897170
+V41783452491029
 ANAR100  Spec Topics/Anth Archaeology	/courses/ANTH.html#anar100
-'A00
+'A00	Margaret Ann,Morris
 0000TBA  1234 LETBA  08000920A00
 20260731TBA  FITBA  08001059
 ANAR144  Pharaohs,Mummies,Pyramds:Egypt	/courses/ANTH.html#anar144
@@ -11,7 +11,7 @@ ANAR146  Feeding the World	/courses/ANTH.html#anar146
  A00	Nathaniel Foster,James
 0018RCLAS13   LER02  11001350A00
 ANBI100  Special Topic/Biological Anth	/courses/ANTH.html#anbi100
-'A00
+'A00	Margaret Ann,Morris
 0000TBA  1234 LETBA  12301350A00
 20260731TBA  FITBA  11301429
 ANBI143GSThe Human Skeleton in Paris	/courses/ANTH.html#anbi143gs
@@ -85,7 +85,7 @@ BENG199  Independent Study/Undergrads	/courses/BENG.html#beng199
  A00	Robert Lie-Yuan,Sah
 9999TBA  TBA  INTBA  TBA TBA A00
 BICD100R Genetics	/courses/BIOL.html#bicd100r
-:A00
+:A00	Wesley Robert,Neher
 0073RCLAS13   DIR24  10001050A010069RCLAS13   DIR23  12001250A020071RCLAS13   DIR34  14001450A030070RCLAS13   DIR23  16001650A04
 RCLAS24   LER101 14001650A00
 20260801RCLASFIR101 15001759
@@ -162,10 +162,10 @@ BIMM100R Molecular Biology
 TBA  TBA  LETBA  TBA TBA A00
 BIMM101  Recombinant DNA Techniques	/courses/BIOL.html#bimm101
 .A00	Emily N,Grossman
-0024YORK 35   LA2310 13001650A010024YORK 35   LA2332 13001650A02
+0000YORK 35   LA2310 13001650A010000YORK 35   LA2332 13001650A02
 TATA 2345 LE2501 09301050A00
 .B00	Emily N,Grossman
-0024YORK 35   LA4318 13001650B010024YORK 35   LA4332 13001650B02
+0000YORK 35   LA4318 13001650B010000YORK 35   LA4332 13001650B02
 TATA 2345 LE2501 11001220B00
 BIMM120  Microbiology	/courses/BIOL.html#bimm120
 :A00	Cindy,Gustafson-Brown
@@ -193,7 +193,7 @@ BIPN150  Diseases of the Nervous System	/courses/BIOL.html#bipn150
 COA  1234 LEB30  12301350A00
 20260731COA  FIB30  11301429
 BISP177  Adv Bio Instrument Technology
-.A00
+.A00	Mariusz,Matyszewski	Peng,Guo	Zhouxin,Shen
 0000TATA 24   LA2304 13001550A01
 TATA 24   LE2304 11001150A00
 BISP193  Biology Education Research	/courses/BIOL.html#bisp193
@@ -289,6 +289,8 @@ BISP199  Individual Research for Ugrads	/courses/BIOL.html#bisp199
 9999TBA  TBA  INTBA  TBA TBA 041
  042	Joseph Gerard,Gleeson
 9999TBA  TBA  INTBA  TBA TBA 042
+ 043	Eiman,Abdel-Azim
+9999TBA  TBA  INTBA  TBA TBA 043
 CAT 125GSPublic Rhetoric & Prac Comm GS	/courses/CAT.html#cat125gs
 .A00	Phoebe Malan,Bronstein
 0022TBA  TBA  DITBA  TBA TBA A01
@@ -358,8 +360,8 @@ CSB  1234 LE002  11001220A00
 CHEM40B  Organic Chem for Life Sci II	/courses/CHEM.html#chem40b
 :A00	Haim,Weizman
 0050CSB  13   DI004  16001650A010050CSB  24   DI004  13001350A02
-YORK 1234 LE2622 14001520A00
-20260731YORK FI2622 15001759
+NSB  1234 LE2303 14001520A00
+20260731NSB  FI2303 15001759
 CHEM41A  Organic I: Struct & React	/courses/CHEM.html#chem41a
 :A00	Kim F.,Albizati
 0050COA  24   DIB26  16001650A01
@@ -386,6 +388,8 @@ CHEM199  Reading and Research	/courses/CHEM.html#chem199
 9999TBA  TBA  INTBA  TBA TBA 003
  004	Shyamanga,Borooah
 9999TBA  TBA  INTBA  TBA TBA 004
+ 005	Dionicio R.,Siegel
+9999TBA  TBA  INTBA  TBA TBA 005
 SPPS199  Independent Study
  001	Dionicio R.,Siegel
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -557,17 +561,17 @@ DOC 100D Promises&Contradictions/USCult	/courses/DOC.html#doc100d
  A00	Natalye,Pass
 0025COA  13   LE124  11001350A00
 DSC 10R  Principles of Data Science
-:A00
+:A00	Vrinda Sandipkumar,Desai
 0080RCLAS1    DIR108 14001550A01
 RCLAS13   LER105 11001350A00RCLAS3    LAR108 14001550A50
 20260731RCLASFIR103 11301429
 DSC 20R  Prgrmng/DataStruc for Data Sci
-:A00
+:A00	Leif Lorenzo,Sigerson
 0055RCLAS1    DIR115 12001350A01
 RCLAS13   LER05  17001950A00
 20260731RCLASFIR03  19002159
 DSC 40AR Theor Fndtns of Data Sci I
-:A00
+:A00	Jordan Justine,Schwartz
 0070RCLAS3    DIR109 14001550A01
 RCLAS13   LER117 11001350A00
 20260731RCLASFIR101 11301429
@@ -758,13 +762,13 @@ HILD30GS History of Public Health	/courses/HIST.html#hild30gs
 0028TBA  TBA  LETBA  TBA TBA A00
 HILD43   Anthropocene 4: Acceleration	/courses/HIST.html#hild43
 .A00	Thomas,McLamb
-0032TBA  TBA  DITBA  TBA TBA A01
+0033TBA  TBA  DITBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 HINE116  Middle East (1798-1914)	/courses/HIST.html#hine116
 HINE129  Hist of Mideast:Late Medieval	/courses/HIST.html#hine129
 HISC102  Technology in World History	/courses/HIST.html#hisc102
  A00	Thomas,McLamb
-0032TBA  TBA  LETBA  TBA TBA A00
+0000TBA  TBA  LETBA  TBA TBA A00
 HITO155  Race/Sport/Inequality 20th Cen	/courses/HIST.html#hito155
 HIUS117  History of Los Angeles	/courses/HIST.html#hius117
 HIUS126  History of Race in the U.S.	/courses/HIST.html#hius126
@@ -799,13 +803,16 @@ HUM 5R   Modern Culture	/courses/HUM.html#hum5r
 .A00	Tatiana Sophia,Zavodny
 0080RCLAS24   DIR10  13001350A01
 TBA  TBA  LETBA  TBA TBA A00
+HUM 199  Special Studies	/courses/HUM.html#hum199
+ 001
+9999TBA  TBA  INTBA  TBA TBA 001
 JAPN180  Special Topics in Japanese St	/courses/JAPN.html#japn180
 'A00Religion, Politics, Capitalism	Michael David,Berman
 0040RCLAS24   LER04  17001950A00
 20260801RCLASFIR213 19002159
 LATI10   Lat Amer Studies&US Liberation	/courses/LATI.html#lati10
 .A00	Amy Michelle,Kennemore
-0035RCLAS13   DIR20  11001150A010035RCLAS13   DIR09  12001250A020000RCLAS13   DIR09  13001350A03
+0035RCLAS13   DIR20  11001150A010035RCLAS13   DIR09  12001250A02
 RCLAS13   LER10  08001050A00
 LATI180  Special Topic/Lat Amer Studies	/courses/LATI.html#lati180
  A00Human Rights Advocacy	Amy Michelle,Kennemore
@@ -1023,7 +1030,7 @@ APM  135  LEB402A10001150A00
 20260801APM  FIB402A11301429
 MATH20B  Calculus/Science & Engineering	/courses/MATH.html#math20b
 :A00	Drazen,Petrovic
-0037APM  2    DI2402 13001450A01
+0038APM  2    DI2402 13001450A01
 PODEM13   LE0133 11001350A00
 20260731PODEMFI0132 15001759
 MATH20C  Calculus&Analyt Geom/Sci&Engnr	/courses/MATH.html#math20c
@@ -1093,6 +1100,9 @@ PETER135  LE104  10001150A00
 MATH197  Industry Practicum	/courses/MATH.html#math197
  001	Kiran S.,Kedlaya
 9999TBA  TBA  ITTBA  TBA TBA 001
+MATH199  Independent Study/Undergrad	/courses/MATH.html#math199
+ 001	Kiran S.,Kedlaya
+9999TBA  TBA  INTBA  TBA TBA 001
 MMW 14GS Divergent Paths to Modernity	/courses/MMW.html#mmw14gs
  A00	Oumelbanine,Zhiri
 0028TBA  TBA  LETBA  TBA TBA A00
@@ -1385,7 +1395,7 @@ PSYC144  Memory and Amnesia	/courses/PSYC.html#psyc144
 20260801COA  FI117  15001759
 PSYC145  Psychology of Language	/courses/PSYC.html#psyc145
 PSYC148  Psychology/Judgement&Decision	/courses/PSYC.html#psyc148
-'A00
+'A00	Yanfei,Yu
 0037PODEM13   LE1A22 14001650A00
 20260731PODEMFI1A22 15001759
 PSYC149  Educational Psychology
@@ -1524,6 +1534,8 @@ SIO 139  Current Research in Marine Bio	/courses/SIO.html#sio139
 SIO 199  Special Studies	/courses/SIO.html#sio199
  001	Jonathan,Shurin
 9999TBA  TBA  INTBA  TBA TBA 001
+ 002	Jennifer,Smith
+9999TBA  TBA  INTBA  TBA TBA 002
 SOCI2    The Study of Society	/courses/SOC.html#soci2
 :A00	Danielle,Raudenbush
 0045RCLAS24   DIR07  10001050A01
@@ -1579,6 +1591,9 @@ PH  40   Introduction to Public Health	/courses/PH.html#ph40
 PH  91   Topics in Public Health	/courses/PH.html#ph91
  A00Health Promotion	Christine E.,Zoumas-Morse
 0060RCLAS13   LER116 11001350A00
+PH  99   Independent Study	/courses/PH.html#ph99
+ 001	Beatrice,Golomb
+9999TBA  TBA  INTBA  TBA TBA 001
 PH  161  ClinicalNutrition/PublicHealth	/courses/PH.html#ph161
  A00	Christine E.,Zoumas-Morse
 0090RCLAS24   LER105 14001650A00

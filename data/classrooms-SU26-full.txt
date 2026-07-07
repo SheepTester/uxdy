@@ -1,4 +1,4 @@
-V41782963890844
+V41783452481973
 ANES296  Independent Study
  001	Brian M.,Ilfeld
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -285,7 +285,7 @@ DERM436T Pediatric Derm Selective
 DERM496  Clinical Independent Study
  001	Reid P,Oldenburg
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Grace Yaeeun,Kim
 0005TBA  TBA  INTBA  TBA TBA 002
 EMED296  Independent Reseach
  001	Andrew T.,Lafree
@@ -330,7 +330,7 @@ FPM 286  Free Clinic II	/courses/FMPH.html#fpm286
 FPM 296  Community Med Independnt Rsrch
  001	Michelle Lee,Johnson
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Natalie,Rodriguez
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -990,6 +990,8 @@ RAD 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 002
  003	Zachary,Berman
 0005TBA  TBA  INTBA  TBA TBA 003
+ 004	Rupal,Parikh
+0005TBA  TBA  INTBA  TBA TBA 004
 RMAS296  Independent Research
  001
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -1140,6 +1142,8 @@ SURG496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 009
  010	Joel M,Baumgartner
 0005TBA  TBA  INTBA  TBA TBA 010
+ 011	Carol Hanlu,Yan
+0005TBA  TBA  INTBA  TBA TBA 011
 UROL296  Independent Study
  001
 0005TBA  TBA  INTBA  TBA TBA 001

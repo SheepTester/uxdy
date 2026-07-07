@@ -1,4 +1,4 @@
-V41782963907223
+V41783452500065
 ANSC120  Religion and Culture	/courses/ANTH.html#ansc120
 'B00
 0020RCLAS13   LER01  18002050B00
@@ -216,6 +216,8 @@ BISP194  Adv Topics in Modern Biology	/courses/BIOL.html#bisp194
 BISP197  Biology Internship Program	/courses/BIOL.html#bisp197
  001	Brenda Laurie,Bloodgood
 9999TBA  TBA  INTBA  TBA TBA 001
+ 002	Sung,Han
+9999TBA  TBA  INTBA  TBA TBA 002
 BISP199  Individual Research for Ugrads	/courses/BIOL.html#bisp199
  001	Fanny,Chapelin
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -432,6 +434,9 @@ COGS187A Usability & Info. Architecture	/courses/COGS.html#cogs187a
 0036HSS  24   DI2150 14001450A01
 HSS  24   LE2150 11001350A00
 20260905HSS  FI2150 11301429
+COGS199  Special Project	/courses/COGS.html#cogs199
+ 001	Gedeon O.,Deak
+9999TBA  TBA  INTBA  TBA TBA 001
 DSGN100  Prototyping	/courses/DSGN.html#dsgn100
 :A00
 0030DIB  24   LA121  12301320A01
@@ -552,7 +557,7 @@ DSC 297  DSC Graduate Internship	/courses/DSC.html#dsc297
 9999TBA  TBA  ITTBA  TBA TBA 001
 ECE 5    Intro to ECE	/courses/ECE.html#ece5
 .A00
-0019SME  1245 LA304  08301020A010000SME  1245 LA306  08301020A02
+0025SME  1245 LA304  08301020A010000SME  1245 LA306  08301020A02
 EBU1 3    LE2315 08301020A00
 ECE 148  Intro to Autonomous Vehicles	/courses/ECE.html#ece148
 .A00	Jack,Silberman
@@ -684,9 +689,6 @@ HIEA132  Hist/People's Republic/China	/courses/HIST.html#hiea132
  A00
 0032TBA  TBA  LETBA  TBA TBA A00
 HIEA155  China and the Environment	/courses/HIST.html#hiea155
-'A00
-0032RCLAS13   LER234 14001650A00
-20260904RCLASFIR234 15001759
 HIEU102  Roman History	/courses/HIST.html#hieu102
  A00	Edward J.,Watts
 0055TBA  TBA  LETBA  TBA TBA A00
@@ -972,7 +974,7 @@ RCLAS13   LER109 14001650A00
 MATH189  Data Analysis and Inference	/courses/MATH.html#math189
 :A00	Ery,Arias-Castro
 0038RCLAS35   DIR104 10001050A010038RCLAS35   DIR109 11001150A020038RCLAS35   DIR103 09000950A03
-RCLAS24   LER121 10001250A00TBA  TBA  LATBA  TBA TBA A50
+TBA  TBA  LETBA  TBA TBA A00TBA  TBA  LATBA  TBA TBA A50
 20260905CENTRFI216  11301429
 MATH193B Actuarial Mathematics II	/courses/MATH.html#math193b
 MATH297  Math Grad Research Internship	/courses/MATH.html#math297
@@ -984,10 +986,6 @@ MUS 1A   Fundamentals of Music A	/courses/MUS.html#mus1a
 RCLAS24   LER108 09301220A00
 20260905RCLASFIR06  08001059
 MUS 2A   Basic Musicianship	/courses/MUS.html#mus2a
-:A00	Takae,Ohnishi
-0000RCLAS13   STR102 11001150A010000RCLAS13   STR102 12001250A02
-RCLAS13   LER102 08001050A00
-20260904RCLASFIR04  08001059
 MUS 4    Introduction to Western Music	/courses/MUS.html#mus4
 :A00
 0030RCLAS13   LAR101 14001450A010030RCLAS13   LAR101 15001550A02
@@ -1043,9 +1041,8 @@ WLH  1234 LE2208 09301050A00
 20260904WLH  FI2208 08001059
 CENG113  Chemical Reaction Engineering	/courses/NANO.html#ceng113
 CENG114  Prob and Stat Methods for Eng	/courses/NANO.html#ceng114
-'A00	Justin Paul,Opatkiewicz
-0040RCLAS24   LER104 14001650A00
-20260905WLH  FI2205 15001759
+ A00	Justin Paul,Opatkiewicz
+0040TBA  TBA  LETBA  TBA TBA A00
 NANO15   Engin. Comp Using MATLAB	/courses/NANO.html#nano15
 :A00	Aaron,Drews
 0015WLH  24   LA2208 11001150A01
@@ -1057,17 +1054,16 @@ NANO104  Foundatn NanoEng/Physical Prin	/courses/NANO.html#nano104
 20260905RCLASFIR14  15001759
 NANO111  Characterization/NanoEng Systm	/courses/NANO.html#nano111
 NANO114  Prob and Stat Methods for Eng	/courses/NANO.html#nano114
-'A00	Justin Paul,Opatkiewicz
-0020RCLAS24   LER104 14001650A00
-20260905WLH  FI2205 15001759
+ A00
+0020TBA  TBA  LETBA  TBA TBA A00
 PHIL10   Introduction to Logic	/courses/PHIL.html#phil10
 :A00
-0030HSS  24   DI1305 13001350A01
+0035HSS  24   DI1305 13001350A01
 HSS  24   LE1305 11001250A00
 20260905HSS  FI1305 11301429
 PHIL16   Science Fiction and Philosophy	/courses/PHIL.html#phil16
 'A00
-0025RWAC 24   LE0472 14001650A00
+0035RWAC 24   LE0472 14001650A00
 20260905RWAC FI0472 15001759
 PHIL24   Science and Pseudoscience	/courses/PHIL.html#phil24
 PHIL27   Ethics And Society	/courses/PHIL.html#phil27
@@ -1149,6 +1145,9 @@ PHYS2D   Phys-Relativity&Quantm Physics	/courses/PHYS.html#phys2d
 0115CSB  4    DI001  17001850A01
 CSB  1234 LE002  12301350A00CSB  2    LE001  17001850A00
 20260807MYR-APB2702 1100125020260814MYR-APB2702 1100125020260821MYR-APB2702 1100125020260828MYR-APB2702 1100125020260904CSB  FI002  11301429
+PHYS199  Research for Undergraduates	/courses/PHYS.html#phys199
+ 001	Leonid,Butov
+9999TBA  TBA  INTBA  TBA TBA 001
 POLI5D   Data Analytics/Social Sciences	/courses/POLI.html#poli5d
 :A00	Ruby,Mittal
 0005MALK 4    LA520  17001850A01
@@ -1392,6 +1391,9 @@ MGT 181  Enterprise Finance	/courses/MGT.html#mgt181
 0098RCLAS13   LER107 14001650A00
 20260904RCLASFIR07  15001759
 MGT 449  Topics/Operations & Technology	/courses/MGT.html#mgt449
+MGT 499  Individual Directed Study	/courses/MGT.html#mgt499
+ 001	Hyo Duk,Shin
+0000TBA  TBA  INTBA  TBA TBA 001
 SE  1    Intro. to Structures & Design	/courses/SE.html#se1
 :A00
 0050SME  5    LA304  12001550A01
