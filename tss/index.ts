@@ -31,7 +31,6 @@ const headers = {
 
 // MUS 20R 001-000-LE is the most oddball class
 
-const daysSchema = z.array(z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']))
 const locationDetailSchema = z.strictObject({
   type: z.literal([
     'Seminar',
@@ -63,9 +62,7 @@ const locationDetailSchema = z.strictObject({
     z.literal('')
   ]),
   // Seems to be false iff location and details are '' or location is 'tba'
-  is_actionable: z.boolean(),
-  // Doesn't actually exist in the JSON, just injected
-  __days: daysSchema.optional()
+  is_actionable: z.boolean()
 })
 const meetingSchema = z.strictObject({
   label: z.literal(['Final', 'Midterm', 'Other', 'Class']),
@@ -292,7 +289,17 @@ export async function getSections ({
 
 if (import.meta.main) {
   const allCourses = new Map<string, Course>()
-  const seenDayKeys = new Set<DayMapKey>()
+  const resolvedDays: {
+    sectionId: `E ${number}`
+    index: number
+    days: string[]
+  }[] = []
+  const dayCandidatesToDisambiguate: {
+    // Used to avoid having two of the same course in a later disambiguation
+    // request
+    courseCode: `${string}-${string}`
+    candidates: { sectionId: `E ${number}`; index: number }[]
+  }[] = []
   let page = 0
   let sectionIds: Set<number> | null = null
   while (true) {
@@ -304,56 +311,58 @@ if (import.meta.main) {
     const result = await getSections({ sectionIds, term: 'FA26' })
     if (result.success) {
       console.error('page', page, Object.keys(result.courses).length, 'ok')
-      console.log(result.dayMap)
+      const unseen = new Set(Object.keys(result.dayMap))
       for (const [key, course] of Object.entries(result.courses)) {
-        // Inject day information
-        const sections = course.sections.map(section => {
-          return {
-            ...section,
-            location_details: section.location_details.map(meeting => {
-              if (meeting.time === '') {
-                return meeting
-              }
-              // Exams already have days
-              if (
-                meeting.type === 'Final' ||
-                meeting.type === 'Midterm' ||
-                meeting.type === 'Other'
-              ) {
-                return meeting
-              }
-              const type: NormalMeetingType = meeting.type
-              const key = `course:${course.class_name} time:${meeting.time
-                .replace('\u2013', '-')
-                .replaceAll(' AM', 'am')
-                .replaceAll(
-                  ' PM',
-                  'pm'
-                )} location:${meeting.location} type:${type
-                .slice(0, 3)
-                .toUpperCase()}` as const
-              const days = result.dayMap[key]
-              if (days) {
-                delete result.dayMap[key]
-                if (seenDayKeys.has(key)) {
-                  throw new Error(
-                    `[${section.section_id}] already have day entry for '${key}'`
-                  )
-                } else {
-                  seenDayKeys.add(key)
-                  return {
-                    ...meeting,
-                    __days: daysSchema.parse(Array.from(days))
-                  }
-                }
-              } else {
-                throw new Error(
-                  `[${section.section_id}] missing day for '${key}'`
-                )
-              }
-            })
+        const dayCandidatesMap: Record<
+          DayMapKey,
+          {
+            days: string[]
+            candidates: { sectionId: `E ${number}`; index: number }[]
           }
-        })
+        > = {}
+        // Inject day information
+        for (const section of course.sections) {
+          for (const [i, meeting] of section.location_details.entries()) {
+            if (meeting.time === '') {
+              continue
+            }
+            // Exams already have days
+            if (
+              meeting.type === 'Final' ||
+              meeting.type === 'Midterm' ||
+              meeting.type === 'Other'
+            ) {
+              continue
+            }
+            const type: NormalMeetingType = meeting.type
+            const key = `course:${course.class_name} time:${meeting.time
+              .replace('\u2013', '-')
+              .replaceAll(' AM', 'am')
+              .replaceAll(' PM', 'pm')} location:${
+              meeting.location === '' || meeting.location === 'tba'
+                ? 'TBA'
+                : meeting.location
+            } type:${type === 'Tutorial' ? 'TU' : type.slice(0, 3).toUpperCase()}` as const
+            const days = result.dayMap[key]
+            if (days) {
+              unseen.delete(key)
+              // This approach can be ambiguous, so we'll need to disambiguate
+              // later
+              dayCandidatesMap[key] ??= {
+                days: Array.from(days),
+                candidates: []
+              }
+              dayCandidatesMap[key].candidates.push({
+                sectionId: section.section_id,
+                index: i
+              })
+            } else {
+              throw new Error(
+                `[${section.section_id}] missing day for '${key}'`
+              )
+            }
+          }
+        }
 
         // Merge with existing course
         const existing = allCourses.get(key)
@@ -361,12 +370,10 @@ if (import.meta.main) {
           if (
             existing.class_name === course.class_name &&
             existing.course_title === course.course_title &&
-            existing.seat_freshness.is_stale ===
-              course.seat_freshness.is_stale &&
             existing.seat_freshness.label === course.seat_freshness.label
             // Not testing relative_label since that could change
           ) {
-            existing.sections.push(...sections)
+            existing.sections.push(...course.sections)
             existing.subtitle = Array.from(
               new Set(existing.subtitle.split(', ')).union(
                 new Set(course.subtitle.split(', '))
@@ -383,12 +390,24 @@ if (import.meta.main) {
             throw new Error('cannot merge course')
           }
         } else {
-          allCourses.set(key, { ...course, sections })
+          allCourses.set(key, course)
+        }
+
+        for (const { days, candidates } of Object.values(dayCandidatesMap)) {
+          if (candidates.length === 1) {
+            resolvedDays.push({ ...candidates[0], days })
+          } else {
+            dayCandidatesToDisambiguate.push({
+              courseCode: course.class_name,
+              candidates
+            })
+          }
         }
       }
-      if (Object.keys(result.dayMap).length > 0) {
+
+      if (unseen.size > 0) {
         throw new Error(
-          `Some meetings did not get assigned: ${JSON.stringify(result.dayMap, (_key, value) => (value instanceof Set ? Array.from(value).join('') : value), 2)}`
+          `Some meetings did not get assigned:\n${Array.from(unseen).join('\n')}`
         )
       }
 
@@ -411,5 +430,10 @@ if (import.meta.main) {
   await writeFile(
     'tss/courses.json',
     JSON.stringify(Object.fromEntries(allCourses.entries()))
+  )
+  await writeFile('tss/resolvedDays.json', JSON.stringify(resolvedDays))
+  await writeFile(
+    'tss/dayCandidatesToDisambiguate.json',
+    JSON.stringify(dayCandidatesToDisambiguate)
   )
 }
