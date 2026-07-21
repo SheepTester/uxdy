@@ -148,28 +148,68 @@ const courseSchema = z.strictObject({
 })
 export type Course = z.infer<typeof courseSchema>
 
+const errorSchema = z.strictObject({
+  detail: z.strictObject({
+    message: z.literal('One or more selected sections were not found.'),
+    missing: z.array(
+      z.strictObject({
+        term_code: z.string(),
+        section_id: z.string()
+      })
+    )
+  })
+})
+
 export type Query = {
-  sectionIds: number[]
+  sectionIds: Set<number>
   term: string
 }
+type Result =
+  | {
+      success: true
+      courses: Record<`${string}-${string}`, Course>
+    }
+  | { success: false; nonexistentSectionIds: number[] }
 export async function getSections ({
   sectionIds,
   term
-}: Query): Promise<Record<`${string}-${string}`, Course>> {
-  if (sectionIds.length > MAX_SECTION_IDS) {
+}: Query): Promise<Result> {
+  if (sectionIds.size > MAX_SECTION_IDS) {
     throw new RangeError(`At most ${MAX_SECTION_IDS} sectionIds please`)
   }
   const url =
     BASE +
     btoa(
       JSON.stringify({
-        s: sectionIds.map(id => `E ${id.toString().padStart(8, '0')}`),
+        s: Array.from(sectionIds, id => `E ${id.toString().padStart(8, '0')}`),
         t: term
       })
     )
   const response = await fetch(url, { headers })
   if (response.url !== url) {
     throw new Error(`Redirected to ${response.url}`)
+  }
+  if (response.status === 404) {
+    const json = errorSchema.parse(await response.json())
+    return {
+      success: false,
+      nonexistentSectionIds: json.detail.missing.map(
+        ({ section_id, term_code }) => {
+          if (term_code !== term) {
+            throw new Error(
+              `For some reason we got term '${term_code}' not '${term}'`
+            )
+          }
+          const sectionId = +section_id.slice(2)
+          if (!sectionIds.has(sectionId)) {
+            throw new Error(
+              `For some reason they were looking for '${section_id}' which you didn't ask for`
+            )
+          }
+          return sectionId
+        }
+      )
+    }
   }
   if (!response.ok) {
     throw new Error(
@@ -189,9 +229,12 @@ export async function getSections ({
     html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)
   )
   try {
-    return z
-      .record(z.templateLiteral([z.string(), '-', z.string()]), courseSchema)
-      .parse(json)
+    return {
+      success: true,
+      courses: z
+        .record(z.templateLiteral([z.string(), '-', z.string()]), courseSchema)
+        .parse(json)
+    }
   } catch (error) {
     console.log(
       'heading',
@@ -240,15 +283,29 @@ export async function getSections ({
 
 if (import.meta.main) {
   let page = 20
+  let sectionIds: Set<number> | null = null
   while (true) {
-    const result = await getSections({
-      sectionIds: Array.from(
-        { length: MAX_SECTION_IDS },
-        (_, i) => i + page * MAX_SECTION_IDS
-      ),
-      term: 'FA26'
-    })
-    console.error('page', page, Object.keys(result).length)
-    page++
+    sectionIds ??= new Set(
+      Array.prototype.keys
+        .call({ length: MAX_SECTION_IDS })
+        .map(i => i + page * MAX_SECTION_IDS)
+    )
+    const result = await getSections({ sectionIds, term: 'FA26' })
+    if (result.success) {
+      console.error('page', page, Object.keys(result.courses).length, 'ok')
+      sectionIds = null
+      page++
+    } else {
+      console.error(
+        'page',
+        page,
+        result.nonexistentSectionIds.length,
+        'missing, will retry'
+      )
+      sectionIds = sectionIds.difference(new Set(result.nonexistentSectionIds))
+      if (sectionIds.size === 0) {
+        throw new Error('end')
+      }
+    }
   }
 }
