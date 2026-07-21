@@ -221,6 +221,33 @@ export async function getSections ({
     )
   }
   const html = await response.text()
+  let index = 0
+  while (true) {
+    index = html.indexOf('<article class="mobile-event-card', index)
+    if (index === -1) {
+      break
+    }
+    const start = index
+    index = html.indexOf('</article>', index)
+    if (index === -1) {
+      throw new SyntaxError('Unclosed mobile event card')
+    }
+    const article = html.slice(start, index)
+    const match = article.match(
+      /^<article class="mobile-event-card event-card(?: event-card--compact)?" data-course="([a-z]{2,4}-\d{3}[a-z]{0,2})" data-mobile-day="([MTWRFSU])" tabindex="0" role="button" aria-haspopup="dialog" style="[^"]+">\s+<div class="event-card-rail"><\/div>\s+<div class="event-card-body">\s+<div class="event-heading">\s+<div class="event-title">([A-Z]{2,4}-\d{3}[A-Z]{0,2})<\/div>\s+<span class="event-type">([A-Z]{2,3})<\/span>\s+<\/div>\s+<div class="event-time">(1?\d:[0-5]\d[ap]m-1?\d:[0-5]\d[ap]m)<\/div>\s+<div class="event-location">([A-Z\d-]{2,5} [A-Z\d-]{1,5}|TBA)<\/div>\s+<\/div>\s+$/
+    )
+    if (!match) {
+      throw new SyntaxError(
+        `Mobile event card did not match master regex: ${article}`
+      )
+    }
+    const [, courseLower, day, courseUpper, time, location] = match
+    if (courseLower !== courseUpper.toLowerCase()) {
+      throw new SyntaxError(
+        `Different courses: '${courseLower}', '${courseUpper}'`
+      )
+    }
+  }
   const scriptIndex = html.indexOf(SCRIPT_BEGIN)
   if (scriptIndex === -1) {
     throw new SyntaxError('Could not find #course-detail-data in page')
