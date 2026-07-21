@@ -180,7 +180,7 @@ type Result =
       success: true
       courses: Record<`${string}-${string}`, Course>
       /** Course code, time, instruction type, location -> day of week */
-      dayMap: Record<DayMapKey, Set<string>>
+      dayMap: Record<DayMapKey, string[]>
     }
   | { success: false; nonexistentSectionIds: number[] }
 export async function getSections ({
@@ -194,7 +194,11 @@ export async function getSections ({
     BASE +
     btoa(
       JSON.stringify({
-        s: Array.from(sectionIds, id => `E ${id.toString().padStart(8, '0')}`),
+        // Must be sorted to be "canonical"
+        s: Array.from(
+          sectionIds,
+          id => `E ${id.toString().padStart(8, '0')}`
+        ).sort(),
         t: term
       })
     )
@@ -231,7 +235,7 @@ export async function getSections ({
   }
   const html = await response.text()
 
-  const dayMap: Record<DayMapKey, Set<string>> = {}
+  const dayMap: Record<DayMapKey, string[]> = {}
   let index = 0
   while (true) {
     index = html.indexOf('<article class="mobile-event-card', index)
@@ -260,11 +264,9 @@ export async function getSections ({
     }
     const key =
       `course:${courseUpper} time:${time} location:${location} type:${meetingType}` as const
-    dayMap[key] ??= new Set()
-    if (dayMap[key].has(day)) {
-      throw new Error(`Already saw day 'day' for '${key}'`)
-    }
-    dayMap[key].add(day)
+    // Duplicates can happen due to ambiguities; they're handled below
+    dayMap[key] ??= []
+    dayMap[key].push(day)
   }
 
   const scriptIndex = html.indexOf(SCRIPT_BEGIN)
@@ -348,10 +350,7 @@ if (import.meta.main) {
               unseen.delete(key)
               // This approach can be ambiguous, so we'll need to disambiguate
               // later
-              dayCandidatesMap[key] ??= {
-                days: Array.from(days),
-                candidates: []
-              }
+              dayCandidatesMap[key] ??= { days, candidates: [] }
               dayCandidatesMap[key].candidates.push({
                 sectionId: section.section_id,
                 index: i
@@ -395,8 +394,21 @@ if (import.meta.main) {
 
         for (const { days, candidates } of Object.values(dayCandidatesMap)) {
           if (candidates.length === 1) {
+            if (new Set(days).size !== days.length) {
+              throw new Error(
+                `${candidates[0].sectionId} ${candidates[0].index} has duplicate days: ${days.join('')}`
+              )
+            }
             resolvedDays.push({ ...candidates[0], days })
           } else {
+            if (
+              new Set(candidates.values().map(candidate => candidate.sectionId))
+                .size !== candidates.length
+            ) {
+              throw new Error(
+                `A candidate in ${JSON.stringify(candidates)} is ambiguous with another of its own meetings, which I cannot resolve`
+              )
+            }
             dayCandidatesToDisambiguate.push({
               courseCode: course.class_name,
               candidates
@@ -427,13 +439,30 @@ if (import.meta.main) {
       }
     }
   }
+  const disambiguationPlan = Map.groupBy(
+    Map.groupBy(
+      dayCandidatesToDisambiguate,
+      candidates => candidates.courseCode
+    )
+      .values()
+      .flatMap(candidates =>
+        candidates
+          .values()
+          .flatMap(c => c.candidates)
+          .map((candidate, i) => ({ candidate: candidate.sectionId, step: i }))
+      ),
+    candidate => candidate.step
+  )
+    .values()
+    .map(group => group.map(c => c.candidate))
+    .toArray()
   await writeFile(
     'tss/courses.json',
     JSON.stringify(Object.fromEntries(allCourses.entries()))
   )
   await writeFile('tss/resolvedDays.json', JSON.stringify(resolvedDays))
   await writeFile(
-    'tss/dayCandidatesToDisambiguate.json',
-    JSON.stringify(dayCandidatesToDisambiguate)
+    'tss/disambiguationPlan.json',
+    JSON.stringify(disambiguationPlan)
   )
 }
