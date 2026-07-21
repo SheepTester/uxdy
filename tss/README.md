@@ -20,3 +20,5 @@ what is EL00004110? also, what about maximum among E ... (with a space)
 > The section ID `EL00004110` corresponds to `DSC-198` (Dir Group Study/Data Science) for Fall 2026.
 >
 > For section IDs following the `E [number]` format (with a space), the maximum ID currently available for Fall 2026 is `E 00005334`.
+
+> For Fall 2026, the only observed section ID prefixes are "E " and "EL".
