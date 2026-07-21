@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "uxdy",
   "version": "1.0.0",
   "description": "What if 👀 i made 👉👈 another schedule app 👁👁 but for ucsd 😮💦",
@@ -11,6 +12,10 @@
   "license": "MIT",
   "devDependencies": {
     "@sheeptester/prettier": "^3.9.0",
+    "@types/node": "^26.1.1",
     "terser": "^5.39.0"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }
