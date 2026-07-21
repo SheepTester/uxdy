@@ -38,30 +38,47 @@ const locationDetailSchema = z.strictObject({
     'Pr',
     'Studio',
     'Tutorial',
-    'Midterm'
+    'Midterm',
+    'Fw',
+    'Independent Study',
+    'It',
+    'Other'
   ]),
-  // e.g. 'CENTR 115' or ''
+  // e.g. 'CENTR 115' or '' or 'tba' or 'Remote'
   location: z.union([
     z.templateLiteral([z.string(), ' ', z.string()]),
-    z.literal('')
+    z.literal(''),
+    z.literal('tba'),
+    z.literal('Remote')
   ]),
   // e.g. 'Center Hall, Room 115 - Lecture Hall'
   details: z.string(),
-  // e.g. '6:30 PM\u20137:50 PM'
-  time: z.templateLiteral([z.string(), '\u2013', z.string()]),
-  // Seems to be false iff location and details are ''
+  // e.g. '6:30 PM\u20137:50 PM' or ''
+  time: z.union([
+    z.templateLiteral([z.string(), '\u2013', z.string()]),
+    z.literal('')
+  ]),
+  // Seems to be false iff location and details are '' or location is 'tba'
   is_actionable: z.boolean()
 })
 const meetingSchema = z.strictObject({
-  label: z.literal(['Final', 'Midterm']),
-  // e.g. '12/7/26'
-  day: z.templateLiteral([z.number(), '/', z.number(), '/', z.number()]),
+  label: z.literal(['Final', 'Midterm', 'Other', 'Class']),
+  // e.g. '12/7/26' or 'TBA'
+  day: z.union([
+    z.templateLiteral([z.number(), '/', z.number(), '/', z.number()]),
+    z.literal('TBA')
+  ]),
   // e.g. '7:00pm-9:59pm'
-  time: z.templateLiteral([z.string(), '-', z.string()]),
-  // e.g. 'CENTR 115' or 'TBA'
+  time: z.union([
+    z.templateLiteral([z.string(), '-', z.string()]),
+    z.literal('TBA')
+  ]),
+  // e.g. 'CENTR 115' or 'TBA' or 'Remote' or 'tba'
   location: z.union([
     z.templateLiteral([z.string(), ' ', z.string()]),
-    z.literal('TBA')
+    z.literal('TBA'),
+    z.literal('tba'),
+    z.literal('Remote')
   ])
 })
 const sectionSchema = z.strictObject({
@@ -72,7 +89,10 @@ const sectionSchema = z.strictObject({
     'Discussion',
     'Pr',
     'Studio',
-    'Tutorial'
+    'Tutorial',
+    'Fw',
+    'Independent Study',
+    'It'
   ]),
   // e.g. '002-000-LE'
   section_code: z.templateLiteral([
@@ -80,7 +100,7 @@ const sectionSchema = z.strictObject({
     '-',
     z.number(),
     '-',
-    z.literal(['SE', 'LE', 'LA', 'DI', 'PR', 'ST', 'TU'])
+    z.literal(['SE', 'LE', 'LA', 'DI', 'PR', 'ST', 'TU', 'FW', 'IN', 'IT'])
   ]),
   // e.g. 'E 00000960'
   section_id: z.templateLiteral(['E ', z.number()]),
@@ -91,12 +111,16 @@ const sectionSchema = z.strictObject({
     'discussion',
     'pr',
     'st',
-    'tu'
+    'tu',
+    'fw',
+    'in',
+    'it'
   ]),
-  // e.g. 'CENTR 115' or 'TBA'
+  // e.g. 'CENTR 115' or 'TBA' or 'tba'
   location: z.union([
     z.templateLiteral([z.string(), ' ', z.string()]),
-    z.literal('TBA')
+    z.literal('TBA'),
+    z.literal('tba')
   ]),
   location_details: z.array(locationDetailSchema),
   // Not sure how they handle multiple instructors, or if this differs within
@@ -109,7 +133,7 @@ const sectionSchema = z.strictObject({
 })
 const courseSchema = z.strictObject({
   // Course code, e.g. 'CSE-011'
-  class_name: z.string(),
+  class_name: z.templateLiteral([z.string(), '-', z.string()]),
   course_title: z.string(),
   // Instructor name, e.g. 'Michael Holst'
   subtitle: z.string(),
@@ -131,7 +155,7 @@ export type Query = {
 export async function getSections ({
   sectionIds,
   term
-}: Query): Promise<Record<string, Course>> {
+}: Query): Promise<Record<`${string}-${string}`, Course>> {
   if (sectionIds.length > MAX_SECTION_IDS) {
     throw new RangeError(`At most ${MAX_SECTION_IDS} sectionIds please`)
   }
@@ -165,7 +189,9 @@ export async function getSections ({
     html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)
   )
   try {
-    return z.record(z.string(), courseSchema).parse(json)
+    return z
+      .record(z.templateLiteral([z.string(), '-', z.string()]), courseSchema)
+      .parse(json)
   } catch (error) {
     console.log(
       'heading',
@@ -199,22 +225,30 @@ export async function getSections ({
           .flatMap((o: any) => o.location_details.map((p: any) => p.type))
       )
     )
+    console.log(
+      'meetings.label',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .flatMap((o: any) => o.meetings.map((p: any) => p.label))
+      )
+    )
     console.dir(json, { depth: null })
     throw error
   }
 }
 
 if (import.meta.main) {
-  let page = 0
+  let page = 20
   while (true) {
-    console.error('page', page)
-    await getSections({
+    const result = await getSections({
       sectionIds: Array.from(
         { length: MAX_SECTION_IDS },
-        (_, i) => i + page * 2
+        (_, i) => i + page * MAX_SECTION_IDS
       ),
       term: 'FA26'
     })
+    console.error('page', page, Object.keys(result).length)
     page++
   }
 }
