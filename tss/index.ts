@@ -37,7 +37,8 @@ const locationDetailSchema = z.strictObject({
     'Discussion',
     'Pr',
     'Studio',
-    'Tutorial'
+    'Tutorial',
+    'Midterm'
   ]),
   // e.g. 'CENTR 115' or ''
   location: z.union([
@@ -163,47 +164,57 @@ export async function getSections ({
   const json = JSON.parse(
     html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)
   )
-  console.dir(json, { depth: null })
-  console.log(
-    'heading',
-    new Set(
-      Object.values(json)
-        .flatMap((c: any) => c.sections)
-        .map((o: any) => o.heading)
+  try {
+    return z.record(z.string(), courseSchema).parse(json)
+  } catch (error) {
+    console.log(
+      'heading',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .map((o: any) => o.heading)
+      )
     )
-  )
-  console.log(
-    'section_code',
-    new Set(
-      Object.values(json)
-        .flatMap((c: any) => c.sections)
-        .map((o: any) => o.section_code.split('-').at(-1))
+    console.log(
+      'section_code',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .map((o: any) => o.section_code.split('-').at(-1))
+      )
     )
-  )
-  console.log(
-    'instruction_type',
-    new Set(
-      Object.values(json)
-        .flatMap((c: any) => c.sections)
-        .map((o: any) => o.instruction_type)
+    console.log(
+      'instruction_type',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .map((o: any) => o.instruction_type)
+      )
     )
-  )
-  console.log(
-    'instruction_type',
-    new Set(
-      Object.values(json)
-        .flatMap((c: any) => c.sections)
-        .flatMap((o: any) => o.location_details.map((p: any) => p.type))
+    console.log(
+      'location_details.type',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .flatMap((o: any) => o.location_details.map((p: any) => p.type))
+      )
     )
-  )
-  return z.record(z.string(), courseSchema).parse(json)
+    console.dir(json, { depth: null })
+    throw error
+  }
 }
 
 if (import.meta.main) {
-  console.log(
+  let page = 0
+  while (true) {
+    console.error('page', page)
     await getSections({
-      sectionIds: Array.from({ length: MAX_SECTION_IDS }, (_, i) => i),
+      sectionIds: Array.from(
+        { length: MAX_SECTION_IDS },
+        (_, i) => i + page * 2
+      ),
       term: 'FA26'
     })
-  )
+    page++
+  }
 }
