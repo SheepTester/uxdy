@@ -87,19 +87,21 @@ const meetingSchema = z.strictObject({
     z.literal('Remote')
   ])
 })
+const normalMeetingTypeSchema = z.literal([
+  'Seminar',
+  'Lecture',
+  'Lab',
+  'Discussion',
+  'Pr',
+  'Studio',
+  'Tutorial',
+  'Fw',
+  'Independent Study',
+  'It'
+])
+type NormalMeetingType = z.infer<typeof normalMeetingTypeSchema>
 const sectionSchema = z.strictObject({
-  heading: z.literal([
-    'Seminar',
-    'Lecture',
-    'Lab',
-    'Discussion',
-    'Pr',
-    'Studio',
-    'Tutorial',
-    'Fw',
-    'Independent Study',
-    'It'
-  ]),
+  heading: normalMeetingTypeSchema,
   // e.g. '002-000-LE'
   section_code: z.templateLiteral([
     z.number(),
@@ -169,6 +171,9 @@ const errorSchema = z.strictObject({
   })
 })
 
+export type DayMapKey =
+  `course:${string} time:${string} location:${string} type:${string}`
+
 export type Query = {
   sectionIds: Set<number>
   term: string
@@ -178,7 +183,7 @@ type Result =
       success: true
       courses: Record<`${string}-${string}`, Course>
       /** Course code, time, instruction type, location -> day of week */
-      dayMap: Record<`${string}\n${string}\n${string}\n${string}`, Set<string>>
+      dayMap: Record<DayMapKey, Set<string>>
     }
   | { success: false; nonexistentSectionIds: number[] }
 export async function getSections ({
@@ -229,10 +234,7 @@ export async function getSections ({
   }
   const html = await response.text()
 
-  const dayMap: Record<
-    `${string}\n${string}\n${string}\n${string}`,
-    Set<string>
-  > = {}
+  const dayMap: Record<DayMapKey, Set<string>> = {}
   let index = 0
   while (true) {
     index = html.indexOf('<article class="mobile-event-card', index)
@@ -259,7 +261,8 @@ export async function getSections ({
         `Different courses: '${courseLower}', '${courseUpper}'`
       )
     }
-    const key = `${courseUpper}\n${time}\n${meetingType}\n${location}` as const
+    const key =
+      `course:${courseUpper} time:${time} location:${location} type:${meetingType}` as const
     dayMap[key] ??= new Set()
     if (dayMap[key].has(day)) {
       throw new Error(`Already saw day 'day' for '${key}'`)
@@ -289,10 +292,10 @@ export async function getSections ({
 
 if (import.meta.main) {
   const allCourses = new Map<string, Course>()
-  const seenDayKeys = new Set<`${string}\n${string}\n${string}\n${string}`>()
+  const seenDayKeys = new Set<DayMapKey>()
   let page = 0
   let sectionIds: Set<number> | null = null
-  while (page < 2) {
+  while (true) {
     sectionIds ??= new Set(
       Array.prototype.keys
         .call({ length: MAX_SECTION_IDS })
@@ -303,6 +306,55 @@ if (import.meta.main) {
       console.error('page', page, Object.keys(result.courses).length, 'ok')
       console.log(result.dayMap)
       for (const [key, course] of Object.entries(result.courses)) {
+        // Inject day information
+        const sections = course.sections.map(section => {
+          return {
+            ...section,
+            location_details: section.location_details.map(meeting => {
+              if (meeting.time === '') {
+                return meeting
+              }
+              // Exams already have days
+              if (
+                meeting.type === 'Final' ||
+                meeting.type === 'Midterm' ||
+                meeting.type === 'Other'
+              ) {
+                return meeting
+              }
+              const type: NormalMeetingType = meeting.type
+              const key = `course:${course.class_name} time:${meeting.time
+                .replace('\u2013', '-')
+                .replaceAll(' AM', 'am')
+                .replaceAll(
+                  ' PM',
+                  'pm'
+                )} location:${meeting.location} type:${type
+                .slice(0, 3)
+                .toUpperCase()}` as const
+              const days = result.dayMap[key]
+              if (days) {
+                delete result.dayMap[key]
+                if (seenDayKeys.has(key)) {
+                  throw new Error(
+                    `[${section.section_id}] already have day entry for '${key}'`
+                  )
+                } else {
+                  seenDayKeys.add(key)
+                  return {
+                    ...meeting,
+                    __days: daysSchema.parse(Array.from(days))
+                  }
+                }
+              } else {
+                throw new Error(
+                  `[${section.section_id}] missing day for '${key}'`
+                )
+              }
+            })
+          }
+        })
+
         // Merge with existing course
         const existing = allCourses.get(key)
         if (existing) {
@@ -314,45 +366,6 @@ if (import.meta.main) {
             existing.seat_freshness.label === course.seat_freshness.label
             // Not testing relative_label since that could change
           ) {
-            // Inject day information
-            const sections = course.sections.map(section => {
-              return {
-                ...section,
-                location_details: section.location_details.map(meeting => {
-                  if (meeting.time === '') {
-                    return meeting
-                  }
-                  const key = `${course.class_name}\n${meeting.time
-                    .replace('\u2013', '-')
-                    .replaceAll(' AM', 'am')
-                    .replaceAll(' PM', 'pm')}\n${meeting.type
-                    .slice(0, 3)
-                    .toUpperCase()}\n${meeting.location}` as const
-                  const days = result.dayMap[key]
-                  if (days) {
-                    delete result.dayMap[key]
-                    if (seenDayKeys.has(key)) {
-                      throw new Error(
-                        `already have day entry for '${course.class_name}' '${meeting.time}' '${meeting.location}' '${meeting.type}'`
-                      )
-                    } else {
-                      seenDayKeys.add(key)
-                      return {
-                        ...meeting,
-                        __days: daysSchema.parse(Array.from(days))
-                      }
-                    }
-                  } else {
-                    throw new Error(`missing day for '${key}'`)
-                  }
-                })
-              }
-            })
-            if (Object.keys(result.dayMap).length > 0) {
-              throw new Error(
-                `Some meetings did not get assigned: ${JSON.stringify(result.dayMap, (_key, value) => (value instanceof Set ? Array.from(value) : value), 2)}`
-              )
-            }
             existing.sections.push(...sections)
             existing.subtitle = Array.from(
               new Set(existing.subtitle.split(', ')).union(
@@ -370,9 +383,15 @@ if (import.meta.main) {
             throw new Error('cannot merge course')
           }
         } else {
-          allCourses.set(key, course)
+          allCourses.set(key, { ...course, sections })
         }
       }
+      if (Object.keys(result.dayMap).length > 0) {
+        throw new Error(
+          `Some meetings did not get assigned: ${JSON.stringify(result.dayMap, (_key, value) => (value instanceof Set ? Array.from(value).join('') : value), 2)}`
+        )
+      }
+
       sectionIds = null
       page++
     } else {
