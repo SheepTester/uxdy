@@ -3,6 +3,7 @@
  * usage: node tss/index.ts
  */
 
+import { writeFile } from 'node:fs/promises'
 import z from 'zod'
 
 const BASE = 'https://courseschedule.tritonai.ucsd.edu/course-schedule/view/CS2'
@@ -135,7 +136,10 @@ const courseSchema = z.strictObject({
   // Course code, e.g. 'CSE-011'
   class_name: z.templateLiteral([z.string(), '-', z.string()]),
   course_title: z.string(),
-  // Instructor name, e.g. 'Michael Holst'
+  // Instructor name, e.g. 'Michael Holst'; comma separated, e.g. 'Adam Bowers,
+  // Michael Holst, Scott Tilton'. seems to represent all instructors inside
+  // `sections` and thus can change depending on what sections were fetched (and
+  // is probably redundant)
   subtitle: z.string(),
   sections: z.array(sectionSchema),
   seat_freshness: z.strictObject({
@@ -228,61 +232,17 @@ export async function getSections ({
   const json = JSON.parse(
     html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)
   )
-  try {
-    return {
-      success: true,
-      courses: z
-        .record(z.templateLiteral([z.string(), '-', z.string()]), courseSchema)
-        .parse(json)
-    }
-  } catch (error) {
-    console.log(
-      'heading',
-      new Set(
-        Object.values(json)
-          .flatMap((c: any) => c.sections)
-          .map((o: any) => o.heading)
-      )
-    )
-    console.log(
-      'section_code',
-      new Set(
-        Object.values(json)
-          .flatMap((c: any) => c.sections)
-          .map((o: any) => o.section_code.split('-').at(-1))
-      )
-    )
-    console.log(
-      'instruction_type',
-      new Set(
-        Object.values(json)
-          .flatMap((c: any) => c.sections)
-          .map((o: any) => o.instruction_type)
-      )
-    )
-    console.log(
-      'location_details.type',
-      new Set(
-        Object.values(json)
-          .flatMap((c: any) => c.sections)
-          .flatMap((o: any) => o.location_details.map((p: any) => p.type))
-      )
-    )
-    console.log(
-      'meetings.label',
-      new Set(
-        Object.values(json)
-          .flatMap((c: any) => c.sections)
-          .flatMap((o: any) => o.meetings.map((p: any) => p.label))
-      )
-    )
-    console.dir(json, { depth: null })
-    throw error
+  return {
+    success: true,
+    courses: z
+      .record(z.templateLiteral([z.string(), '-', z.string()]), courseSchema)
+      .parse(json)
   }
 }
 
 if (import.meta.main) {
-  let page = 20
+  const allCourses = new Map<string, Course>()
+  let page = 0
   let sectionIds: Set<number> | null = null
   while (true) {
     sectionIds ??= new Set(
@@ -293,6 +253,37 @@ if (import.meta.main) {
     const result = await getSections({ sectionIds, term: 'FA26' })
     if (result.success) {
       console.error('page', page, Object.keys(result.courses).length, 'ok')
+      for (const [key, course] of Object.entries(result.courses)) {
+        const existing = allCourses.get(key)
+        if (existing) {
+          if (
+            existing.class_name === course.class_name &&
+            existing.course_title === course.course_title &&
+            existing.seat_freshness.is_stale ===
+              course.seat_freshness.is_stale &&
+            existing.seat_freshness.label === course.seat_freshness.label
+            // Not testing relative_label since that could change
+          ) {
+            existing.sections.push(...course.sections)
+            existing.subtitle = Array.from(
+              new Set(existing.subtitle.split(', ')).union(
+                new Set(course.subtitle.split(', '))
+              )
+            ).join(', ')
+          } else {
+            console.dir(
+              {
+                existing: { ...existing, sections: '...' },
+                course: { ...course, sections: '...' }
+              },
+              { depth: null }
+            )
+            throw new Error('cannot merge course')
+          }
+        } else {
+          allCourses.set(key, course)
+        }
+      }
       sectionIds = null
       page++
     } else {
@@ -304,8 +295,13 @@ if (import.meta.main) {
       )
       sectionIds = sectionIds.difference(new Set(result.nonexistentSectionIds))
       if (sectionIds.size === 0) {
-        throw new Error('end')
+        console.error('done')
+        break
       }
     }
   }
+  await writeFile(
+    'tss/courses.json',
+    JSON.stringify(Object.fromEntries(allCourses.entries()))
+  )
 }
