@@ -29,14 +29,27 @@ const headers = {
 }
 
 const locationDetailSchema = z.strictObject({
-  type: z.literal(['Lecture', 'Final']),
-  // e.g. 'CENTR 115'
-  location: z.templateLiteral([z.string(), ' ', z.string()]),
+  type: z.literal([
+    'Seminar',
+    'Final',
+    'Lecture',
+    'Lab',
+    'Discussion',
+    'Pr',
+    'Studio',
+    'Tutorial'
+  ]),
+  // e.g. 'CENTR 115' or ''
+  location: z.union([
+    z.templateLiteral([z.string(), ' ', z.string()]),
+    z.literal('')
+  ]),
   // e.g. 'Center Hall, Room 115 - Lecture Hall'
   details: z.string(),
   // e.g. '6:30 PM\u20137:50 PM'
   time: z.templateLiteral([z.string(), '\u2013', z.string()]),
-  is_actionable: z.literal(true)
+  // Seems to be false iff location and details are ''
+  is_actionable: z.boolean()
 })
 const meetingSchema = z.strictObject({
   label: z.literal(['Final', 'Midterm']),
@@ -44,24 +57,46 @@ const meetingSchema = z.strictObject({
   day: z.templateLiteral([z.number(), '/', z.number(), '/', z.number()]),
   // e.g. '7:00pm-9:59pm'
   time: z.templateLiteral([z.string(), '-', z.string()]),
-  // e.g. CENTR 115
-  location: z.templateLiteral([z.string(), ' ', z.string()])
+  // e.g. 'CENTR 115' or 'TBA'
+  location: z.union([
+    z.templateLiteral([z.string(), ' ', z.string()]),
+    z.literal('TBA')
+  ])
 })
 const sectionSchema = z.strictObject({
-  heading: z.literal(['Lecture', 'Discussion']),
+  heading: z.literal([
+    'Seminar',
+    'Lecture',
+    'Lab',
+    'Discussion',
+    'Pr',
+    'Studio',
+    'Tutorial'
+  ]),
   // e.g. '002-000-LE'
   section_code: z.templateLiteral([
     z.number(),
     '-',
     z.number(),
     '-',
-    z.literal(['LE'])
+    z.literal(['SE', 'LE', 'LA', 'DI', 'PR', 'ST', 'TU'])
   ]),
   // e.g. 'E 00000960'
   section_id: z.templateLiteral(['E ', z.number()]),
-  instruction_type: z.literal(['lecture', 'discussion']),
-  // e.g. 'CENTR 115'
-  location: z.templateLiteral([z.string(), ' ', z.string()]),
+  instruction_type: z.literal([
+    'se',
+    'lecture',
+    'lab',
+    'discussion',
+    'pr',
+    'st',
+    'tu'
+  ]),
+  // e.g. 'CENTR 115' or 'TBA'
+  location: z.union([
+    z.templateLiteral([z.string(), ' ', z.string()]),
+    z.literal('TBA')
+  ]),
   location_details: z.array(locationDetailSchema),
   // Not sure how they handle multiple instructors, or if this differs within
   // the same course
@@ -101,7 +136,7 @@ export async function getSections ({
   }
   const url =
     BASE +
-    atob(
+    btoa(
       JSON.stringify({
         s: sectionIds.map(id => `E ${id.toString().padStart(8, '0')}`),
         t: term
@@ -122,12 +157,46 @@ export async function getSections ({
     throw new SyntaxError('Could not find #course-detail-data in page')
   }
   const endIndex = html.indexOf('</script>', scriptIndex)
-  if (endIndex !== -1) {
+  if (endIndex === -1) {
     throw new SyntaxError('#course-detail-data did not end')
   }
-  return z
-    .record(z.string(), courseSchema)
-    .parse(JSON.parse(html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)))
+  const json = JSON.parse(
+    html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)
+  )
+  console.dir(json, { depth: null })
+  console.log(
+    'heading',
+    new Set(
+      Object.values(json)
+        .flatMap((c: any) => c.sections)
+        .map((o: any) => o.heading)
+    )
+  )
+  console.log(
+    'section_code',
+    new Set(
+      Object.values(json)
+        .flatMap((c: any) => c.sections)
+        .map((o: any) => o.section_code.split('-').at(-1))
+    )
+  )
+  console.log(
+    'instruction_type',
+    new Set(
+      Object.values(json)
+        .flatMap((c: any) => c.sections)
+        .map((o: any) => o.instruction_type)
+    )
+  )
+  console.log(
+    'instruction_type',
+    new Set(
+      Object.values(json)
+        .flatMap((c: any) => c.sections)
+        .flatMap((o: any) => o.location_details.map((p: any) => p.type))
+    )
+  )
+  return z.record(z.string(), courseSchema).parse(json)
 }
 
 if (import.meta.main) {
