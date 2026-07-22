@@ -207,7 +207,7 @@ const getUrl = ({ sectionIds, term }: Query) =>
       s: Array.from(sectionIds).sort(),
       t: term
     })
-  )
+  ).replace(/=+$/, '')
 
 type Result =
   | {
