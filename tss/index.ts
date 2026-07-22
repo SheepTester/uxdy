@@ -102,7 +102,7 @@ const normalMeetingTypeSchema = z.literal([
   'Co',
   'Ot'
 ])
-type NormalMeetingType = z.infer<typeof normalMeetingTypeSchema>
+export type NormalMeetingType = z.infer<typeof normalMeetingTypeSchema>
 const sectionSchema = z.strictObject({
   heading: normalMeetingTypeSchema,
   // e.g. '002-000-LE'
@@ -152,13 +152,14 @@ const sectionSchema = z.strictObject({
   ]),
   location_details: z.array(locationDetailSchema),
   // Not sure how they handle multiple instructors, or if this differs within
-  // the same course
+  // the same course. Can be 'TBA'
   instructors: z.string(),
   status: z.literal(['AC']),
   seats: z.templateLiteral([z.number(), '/', z.number()]),
   waitlist: z.literal(''),
   meetings: z.array(meetingSchema)
 })
+export type Section = z.infer<typeof sectionSchema>
 const courseSchema = z.strictObject({
   // Course code, e.g. 'CSE-011'
   class_name: z.templateLiteral([z.string(), '-', z.string()]),
@@ -358,6 +359,7 @@ export function formatSectionId (
   return `${type === 'event' ? 'E ' : 'EL'}${id.toString().padStart(8, '0') as unknown as number}`
 }
 
+export type AllCourses = Map<`${string}-${string}`, Course>
 export type ResolvedDay = {
   sectionId: SectionId
   index: number
@@ -369,7 +371,7 @@ type ProcessResult =
   | { type: 'retry'; sectionIds: Set<SectionId> }
 async function processQuery (
   query: Query,
-  allCourses: Map<string, Course>,
+  allCourses: AllCourses,
   resolvedDays: ResolvedDay[],
   dayCandidatesToDisambiguate?: {
     // Used to avoid having two of the same course in a later disambiguation
@@ -382,7 +384,8 @@ async function processQuery (
   if (result.success) {
     const unseen = new Set(Object.keys(result.dayMap))
     let newSections = 0
-    for (const [key, course] of Object.entries(result.courses)) {
+    for (const [keyStr, course] of Object.entries(result.courses)) {
+      const key = keyStr as `${string}-${string}`
       const dayCandidatesMap: Record<
         DayMapKey,
         {
@@ -509,15 +512,16 @@ async function processQuery (
 }
 
 export type ScrapeResult = {
-  allCourses: Map<string, Course>
+  allCourses: AllCourses
   resolvedDays: ResolvedDay[]
 }
 export async function scrapeAll (term: string): Promise<ScrapeResult> {
-  const allCourses = new Map<string, Course>()
+  const allCourses: AllCourses = new Map()
   const resolvedDays: ResolvedDay[] = []
   const dayCandidatesToDisambiguate: {
     // Used to avoid having two of the same course in a later disambiguation
     // request
+    // TODO: if this includes the time then I think we can consolidate even more
     courseCode: `${string}-${string}`
     candidates: { sectionId: SectionId; index: number }[]
   }[] = []
