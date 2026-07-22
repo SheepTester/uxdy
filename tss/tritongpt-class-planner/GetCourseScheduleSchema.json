@@ -1,0 +1,241 @@
+{
+  "markdown": "(moved to GetCourseScheduleSchema.md)",
+  "tables": [
+    {
+      "name": "course_sections",
+      "kind": "view",
+      "description": "Flattened course and section records for most schedule lookups.",
+      "columns": [
+        { "name": "termCode", "type": "TEXT", "values": ["FA26"] },
+        { "name": "sectionRef", "type": "TEXT" },
+        { "name": "eventId", "type": "TEXT" },
+        { "name": "subjectCode", "type": "TEXT" },
+        {
+          "name": "courseCode",
+          "type": "TEXT",
+          "description": "Canonical schedule course code. Lower-division numeric codes may be zero-padded and must be used exactly as stored, e.g. CSE 8A -> 008A, BILD 1 -> 001, CHEM 6A -> 006A. Students may enter legacy forms; write student-facing course labels as the TSS module code, e.g. CSE-008A.",
+          "examples": ["001", "006A", "008A", "10", "20B", "100"]
+        },
+        { "name": "moduleCode", "type": "TEXT" },
+        { "name": "moduleName", "type": "TEXT" },
+        {
+          "name": "academicLevel",
+          "type": "TEXT",
+          "values": ["GR", "LD", "UD"]
+        },
+        { "name": "eventCode", "type": "TEXT" },
+        {
+          "name": "instructionType",
+          "type": "TEXT",
+          "examples": ["LE", "DI", "LA"]
+        },
+        {
+          "name": "instructionTypeName",
+          "type": "TEXT",
+          "examples": ["lecture", "discussion", "lab", "se", "in", "tu"]
+        },
+        { "name": "enrollmentLimit", "type": "INTEGER" },
+        { "name": "enrolledQuantity", "type": "INTEGER" },
+        { "name": "availableSeats", "type": "INTEGER" },
+        { "name": "waitlistCapacity", "type": "INTEGER" },
+        { "name": "waitlistEnrolled", "type": "INTEGER" },
+        { "name": "waitlistAvailable", "type": "INTEGER" },
+        {
+          "name": "status",
+          "type": "TEXT",
+          "examples": ["", "closed", "cancelled"]
+        },
+        { "name": "isCancelled", "type": "INTEGER", "values": [0, 1] },
+        { "name": "instructorsText", "type": "TEXT" },
+        { "name": "lastRefreshedAt", "type": "TEXT" },
+        { "name": "term_code", "type": "TEXT", "values": ["FA26"] },
+        { "name": "section_ref", "type": "TEXT" },
+        { "name": "section_id", "type": "TEXT" },
+        { "name": "subject_code", "type": "TEXT" },
+        {
+          "name": "course_code",
+          "type": "TEXT",
+          "description": "Canonical schedule course code. Lower-division numeric codes may be zero-padded and must be used exactly as stored, e.g. CSE 8A -> 008A, BILD 1 -> 001, CHEM 6A -> 006A. Students may enter legacy forms; write student-facing course labels as the TSS module code, e.g. CSE-008A.",
+          "examples": ["001", "006A", "008A", "10", "20B", "100"]
+        },
+        { "name": "course_title", "type": "TEXT" },
+        {
+          "name": "academic_level",
+          "type": "TEXT",
+          "values": ["GR", "LD", "UD"]
+        },
+        { "name": "section_code", "type": "TEXT" },
+        {
+          "name": "instruction_type_code",
+          "type": "TEXT",
+          "examples": ["LE", "DI", "LA"]
+        },
+        {
+          "name": "instruction_type_name",
+          "type": "TEXT",
+          "examples": ["lecture", "discussion", "lab", "se", "in", "tu"]
+        },
+        { "name": "seats_available", "type": "INTEGER" },
+        { "name": "waitlist_available", "type": "INTEGER" },
+        { "name": "is_cancelled", "type": "INTEGER", "values": [0, 1] },
+        { "name": "instructors_text", "type": "TEXT" },
+        { "name": "last_refreshed_at", "type": "TEXT" },
+        { "name": "class_name", "type": "TEXT" },
+        { "name": "capacity", "type": "INTEGER" },
+        { "name": "enrolled", "type": "INTEGER" }
+      ],
+      "indexed_hints": [
+        "term_code, subject_code, course_code",
+        "term_code, academic_level",
+        "term_code, instruction_type_name",
+        "term_code, seats_available",
+        "sectionRef"
+      ]
+    },
+    {
+      "name": "section_meetings",
+      "kind": "view",
+      "description": "One row per class meeting, final, or midterm.",
+      "columns": [
+        { "name": "termCode", "type": "TEXT", "values": ["FA26"] },
+        { "name": "sectionRef", "type": "TEXT" },
+        { "name": "eventId", "type": "TEXT" },
+        { "name": "subjectCode", "type": "TEXT" },
+        { "name": "courseCode", "type": "TEXT" },
+        { "name": "moduleCode", "type": "TEXT" },
+        { "name": "moduleName", "type": "TEXT" },
+        {
+          "name": "academicLevel",
+          "type": "TEXT",
+          "values": ["GR", "LD", "UD"]
+        },
+        { "name": "eventCode", "type": "TEXT" },
+        {
+          "name": "instructionTypeName",
+          "type": "TEXT",
+          "examples": ["lecture", "discussion", "lab", "se", "in", "tu"]
+        },
+        { "name": "availableSeats", "type": "INTEGER" },
+        { "name": "waitlistAvailable", "type": "INTEGER" },
+        { "name": "isCancelled", "type": "INTEGER", "values": [0, 1] },
+        { "name": "instructorsText", "type": "TEXT" },
+        {
+          "name": "meetingKind",
+          "type": "TEXT",
+          "values": ["class", "final", "midterm", "other"]
+        },
+        {
+          "name": "dayCode",
+          "type": "TEXT",
+          "values": ["M", "T", "W", "R", "F", "S", "U", null]
+        },
+        { "name": "dayName", "type": "TEXT" },
+        { "name": "specificDate", "type": "TEXT" },
+        { "name": "startMinutes", "type": "INTEGER" },
+        { "name": "endMinutes", "type": "INTEGER" },
+        { "name": "startTimeDisplay", "type": "TEXT" },
+        { "name": "endTimeDisplay", "type": "TEXT" },
+        { "name": "buildingCode", "type": "TEXT" },
+        { "name": "roomCode", "type": "TEXT" },
+        { "name": "isRemote", "type": "INTEGER", "values": [0, 1] },
+        { "name": "isTba", "type": "INTEGER", "values": [0, 1] },
+        { "name": "term_code", "type": "TEXT", "values": ["FA26"] },
+        { "name": "section_ref", "type": "TEXT" },
+        { "name": "section_id", "type": "TEXT" },
+        { "name": "subject_code", "type": "TEXT" },
+        { "name": "course_code", "type": "TEXT" },
+        { "name": "course_title", "type": "TEXT" },
+        {
+          "name": "academic_level",
+          "type": "TEXT",
+          "values": ["GR", "LD", "UD"]
+        },
+        { "name": "section_code", "type": "TEXT" },
+        {
+          "name": "instruction_type_name",
+          "type": "TEXT",
+          "examples": ["lecture", "discussion", "lab", "se", "in", "tu"]
+        },
+        { "name": "seats_available", "type": "INTEGER" },
+        { "name": "waitlist_available", "type": "INTEGER" },
+        { "name": "is_cancelled", "type": "INTEGER", "values": [0, 1] },
+        { "name": "instructors_text", "type": "TEXT" },
+        {
+          "name": "meeting_kind",
+          "type": "TEXT",
+          "values": ["class", "final", "midterm", "other"]
+        },
+        {
+          "name": "day_code",
+          "type": "TEXT",
+          "values": ["M", "T", "W", "R", "F", "S", "U", null]
+        },
+        { "name": "day_name", "type": "TEXT" },
+        { "name": "specific_date", "type": "TEXT" },
+        { "name": "start_minutes", "type": "INTEGER" },
+        { "name": "end_minutes", "type": "INTEGER" },
+        { "name": "start_time_display", "type": "TEXT" },
+        { "name": "end_time_display", "type": "TEXT" },
+        { "name": "building_code", "type": "TEXT" },
+        { "name": "room_code", "type": "TEXT" },
+        { "name": "is_remote", "type": "INTEGER", "values": [0, 1] },
+        { "name": "is_tba", "type": "INTEGER", "values": [0, 1] }
+      ],
+      "indexed_hints": [
+        "filter by term_code, subject_code, course_code, is_cancelled directly for course meeting lookups",
+        "term_code, section_id",
+        "term_code, section_id, meeting_kind, start_minutes",
+        "term_code, day_code, start_minutes, end_minutes",
+        "term_code, building_code"
+      ]
+    },
+    {
+      "name": "course_search_fts",
+      "kind": "fts5",
+      "description": "Course-level full-text search for partial subject, course, class, title, and subject-name lookup. Join hits back to course_sections for candidate sections.",
+      "columns": [
+        { "name": "termCode", "type": "TEXT", "values": ["FA26"] },
+        { "name": "subjectCode", "type": "TEXT" },
+        {
+          "name": "courseCode",
+          "type": "TEXT",
+          "description": "Use this exact value when joining to course_sections or calling the planner.",
+          "examples": ["001", "006A", "008A", "10", "20B", "100"]
+        },
+        { "name": "moduleCode", "type": "TEXT" },
+        { "name": "moduleName", "type": "TEXT" },
+        { "name": "subject_name", "type": "TEXT" }
+      ],
+      "indexed_hints": [
+        "MATCH supports prefix tokens like math* 20*",
+        "Filter by term_code and join on term_code, subject_code, course_code"
+      ]
+    },
+    {
+      "name": "course_cache_status",
+      "kind": "view",
+      "description": "Cache freshness and per-term counts.",
+      "columns": [
+        { "name": "termCode", "type": "TEXT", "values": ["FA26"] },
+        { "name": "termName", "type": "TEXT" },
+        { "name": "calendarYear", "type": "TEXT" },
+        { "name": "lastFullRefreshAt", "type": "TEXT" },
+        { "name": "courseCount", "type": "INTEGER" },
+        { "name": "sectionCount", "type": "INTEGER" },
+        { "name": "meetingCount", "type": "INTEGER" },
+        { "name": "lastSectionRefreshAt", "type": "TEXT" }
+      ],
+      "indexed_hints": ["termCode"]
+    }
+  ],
+  "cache_info": {
+    "terms": ["FA26"],
+    "lastFullRefreshAt": "2026-07-20T16:00:04+00:00"
+  },
+  "constraints": {
+    "statement_cap": 5,
+    "total_row_cap": 1000,
+    "default_limit": 100,
+    "timeout_seconds": 10.0
+  }
+}

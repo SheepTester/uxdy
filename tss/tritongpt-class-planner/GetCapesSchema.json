@@ -1,0 +1,132 @@
+{
+  "markdown": "(moved to GetCapesSchema.md)",
+  "tables": [
+    {
+      "name": "capes_evaluations",
+      "kind": "view",
+      "description": "One row per historical CAPES evaluation record.",
+      "columns": [
+        { "name": "id", "type": "INTEGER" },
+        { "name": "instructor_name", "type": "TEXT" },
+        { "name": "instructor_name_norm", "type": "TEXT" },
+        { "name": "subject_code", "type": "TEXT" },
+        { "name": "course_code", "type": "TEXT" },
+        { "name": "class_name", "type": "TEXT" },
+        { "name": "course_title", "type": "TEXT" },
+        {
+          "name": "section_code",
+          "type": "TEXT",
+          "examples": ["A", "B", "C", "D", "0", "E", "F", "G"]
+        },
+        { "name": "quarter_code", "type": "TEXT" },
+        {
+          "name": "quarter_prefix",
+          "type": "TEXT",
+          "values": ["FA", "S1", "S2", "S3", "SP", "SU", "WI"]
+        },
+        { "name": "quarter_year", "type": "INTEGER" },
+        { "name": "quarter_sort_key", "type": "INTEGER" },
+        { "name": "section_id", "type": "TEXT" },
+        { "name": "total_enrolled", "type": "INTEGER" },
+        { "name": "total_capes", "type": "INTEGER" },
+        { "name": "recommended_class_pct", "type": "REAL" },
+        { "name": "recommended_professor_pct", "type": "REAL" },
+        { "name": "study_hours_per_week", "type": "REAL" },
+        {
+          "name": "avg_grade_expected_letter",
+          "type": "TEXT",
+          "examples": ["B+", "B", "B-", "A-", "C+", "A", "C", "C-"]
+        },
+        { "name": "avg_grade_expected_points", "type": "REAL" },
+        {
+          "name": "avg_grade_received_letter",
+          "type": "TEXT",
+          "examples": ["B+", "B", "B-", "A-", "C+", "A", "C", "C-"]
+        },
+        { "name": "avg_grade_received_points", "type": "REAL" },
+        { "name": "evaluation_url", "type": "TEXT" },
+        { "name": "raw_course_text", "type": "TEXT" }
+      ],
+      "indexed_hints": [
+        "subject_code, course_code",
+        "instructor_name_norm",
+        "quarter_sort_key",
+        "section_id"
+      ]
+    },
+    {
+      "name": "capes_instructor_course_summary",
+      "kind": "view",
+      "description": "Aggregated CAPES metrics by instructor and course.",
+      "columns": [
+        { "name": "subject_code", "type": "TEXT" },
+        { "name": "course_code", "type": "TEXT" },
+        { "name": "class_name", "type": "TEXT" },
+        { "name": "course_title", "type": "TEXT" },
+        { "name": "instructor_name", "type": "TEXT" },
+        { "name": "instructor_name_norm", "type": "TEXT" },
+        { "name": "evaluation_count", "type": "INTEGER" },
+        { "name": "quarter_count", "type": "INTEGER" },
+        { "name": "avg_recommended_class_pct", "type": "REAL" },
+        { "name": "avg_recommended_professor_pct", "type": "REAL" },
+        { "name": "avg_study_hours_per_week", "type": "REAL" },
+        { "name": "avg_grade_expected_points", "type": "REAL" },
+        { "name": "avg_grade_received_points", "type": "REAL" },
+        { "name": "avg_total_enrolled", "type": "REAL" },
+        { "name": "avg_total_capes", "type": "REAL" },
+        { "name": "first_quarter_code", "type": "TEXT" },
+        { "name": "last_quarter_code", "type": "TEXT" },
+        { "name": "first_quarter_sort_key", "type": "INTEGER" },
+        { "name": "last_quarter_sort_key", "type": "INTEGER" }
+      ],
+      "indexed_hints": [
+        "Filter by subject_code and course_code for course-level comparisons",
+        "Use evaluation_count thresholds before ranking instructors"
+      ]
+    },
+    {
+      "name": "capes_search_fts",
+      "kind": "fts5",
+      "description": "Full-text search over instructor names, subject/course identifiers, class names, and course titles.",
+      "columns": [
+        { "name": "record_id", "type": "INTEGER" },
+        { "name": "subject_code", "type": "TEXT" },
+        { "name": "course_code", "type": "TEXT" },
+        { "name": "class_name", "type": "TEXT" },
+        { "name": "course_title", "type": "TEXT" },
+        { "name": "instructor_name", "type": "TEXT" }
+      ],
+      "indexed_hints": [
+        "MATCH supports prefix tokens like cse* 100* lovelace*",
+        "Join capes_search_fts.record_id back to capes_evaluations.id"
+      ]
+    },
+    {
+      "name": "capes_cache_status",
+      "kind": "view",
+      "description": "One-row CAPES cache summary and last successful import time.",
+      "columns": [
+        { "name": "evaluation_count", "type": "INTEGER" },
+        { "name": "instructor_count", "type": "INTEGER" },
+        { "name": "course_count", "type": "INTEGER" },
+        { "name": "quarter_count", "type": "INTEGER" },
+        { "name": "last_import_completed_at", "type": "TEXT" }
+      ],
+      "indexed_hints": ["Single-row status view"]
+    }
+  ],
+  "cache_info": {
+    "evaluation_count": 63363,
+    "instructor_count": 5486,
+    "course_count": 4404,
+    "quarter_count": 88,
+    "quarter_prefixes": ["FA", "S1", "S2", "S3", "SP", "SU", "WI"],
+    "last_import_completed_at": "2026-06-17T23:32:56+00:00"
+  },
+  "constraints": {
+    "statement_cap": 5,
+    "total_row_cap": 1000,
+    "default_limit": 100,
+    "timeout_seconds": 10.0
+  }
+}
