@@ -358,6 +358,11 @@ export function formatSectionId (
   return `${type === 'event' ? 'E ' : 'EL'}${id.toString().padStart(8, '0') as unknown as number}`
 }
 
+export type ResolvedDay = {
+  sectionId: SectionId
+  index: number
+  days: string[]
+}
 type ProcessResult =
   | { type: 'done' }
   | { type: 'continue'; newSections: number }
@@ -365,11 +370,7 @@ type ProcessResult =
 async function processQuery (
   query: Query,
   allCourses: Map<string, Course>,
-  resolvedDays: {
-    sectionId: SectionId
-    index: number
-    days: string[]
-  }[],
+  resolvedDays: ResolvedDay[],
   dayCandidatesToDisambiguate?: {
     // Used to avoid having two of the same course in a later disambiguation
     // request
@@ -507,15 +508,13 @@ async function processQuery (
   }
 }
 
-async function scrapeAll (term: string) {}
-
-if (import.meta.main) {
+export type ScrapeResult = {
+  allCourses: Map<string, Course>
+  resolvedDays: ResolvedDay[]
+}
+export async function scrapeAll (term: string): Promise<ScrapeResult> {
   const allCourses = new Map<string, Course>()
-  const resolvedDays: {
-    sectionId: SectionId
-    index: number
-    days: string[]
-  }[] = []
+  const resolvedDays: ResolvedDay[] = []
   const dayCandidatesToDisambiguate: {
     // Used to avoid having two of the same course in a later disambiguation
     // request
@@ -531,7 +530,7 @@ if (import.meta.main) {
           .call({ length: MAX_SECTION_IDS })
           .map(i => formatSectionId(eventType, i + page * MAX_SECTION_IDS))
       )
-      const query = { sectionIds, term: 'FA26' }
+      const query = { sectionIds, term }
       let result
       try {
         result = await processQuery(
@@ -578,7 +577,7 @@ if (import.meta.main) {
     .map(
       (group, i) => [i, new Set(group.values().map(c => c.candidate))] as const
     )) {
-    const query = { sectionIds: candidates, term: 'FA26' }
+    const query = { sectionIds: candidates, term }
     let result
     try {
       result = await processQuery(query, allCourses, resolvedDays)
@@ -596,6 +595,11 @@ if (import.meta.main) {
       )
     }
   }
+  return { allCourses, resolvedDays }
+}
+
+if (import.meta.main) {
+  const { allCourses, resolvedDays } = await scrapeAll('FA26')
   await writeFile(
     'tss/courses.json',
     JSON.stringify(Object.fromEntries(allCourses.entries()))
