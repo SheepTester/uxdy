@@ -162,7 +162,7 @@ const errorSchema = z.strictObject({
     missing: z.array(
       z.strictObject({
         term_code: z.string(),
-        section_id: z.string()
+        section_id: z.templateLiteral([z.literal(['E ', 'EL']), z.number()])
       })
     )
   })
@@ -171,8 +171,9 @@ const errorSchema = z.strictObject({
 export type DayMapKey =
   `course:${string} time:${string} location:${string} type:${string}`
 
+export type SectionId = `${'E ' | 'EL'}${number}`
 export type Query = {
-  sectionIds: Set<number>
+  sectionIds: Set<SectionId>
   term: string
 }
 type Result =
@@ -182,7 +183,7 @@ type Result =
       /** Course code, time, instruction type, location -> day of week */
       dayMap: Record<DayMapKey, string[]>
     }
-  | { success: false; nonexistentSectionIds: number[] }
+  | { success: false; nonexistentSectionIds: SectionId[] }
 export async function getSections ({
   sectionIds,
   term
@@ -195,10 +196,7 @@ export async function getSections ({
     btoa(
       JSON.stringify({
         // Must be sorted to be "canonical"
-        s: Array.from(
-          sectionIds,
-          id => `E ${id.toString().padStart(8, '0')}`
-        ).sort(),
+        s: Array.from(sectionIds).sort(),
         t: term
       })
     )
@@ -217,13 +215,12 @@ export async function getSections ({
               `For some reason we got term '${term_code}' not '${term}'`
             )
           }
-          const sectionId = +section_id.slice(2)
-          if (!sectionIds.has(sectionId)) {
+          if (!sectionIds.has(section_id)) {
             throw new Error(
               `For some reason they were looking for '${section_id}' which you didn't ask for`
             )
           }
-          return sectionId
+          return section_id
         }
       )
     }
@@ -289,10 +286,17 @@ export async function getSections ({
   }
 }
 
+export function formatSectionId (
+  type: 'event' | 'eventless',
+  id: number
+): SectionId {
+  return `${type === 'event' ? 'E ' : 'EL'}${id.toString().padStart(8, '0') as unknown as number}`
+}
+
 if (import.meta.main) {
   const allCourses = new Map<string, Course>()
   const resolvedDays: {
-    sectionId: `E ${number}`
+    sectionId: SectionId
     index: number
     days: string[]
   }[] = []
@@ -300,15 +304,15 @@ if (import.meta.main) {
     // Used to avoid having two of the same course in a later disambiguation
     // request
     courseCode: `${string}-${string}`
-    candidates: { sectionId: `E ${number}`; index: number }[]
+    candidates: { sectionId: SectionId; index: number }[]
   }[] = []
   let page = 0
-  let sectionIds: Set<number> | null = null
+  let sectionIds: Set<SectionId> | null = null
   while (true) {
     sectionIds ??= new Set(
       Array.prototype.keys
         .call({ length: MAX_SECTION_IDS })
-        .map(i => i + page * MAX_SECTION_IDS)
+        .map(i => formatSectionId('event', i + page * MAX_SECTION_IDS))
     )
     const result = await getSections({ sectionIds, term: 'FA26' })
     if (result.success) {
@@ -319,7 +323,7 @@ if (import.meta.main) {
           DayMapKey,
           {
             days: string[]
-            candidates: { sectionId: `E ${number}`; index: number }[]
+            candidates: { sectionId: SectionId; index: number }[]
           }
         > = {}
         // Inject day information
