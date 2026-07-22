@@ -36,8 +36,8 @@ function * printTime (
   minute: string,
   amPm: string
 ): Generator<string> {
-  const parsedHour =
-    hour === '12' ? (amPm === 'a' ? 0 : 12) : amPm === 'a' ? +hour : +hour + 12
+  const isAm = amPm === 'a' || amPm === 'A'
+  const parsedHour = hour === '12' ? (isAm ? 0 : 12) : isAm ? +hour : +hour + 12
   yield parsedHour.toString().padStart(2, '0')
   yield minute
 }
@@ -203,7 +203,8 @@ export function * coursesToFile (
 
     const [subject, number] = class_name.split('-')
     yield subject.padEnd(4)
-    yield number.padEnd(5)
+    // Remove leading zeroes because UI search isn't designed for them
+    yield number.replace(/^0+/, '').padEnd(5)
     if (!buildingsOnly) {
       yield course_title
     }
@@ -235,6 +236,7 @@ export function * coursesToFile (
       }
 
       if (!buildingsOnly) {
+        yield '\t'
         yield Array.from(instructors).sort().join('\t')
       }
       yield '\n'
