@@ -146,9 +146,13 @@ export function * coursesToFile (
     const cantUseLetterCode =
       groups.keys().reduce((cum, curr) => Math.max(cum, curr), 0) > 26
     const cantUseNumberCode = groups.values().some(group => group.length > 1)
-    if (cantUseLetterCode && cantUseNumberCode) {
-      throw new Error(`Can't use letter nor number code for ${class_name}`)
-    }
+    const useLetterCode =
+      cantUseLetterCode && cantUseNumberCode
+        ? // Fall back to number codes; all meetings will just get the same
+        // number code
+        false
+        : // Prefer letter code
+        !cantUseLetterCode
     for (const [groupCode, group] of groups) {
       const meetings = group
         .values()
@@ -186,12 +190,11 @@ export function * coursesToFile (
       // meetings
       yield exams.length > 0 ? "'" : ' '
 
-      // Prefer letter code
-      const prefix = cantUseNumberCode
+      const prefix = useLetterCode
         ? String.fromCharCode(65 + groupCode - 1)
         : groupCode.toString().padStart(3, '0')
       yield prefix
-      if (cantUseNumberCode) {
+      if (useLetterCode) {
         yield '00'
       }
 
@@ -230,7 +233,7 @@ export function * coursesToFile (
         )
 
         yield prefix
-        if (cantUseNumberCode) {
+        if (useLetterCode) {
           yield meeting.meetingCode.toString().padStart(2, '0')
         }
       }
