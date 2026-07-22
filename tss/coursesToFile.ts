@@ -132,12 +132,7 @@ export function * coursesToFile (
   yield `V4${scrapeTime}\n`
   for (const { class_name, course_title, sections } of courses.values()) {
     const [subject, number] = class_name.split('-')
-    yield subject.padEnd(4)
-    yield number.padEnd(5)
-    if (!buildingsOnly) {
-      yield course_title
-    }
-    yield '\n'
+    let printedCourseHeader = false
     const groups = Map.groupBy(
       sections,
       // Pretty sure this is 1-indexed
@@ -186,6 +181,20 @@ export function * coursesToFile (
         // Classrooms website assumes exam day is always available
         .filter(exam => exam.day !== 'TBA')
         .toArray()
+      if (meetings.length === 0 && exams.length === 0) {
+        continue
+      }
+
+      if (!printedCourseHeader) {
+        yield subject.padEnd(4)
+        yield number.padEnd(5)
+        if (!buildingsOnly) {
+          yield course_title
+        }
+        yield '\n'
+        printedCourseHeader = true
+      }
+
       // We don't have access to the distinction between enrollable/unenrollable
       // meetings
       yield exams.length > 0 ? "'" : ' '
@@ -213,7 +222,7 @@ export function * coursesToFile (
                 // cannot handle both "Betancur Rodriguez, Ricard" and "Maltez,
                 // Vivien Ileana"
                 const parts = name.split(' ')
-                return `${parts.slice(0, -1).join()},${parts.at(-1)}`
+                return `${parts.slice(0, -1).join(' ')},${parts.at(-1)}`
               })
           )
         )
@@ -258,7 +267,7 @@ if (import.meta.main) {
       Object.entries(JSON.parse(await readFile('tss/courses.json', 'utf-8')))
     ) as AllCourses,
     JSON.parse(await readFile('tss/resolvedDays.json', 'utf-8')),
-    { scrapeTime: Date.now(), buildingsOnly: true }
+    { scrapeTime: Date.now(), buildingsOnly: false }
   )) {
     process.stdout.write(chunk)
   }
