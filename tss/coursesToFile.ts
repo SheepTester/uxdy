@@ -74,18 +74,23 @@ function * printMeeting (
       ? null
       : location.split(' ')
   yield (maybeLocation?.[0] ?? 'TBA').padEnd(5)
+  const isTimeTba = time === '' || time === 'TBA'
   if (days) {
-    yield (
-      time === '' || time === 'TBA'
-        ? 'TBA'
-        : days
-          .map(day => DAYS.indexOf(day))
-          .sort()
-          .join('')
-    )
-      // This is probably technically incorrect, ISIS supports up to all 7 days,
-      // but whatever
-      .padEnd(5)
+    if (isTimeTba) {
+      yield 'TBA  '
+    } else {
+      if (days.length === 0) {
+        throw new Error('Missing days')
+      }
+
+      yield days
+        .map(day => DAYS.indexOf(day))
+        .sort()
+        .join('')
+        // This is probably technically incorrect, ISIS supports up to all 7 days,
+        // but whatever
+        .padEnd(5)
+    }
   }
   if (type === 'Class') {
     // idk
@@ -94,7 +99,7 @@ function * printMeeting (
     yield types[type]
   }
   yield (maybeLocation?.[1].replace(/^B-/, 'B') ?? 'TBA').padEnd(5)
-  if (time === '' || time === 'TBA') {
+  if (isTimeTba) {
     yield 'TBA '
     yield 'TBA '
   } else {
