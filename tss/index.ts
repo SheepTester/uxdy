@@ -45,7 +45,10 @@ const locationDetailSchema = z.strictObject({
     'Fw',
     'Independent Study',
     'It',
-    'Other'
+    'Other',
+    'Cl',
+    'Co',
+    'Ot'
   ]),
   // e.g. 'CENTR 115' or '' or 'tba' or 'Remote'
   location: z.union([
@@ -94,7 +97,10 @@ const normalMeetingTypeSchema = z.literal([
   'Tutorial',
   'Fw',
   'Independent Study',
-  'It'
+  'It',
+  'Cl',
+  'Co',
+  'Ot'
 ])
 type NormalMeetingType = z.infer<typeof normalMeetingTypeSchema>
 const sectionSchema = z.strictObject({
@@ -105,10 +111,24 @@ const sectionSchema = z.strictObject({
     '-',
     z.number(),
     '-',
-    z.literal(['SE', 'LE', 'LA', 'DI', 'PR', 'ST', 'TU', 'FW', 'IN', 'IT'])
+    z.literal([
+      'SE',
+      'LE',
+      'LA',
+      'DI',
+      'PR',
+      'ST',
+      'TU',
+      'FW',
+      'IN',
+      'IT',
+      'CL',
+      'CO',
+      'OT'
+    ])
   ]),
   // e.g. 'E 00000960'
-  section_id: z.templateLiteral(['E ', z.number()]),
+  section_id: z.templateLiteral([z.literal(['E ', 'EL']), z.number()]),
   instruction_type: z.literal([
     'se',
     'lecture',
@@ -119,7 +139,10 @@ const sectionSchema = z.strictObject({
     'tu',
     'fw',
     'in',
-    'it'
+    'it',
+    'cl',
+    'co',
+    'ot'
   ]),
   // e.g. 'CENTR 115' or 'TBA' or 'tba'
   location: z.union([
@@ -277,13 +300,56 @@ export async function getSections ({
   const json = JSON.parse(
     html.slice(scriptIndex + SCRIPT_BEGIN.length, endIndex)
   )
-  return {
-    success: true,
-    courses: z
+  let courses
+  try {
+    courses = z
       .record(z.templateLiteral([z.string(), '-', z.string()]), courseSchema)
-      .parse(json),
-    dayMap
+      .parse(json)
+  } catch (error) {
+    console.log(
+      'heading',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .map((o: any) => o.heading)
+      )
+    )
+    console.log(
+      'section_code',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .map((o: any) => o.section_code.split('-').at(-1))
+      )
+    )
+    console.log(
+      'instruction_type',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .map((o: any) => o.instruction_type)
+      )
+    )
+    console.log(
+      'location_details.type',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .flatMap((o: any) => o.location_details.map((p: any) => p.type))
+      )
+    )
+    console.log(
+      'meetings.label',
+      new Set(
+        Object.values(json)
+          .flatMap((c: any) => c.sections)
+          .flatMap((o: any) => o.meetings.map((p: any) => p.label))
+      )
+    )
+    console.dir(json, { depth: null })
+    throw error
   }
+  return { success: true, courses, dayMap }
 }
 
 export function formatSectionId (
@@ -312,7 +378,7 @@ if (import.meta.main) {
     sectionIds ??= new Set(
       Array.prototype.keys
         .call({ length: MAX_SECTION_IDS })
-        .map(i => formatSectionId('event', i + page * MAX_SECTION_IDS))
+        .map(i => formatSectionId('eventless', i + page * MAX_SECTION_IDS))
     )
     const result = await getSections({ sectionIds, term: 'FA26' })
     if (result.success) {
