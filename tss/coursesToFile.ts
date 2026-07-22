@@ -131,70 +131,92 @@ export function * coursesToFile (
   )
   yield `V4${scrapeTime}\n`
   for (const { class_name, course_title, sections } of courses.values()) {
-    const [subject, number] = class_name.split('-')
-    let printedCourseHeader = false
     const groups = Map.groupBy(
       sections,
       // Pretty sure this is 1-indexed
       section => +section.section_code.split('-')[0]
     )
-    const cantUseLetterCode =
-      groups.keys().reduce((cum, curr) => Math.max(cum, curr), 0) > 26
-    const cantUseNumberCode = groups.values().some(group => group.length > 1)
-    const useLetterCode =
-      cantUseLetterCode && cantUseNumberCode
-        ? // Fall back to number codes; all meetings will just get the same
-        // number code
-        false
-        : // Prefer letter code
-        !cantUseLetterCode
-    for (const [groupCode, group] of groups) {
-      const meetings = group
-        .values()
-        .flatMap(section =>
-          section.location_details.values().map((meeting, index) => ({
-            sectionId: section.section_id,
-            index,
-            seats: section.seats,
-            meetingCode: +section.section_code.split('-')[1],
-            ...meeting
-          }))
+      .entries()
+      .map(([groupCode, group]) => ({
+        groupCode,
+        meetings: group
+          .values()
+          .flatMap(section =>
+            section.location_details.values().map((meeting, index) => ({
+              sectionId: section.section_id,
+              index,
+              seats: section.seats,
+              meetingCode: +section.section_code.split('-')[1],
+              ...meeting
+            }))
+          )
+          .filter(meeting => !buildingsOnly || isInPerson(meeting))
+          .filter(meeting => {
+            if (
+              meeting.type !== 'Final' &&
+              meeting.type !== 'Midterm' &&
+              meeting.type !== 'Other'
+            ) {
+              const _type: NormalMeetingType = meeting.type
+              return true
+            } else {
+              return false
+            }
+          })
+          .toArray(),
+        exams: group
+          .values()
+          .flatMap(section => section.meetings)
+          .filter(exam => !buildingsOnly || isInPerson(exam))
+          // Classrooms website assumes exam day is always available
+          .filter(exam => exam.day !== 'TBA')
+          .toArray(),
+        instructors: new Set(
+          group
+            .values()
+            .flatMap(section =>
+              section.instructors === 'TBA'
+                ? []
+                : section.instructors.split(', ')
+            )
+            .map(name => {
+              // Best effort splitting of first and last name. Unfortunately
+              // cannot handle both "Betancur Rodriguez, Ricard" and "Maltez,
+              // Vivien Ileana"
+              const parts = name.split(' ')
+              return `${parts.slice(0, -1).join(' ')},${parts.at(-1)}`
+            })
         )
-        .filter(meeting => !buildingsOnly || isInPerson(meeting))
-        .filter(meeting => {
-          if (
-            meeting.type !== 'Final' &&
-            meeting.type !== 'Midterm' &&
-            meeting.type !== 'Other'
-          ) {
-            const _type: NormalMeetingType = meeting.type
-            return true
-          } else {
-            return false
-          }
-        })
-        .toArray()
-      const exams = group
-        .values()
-        .flatMap(section => section.meetings)
-        .filter(exam => !buildingsOnly || isInPerson(exam))
-        // Classrooms website assumes exam day is always available
-        .filter(exam => exam.day !== 'TBA')
-        .toArray()
-      if (meetings.length === 0 && exams.length === 0) {
-        continue
-      }
+      }))
+      .filter(group => group.meetings.length > 0 || group.exams.length > 0)
+      .toArray()
+      .sort((a, b) => a.groupCode - b.groupCode)
 
-      if (!printedCourseHeader) {
-        yield subject.padEnd(4)
-        yield number.padEnd(5)
-        if (!buildingsOnly) {
-          yield course_title
-        }
-        yield '\n'
-        printedCourseHeader = true
-      }
+    if (groups.length === 0) {
+      continue
+    }
 
+    const [subject, number] = class_name.split('-')
+    yield subject.padEnd(4)
+    yield number.padEnd(5)
+    if (!buildingsOnly) {
+      yield course_title
+    }
+    yield '\n'
+
+    const cantUseLetterCode =
+      groups.reduce((cum, curr) => Math.max(cum, curr.groupCode), 0) > 26
+    const cantUseNumberCode = groups
+      .values()
+      .some(group => group.meetings.length > 1)
+    if (cantUseLetterCode && cantUseNumberCode) {
+      console.error(groups)
+      throw new Error(`Can't use letter nor number code for ${class_name}`)
+    }
+    // Prefer letter code
+    const useLetterCode = !cantUseLetterCode
+
+    for (const { groupCode, meetings, exams, instructors } of groups) {
       // We don't have access to the distinction between enrollable/unenrollable
       // meetings
       yield exams.length > 0 ? "'" : ' '
@@ -208,26 +230,7 @@ export function * coursesToFile (
       }
 
       if (!buildingsOnly) {
-        yield Array.from(
-          new Set(
-            group
-              .values()
-              .flatMap(section =>
-                section.instructors === 'TBA'
-                  ? []
-                  : section.instructors.split(', ')
-              )
-              .map(name => {
-                // Best effort splitting of first and last name. Unfortunately
-                // cannot handle both "Betancur Rodriguez, Ricard" and "Maltez,
-                // Vivien Ileana"
-                const parts = name.split(' ')
-                return `${parts.slice(0, -1).join(' ')},${parts.at(-1)}`
-              })
-          )
-        )
-          .sort()
-          .join('\t')
+        yield Array.from(instructors).sort().join('\t')
       }
       yield '\n'
 

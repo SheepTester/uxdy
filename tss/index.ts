@@ -442,7 +442,19 @@ async function processQuery (
           existing.seat_freshness.label === course.seat_freshness.label
           // Not testing relative_label since that could change
         ) {
-          existing.sections.push(...course.sections)
+          for (const section of course.sections) {
+            const existingSection = existing.sections.find(
+              s => s.section_id === section.section_id
+            )
+            if (existingSection) {
+              if (JSON.stringify(existingSection) !== JSON.stringify(section)) {
+                console.dir({ existingSection, section }, { depth: null })
+                throw new Error('Existing section differs')
+              }
+            } else {
+              existing.sections.push(section)
+            }
+          }
           existing.subtitle = Array.from(
             new Set(existing.subtitle.split(', ')).union(
               new Set(course.subtitle.split(', '))
