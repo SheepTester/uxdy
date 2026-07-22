@@ -199,6 +199,16 @@ export type Query = {
   sectionIds: Set<SectionId>
   term: string
 }
+const getUrl = ({ sectionIds, term }: Query) =>
+  BASE +
+  btoa(
+    JSON.stringify({
+      // Must be sorted to be "canonical"
+      s: Array.from(sectionIds).sort(),
+      t: term
+    })
+  )
+
 type Result =
   | {
       success: true
@@ -207,22 +217,11 @@ type Result =
       dayMap: Record<DayMapKey, string[]>
     }
   | { success: false; nonexistentSectionIds: SectionId[] }
-export async function getSections ({
-  sectionIds,
-  term
-}: Query): Promise<Result> {
-  if (sectionIds.size > MAX_SECTION_IDS) {
+export async function getSections (query: Query): Promise<Result> {
+  if (query.sectionIds.size > MAX_SECTION_IDS) {
     throw new RangeError(`At most ${MAX_SECTION_IDS} sectionIds please`)
   }
-  const url =
-    BASE +
-    btoa(
-      JSON.stringify({
-        // Must be sorted to be "canonical"
-        s: Array.from(sectionIds).sort(),
-        t: term
-      })
-    )
+  const url = getUrl(query)
   const response = await fetch(url, { headers })
   if (response.url !== url) {
     throw new Error(`Redirected to ${response.url}`)
@@ -233,12 +232,12 @@ export async function getSections ({
       success: false,
       nonexistentSectionIds: json.detail.missing.map(
         ({ section_id, term_code }) => {
-          if (term_code !== term) {
+          if (term_code !== query.term) {
             throw new Error(
-              `For some reason we got term '${term_code}' not '${term}'`
+              `For some reason we got term '${term_code}' not '${query.term}'`
             )
           }
-          if (!sectionIds.has(section_id)) {
+          if (!query.sectionIds.has(section_id)) {
             throw new Error(
               `For some reason they were looking for '${section_id}' which you didn't ask for`
             )
@@ -359,6 +358,157 @@ export function formatSectionId (
   return `${type === 'event' ? 'E ' : 'EL'}${id.toString().padStart(8, '0') as unknown as number}`
 }
 
+type ProcessResult =
+  | { type: 'done' }
+  | { type: 'continue'; newSections: number }
+  | { type: 'retry'; sectionIds: Set<SectionId> }
+async function processQuery (
+  query: Query,
+  allCourses: Map<string, Course>,
+  resolvedDays: {
+    sectionId: SectionId
+    index: number
+    days: string[]
+  }[],
+  dayCandidatesToDisambiguate?: {
+    // Used to avoid having two of the same course in a later disambiguation
+    // request
+    courseCode: `${string}-${string}`
+    candidates: { sectionId: SectionId; index: number }[]
+  }[]
+): Promise<ProcessResult> {
+  const result = await getSections(query)
+  if (result.success) {
+    const unseen = new Set(Object.keys(result.dayMap))
+    let newSections = 0
+    for (const [key, course] of Object.entries(result.courses)) {
+      const dayCandidatesMap: Record<
+        DayMapKey,
+        {
+          days: string[]
+          candidates: { sectionId: SectionId; index: number }[]
+        }
+      > = {}
+      // Inject day information
+      for (const section of course.sections) {
+        newSections++
+        for (const [i, meeting] of section.location_details.entries()) {
+          if (meeting.time === '') {
+            continue
+          }
+          // Exams already have days
+          if (
+            meeting.type === 'Final' ||
+            meeting.type === 'Midterm' ||
+            meeting.type === 'Other'
+          ) {
+            continue
+          }
+          const type: NormalMeetingType = meeting.type
+          const key = `course:${course.class_name} time:${meeting.time
+            .replace('\u2013', '-')
+            .replaceAll(' AM', 'am')
+            .replaceAll(' PM', 'pm')} location:${
+            meeting.location === '' || meeting.location === 'tba'
+              ? 'TBA'
+              : meeting.location
+          } type:${type === 'Tutorial' ? 'TU' : type.slice(0, 3).toUpperCase()}` as const
+          const days = result.dayMap[key]
+          if (days) {
+            unseen.delete(key)
+            // This approach can be ambiguous, so we'll need to disambiguate
+            // later
+            dayCandidatesMap[key] ??= { days, candidates: [] }
+            dayCandidatesMap[key].candidates.push({
+              sectionId: section.section_id,
+              index: i
+            })
+          } else {
+            throw new Error(`[${section.section_id}] missing day for '${key}'`)
+          }
+        }
+      }
+
+      // Merge with existing course
+      const existing = allCourses.get(key)
+      if (existing) {
+        if (
+          existing.class_name === course.class_name &&
+          existing.course_title === course.course_title &&
+          existing.seat_freshness.label === course.seat_freshness.label
+          // Not testing relative_label since that could change
+        ) {
+          existing.sections.push(...course.sections)
+          existing.subtitle = Array.from(
+            new Set(existing.subtitle.split(', ')).union(
+              new Set(course.subtitle.split(', '))
+            )
+          ).join(', ')
+        } else {
+          console.dir(
+            {
+              existing: { ...existing, sections: '...' },
+              course: { ...course, sections: '...' }
+            },
+            { depth: null }
+          )
+          throw new Error('cannot merge course')
+        }
+      } else {
+        allCourses.set(key, course)
+      }
+
+      for (const { days, candidates } of Object.values(dayCandidatesMap)) {
+        if (candidates.length === 1) {
+          if (new Set(days).size !== days.length) {
+            throw new Error(
+              `${candidates[0].sectionId} ${candidates[0].index} has duplicate days: ${days.join('')}`
+            )
+          }
+          resolvedDays.push({ ...candidates[0], days })
+        } else {
+          if (
+            new Set(candidates.values().map(candidate => candidate.sectionId))
+              .size !== candidates.length
+          ) {
+            throw new Error(
+              `A candidate in ${JSON.stringify(candidates)} is ambiguous with another of its own meetings, which I cannot resolve`
+            )
+          }
+          if (!dayCandidatesToDisambiguate) {
+            throw new Error(
+              `Unexpected ambiguity in ${course.class_name}: ${JSON.stringify(candidates)}`
+            )
+          }
+          dayCandidatesToDisambiguate.push({
+            courseCode: course.class_name,
+            candidates
+          })
+        }
+      }
+    }
+
+    if (unseen.size > 0) {
+      throw new Error(
+        `Some meetings did not get assigned:\n${Array.from(unseen).join('\n')}`
+      )
+    }
+
+    return { type: 'continue', newSections }
+  } else {
+    const filtered = query.sectionIds.difference(
+      new Set(result.nonexistentSectionIds)
+    )
+    if (filtered.size === 0) {
+      return { type: 'done' }
+    } else {
+      return { type: 'retry', sectionIds: filtered }
+    }
+  }
+}
+
+async function scrapeAll (term: string) {}
+
 if (import.meta.main) {
   const allCourses = new Map<string, Course>()
   const resolvedDays: {
@@ -372,144 +522,45 @@ if (import.meta.main) {
     courseCode: `${string}-${string}`
     candidates: { sectionId: SectionId; index: number }[]
   }[] = []
-  let page = 0
-  let sectionIds: Set<SectionId> | null = null
-  while (true) {
-    sectionIds ??= new Set(
-      Array.prototype.keys
-        .call({ length: MAX_SECTION_IDS })
-        .map(i => formatSectionId('eventless', i + page * MAX_SECTION_IDS))
-    )
-    const result = await getSections({ sectionIds, term: 'FA26' })
-    if (result.success) {
-      console.error('page', page, Object.keys(result.courses).length, 'ok')
-      const unseen = new Set(Object.keys(result.dayMap))
-      for (const [key, course] of Object.entries(result.courses)) {
-        const dayCandidatesMap: Record<
-          DayMapKey,
-          {
-            days: string[]
-            candidates: { sectionId: SectionId; index: number }[]
-          }
-        > = {}
-        // Inject day information
-        for (const section of course.sections) {
-          for (const [i, meeting] of section.location_details.entries()) {
-            if (meeting.time === '') {
-              continue
-            }
-            // Exams already have days
-            if (
-              meeting.type === 'Final' ||
-              meeting.type === 'Midterm' ||
-              meeting.type === 'Other'
-            ) {
-              continue
-            }
-            const type: NormalMeetingType = meeting.type
-            const key = `course:${course.class_name} time:${meeting.time
-              .replace('\u2013', '-')
-              .replaceAll(' AM', 'am')
-              .replaceAll(' PM', 'pm')} location:${
-              meeting.location === '' || meeting.location === 'tba'
-                ? 'TBA'
-                : meeting.location
-            } type:${type === 'Tutorial' ? 'TU' : type.slice(0, 3).toUpperCase()}` as const
-            const days = result.dayMap[key]
-            if (days) {
-              unseen.delete(key)
-              // This approach can be ambiguous, so we'll need to disambiguate
-              // later
-              dayCandidatesMap[key] ??= { days, candidates: [] }
-              dayCandidatesMap[key].candidates.push({
-                sectionId: section.section_id,
-                index: i
-              })
-            } else {
-              throw new Error(
-                `[${section.section_id}] missing day for '${key}'`
-              )
-            }
-          }
-        }
-
-        // Merge with existing course
-        const existing = allCourses.get(key)
-        if (existing) {
-          if (
-            existing.class_name === course.class_name &&
-            existing.course_title === course.course_title &&
-            existing.seat_freshness.label === course.seat_freshness.label
-            // Not testing relative_label since that could change
-          ) {
-            existing.sections.push(...course.sections)
-            existing.subtitle = Array.from(
-              new Set(existing.subtitle.split(', ')).union(
-                new Set(course.subtitle.split(', '))
-              )
-            ).join(', ')
-          } else {
-            console.dir(
-              {
-                existing: { ...existing, sections: '...' },
-                course: { ...course, sections: '...' }
-              },
-              { depth: null }
-            )
-            throw new Error('cannot merge course')
-          }
-        } else {
-          allCourses.set(key, course)
-        }
-
-        for (const { days, candidates } of Object.values(dayCandidatesMap)) {
-          if (candidates.length === 1) {
-            if (new Set(days).size !== days.length) {
-              throw new Error(
-                `${candidates[0].sectionId} ${candidates[0].index} has duplicate days: ${days.join('')}`
-              )
-            }
-            resolvedDays.push({ ...candidates[0], days })
-          } else {
-            if (
-              new Set(candidates.values().map(candidate => candidate.sectionId))
-                .size !== candidates.length
-            ) {
-              throw new Error(
-                `A candidate in ${JSON.stringify(candidates)} is ambiguous with another of its own meetings, which I cannot resolve`
-              )
-            }
-            dayCandidatesToDisambiguate.push({
-              courseCode: course.class_name,
-              candidates
-            })
-          }
-        }
-      }
-
-      if (unseen.size > 0) {
+  for (const eventType of ['event', 'eventless'] as const) {
+    let page = 0
+    let sectionIds: Set<SectionId> | null = null
+    while (true) {
+      sectionIds ??= new Set(
+        Array.prototype.keys
+          .call({ length: MAX_SECTION_IDS })
+          .map(i => formatSectionId(eventType, i + page * MAX_SECTION_IDS))
+      )
+      const query = { sectionIds, term: 'FA26' }
+      let result
+      try {
+        result = await processQuery(
+          query,
+          allCourses,
+          resolvedDays,
+          dayCandidatesToDisambiguate
+        )
+      } catch (cause) {
         throw new Error(
-          `Some meetings did not get assigned:\n${Array.from(unseen).join('\n')}`
+          `error occurred on page ${page}\nurl: ${getUrl(query)}`,
+          { cause }
         )
       }
-
-      sectionIds = null
-      page++
-    } else {
-      console.error(
-        'page',
-        page,
-        result.nonexistentSectionIds.length,
-        'missing, will retry'
-      )
-      sectionIds = sectionIds.difference(new Set(result.nonexistentSectionIds))
-      if (sectionIds.size === 0) {
-        console.error('done')
+      if (result.type === 'done') {
+        console.error(`[${eventType}] done`)
         break
+      } else if (result.type === 'retry') {
+        sectionIds = result.sectionIds
+      } else {
+        console.error(
+          `[${eventType}] page ${page}: ${result.newSections} sections`
+        )
+        sectionIds = null
+        page++
       }
     }
   }
-  const disambiguationPlan = Map.groupBy(
+  for (const [i, candidates] of Map.groupBy(
     Map.groupBy(
       dayCandidatesToDisambiguate,
       candidates => candidates.courseCode
@@ -524,15 +575,30 @@ if (import.meta.main) {
     candidate => candidate.step
   )
     .values()
-    .map(group => group.map(c => c.candidate))
-    .toArray()
+    .map(
+      (group, i) => [i, new Set(group.values().map(c => c.candidate))] as const
+    )) {
+    const query = { sectionIds: candidates, term: 'FA26' }
+    let result
+    try {
+      result = await processQuery(query, allCourses, resolvedDays)
+    } catch (cause) {
+      throw new Error(
+        `error occurred on disambiguation ${i}\nurl: ${getUrl(query)}`,
+        { cause }
+      )
+    }
+    if (result.type === 'continue') {
+      console.error(`[disambiguation ${i}] ${result.newSections} sections`)
+    } else {
+      throw new Error(
+        `Unexpected processQuery result ${JSON.stringify(result)}`
+      )
+    }
+  }
   await writeFile(
     'tss/courses.json',
     JSON.stringify(Object.fromEntries(allCourses.entries()))
   )
   await writeFile('tss/resolvedDays.json', JSON.stringify(resolvedDays))
-  await writeFile(
-    'tss/disambiguationPlan.json',
-    JSON.stringify(disambiguationPlan)
-  )
 }
