@@ -1,4 +1,4 @@
-V41783452481973
+V41784789689466
 ANES296  Independent Study
  001	Brian M.,Ilfeld
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -293,7 +293,7 @@ EMED296  Independent Reseach
  002	Charles,Ginsberg
 0005TBA  TBA  INTBA  TBA TBA 002
 EMED299  Independent Study Project
- 001
+ 001	Leslie C.,Oyama
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -580,6 +580,8 @@ OBG 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 006
  007	Sarah Helene,Averbach
 0005TBA  TBA  INTBA  TBA TBA 007
+ 008	Jessica,Kingston
+0005TBA  TBA  INTBA  TBA TBA 008
 OPTH296  Independent Study
  001
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -611,7 +613,7 @@ OPTH496  Clinical Independent Study
 ORTH296  Orthopaedics Independent Rsrch
  001	Eric W.,Edmonds
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Alexandra K.,Schwartz
 0005TBA  TBA  INTBA  TBA TBA 002
 ORTH299  Independent Study Project(ISP)
  001	Alexandra K.,Schwartz
@@ -650,7 +652,7 @@ ORTH496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Alexandra K.,Schwartz
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	David Ryan,Bakal
 0005TBA  TBA  INTBA  TBA TBA 003
  004
 0005TBA  TBA  INTBA  TBA TBA 004
@@ -670,7 +672,7 @@ PAE 212  The Physical Exam	/courses/PAS.html#pae212
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 213  Human Anatomy	/courses/PAS.html#pae213
-.A00
+.A00	Brittany,Pierce
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 214  Human Phys & Pathophys I	/courses/PAS.html#pae214
@@ -816,7 +818,7 @@ PATH496  Clinical Independent Study
  001
 0005TBA  TBA  INTBA  TBA TBA 001
 PEDS296  Pediatrics Independent Resrch
- 001
+ 001	M Paula,Aristizabal
 0005TBA  TBA  INTBA  TBA TBA 001
  002
 0005TBA  TBA  INTBA  TBA TBA 002
@@ -946,7 +948,7 @@ PSY 435T Alcohol & Drug Treatment Sel
 PSY 496  Clinical Independent Study
  001	Noe Anselmo,Caballero
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Yash,Joshi
 0005TBA  TBA  INTBA  TBA TBA 002
  003
 0005TBA  TBA  INTBA  TBA TBA 003
@@ -1039,13 +1041,17 @@ SOMI421  Subinternship Palliative Med
  A00	Paula Michelle,Mesarwi
 0010TBA  TBA  CLTBA  TBA TBA A00
 SURG296  Surgery Independent Research
- 001
+ 001	Romeo Castro,Ignacio
 0005TBA  TBA  INTBA  TBA TBA 001
+ 002	Carol Hanlu,Yan
+0005TBA  TBA  INTBA  TBA TBA 002
 SURG299  Surgery Independent Study Proj
  001	Katharine Moss,Hinchcliff
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Glenn Kham,Wakam
 0005TBA  TBA  INTBA  TBA TBA 002
+ 003	Geoffroy Pierre Jean,Noel
+0005TBA  TBA  INTBA  TBA TBA 003
 SURG401  Surgery Core Clerkship
  A00	Joel M,Baumgartner
 0050TBA  TBA  CLTBA  TBA TBA A00
