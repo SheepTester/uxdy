@@ -5,7 +5,9 @@
  * usage: node tss/coursesToFile.ts <term>
  */
 
-import { open, readFile } from 'node:fs/promises'
+import { createWriteStream } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import { pipeline } from 'node:stream/promises'
 import type {
   AllCourses,
   NormalMeetingType,
@@ -284,16 +286,17 @@ if (import.meta.main) {
     await readFile('tss/resolvedDays.json', 'utf-8')
   )
   const scrapeTime = +(await readFile('tss/scrapeTime.txt', 'utf-8')).trim()
-  for (const buildingsOnly of [false, true]) {
-    await using out = await open(
-      `classrooms-${term}${buildingsOnly ? '' : '-full'}.txt`,
-      'w'
-    )
-    for (const chunk of coursesToFile(allCourses, resolvedDays, {
-      scrapeTime,
-      buildingsOnly
-    })) {
-      await out.write(chunk)
-    }
-  }
+  await Promise.all(
+    [false, true].map(async buildingsOnly => {
+      await pipeline(
+        coursesToFile(allCourses, resolvedDays, {
+          scrapeTime,
+          buildingsOnly
+        }),
+        createWriteStream(
+          `classrooms-${term}${buildingsOnly ? '' : '-full'}.txt`
+        )
+      )
+    })
+  )
 }
