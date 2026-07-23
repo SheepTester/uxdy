@@ -137,9 +137,16 @@ export function * coursesToFile (
       ])
   )
   yield `V4${scrapeTime}\n`
-  for (const { class_name, course_title, sections } of courses.values()) {
+  for (const { class_name, course_title, sections } of courses
+    .values()
+    .toArray()
+    .sort((a, b) => a.class_name.localeCompare(b.class_name))) {
     const groups = Map.groupBy(
-      sections,
+      sections.toSorted(
+        (a, b) =>
+          a.section_code.localeCompare(b.section_code) ||
+          a.section_id.localeCompare(b.section_id)
+      ),
       // Pretty sure this is 1-indexed
       section => +section.section_code.split('-')[0]
     )
