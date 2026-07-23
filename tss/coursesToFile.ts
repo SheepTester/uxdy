@@ -120,14 +120,30 @@ function * printMeeting (
 }
 
 export type CourseToFileOptions = {
-  scrapeTime: number
   buildingsOnly: boolean
 }
 export function * coursesToFile (
   courses: AllCourses,
   resolvedDays: ResolvedDay[],
-  { scrapeTime, buildingsOnly }: CourseToFileOptions
+  { buildingsOnly }: CourseToFileOptions
 ): Generator<string> {
+  const stalenessDates = new Set(
+    courses.values().map(course => course.seat_freshness.label)
+  )
+  if (stalenessDates.size !== 1) {
+    throw new Error(
+      `Multiple staleness dates: ${Array.from(stalenessDates).join(', ')}`
+    )
+  }
+  const [stalenessDate] = stalenessDates
+  const scrapeTime = new Date(stalenessDate)
+  if (Number.isNaN(scrapeTime.getTime())) {
+    throw new RangeError(`Invalid date time format '${stalenessDate}'`)
+  }
+  console.error(
+    `debug: scrape time '${stalenessDate}' parsed as ${scrapeTime.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`
+  )
+
   const resolvedDayMap = new Map(
     Map.groupBy(resolvedDays, day => day.sectionId)
       .entries()
@@ -136,7 +152,7 @@ export function * coursesToFile (
         new Map(days.values().map(({ index, days }) => [index, days]))
       ])
   )
-  yield `V4${scrapeTime}\n`
+  yield `V4${scrapeTime.getTime()}\n`
   for (const { class_name, course_title, sections } of courses
     .values()
     .toArray()
@@ -292,12 +308,10 @@ if (import.meta.main) {
   const resolvedDays: ResolvedDay[] = JSON.parse(
     await readFile('tss/resolvedDays.json', 'utf-8')
   )
-  const scrapeTime = +(await readFile('tss/scrapeTime.txt', 'utf-8')).trim()
   await Promise.all(
     [false, true].map(async buildingsOnly => {
       await pipeline(
         coursesToFile(allCourses, resolvedDays, {
-          scrapeTime,
           buildingsOnly
         }),
         createWriteStream(

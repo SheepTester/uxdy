@@ -629,12 +629,10 @@ if (import.meta.main) {
     process.exit(1)
   }
   const [, , term] = process.argv
-  const now = Date.now()
   const { allCourses, resolvedDays } = await scrapeAll(term)
   await writeFile(
     'tss/courses.json',
     JSON.stringify(Object.fromEntries(allCourses.entries()))
   )
   await writeFile('tss/resolvedDays.json', JSON.stringify(resolvedDays))
-  await writeFile('tss/scrapeTime.txt', String(now))
 }
