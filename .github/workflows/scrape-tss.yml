@@ -34,24 +34,19 @@ jobs:
       - name: Install dependencies
         run: npm ci --omit=dev
       - name: Scrape sections
-        env:
-          TERM: ${{ inputs.quarter }}${{ inputs.year }}
-        run: |
-          echo "Scraping $TERM"
-          node tss/index.ts $TERM
-          node tss/coursesToFile.ts $TERM
-          node tss/enrollment-data.ts
+        run: node tss/index.ts ${{ inputs.quarter }}${{ inputs.year }}
+      - name: Write classrooms data
+        run: node tss/coursesToFile.ts ${{ inputs.quarter }}${{ inputs.year }}
       - name: Move files
         run: |
-          mkdir .data
-          mv classrooms-*.txt .data
-          mv tss/enrollment-data.tsv .data
-          ls -al .data
+          mkdir tss_out
+          mv classrooms-*.txt tss_out
+          ls -al tss_out
       - name: Upload scraped data
         uses: actions/upload-artifact@v7
         with:
           name: data
-          path: ./.data/
+          path: ./tss_out/
   upload:
     name: Upload scraped data to gh-pages
     runs-on: ubuntu-latest
