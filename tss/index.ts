@@ -1,6 +1,6 @@
 /**
  * @file
- * usage: node tss/index.ts
+ * usage: node tss/index.ts <term>
  */
 
 import { writeFile } from 'node:fs/promises'
@@ -374,9 +374,7 @@ async function processQuery (
   allCourses: AllCourses,
   resolvedDays: ResolvedDay[],
   dayCandidatesToDisambiguate?: {
-    // Used to avoid having two of the same course in a later disambiguation
-    // request
-    courseCode: `${string}-${string}`
+    key: DayMapKey
     candidates: { sectionId: SectionId; index: number }[]
   }[]
 ): Promise<ProcessResult> {
@@ -474,7 +472,10 @@ async function processQuery (
         allCourses.set(key, course)
       }
 
-      for (const { days, candidates } of Object.values(dayCandidatesMap)) {
+      for (const [keyStr, { days, candidates }] of Object.entries(
+        dayCandidatesMap
+      )) {
+        const key = keyStr as DayMapKey
         if (candidates.length === 1) {
           if (new Set(days).size !== days.length) {
             throw new Error(
@@ -496,10 +497,7 @@ async function processQuery (
               `Unexpected ambiguity in ${course.class_name}: ${JSON.stringify(candidates)}`
             )
           }
-          dayCandidatesToDisambiguate.push({
-            courseCode: course.class_name,
-            candidates
-          })
+          dayCandidatesToDisambiguate.push({ key, candidates })
         }
       }
     }
@@ -531,94 +529,112 @@ export async function scrapeAll (term: string): Promise<ScrapeResult> {
   const allCourses: AllCourses = new Map()
   const resolvedDays: ResolvedDay[] = []
   const dayCandidatesToDisambiguate: {
-    // Used to avoid having two of the same course in a later disambiguation
-    // request
-    // TODO: if this includes the time then I think we can consolidate even more
-    courseCode: `${string}-${string}`
+    key: DayMapKey
     candidates: { sectionId: SectionId; index: number }[]
   }[] = []
-  for (const eventType of ['event', 'eventless'] as const) {
-    let page = 0
-    let sectionIds: Set<SectionId> | null = null
-    while (true) {
-      sectionIds ??= new Set(
-        Array.prototype.keys
-          .call({ length: MAX_SECTION_IDS })
-          .map(i => formatSectionId(eventType, i + page * MAX_SECTION_IDS))
-      )
-      const query = { sectionIds, term }
-      let result
-      try {
-        result = await processQuery(
-          query,
-          allCourses,
-          resolvedDays,
-          dayCandidatesToDisambiguate
+  await Promise.all(
+    (['event', 'eventless'] as const).map(async eventType => {
+      let page = 0
+      let sectionIds: Set<SectionId> | null = null
+      while (true) {
+        sectionIds ??= new Set(
+          Array.prototype.keys
+            .call({ length: MAX_SECTION_IDS })
+            .map(i => formatSectionId(eventType, i + page * MAX_SECTION_IDS))
         )
-      } catch (cause) {
-        throw new Error(
-          `error occurred on page ${page}\nurl: ${getUrl(query)}`,
-          { cause }
-        )
+        const query = { sectionIds, term }
+        let result
+        try {
+          result = await processQuery(
+            query,
+            allCourses,
+            resolvedDays,
+            dayCandidatesToDisambiguate
+          )
+        } catch (cause) {
+          throw new Error(
+            `error occurred on page ${page}\nurl: ${getUrl(query)}`,
+            { cause }
+          )
+        }
+        if (result.type === 'done') {
+          console.error(`[${eventType}] done`)
+          break
+        } else if (result.type === 'retry') {
+          sectionIds = result.sectionIds
+        } else {
+          console.error(
+            `[${eventType}] page ${page}: ${result.newSections} sections`
+          )
+          sectionIds = null
+          page++
+        }
       }
-      if (result.type === 'done') {
-        console.error(`[${eventType}] done`)
-        break
-      } else if (result.type === 'retry') {
-        sectionIds = result.sectionIds
-      } else {
-        console.error(
-          `[${eventType}] page ${page}: ${result.newSections} sections`
-        )
-        sectionIds = null
-        page++
-      }
-    }
-  }
-  for (const [i, candidates] of Map.groupBy(
+    })
+  )
+  await Promise.all(
     Map.groupBy(
-      dayCandidatesToDisambiguate,
-      candidates => candidates.courseCode
+      Map.groupBy(dayCandidatesToDisambiguate, candidates => candidates.key)
+        .values()
+        .flatMap(candidates =>
+          candidates
+            .values()
+            .flatMap(c => c.candidates)
+            .map((candidate, i) => ({
+              candidate: candidate.sectionId,
+              step: i
+            }))
+        ),
+      candidate => candidate.step
     )
       .values()
-      .flatMap(candidates =>
-        candidates
-          .values()
-          .flatMap(c => c.candidates)
-          .map((candidate, i) => ({ candidate: candidate.sectionId, step: i }))
-      ),
-    candidate => candidate.step
+      .map(async (group, i) => {
+        const candidates = new Set(group.values().map(c => c.candidate))
+        const iter = candidates.values()
+        let step = 0
+        while (true) {
+          const chunk = new Set(iter.take(MAX_SECTION_IDS))
+          if (chunk.size === 0) {
+            break
+          }
+          const query = { sectionIds: chunk, term }
+          let result
+          try {
+            result = await processQuery(query, allCourses, resolvedDays)
+          } catch (cause) {
+            throw new Error(
+              `error occurred on disambiguation ${i}.${step}\nurl: ${getUrl(query)}`,
+              { cause }
+            )
+          }
+          if (result.type === 'continue') {
+            console.error(
+              `[disambiguation ${i}.${step}] ${result.newSections} sections`
+            )
+          } else {
+            throw new Error(
+              `Unexpected processQuery result ${JSON.stringify(result)}`
+            )
+          }
+          step++
+        }
+      })
   )
-    .values()
-    .map(
-      (group, i) => [i, new Set(group.values().map(c => c.candidate))] as const
-    )) {
-    const query = { sectionIds: candidates, term }
-    let result
-    try {
-      result = await processQuery(query, allCourses, resolvedDays)
-    } catch (cause) {
-      throw new Error(
-        `error occurred on disambiguation ${i}\nurl: ${getUrl(query)}`,
-        { cause }
-      )
-    }
-    if (result.type === 'continue') {
-      console.error(`[disambiguation ${i}] ${result.newSections} sections`)
-    } else {
-      throw new Error(
-        `Unexpected processQuery result ${JSON.stringify(result)}`
-      )
-    }
-  }
   return { allCourses, resolvedDays }
 }
 
 if (import.meta.main) {
-  const { allCourses, resolvedDays } = await scrapeAll('FA26')
+  if (process.argv.length !== 3) {
+    console.error('usage: node tss/coursesToFile.ts <term>')
+    process.exit(1)
+  }
+  const [, , term] = process.argv
+  const now = Date.now()
+  const { allCourses, resolvedDays } = await scrapeAll(term)
   await writeFile(
     'tss/courses.json',
     JSON.stringify(Object.fromEntries(allCourses.entries()))
   )
   await writeFile('tss/resolvedDays.json', JSON.stringify(resolvedDays))
+  await writeFile('tss/scrapeTime.txt', String(now))
 }

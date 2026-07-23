@@ -2,10 +2,10 @@
  * @file
  * Same format as classrooms/scripts/coursesToFile.ts
  *
- * usage: node tss/coursesToFile.ts
+ * usage: node tss/coursesToFile.ts <term>
  */
 
-import { readFile } from 'node:fs/promises'
+import { open, readFile } from 'node:fs/promises'
 import type {
   AllCourses,
   NormalMeetingType,
@@ -272,13 +272,28 @@ export function * coursesToFile (
 }
 
 if (import.meta.main) {
-  for (const chunk of coursesToFile(
-    new Map(
-      Object.entries(JSON.parse(await readFile('tss/courses.json', 'utf-8')))
-    ) as AllCourses,
-    JSON.parse(await readFile('tss/resolvedDays.json', 'utf-8')),
-    { scrapeTime: Date.now(), buildingsOnly: false }
-  )) {
-    process.stdout.write(chunk)
+  if (process.argv.length !== 3) {
+    console.error('usage: node tss/coursesToFile.ts <term>')
+    process.exit(1)
+  }
+  const [, , term] = process.argv
+  const allCourses = new Map(
+    Object.entries(JSON.parse(await readFile('tss/courses.json', 'utf-8')))
+  ) as AllCourses
+  const resolvedDays: ResolvedDay[] = JSON.parse(
+    await readFile('tss/resolvedDays.json', 'utf-8')
+  )
+  const scrapeTime = +(await readFile('tss/scrapeTime.txt', 'utf-8')).trim()
+  for (const buildingsOnly of [false, true]) {
+    await using out = await open(
+      `classrooms-${term}${buildingsOnly ? '' : '-full'}.txt`,
+      'w'
+    )
+    for (const chunk of coursesToFile(allCourses, resolvedDays, {
+      scrapeTime,
+      buildingsOnly
+    })) {
+      await out.write(chunk)
+    }
   }
 }
