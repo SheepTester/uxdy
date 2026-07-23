@@ -29,7 +29,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v7
         with:
-          node-version: '26'
+          node-version: 26
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --omit=dev
       - name: Scrape sections
         env:
           TERM: ${{ inputs.quarter }}${{ inputs.year }}
