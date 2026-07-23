@@ -213,9 +213,9 @@ const getUrl = ({ sectionIds, term }: Query) =>
 type Result =
   | {
       success: true
-      courses: Record<`${string}-${string}`, Course>
+      courses: AllCourses
       /** Course code, time, instruction type, location -> day of week */
-      dayMap: Record<DayMapKey, string[]>
+      dayMap: Map<DayMapKey, string[]>
     }
   | { success: false; nonexistentSectionIds: SectionId[] }
 export async function getSections (query: Query): Promise<Result> {
@@ -255,7 +255,7 @@ export async function getSections (query: Query): Promise<Result> {
   }
   const html = await response.text()
 
-  const dayMap: Record<DayMapKey, string[]> = {}
+  const dayMap = new Map<DayMapKey, string[]>()
   let index = 0
   while (true) {
     index = html.indexOf('<article class="mobile-event-card', index)
@@ -285,8 +285,7 @@ export async function getSections (query: Query): Promise<Result> {
     const key =
       `course:${courseUpper} time:${time} location:${location} type:${meetingType}` as const
     // Duplicates can happen due to ambiguities; they're handled below
-    dayMap[key] ??= []
-    dayMap[key].push(day)
+    dayMap.getOrInsert(key, []).push(day)
   }
 
   const scriptIndex = html.indexOf(SCRIPT_BEGIN)
@@ -349,7 +348,11 @@ export async function getSections (query: Query): Promise<Result> {
     console.dir(json, { depth: null })
     throw error
   }
-  return { success: true, courses, dayMap }
+  return {
+    success: true,
+    courses: new Map(Object.entries(courses)) as AllCourses,
+    dayMap
+  }
 }
 
 export function formatSectionId (
@@ -380,17 +383,16 @@ async function processQuery (
 ): Promise<ProcessResult> {
   const result = await getSections(query)
   if (result.success) {
-    const unseen = new Set(Object.keys(result.dayMap))
+    const unseen = new Set(result.dayMap.keys())
     let newSections = 0
-    for (const [keyStr, course] of Object.entries(result.courses)) {
-      const key = keyStr as `${string}-${string}`
-      const dayCandidatesMap: Record<
+    for (const [key, course] of result.courses.entries()) {
+      const dayCandidatesMap = new Map<
         DayMapKey,
         {
           days: string[]
           candidates: { sectionId: SectionId; index: number }[]
         }
-      > = {}
+      >()
       // Inject day information
       for (const section of course.sections) {
         newSections++
@@ -415,16 +417,17 @@ async function processQuery (
               ? 'TBA'
               : meeting.location
           } type:${type === 'Tutorial' ? 'TU' : type.slice(0, 3).toUpperCase()}` as const
-          const days = result.dayMap[key]
+          const days = result.dayMap.get(key)
           if (days) {
             unseen.delete(key)
             // This approach can be ambiguous, so we'll need to disambiguate
             // later
-            dayCandidatesMap[key] ??= { days, candidates: [] }
-            dayCandidatesMap[key].candidates.push({
-              sectionId: section.section_id,
-              index: i
-            })
+            dayCandidatesMap
+              .getOrInsert(key, { days, candidates: [] })
+              .candidates.push({
+                sectionId: section.section_id,
+                index: i
+              })
           } else {
             throw new Error(`[${section.section_id}] missing day for '${key}'`)
           }
@@ -472,10 +475,7 @@ async function processQuery (
         allCourses.set(key, course)
       }
 
-      for (const [keyStr, { days, candidates }] of Object.entries(
-        dayCandidatesMap
-      )) {
-        const key = keyStr as DayMapKey
+      for (const [key, { days, candidates }] of dayCandidatesMap) {
         if (candidates.length === 1) {
           if (new Set(days).size !== days.length) {
             throw new Error(

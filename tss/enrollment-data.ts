@@ -10,7 +10,7 @@ const SEPERATOR = '\t'
 
 type ParsedCsv = {
   header: string[]
-  rows: Record<SectionId, string[]>
+  rows: Map<SectionId, string[]>
 }
 
 function parseCsv (csv: string): ParsedCsv {
@@ -21,7 +21,7 @@ function parseCsv (csv: string): ParsedCsv {
     .map(line => line.split(SEPERATOR))
   return {
     header,
-    rows: Object.fromEntries(
+    rows: new Map(
       rows.values().map(([sectionId, ...row]) => [sectionId as SectionId, row])
     )
   }
@@ -29,7 +29,7 @@ function parseCsv (csv: string): ParsedCsv {
 
 function serializeCsv (csv: ParsedCsv): string {
   let result = `Section ID${SEPERATOR}${csv.header.join(SEPERATOR)}\n`
-  for (const [sectionId, row] of Object.entries(csv.rows).sort((a, b) =>
+  for (const [sectionId, row] of Array.from(csv.rows).sort((a, b) =>
     a[0].localeCompare(b[0])
   )) {
     result += `${sectionId}${SEPERATOR}${row.join(SEPERATOR)}\n`
@@ -55,15 +55,16 @@ function mergeIntoCsv (csv: ParsedCsv, courses: AllCourses): void {
     index = csv.header.length
     csv.header.push(stalenessDate)
   }
-  for (const row of Object.values(csv.rows)) {
+  for (const row of csv.rows.values()) {
     while (row.length < csv.header.length) {
       row.push('')
     }
   }
   for (const course of courses.values()) {
     for (const section of course.sections) {
-      csv.rows[section.section_id] ??= csv.header.map(() => '')
-      csv.rows[section.section_id][index] = section.seats
+      csv.rows.getOrInsertComputed(section.section_id, () =>
+        csv.header.map(() => '')
+      )[index] = section.seats
     }
   }
 }
