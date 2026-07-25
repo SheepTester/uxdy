@@ -113,7 +113,49 @@ const itemSchema = z.strictObject({
 })
 // TODO
 const sectionSchema = z.object({})
-const meetingSchema = z.object({})
+const timeSchema = z.templateLiteral([
+  z.int(),
+  ':',
+  z.int(),
+  z.literal(['am', 'pm'])
+])
+const meetingSchema = z.strictObject({
+  day_code: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']),
+  dayCode: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']),
+  // 570
+  start_minutes: z.int(),
+  startMinutes: z.int(),
+  // 650
+  end_minutes: z.int(),
+  endMinutes: z.int(),
+  // '9:30am'
+  start_time_display: timeSchema,
+  startTimeDisplay: timeSchema,
+  // '10:50am'
+  end_time_display: timeSchema,
+  endTimeDisplay: timeSchema,
+  meeting_kind: z.literal('class'),
+  meetingKind: z.literal('class'),
+  // 'GH'
+  building_code: z.string().optional(),
+  buildingCode: z.string().optional(),
+  // 'GH 242'
+  room_code: z.templateLiteral([z.string(), ' ', z.string()]).optional(),
+  roomCode: z.templateLiteral([z.string(), ' ', z.string()]).optional(),
+  // 'Galbraith Hall'
+  building_name: z.string().optional(),
+  buildingName: z.string().optional(),
+  // 'Room 242 - Lecture Hall
+  room_name: z.string().optional(),
+  roomName: z.string().optional(),
+  is_remote: z.literal(false),
+  isRemote: z.literal(false),
+  is_tba: z.literal(false),
+  isTba: z.literal(false),
+  // '0' if building/room is undefined
+  roomId: z.templateLiteral([z.int()]),
+  room_id: z.templateLiteral([z.int()])
+})
 const timedEventSchema = z.strictObject({
   section: sectionSchema,
   meeting: meetingSchema,
