@@ -1,0 +1,13 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.5/schema.json",
+  "files": {
+    // I'm only using Biome to format big JSON files
+    "maxSize": 10000000
+  },
+  "formatter": {
+    "enabled": true,
+    "includes": ["tss2/sections.json"]
+  },
+  "linter": { "enabled": false },
+  "assist": { "enabled": false }
+}

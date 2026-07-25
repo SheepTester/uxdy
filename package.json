@@ -11,6 +11,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "2.5.5",
     "@sheeptester/prettier": "^3.9.0",
     "@types/node": "^26.1.1",
     "terser": "^5.39.0"

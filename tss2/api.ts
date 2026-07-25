@@ -17,6 +17,7 @@ import {
 import { join } from 'node:path'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import assert from 'node:assert'
+import { execSync } from 'node:child_process'
 
 const BASE = 'https://classplanner.apps.ucsd.edu/api/v1'
 
@@ -222,6 +223,7 @@ const sectionSchema = z.strictObject({
     'in',
     'it'
   ]),
+  // empty string if TBA; no "staff"
   instructors_text: z.string(),
   instructorsText: z.string(),
   seats_available: z.int(),
@@ -565,7 +567,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                   .call({ length: MAX_SECTION_IDS })
                   .map(j => formatSectionId(eventType, base + j))
               )
-              console.error({ eventType, base })
+              process.stderr.write(`\r${formatSectionId(eventType, base)}`)
               const query = { sectionIds, term }
               let lastSection: SectionId | undefined
               try {
@@ -595,6 +597,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                     section.instructorsText,
                     section.instructors_text
                   )
+                  assert(!section.instructors_text.includes(','))
                   assert.strictEqual(section.capacity, section.enrollmentLimit)
                   assert.strictEqual(section.termCode, term)
                   assert.strictEqual(section.term_code, term)
@@ -764,6 +767,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
       }
     })
   )
+  console.error()
   return sectionMap
     .values()
     .toArray()
@@ -775,4 +779,7 @@ if (import.meta.main) {
     'tss2/sections.json',
     JSON.stringify(await getSections('FA26'))
   )
+  execSync('npx @biomejs/biome format --write tss2/sections.json', {
+    stdio: 'inherit'
+  })
 }
