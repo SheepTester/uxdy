@@ -112,18 +112,33 @@ const itemSchema = z.strictObject({
   display_message: z.string().optional()
 })
 // TODO
-const timedEventSchema = z.object({})
-const supplementalSchema = z.strictObject({
-  kind: z.literal(['Final', 'Midterm', 'Other']),
+const sectionSchema = z.object({})
+const meetingSchema = z.object({})
+const timedEventSchema = z.strictObject({
+  section: sectionSchema,
+  meeting: meetingSchema,
+  color: z.tuple([
+    z.templateLiteral(['#', z.hex()]),
+    z.templateLiteral(['#', z.hex()]),
+    z.templateLiteral(['#', z.hex()])
+  ]),
+  // 'cse-011'
+  course_slug: z.templateLiteral([z.string(), '-', z.string()]),
   // 'CSE-011'
   title: z.templateLiteral([z.string(), '-', z.string()]),
-  // '12/10/26'
-  date: z.templateLiteral([z.int(), '/', z.int(), '/', z.int()]),
-  // '2026-12-10'
-  raw_date: z.templateLiteral([z.int(), '-', z.int(), '-', z.int()]),
-  day_code: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']),
-  // '8:00am-10:59am'
-  time: z.templateLiteral([
+  type_label: z.literal([
+    'LEC',
+    'SEM',
+    'LAB',
+    'DIS',
+    'STU',
+    'PR',
+    'TU',
+    'FW',
+    'IND',
+    'IT'
+  ]),
+  time_label: z.templateLiteral([
     z.int(),
     ':',
     z.int(),
@@ -133,6 +148,45 @@ const supplementalSchema = z.strictObject({
     ':',
     z.int(),
     z.literal(['am', 'pm'])
+  ]),
+  // 'GH 242'
+  location_label: z.union([
+    z.templateLiteral([z.string(), ' ', z.string()]),
+    z.literal('TBA')
+  ]),
+  // 'GH 242 • Joe Politz'
+  subtitle: z.string(),
+  overlap_index: z.int(),
+  overlap_count: z.int(),
+  instructor_label: z.literal('')
+})
+const supplementalSchema = z.strictObject({
+  kind: z.literal(['Final', 'Midterm', 'Other', 'Class']),
+  // 'CSE-011'
+  title: z.templateLiteral([z.string(), '-', z.string()]),
+  // '12/10/26'
+  date: z.union([
+    z.templateLiteral([z.int(), '/', z.int(), '/', z.int()]),
+    z.literal('TBA')
+  ]),
+  // '2026-12-10'. undefined if date is TBA
+  raw_date: z.templateLiteral([z.int(), '-', z.int(), '-', z.int()]).optional(),
+  // undefined if date is TBA
+  day_code: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']).optional(),
+  // '8:00am-10:59am'. empty string if date is TBA
+  time: z.union([
+    z.templateLiteral([
+      z.int(),
+      ':',
+      z.int(),
+      z.literal(['am', 'pm']),
+      '-',
+      z.int(),
+      ':',
+      z.int(),
+      z.literal(['am', 'pm'])
+    ]),
+    z.literal('')
   ]),
   // 'Galbraith Hall 242'
   location: z.string(),
