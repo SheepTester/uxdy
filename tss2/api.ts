@@ -16,6 +16,7 @@ import {
 } from '../tss/index.ts'
 import { join } from 'node:path'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import assert from 'node:assert'
 
 const BASE = 'https://classplanner.apps.ucsd.edu/api/v1'
 
@@ -151,8 +152,24 @@ const meetingSchema = z.strictObject({
   is_tba: z.literal(false),
   isTba: z.literal(false)
 })
+type Meeting = z.infer<typeof meetingSchema>
+export type SimplifiedSectionMeeting = (
+  | { kind: 'class' }
+  | {
+      kind: 'final' | 'midterm' | 'other'
+      /** In milliseconds since epoch, UTC date */
+      specificDate: number
+      roomId: number
+    }
+) & {
+  day: Meeting['day_code']
+  start: Meeting['start_minutes']
+  end: Meeting['end_minutes']
+  location: `${string} ${string}` | null
+}
 const sectionSchema = z.strictObject({
   section_id: sectionIdSchema,
+  eventId: sectionIdSchema,
   // 'FA26:E 00000959'
   section_ref: z.templateLiteral([z.string(), ':', sectionIdSchema]),
   sectionRef: z.templateLiteral([z.string(), ':', sectionIdSchema]),
@@ -206,7 +223,9 @@ const sectionSchema = z.strictObject({
   instructors_text: z.string(),
   instructorsText: z.string(),
   seats_available: z.int(),
+  availableSeats: z.int(),
   capacity: z.int(),
+  enrollmentLimit: z.int(),
   meetings: z.array(
     meetingSchema.extend({
       meeting_kind: z.literal(['class', 'final', 'midterm', 'other']),
@@ -225,7 +244,6 @@ const sectionSchema = z.strictObject({
   // 'FA26'
   termCode: z.string(),
   term_code: z.string(),
-  eventId: sectionIdSchema,
   // 'CSE'
   subjectCode: z.string(),
   subject_code: z.string(),
@@ -234,11 +252,9 @@ const sectionSchema = z.strictObject({
   course_code: z.string(),
   moduleId: z.templateLiteral([z.int()]),
   module_id: z.templateLiteral([z.int()]),
-  enrollmentLimit: z.int(),
   enrolledQuantity: z.int(),
   // appears to be identical to enrolledQuantity
   enrolled: z.int(),
-  availableSeats: z.int(),
   // presence comorbid with last refreshed at and seat/waitlist count refreshed at
   waitlistEnrolled: z.int().optional(),
   waitlist_enrolled: z.int().optional(),
@@ -255,6 +271,30 @@ const sectionSchema = z.strictObject({
   waitlist_count_refreshed_at: z.string().optional(),
   availability_refresh_pending: z.boolean()
 })
+type Section = z.infer<typeof sectionSchema>
+export type SimplifiedSection = {
+  subject: string
+  number: string
+  courseTitle: string
+
+  sectionId: Section['section_id']
+  sectionCode: Section['section_code']
+  instructionType: string
+  instructors: string
+  moduleId: number
+
+  capacity: number
+  enrolled: number
+  waitlist: number | null
+
+  // In milliseconds since epoch
+  refreshDate: number | null
+  seatCountRefreshDate: number | null
+  waitlistRefreshDate: number | null
+  refreshPending: boolean
+
+  meetings: SimplifiedSectionMeeting[]
+}
 const timedEventSchema = z.strictObject({
   section: sectionSchema,
   meeting: meetingSchema.extend({
@@ -508,9 +548,9 @@ export async function getSchedule (query: Query): Promise<ScheduleResult> {
   return result
 }
 
-if (import.meta.main) {
-  const PARALLEL_GROUP_SIZE = 10
-  const term = 'FA26'
+const PARALLEL_GROUP_SIZE = 10
+export async function getSections (term: string): Promise<SimplifiedSection[]> {
+  const sectionMap = new Map<SectionId, SimplifiedSection>()
   await Promise.all(
     (['event', 'eventless'] as const).map(async eventType => {
       for (let group = 0; ; group++) {
@@ -526,12 +566,154 @@ if (import.meta.main) {
               )
               console.error({ eventType, base })
               try {
-                const { success } = await getSchedule({ sectionIds, term })
-                return success
+                const result = await getSchedule({ sectionIds, term })
+                if (!result.success) {
+                  return false
+                }
+                for (const { section } of result.schedule.timed_events) {
+                  if (sectionMap.get(section.section_id)) {
+                    throw new Error(`${section.section_id} already inserted`)
+                  }
+                  assert.strictEqual(section.section_id, section.eventId)
+                  assert.strictEqual(section.section_ref, section.sectionRef)
+                  assert.strictEqual(
+                    section.section_ref,
+                    `${term}:${section.section_id}`
+                  )
+                  assert.strictEqual(section.section_code, section.eventCode)
+                  assert.strictEqual(
+                    section.class_name.replace(' ', '-'),
+                    section.moduleCode
+                  )
+                  assert.strictEqual(section.moduleName, section.course_title)
+                  assert.strictEqual(
+                    section.instruction_type_name,
+                    section.instructionTypeName
+                  )
+                  assert.strictEqual(
+                    section.instructorsText,
+                    section.instructors_text
+                  )
+                  assert.strictEqual(section.capacity, section.enrollmentLimit)
+                  assert.strictEqual(section.termCode, term)
+                  assert.strictEqual(section.term_code, term)
+                  assert.strictEqual(section.subjectCode, section.subject_code)
+                  assert.strictEqual(section.courseCode, section.course_code)
+                  assert.strictEqual(section.moduleId, section.module_id)
+                  assert.strictEqual(section.enrolledQuantity, section.enrolled)
+                  assert.strictEqual(
+                    section.capacity - section.enrolled,
+                    section.availableSeats
+                  )
+                  assert.strictEqual(
+                    section.waitlistEnrolled,
+                    section.waitlist_enrolled
+                  )
+                  assert.strictEqual(
+                    section.lastRefreshedAt,
+                    section.last_refreshed_at
+                  )
+                  for (const meeting of section.meetings) {
+                    assert.strictEqual(meeting.day_code, meeting.dayCode)
+                    assert.strictEqual(
+                      meeting.start_minutes,
+                      meeting.startMinutes
+                    )
+                    assert.strictEqual(meeting.end_minutes, meeting.endMinutes)
+                    // TODO: check display
+                    assert.strictEqual(
+                      meeting.start_time_display,
+                      meeting.startTimeDisplay
+                    )
+                    assert.strictEqual(
+                      meeting.end_time_display,
+                      meeting.endTimeDisplay
+                    )
+                    assert.strictEqual(
+                      meeting.building_code,
+                      meeting.buildingCode
+                    )
+                    assert.strictEqual(meeting.room_code, meeting.roomCode)
+                    assert(
+                      meeting.room_code?.startsWith(
+                        `${meeting.building_code} `
+                      ) ?? true
+                    )
+                    assert.strictEqual(
+                      meeting.building_name,
+                      meeting.buildingName
+                    )
+                    assert.strictEqual(meeting.room_name, meeting.roomName)
+                    assert.strictEqual(
+                      meeting.specific_date,
+                      meeting.specificDate
+                    )
+                    assert.strictEqual(meeting.roomId, meeting.room_id)
+                    assert.strictEqual(
+                      meeting.meeting_kind,
+                      meeting.meetingKind
+                    )
+                    if (meeting.meeting_kind === 'class') {
+                      assert.strictEqual(meeting.specific_date, undefined)
+                      assert.strictEqual(meeting.room_id, undefined)
+                    } else {
+                      assert.notStrictEqual(meeting.specific_date, undefined)
+                      assert.notStrictEqual(meeting.room_id, undefined)
+                    }
+                  }
+                  sectionMap.set(section.section_id, {
+                    subject: section.subject_code,
+                    number: section.course_code,
+                    courseTitle: section.course_title,
+                    sectionId: section.section_id,
+                    sectionCode: section.section_code,
+                    instructionType: section.instruction_type_name,
+                    instructors: section.instructors_text,
+                    moduleId: +section.module_id,
+                    capacity: section.capacity,
+                    enrolled: section.enrolled,
+                    waitlist: section.waitlist_enrolled ?? null,
+                    refreshDate: section.last_refreshed_at
+                      ? new Date(section.last_refreshed_at).getTime()
+                      : null,
+                    seatCountRefreshDate: section.seat_count_refreshed_at
+                      ? new Date(section.seat_count_refreshed_at).getTime()
+                      : null,
+                    waitlistRefreshDate: section.waitlist_count_refreshed_at
+                      ? new Date(section.waitlist_count_refreshed_at).getTime()
+                      : null,
+                    refreshPending: section.availability_refresh_pending,
+                    meetings: section.meetings.map(
+                      (meeting): SimplifiedSectionMeeting => {
+                        const base = {
+                          day: meeting.day_code,
+                          start: meeting.start_minutes,
+                          end: meeting.end_minutes,
+                          location: meeting.roomCode ?? null
+                        }
+                        if (meeting.meeting_kind === 'class') {
+                          return { ...base, kind: 'class' }
+                        } else {
+                          if (!meeting.specific_date || !meeting.room_id) {
+                            throw 'up'
+                          }
+                          return {
+                            ...base,
+                            kind: meeting.meeting_kind,
+                            specificDate: new Date(
+                              meeting.specific_date
+                            ).getTime(),
+                            roomId: +meeting.room_id
+                          }
+                        }
+                      }
+                    )
+                  })
+                }
               } catch (error) {
                 console.error(error)
-                return true
               }
+              return true
             })
         ).then(successes =>
           successes.reduce((cum, curr) => cum + (curr ? 1 : 0), 0)
@@ -541,5 +723,13 @@ if (import.meta.main) {
         }
       }
     })
+  )
+  return sectionMap.values().toArray()
+}
+
+if (import.meta.main) {
+  await writeFile(
+    'tss2/sections.json',
+    JSON.stringify(await getSections('FA26'))
   )
 }
