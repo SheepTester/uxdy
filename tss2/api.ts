@@ -10,7 +10,8 @@ import {
   encodeQuery,
   formatSectionId,
   type SectionId,
-  type Query
+  type Query,
+  sectionIdSchema
 } from '../tss/index.ts'
 
 const BASE = 'https://classplanner.apps.ucsd.edu/api/v1'
@@ -97,11 +98,115 @@ const courseSchema = courseSchemaBase.extend({
     refresh_pending: z.boolean()
   })
 })
-const scheduleSchema = z.object({
+const itemSchema = z.strictObject({
+  severity: z.literal(['warning', 'conflict']),
+  // 'Section not available'
+  title: z.string(),
+  // 'CSE-210 001-000-LE FA26:E 00001000 does not currently have an open seat or waitlist option.'
+  message: z.string(),
+  // ['FA26:E 00001000']
+  section_refs: z.string().array(),
+  // ['cse-210']
+  course_slugs: z.string().array(),
+  display_message: z.string().optional()
+})
+// TODO
+const timedEventSchema = z.object({})
+const supplementalSchema = z.object({})
+const scheduleSchema = z.strictObject({
+  // 'FA26'
+  term_code: z.string(),
+  // 'Fall 2026'
+  term_label: z.string(),
+  section_ids: z.array(sectionIdSchema),
+  schedule_ref: z.templateLiteral(['CS2', z.string()]),
+  // '2 sections • CSE-210, CSE-227 • No conflicts'
+  summary: z.string(),
+  summary_parts: z.strictObject({
+    section_count: z.int(),
+    // '2 sections',
+    section_text: z.string(),
+    course_count: z.int(),
+    // Comma separated 'CSE-210, CSE-227',
+    course_text: z.string(),
+    conflict_count: z.int(),
+    // 'No conflicts', '18 conflict(s)'
+    conflict_text: z.string()
+  }),
+  issue_summary: z.strictObject({
+    has_issues: z.boolean(),
+    conflict_count: z.int(),
+    warning_count: z.int(),
+    // '2 warnings'
+    pill_text: z.string(),
+    items: z.array(itemSchema),
+    groups: z.array(
+      z.strictObject({
+        // 'Sections Not Available'
+        title: z.string(),
+        // 'The following section IDs do not currently have an open seat or waitlist option:'
+        description: z.string(),
+        severity: z.literal(['warning', 'conflict']),
+        items: z.array(itemSchema)
+      })
+    ),
+    // 'Waitlist availability is missing for 2 sections; availability uses seats only.'
+    quiet_notes: z.string().array()
+  }),
+  display_day_codes: z.tuple([
+    z.literal('M'),
+    z.literal('T'),
+    z.literal('W'),
+    z.literal('R'),
+    z.literal('F')
+  ]),
+  start_hour: z.int(),
+  end_hour: z.int(),
+  timed_events: z.array(timedEventSchema),
+  supplemental: z.array(supplementalSchema),
   course_details: z.record(
     z.templateLiteral([z.string(), '-', z.string()]),
     courseSchema
-  )
+  ),
+  // FA26 Schedule
+  //
+  // CSE-210 - Principle/Software Engineering
+  // Instructor: Thomas Powell
+  // Sections:
+  // - Lecture: 001-000-LE
+  //   Section ID: E 00001000
+  //   Meeting: Thu, 5:00pm-6:20pm, CENTR 105
+  //   Meeting: Tue, 5:00pm-6:20pm, CENTR 105
+  //
+  // CSE-227 - Computer Security
+  // Instructor: Earlence Fernandes
+  // Sections:
+  // - Lecture: 001-000-LE
+  //   Section ID: E 00001001
+  //   Meeting: Thu, 11:00am-12:20pm, PODEM 1A18
+  //   Meeting: Tue, 11:00am-12:20pm, PODEM 1A18
+  //
+  // Warnings:
+  // - Availability is refreshing in the background; displayed seat and waitlist counts may be out of date.
+  // - Waitlist availability missing for FA26:E 00001000; availability used seats only.
+  // - Waitlist availability missing for FA26:E 00001001; availability used seats only.
+  schedule_text: z.string(),
+  warnings: z.array(z.string()),
+  // 	"https://classplanner.apps.ucsd.edu/course-schedule/export?schedule_ref=CS2eyJzIjpbIkUgMDAwMDEwMDAiLCJFIDAwMDAxMDAxIl0sInQiOiJGQTI2In0&type=ics&download=true"
+  ics_url: z.url(),
+  calendar_actions: z
+    .strictObject({
+      label: z.string(),
+      href: z.url(),
+      download: z.boolean(),
+      description: z.string(),
+      // It seems to be either or but I don't care enough to enforce that
+      icon_lucide: z.string().optional(),
+      icon_url: z.string().optional()
+    })
+    .array(),
+  // depends on ?context=; default is 'standalone'. they reject other parameters
+  context: z.literal(['standalone', 'planner'])
 })
 const MAX_SECTION_IDS = 12
 export async function getSchedule (query: Query) {
@@ -121,5 +226,5 @@ if (import.meta.main) {
   for (let i = 1000; i < 1012; i++) {
     sectionIds.add(formatSectionId('event', i))
   }
-  console.log(await getSchedule({ sectionIds, term: 'FA26' }))
+  await getSchedule({ sectionIds, term: 'FA26' })
 }

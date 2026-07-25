@@ -85,6 +85,10 @@ const normalMeetingTypeSchema = z.literal([
   'Ot'
 ])
 export type NormalMeetingType = z.infer<typeof normalMeetingTypeSchema>
+export const sectionIdSchema = z.templateLiteral([
+  z.literal(['E ', 'EL']),
+  z.number()
+])
 const sectionSchema = z.strictObject({
   heading: normalMeetingTypeSchema,
   // e.g. '002-000-LE'
@@ -110,7 +114,7 @@ const sectionSchema = z.strictObject({
     ])
   ]),
   // e.g. 'E 00000960'
-  section_id: z.templateLiteral([z.literal(['E ', 'EL']), z.number()]),
+  section_id: sectionIdSchema,
   instruction_type: z.literal([
     'se',
     'lecture',
@@ -173,7 +177,7 @@ const errorSchema = z.strictObject({
     missing: z.array(
       z.strictObject({
         term_code: z.string(),
-        section_id: z.templateLiteral([z.literal(['E ', 'EL']), z.number()])
+        section_id: sectionIdSchema
       })
     )
   })
