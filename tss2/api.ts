@@ -510,32 +510,36 @@ export async function getSchedule (query: Query): Promise<ScheduleResult> {
 
 if (import.meta.main) {
   const PARALLEL_GROUP_SIZE = 10
-  const eventType = 'event'
-  for (let group = 0; ; group++) {
-    const successes = await Promise.all(
-      Array.prototype.keys
-        .call({ length: PARALLEL_GROUP_SIZE })
-        .map(async i => {
-          const base = (group * PARALLEL_GROUP_SIZE + i) * MAX_SECTION_IDS
-          const sectionIds = new Set(
-            Array.prototype.keys
-              .call({ length: MAX_SECTION_IDS })
-              .map(j => formatSectionId(eventType, base + j))
-          )
-          console.error({ eventType, base })
-          try {
-            const { success } = await getSchedule({ sectionIds, term: 'FA26' })
-            return success
-          } catch (error) {
-            console.error(error)
-            return true
-          }
-        })
-    ).then(successes =>
-      successes.reduce((cum, curr) => cum + (curr ? 1 : 0), 0)
-    )
-    if (successes === 0) {
-      break
-    }
-  }
+  const term = 'FA26'
+  await Promise.all(
+    (['event', 'eventless'] as const).map(async eventType => {
+      for (let group = 0; ; group++) {
+        const successes = await Promise.all(
+          Array.prototype.keys
+            .call({ length: PARALLEL_GROUP_SIZE })
+            .map(async i => {
+              const base = (group * PARALLEL_GROUP_SIZE + i) * MAX_SECTION_IDS
+              const sectionIds = new Set(
+                Array.prototype.keys
+                  .call({ length: MAX_SECTION_IDS })
+                  .map(j => formatSectionId(eventType, base + j))
+              )
+              console.error({ eventType, base })
+              try {
+                const { success } = await getSchedule({ sectionIds, term })
+                return success
+              } catch (error) {
+                console.error(error)
+                return true
+              }
+            })
+        ).then(successes =>
+          successes.reduce((cum, curr) => cum + (curr ? 1 : 0), 0)
+        )
+        if (successes === 0) {
+          break
+        }
+      }
+    })
+  )
 }
