@@ -114,7 +114,7 @@ const itemSchema = z.strictObject({
 // TODO
 const timedEventSchema = z.object({})
 const supplementalSchema = z.strictObject({
-  kind: z.literal(['Final', 'Midterm']),
+  kind: z.literal(['Final', 'Midterm', 'Other']),
   // 'CSE-011'
   title: z.templateLiteral([z.string(), '-', z.string()]),
   // '12/10/26'
@@ -288,27 +288,33 @@ export async function getSchedule (query: Query): Promise<ScheduleResult> {
 }
 
 if (import.meta.main) {
-  const MAX_FAILS = 5
-  let fails = 0
-  for (let page = 0; ; page++) {
-    const sectionIds = new Set(
+  const PARALLEL_GROUP_SIZE = 10
+  const eventType = 'event'
+  for (let group = 0; ; group++) {
+    const successes = await Promise.all(
       Array.prototype.keys
-        .call({ length: MAX_SECTION_IDS })
-        .map(j => formatSectionId('event', page * MAX_SECTION_IDS + j))
+        .call({ length: PARALLEL_GROUP_SIZE })
+        .map(async i => {
+          const base = (group * PARALLEL_GROUP_SIZE + i) * MAX_SECTION_IDS
+          const sectionIds = new Set(
+            Array.prototype.keys
+              .call({ length: MAX_SECTION_IDS })
+              .map(j => formatSectionId(eventType, base + j))
+          )
+          console.error({ eventType, base })
+          try {
+            const { success } = await getSchedule({ sectionIds, term: 'FA26' })
+            return success
+          } catch (error) {
+            console.error(error)
+            return true
+          }
+        })
+    ).then(successes =>
+      successes.reduce((cum, curr) => cum + (curr ? 1 : 0), 0)
     )
-    console.error({ page, fails })
-    try {
-      const { success } = await getSchedule({ sectionIds, term: 'FA26' })
-      if (success) {
-        fails = 0
-      } else {
-        fails++
-        if (fails >= MAX_FAILS) {
-          break
-        }
-      }
-    } catch (error) {
-      console.error(error)
+    if (successes === 0) {
+      break
     }
   }
 }
