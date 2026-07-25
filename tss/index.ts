@@ -5,29 +5,11 @@
 
 import { writeFile } from 'node:fs/promises'
 import z from 'zod'
+import { htmlHeaders as headers } from './headers.ts'
 
 const BASE = 'https://courseschedule.tritonai.ucsd.edu/course-schedule/view/CS2'
 const MAX_SECTION_IDS = 255
 const SCRIPT_BEGIN = '<script id="course-detail-data" type="application/json">'
-
-/**
- * I stole these from Chrome incognito
- */
-const headers = {
-  accept:
-    'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-  'accept-language': 'en-CA,en-US;q=0.9,en;q=0.8',
-  'cache-control': 'max-age=0',
-  'sec-ch-ua':
-    '"Not;A=Brand";v="8", "Chromium";v="150", "Google Chrome";v="150"',
-  'sec-ch-ua-mobile': '?0',
-  'sec-ch-ua-platform': '"Windows"',
-  'sec-fetch-dest': 'document',
-  'sec-fetch-mode': 'navigate',
-  'sec-fetch-site': 'none',
-  'sec-fetch-user': '?1',
-  'upgrade-insecure-requests': '1'
-}
 
 // MUS 20R 001-000-LE is the most oddball class
 
