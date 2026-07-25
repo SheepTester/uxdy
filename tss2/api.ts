@@ -159,13 +159,15 @@ export type SimplifiedSectionMeeting = (
       kind: 'final' | 'midterm' | 'other'
       /** In milliseconds since epoch, UTC date */
       specificDate: number
-      roomId: number
     }
 ) & {
   day: Meeting['day_code']
   start: Meeting['start_minutes']
   end: Meeting['end_minutes']
-  location: `${string} ${string}` | null
+  location: {
+    room: `${string} ${string}`
+    id: number
+  } | null
 }
 const sectionSchema = z.strictObject({
   section_id: sectionIdSchema,
@@ -501,13 +503,13 @@ type ScheduleResult =
   | { success: true; schedule: Schedule }
   | { success: false; nonexistentSectionIds: SectionId[] }
 const cacheDir = 'tss2/.cache'
+const getUrl = (query: Query) => `${BASE}/schedules/${encodeQuery(query)}`
 export async function getSchedule (query: Query): Promise<ScheduleResult> {
   if (query.sectionIds.size > MAX_SECTION_IDS) {
     throw new RangeError(`Max ${MAX_SECTION_IDS} section IDs`)
   }
 
-  const encoded = encodeQuery(query)
-  const cachePath = join(cacheDir, `${encoded}.json`)
+  const cachePath = join(cacheDir, `${encodeQuery(query)}.json`)
   const cached = await readFile(cachePath, 'utf-8')
     .then(JSON.parse)
     .catch(error =>
@@ -519,10 +521,9 @@ export async function getSchedule (query: Query): Promise<ScheduleResult> {
     return cached
   }
 
-  const url = `${BASE}/schedules/${encoded}`
   let result: ScheduleResult
   try {
-    const response = await fetch(url, { headers })
+    const response = await fetch(getUrl(query), { headers })
     if (response.status === 404) {
       result = {
         success: false,
@@ -541,7 +542,7 @@ export async function getSchedule (query: Query): Promise<ScheduleResult> {
       }
     }
   } catch (cause) {
-    throw new Error(`Failure: ${url}`, { cause })
+    throw new Error(`Failure: ${getUrl(query)}`, { cause })
   }
   await mkdir(cacheDir, { recursive: true })
   await writeFile(cachePath, JSON.stringify(result))
@@ -565,15 +566,15 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                   .map(j => formatSectionId(eventType, base + j))
               )
               console.error({ eventType, base })
+              const query = { sectionIds, term }
+              let lastSection: SectionId | undefined
               try {
-                const result = await getSchedule({ sectionIds, term })
+                const result = await getSchedule(query)
                 if (!result.success) {
                   return false
                 }
                 for (const { section } of result.schedule.timed_events) {
-                  if (sectionMap.get(section.section_id)) {
-                    throw new Error(`${section.section_id} already inserted`)
-                  }
+                  lastSection = section.section_id
                   assert.strictEqual(section.section_id, section.eventId)
                   assert.strictEqual(section.section_ref, section.sectionRef)
                   assert.strictEqual(
@@ -602,7 +603,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                   assert.strictEqual(section.moduleId, section.module_id)
                   assert.strictEqual(section.enrolledQuantity, section.enrolled)
                   assert.strictEqual(
-                    section.capacity - section.enrolled,
+                    Math.max(section.capacity - section.enrolled, 0),
                     section.availableSeats
                   )
                   assert.strictEqual(
@@ -613,6 +614,26 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                     section.lastRefreshedAt,
                     section.last_refreshed_at
                   )
+                  // assert.strictEqual(
+                  //   section.waitlist_enrolled !== undefined,
+                  //   section.last_refreshed_at !== undefined
+                  // )
+                  // assert.strictEqual(
+                  //   section.waitlist_enrolled !== undefined,
+                  //   section.seat_count_refreshed_at !== undefined
+                  // )
+                  assert.strictEqual(
+                    section.waitlist_enrolled !== undefined,
+                    section.waitlist_count_refreshed_at !== undefined
+                  )
+                  if (section.waitlist_enrolled !== undefined) {
+                    if (section.waitlist_enrolled > 0) {
+                      assert.deepEqual(section.availableSeats, 0)
+                    }
+                    if (section.availableSeats > 0) {
+                      assert.deepEqual(section.waitlist_enrolled, 0)
+                    }
+                  }
                   for (const meeting of section.meetings) {
                     assert.strictEqual(meeting.day_code, meeting.dayCode)
                     assert.strictEqual(
@@ -650,18 +671,20 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                     )
                     assert.strictEqual(meeting.roomId, meeting.room_id)
                     assert.strictEqual(
+                      !!meeting.roomId && meeting.roomId !== '0',
+                      !!meeting.room_code
+                    )
+                    assert.strictEqual(
                       meeting.meeting_kind,
                       meeting.meetingKind
                     )
                     if (meeting.meeting_kind === 'class') {
                       assert.strictEqual(meeting.specific_date, undefined)
-                      assert.strictEqual(meeting.room_id, undefined)
                     } else {
                       assert.notStrictEqual(meeting.specific_date, undefined)
-                      assert.notStrictEqual(meeting.room_id, undefined)
                     }
                   }
-                  sectionMap.set(section.section_id, {
+                  const simplified: SimplifiedSection = {
                     subject: section.subject_code,
                     number: section.course_code,
                     courseTitle: section.course_title,
@@ -689,12 +712,20 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                           day: meeting.day_code,
                           start: meeting.start_minutes,
                           end: meeting.end_minutes,
-                          location: meeting.roomCode ?? null
+                          location:
+                            meeting.room_code &&
+                            meeting.room_id &&
+                            meeting.room_id !== '0'
+                              ? {
+                                room: meeting.room_code,
+                                id: +meeting.room_id
+                              }
+                              : null
                         }
                         if (meeting.meeting_kind === 'class') {
                           return { ...base, kind: 'class' }
                         } else {
-                          if (!meeting.specific_date || !meeting.room_id) {
+                          if (!meeting.specific_date) {
                             throw 'up'
                           }
                           return {
@@ -702,15 +733,24 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                             kind: meeting.meeting_kind,
                             specificDate: new Date(
                               meeting.specific_date
-                            ).getTime(),
-                            roomId: +meeting.room_id
+                            ).getTime()
                           }
                         }
                       }
                     )
-                  })
+                  }
+                  const existing = sectionMap.get(section.section_id)
+                  if (existing) {
+                    assert.deepStrictEqual(existing, simplified)
+                  } else {
+                    sectionMap.set(section.section_id, simplified)
+                  }
                 }
               } catch (error) {
+                if (lastSection) {
+                  console.error(`section: ${lastSection}`)
+                }
+                console.error(`url: ${getUrl(query)}`)
                 console.error(error)
               }
               return true
@@ -724,7 +764,10 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
       }
     })
   )
-  return sectionMap.values().toArray()
+  return sectionMap
+    .values()
+    .toArray()
+    .sort((a, b) => (a.sectionId < b.sectionId ? -1 : 1))
 }
 
 if (import.meta.main) {
