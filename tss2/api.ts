@@ -113,7 +113,37 @@ const itemSchema = z.strictObject({
 })
 // TODO
 const timedEventSchema = z.object({})
-const supplementalSchema = z.object({})
+const supplementalSchema = z.strictObject({
+  kind: z.literal(['Final', 'Midterm']),
+  // 'CSE-011'
+  title: z.templateLiteral([z.string(), '-', z.string()]),
+  // '12/10/26'
+  date: z.templateLiteral([z.int(), '/', z.int(), '/', z.int()]),
+  // '2026-12-10'
+  raw_date: z.templateLiteral([z.int(), '-', z.int(), '-', z.int()]),
+  day_code: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']),
+  // '8:00am-10:59am'
+  time: z.templateLiteral([
+    z.int(),
+    ':',
+    z.int(),
+    z.literal(['am', 'pm']),
+    '-',
+    z.int(),
+    ':',
+    z.int(),
+    z.literal(['am', 'pm'])
+  ]),
+  // 'Galbraith Hall 242'
+  location: z.string(),
+  color: z.tuple([
+    z.templateLiteral(['#', z.hex()]),
+    z.templateLiteral(['#', z.hex()]),
+    z.templateLiteral(['#', z.hex()])
+  ]),
+  // 'cse-011'
+  course_slug: z.templateLiteral([z.string(), '-', z.string()])
+})
 const scheduleSchema = z.strictObject({
   // 'FA26'
   term_code: z.string(),
@@ -267,14 +297,18 @@ if (import.meta.main) {
         .map(j => formatSectionId('event', page * MAX_SECTION_IDS + j))
     )
     console.error({ page, fails })
-    const { success } = await getSchedule({ sectionIds, term: 'FA26' })
-    if (success) {
-      fails = 0
-    } else {
-      fails++
-      if (fails >= MAX_FAILS) {
-        break
+    try {
+      const { success } = await getSchedule({ sectionIds, term: 'FA26' })
+      if (success) {
+        fails = 0
+      } else {
+        fails++
+        if (fails >= MAX_FAILS) {
+          break
+        }
       }
+    } catch (error) {
+      console.error(error)
     }
   }
 }
