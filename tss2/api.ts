@@ -14,6 +14,8 @@ import {
   sectionIdSchema,
   errorSchema
 } from '../tss/index.ts'
+import { join } from 'node:path'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 
 const BASE = 'https://classplanner.apps.ucsd.edu/api/v1'
 
@@ -458,32 +460,52 @@ const MAX_SECTION_IDS = 12
 type ScheduleResult =
   | { success: true; schedule: Schedule }
   | { success: false; nonexistentSectionIds: SectionId[] }
+const cacheDir = 'tss2/.cache'
 export async function getSchedule (query: Query): Promise<ScheduleResult> {
   if (query.sectionIds.size > MAX_SECTION_IDS) {
     throw new RangeError(`Max ${MAX_SECTION_IDS} section IDs`)
   }
-  const url = `${BASE}/schedules/${encodeQuery(query)}`
+
+  const encoded = encodeQuery(query)
+  const cachePath = join(cacheDir, `${encoded}.json`)
+  const cached = await readFile(cachePath, 'utf-8')
+    .then(JSON.parse)
+    .catch(error =>
+      Error.isError(error) && 'code' in error && error.code === 'ENOENT'
+        ? null
+        : Promise.reject(error)
+    )
+  if (cached) {
+    return cached
+  }
+
+  const url = `${BASE}/schedules/${encoded}`
+  let result: ScheduleResult
   try {
     const response = await fetch(url, { headers })
     if (response.status === 404) {
-      return {
+      result = {
         success: false,
         nonexistentSectionIds: parse(
           errorSchema,
           await response.json()
         ).detail.missing.map(missing => missing.section_id)
       }
-    }
-    return {
-      success: true,
-      schedule: parse(
-        scheduleSchema,
-        await checkResponse(response).then(r => r.json())
-      )
+    } else {
+      result = {
+        success: true,
+        schedule: parse(
+          scheduleSchema,
+          await checkResponse(response).then(r => r.json())
+        )
+      }
     }
   } catch (cause) {
     throw new Error(`Failure: ${url}`, { cause })
   }
+  await mkdir(cacheDir, { recursive: true })
+  await writeFile(cachePath, JSON.stringify(result))
+  return result
 }
 
 if (import.meta.main) {
