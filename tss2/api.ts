@@ -5,6 +5,13 @@
 
 import z from 'zod'
 import { xhrHeaders as headers } from '../tss/headers.ts'
+import {
+  courseSchemaBase,
+  encodeQuery,
+  formatSectionId,
+  type SectionId,
+  type Query
+} from '../tss/index.ts'
 
 const BASE = 'https://classplanner.apps.ucsd.edu/api/v1'
 
@@ -29,13 +36,16 @@ function parse<T> (schema: z.ZodType<T>, data: unknown): T {
       value = value?.[key]
     }
     message += `\n- ${path}: [${issue.code}] ${issue.message}`
+    if (typeof value !== 'object' || value === null) {
+      message += ` (received: ${JSON.stringify(value)})`
+    }
   }
   throw new TypeError(message)
 }
-function checkResponse (response: Response): Response {
+async function checkResponse (response: Response): Promise<Response> {
   if (!response.ok) {
     throw new Error(
-      `HTTP ${response.status} error:\n${response.text().catch(() => '(failed to read response text)')}`
+      `HTTP ${response.status} error:\n${await response.text().catch(() => '(failed to read response text)')}`
     )
   }
   return response
@@ -57,12 +67,59 @@ const termsSchema = z.strictObject({
   terms: z.array(termSchema)
 })
 export async function getTerms () {
-  const json = await checkResponse(
+  return parse(
+    termsSchema,
     await fetch(`${BASE}/planner/terms`, { headers })
-  ).json()
-  return parse(termsSchema, json).terms
+      .then(checkResponse)
+      .then(r => r.json())
+  ).terms
+}
+
+const courseSchema = courseSchemaBase.extend({
+  // 'CSE'
+  subject_code: z.string(),
+  // '011'
+  course_code: z.string(),
+  // '8509'
+  module_id: z.templateLiteral([z.int()]),
+  // 'https://tss.ucsd.edu/fiori#YSchedule-view&/YUCSD_CON_MODULE(AcademicYear='2026',AcademicPeriod='2',ModuleID='8509')?layout=MidColumnFullScreen'
+  // Not particularly interesting since this isn't the actual booking page
+  tss_booking_url: z.url(),
+  seat_freshness: z.strictObject({
+    // This will change depending on the class
+    is_stale: z.boolean(),
+    // '7/24/26 6:27 PM PDT'
+    label: z.string(),
+    // '1 hour ago'
+    relative_label: z.string(),
+    has_timestamp: z.literal(true),
+    is_partial: z.literal(false),
+    refresh_pending: z.boolean()
+  })
+})
+const scheduleSchema = z.object({
+  course_details: z.record(
+    z.templateLiteral([z.string(), '-', z.string()]),
+    courseSchema
+  )
+})
+const MAX_SECTION_IDS = 12
+export async function getSchedule (query: Query) {
+  if (query.sectionIds.size > MAX_SECTION_IDS) {
+    throw new RangeError(`Max ${MAX_SECTION_IDS} section IDs`)
+  }
+  return parse(
+    scheduleSchema,
+    await fetch(`${BASE}/schedules/${encodeQuery(query)}`, { headers })
+      .then(checkResponse)
+      .then(r => r.json())
+  )
 }
 
 if (import.meta.main) {
-  console.log(await getTerms())
+  const sectionIds = new Set<SectionId>()
+  for (let i = 1000; i < 1012; i++) {
+    sectionIds.add(formatSectionId('event', i))
+  }
+  console.log(await getSchedule({ sectionIds, term: 'FA26' }))
 }

@@ -7,7 +7,7 @@ import { writeFile } from 'node:fs/promises'
 import z from 'zod'
 import { htmlHeaders as headers } from './headers.ts'
 
-const BASE = 'https://courseschedule.tritonai.ucsd.edu/course-schedule/view/CS2'
+const BASE = 'https://courseschedule.tritonai.ucsd.edu/course-schedule/view/'
 const MAX_SECTION_IDS = 255
 const SCRIPT_BEGIN = '<script id="course-detail-data" type="application/json">'
 
@@ -137,12 +137,15 @@ const sectionSchema = z.strictObject({
   // the same course. Can be 'TBA'
   instructors: z.string(),
   status: z.literal(['AC']),
-  seats: z.templateLiteral([z.number(), '/', z.number()]),
-  waitlist: z.literal(''),
+  seats: z.union([
+    z.templateLiteral([z.int(), '/', z.int()]),
+    z.templateLiteral([z.int(), '/', z.int(), ' (FULL)'])
+  ]),
+  waitlist: z.union([z.literal(''), z.templateLiteral([z.int()])]),
   meetings: z.array(meetingSchema)
 })
 export type Section = z.infer<typeof sectionSchema>
-const courseSchema = z.strictObject({
+export const courseSchemaBase = z.strictObject({
   // Course code, e.g. 'CSE-011'
   class_name: z.templateLiteral([z.string(), '-', z.string()]),
   course_title: z.string(),
@@ -151,7 +154,9 @@ const courseSchema = z.strictObject({
   // `sections` and thus can change depending on what sections were fetched (and
   // is probably redundant)
   subtitle: z.string(),
-  sections: z.array(sectionSchema),
+  sections: z.array(sectionSchema)
+})
+const courseSchema = courseSchemaBase.extend({
   seat_freshness: z.strictObject({
     is_stale: z.literal(true),
     // Human-readable date, e.g. '7/20/26 9:24 AM PDT'
@@ -182,8 +187,8 @@ export type Query = {
   sectionIds: Set<SectionId>
   term: string
 }
-const getUrl = ({ sectionIds, term }: Query) =>
-  BASE +
+export const encodeQuery = ({ sectionIds, term }: Query) =>
+  'CS2' +
   btoa(
     JSON.stringify({
       // Must be sorted to be "canonical"
@@ -191,6 +196,7 @@ const getUrl = ({ sectionIds, term }: Query) =>
       t: term
     })
   ).replace(/=+$/, '')
+const getUrl = (query: Query) => BASE + encodeQuery(query)
 
 type Result =
   | {
