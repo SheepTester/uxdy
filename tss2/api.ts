@@ -11,7 +11,8 @@ import {
   formatSectionId,
   type SectionId,
   type Query,
-  sectionIdSchema
+  sectionIdSchema,
+  errorSchema
 } from '../tss/index.ts'
 
 const BASE = 'https://classplanner.apps.ucsd.edu/api/v1'
@@ -57,9 +58,9 @@ const termSchema = z.strictObject({
   term_code: z.string(),
   term_name: z.null(),
   calendar_year: z.null(),
-  course_count: z.number(),
-  section_count: z.number(),
-  meeting_count: z.number(),
+  course_count: z.int(),
+  section_count: z.int(),
+  meeting_count: z.int(),
   // e.g. '2026-07-24 10:47:43+00'
   last_full_refresh_at: z.string(),
   configured: z.literal(true)
@@ -89,12 +90,12 @@ const courseSchema = courseSchemaBase.extend({
   seat_freshness: z.strictObject({
     // This will change depending on the class
     is_stale: z.boolean(),
-    // '7/24/26 6:27 PM PDT'
+    // '7/24/26 6:27 PM PDT', 'not yet refreshed'
     label: z.string(),
-    // '1 hour ago'
-    relative_label: z.string(),
-    has_timestamp: z.literal(true),
-    is_partial: z.literal(false),
+    // '1 hour ago'; gone if is_partial is false
+    relative_label: z.string().optional(),
+    has_timestamp: z.boolean(),
+    is_partial: z.boolean(),
     refresh_pending: z.boolean()
   })
 })
@@ -153,12 +154,23 @@ const scheduleSchema = z.strictObject({
     // 'Waitlist availability is missing for 2 sections; availability uses seats only.'
     quiet_notes: z.string().array()
   }),
-  display_day_codes: z.tuple([
-    z.literal('M'),
-    z.literal('T'),
-    z.literal('W'),
-    z.literal('R'),
-    z.literal('F')
+  display_day_codes: z.union([
+    z.tuple([
+      z.literal('M'),
+      z.literal('T'),
+      z.literal('W'),
+      z.literal('R'),
+      z.literal('F')
+    ]),
+    z.tuple([
+      z.literal('M'),
+      z.literal('T'),
+      z.literal('W'),
+      z.literal('R'),
+      z.literal('F'),
+      z.literal('S'),
+      z.literal('U')
+    ])
   ]),
   start_hour: z.int(),
   end_hour: z.int(),
@@ -208,23 +220,61 @@ const scheduleSchema = z.strictObject({
   // depends on ?context=; default is 'standalone'. they reject other parameters
   context: z.literal(['standalone', 'planner'])
 })
+type Schedule = z.infer<typeof scheduleSchema>
+/**
+ * "Schedules are limited to 12 distinct courses." There's not an easy way to
+ * know, so I'll just keep it simple and cap it to 12.
+ */
 const MAX_SECTION_IDS = 12
-export async function getSchedule (query: Query) {
+type ScheduleResult =
+  | { success: true; schedule: Schedule }
+  | { success: false; nonexistentSectionIds: SectionId[] }
+export async function getSchedule (query: Query): Promise<ScheduleResult> {
   if (query.sectionIds.size > MAX_SECTION_IDS) {
     throw new RangeError(`Max ${MAX_SECTION_IDS} section IDs`)
   }
-  return parse(
-    scheduleSchema,
-    await fetch(`${BASE}/schedules/${encodeQuery(query)}`, { headers })
-      .then(checkResponse)
-      .then(r => r.json())
-  )
+  const url = `${BASE}/schedules/${encodeQuery(query)}`
+  try {
+    const response = await fetch(url, { headers })
+    if (response.status === 404) {
+      return {
+        success: false,
+        nonexistentSectionIds: parse(
+          errorSchema,
+          await response.json()
+        ).detail.missing.map(missing => missing.section_id)
+      }
+    }
+    return {
+      success: true,
+      schedule: parse(
+        scheduleSchema,
+        await checkResponse(response).then(r => r.json())
+      )
+    }
+  } catch (cause) {
+    throw new Error(`Failure: ${url}`, { cause })
+  }
 }
 
 if (import.meta.main) {
-  const sectionIds = new Set<SectionId>()
-  for (let i = 1000; i < 1012; i++) {
-    sectionIds.add(formatSectionId('event', i))
+  const MAX_FAILS = 5
+  let fails = 0
+  for (let page = 0; ; page++) {
+    const sectionIds = new Set(
+      Array.prototype.keys
+        .call({ length: MAX_SECTION_IDS })
+        .map(j => formatSectionId('event', page * MAX_SECTION_IDS + j))
+    )
+    console.error({ page, fails })
+    const { success } = await getSchedule({ sectionIds, term: 'FA26' })
+    if (success) {
+      fails = 0
+    } else {
+      fails++
+      if (fails >= MAX_FAILS) {
+        break
+      }
+    }
   }
-  await getSchedule({ sectionIds, term: 'FA26' })
 }

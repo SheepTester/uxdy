@@ -171,7 +171,7 @@ const courseSchema = courseSchemaBase.extend({
 })
 export type Course = z.infer<typeof courseSchema>
 
-const errorSchema = z.strictObject({
+export const errorSchema = z.strictObject({
   detail: z.strictObject({
     message: z.literal('One or more selected sections were not found.'),
     missing: z.array(
