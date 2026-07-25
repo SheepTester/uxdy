@@ -575,6 +575,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                 if (!result.success) {
                   return false
                 }
+                // TODO: timed_events excludes eventless sections
                 for (const { section } of result.schedule.timed_events) {
                   lastSection = section.section_id
                   assert.strictEqual(section.section_id, section.eventId)
@@ -726,14 +727,14 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                               : null
                         }
                         if (meeting.meeting_kind === 'class') {
-                          return { ...base, kind: 'class' }
+                          return { kind: 'class', ...base }
                         } else {
                           if (!meeting.specific_date) {
                             throw 'up'
                           }
                           return {
-                            ...base,
                             kind: meeting.meeting_kind,
+                            ...base,
                             specificDate: new Date(
                               meeting.specific_date
                             ).getTime()
