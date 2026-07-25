@@ -111,8 +111,6 @@ const itemSchema = z.strictObject({
   course_slugs: z.string().array(),
   display_message: z.string().optional()
 })
-// TODO
-const sectionSchema = z.object({})
 const timeSchema = z.templateLiteral([
   z.int(),
   ':',
@@ -134,8 +132,6 @@ const meetingSchema = z.strictObject({
   // '10:50am'
   end_time_display: timeSchema,
   endTimeDisplay: timeSchema,
-  meeting_kind: z.literal('class'),
-  meetingKind: z.literal('class'),
   // 'GH'
   building_code: z.string().optional(),
   buildingCode: z.string().optional(),
@@ -151,14 +147,121 @@ const meetingSchema = z.strictObject({
   is_remote: z.literal(false),
   isRemote: z.literal(false),
   is_tba: z.literal(false),
-  isTba: z.literal(false),
-  // '0' if building/room is undefined
-  roomId: z.templateLiteral([z.int()]),
-  room_id: z.templateLiteral([z.int()])
+  isTba: z.literal(false)
+})
+const sectionSchema = z.strictObject({
+  section_id: sectionIdSchema,
+  // 'FA26:E 00000959'
+  section_ref: z.templateLiteral([z.string(), ':', sectionIdSchema]),
+  sectionRef: z.templateLiteral([z.string(), ':', sectionIdSchema]),
+  // '001-000-LE'
+  section_code: z.templateLiteral([
+    z.int(),
+    '-',
+    z.int(),
+    '-',
+    z.literal(['LE', 'LA', 'DI', 'SE', 'ST', 'TU', 'PR', 'FW', 'IN', 'IT'])
+  ]),
+  eventCode: z.templateLiteral([
+    z.int(),
+    '-',
+    z.int(),
+    '-',
+    z.literal(['LE', 'LA', 'DI', 'SE', 'ST', 'TU', 'PR', 'FW', 'IN', 'IT'])
+  ]),
+  // 'CSE 011'
+  class_name: z.templateLiteral([z.string(), ' ', z.string()]),
+  // 'CSE-011
+  moduleCode: z.templateLiteral([z.string(), '-', z.string()]),
+  // 'Accel. Intro to Programming'
+  // 'Accel. Intro to Programming'
+  moduleName: z.string(),
+  course_title: z.string(),
+  instruction_type_name: z.literal([
+    'lecture',
+    'lab',
+    'discussion',
+    'se',
+    'st',
+    'tu',
+    'pr',
+    'fw',
+    'in',
+    'it'
+  ]),
+  instructionTypeName: z.literal([
+    'lecture',
+    'lab',
+    'discussion',
+    'se',
+    'st',
+    'tu',
+    'pr',
+    'fw',
+    'in',
+    'it'
+  ]),
+  instructors_text: z.string(),
+  instructorsText: z.string(),
+  seats_available: z.int(),
+  capacity: z.int(),
+  meetings: z.array(
+    meetingSchema.extend({
+      meeting_kind: z.literal(['class', 'final', 'midterm', 'other']),
+      meetingKind: z.literal(['class', 'final', 'midterm', 'other']),
+      // only if kind is not 'class' maybe; '2026-12-10'
+      specific_date: z
+        .templateLiteral([z.int(), '-', z.int(), '-', z.int()])
+        .optional(),
+      specificDate: z
+        .templateLiteral([z.int(), '-', z.int(), '-', z.int()])
+        .optional(),
+      roomId: z.templateLiteral([z.int()]).optional(),
+      room_id: z.templateLiteral([z.int()]).optional()
+    })
+  ),
+  // 'FA26'
+  termCode: z.string(),
+  term_code: z.string(),
+  eventId: sectionIdSchema,
+  // 'CSE'
+  subjectCode: z.string(),
+  subject_code: z.string(),
+  // '011'
+  courseCode: z.string(),
+  course_code: z.string(),
+  moduleId: z.templateLiteral([z.int()]),
+  module_id: z.templateLiteral([z.int()]),
+  enrollmentLimit: z.int(),
+  enrolledQuantity: z.int(),
+  // appears to be identical to enrolledQuantity
+  enrolled: z.int(),
+  availableSeats: z.int(),
+  // presence comorbid with last refreshed at and seat/waitlist count refreshed at
+  waitlistEnrolled: z.int().optional(),
+  waitlist_enrolled: z.int().optional(),
+  eventStatusCode: z.literal(['AC']),
+  status: z.literal(['AC']),
+  isCancelled: z.literal(false),
+  is_cancelled: z.literal(false),
+  // '2026-07-24T10:47:43+00:00'
+  lastRefreshedAt: z.string().optional(),
+  last_refreshed_at: z.string().optional(),
+  // '2026-07-25T01:27:52.080947+00:00'
+  seat_count_refreshed_at: z.string().optional(),
+  // '2026-07-25T01:28:07.154667+00:00'; not the same as seat_count_refreshed_at
+  waitlist_count_refreshed_at: z.string().optional(),
+  availability_refresh_pending: z.boolean()
 })
 const timedEventSchema = z.strictObject({
   section: sectionSchema,
-  meeting: meetingSchema,
+  meeting: meetingSchema.extend({
+    meeting_kind: z.literal('class'),
+    meetingKind: z.literal('class'),
+    // '0' if building/room is undefined
+    roomId: z.templateLiteral([z.int()]),
+    room_id: z.templateLiteral([z.int()])
+  }),
   color: z.tuple([
     z.templateLiteral(['#', z.hex()]),
     z.templateLiteral(['#', z.hex()]),
