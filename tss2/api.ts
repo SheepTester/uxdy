@@ -12,7 +12,8 @@ import {
   type SectionId,
   type Query,
   sectionIdSchema,
-  errorSchema
+  errorSchema,
+  type Section as CourseDetailSection
 } from '../tss/index.ts'
 import { join } from 'node:path'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
@@ -280,12 +281,13 @@ export type SimplifiedSection = {
   subject: string
   number: string
   courseTitle: string
+  moduleId: number
 
   sectionId: Section['section_id']
-  sectionCode: Section['section_code']
-  instructionType: string
+  sectionCode: CourseDetailSection['section_code']
+  instructionType: CourseDetailSection['instruction_type']
+  /** 'TBA' normallized to '' */
   instructors: string
-  moduleId: number
 
   capacity: number
   enrolled: number
@@ -297,6 +299,7 @@ export type SimplifiedSection = {
   waitlistRefreshDate: number | null
   refreshPending: boolean
 
+  /** Empty if eventless (actually has one TBA class) */
   meetings: SimplifiedSectionMeeting[]
 }
 const timedEventSchema = z.strictObject({
@@ -692,11 +695,11 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                     subject: section.subject_code,
                     number: section.course_code,
                     courseTitle: section.course_title,
+                    moduleId: +section.module_id,
                     sectionId: section.section_id,
                     sectionCode: section.section_code,
                     instructionType: section.instruction_type_name,
                     instructors: section.instructors_text,
-                    moduleId: +section.module_id,
                     capacity: section.capacity,
                     enrolled: section.enrolled,
                     waitlist: section.waitlist_enrolled ?? null,
@@ -748,6 +751,58 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                     assert.deepStrictEqual(existing, simplified)
                   } else {
                     sectionMap.set(section.section_id, simplified)
+                  }
+                }
+
+                for (const course of Object.values(
+                  result.schedule.course_details
+                )) {
+                  for (const section of course.sections) {
+                    if (section.section_id.startsWith('E ')) {
+                      continue
+                    }
+                    const [capacity, enrolled] = section.seats
+                      .replace(' (FULL)', '')
+                      .split('/')
+                    assert.deepStrictEqual(section.meetings, [
+                      {
+                        label: 'Class',
+                        day: 'TBA',
+                        time: 'TBA',
+                        location: 'tba'
+                      }
+                    ])
+                    const simplified: SimplifiedSection = {
+                      subject: course.subject_code,
+                      number: course.course_code,
+                      courseTitle: course.course_title,
+                      moduleId: +course.module_id,
+                      sectionId: section.section_id,
+                      sectionCode: section.section_code,
+                      instructionType: section.instruction_type,
+                      instructors:
+                        section.instructors === 'TBA'
+                          ? ''
+                          : section.instructors,
+                      capacity: +capacity,
+                      enrolled: +enrolled,
+                      waitlist:
+                        section.waitlist === '' ? null : +section.waitlist,
+                      refreshDate:
+                        course.seat_freshness.label === 'not yet refreshed'
+                          ? null
+                          : new Date(course.seat_freshness.label).getTime(),
+                      seatCountRefreshDate: null,
+                      waitlistRefreshDate: null,
+                      refreshPending: course.seat_freshness.refresh_pending,
+                      meetings: []
+                    }
+                    const existing = sectionMap.get(section.section_id)
+                    if (existing) {
+                      assert.deepStrictEqual(existing, simplified)
+                    } else {
+                      sectionMap.set(section.section_id, simplified)
+                    }
                   }
                 }
               } catch (error) {
