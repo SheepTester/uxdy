@@ -761,9 +761,13 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                     if (section.section_id.startsWith('E ')) {
                       continue
                     }
-                    const [capacity, enrolled] = section.seats
+                    const [available, capacity] = section.seats
                       .replace(' (FULL)', '')
                       .split('/')
+                    // not true
+                    // assert.deepStrictEqual(capacity, enrolled)
+                    assert(+available <= +capacity)
+                    assert(+available >= 0)
                     assert.deepStrictEqual(section.meetings, [
                       {
                         label: 'Class',
@@ -785,7 +789,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
                           ? ''
                           : section.instructors,
                       capacity: +capacity,
-                      enrolled: +enrolled,
+                      enrolled: +capacity - +available,
                       waitlist:
                         section.waitlist === '' ? null : +section.waitlist,
                       refreshDate:
