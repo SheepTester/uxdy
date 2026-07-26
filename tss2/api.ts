@@ -1,6 +1,6 @@
 /**
  * @file
- * usage: node tss2/api.ts
+ * usage: node tss2/api.ts <term>
  */
 
 import z from 'zod'
@@ -831,11 +831,16 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
 }
 
 if (import.meta.main) {
+  if (process.argv.length !== 3) {
+    console.error(`usage: node tss2/api.ts <term>`)
+    process.exit(1)
+  }
+  const [, , term] = process.argv
   await writeFile(
-    'tss2/sections.json',
-    JSON.stringify(await getSections('FA26'))
+    `tss2/sections-${term}.json`,
+    JSON.stringify(await getSections(term))
   )
-  execSync('npx @biomejs/biome format --write tss2/sections.json', {
+  execSync(`npx @biomejs/biome format --write tss2/sections-${term}.json`, {
     stdio: 'inherit'
   })
 }

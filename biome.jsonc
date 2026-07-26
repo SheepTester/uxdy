@@ -6,7 +6,7 @@
   },
   "formatter": {
     "enabled": true,
-    "includes": ["tss2/sections.json"]
+    "includes": ["tss2/sections-*.json"]
   },
   "linter": { "enabled": false },
   "assist": { "enabled": false }
