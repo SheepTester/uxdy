@@ -2,212 +2,145 @@
  * @file
  * Same format as classrooms/scripts/coursesToFile.ts
  *
- * usage: node tss/coursesToFile.ts <term>
+ * usage: node tss2/coursesToFile.ts <term>
  */
 
 import { createWriteStream } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { pipeline } from 'node:stream/promises'
 import type {
-  AllCourses,
-  NormalMeetingType,
-  ResolvedDay,
-  Section
-} from './index.ts'
+  SimplifiedSection,
+  SimplifiedSectionMeeting,
+  SimplifiedSectionMeetingBase,
+  SimplifiedSectionMeetingClass,
+  SimplifiedSectionMeetingExam
+} from './api.ts'
 
-function isInPerson ({
-  time,
-  location
-}: Section['location_details' | 'meetings'][number]): boolean {
-  if (time === '' || time === 'TBA') {
-    return false
-  }
-  if (
-    location === '' ||
-    location === 'Remote' ||
-    location === 'TBA' ||
-    location === 'tba'
-  ) {
-    return false
-  }
-  return true
+function isInPerson (meeting: SimplifiedSectionMeeting): boolean {
+  return meeting.location !== null
 }
 
-function * printTime (
-  hour: string,
-  minute: string,
-  amPm: string
-): Generator<string> {
-  const isAm = amPm === 'a' || amPm === 'A'
-  const parsedHour = hour === '12' ? (isAm ? 0 : 12) : isAm ? +hour : +hour + 12
-  yield parsedHour.toString().padStart(2, '0')
-  yield minute
+function * printTime (minutes: number): Generator<string> {
+  yield Math.floor(minutes / 60)
+    .toString()
+    .padStart(2, '0')
+  yield (minutes % 60).toString().padStart(2, '0')
 }
 
-const types: Record<Section['location_details'][number]['type'], string> = {
-  Seminar: 'SE',
-  Lecture: 'LE',
-  Lab: 'LA',
-  Discussion: 'DI',
-  Pr: 'PR',
-  Studio: 'ST',
-  Tutorial: 'TU',
-  Fw: 'FW',
-  'Independent Study': 'IN',
-  It: 'IT',
-  Cl: 'CL',
-  Co: 'CO',
-  Ot: 'OT',
-  Final: 'FI',
-  Midterm: 'MI',
-  Other: 'OT'
+const types: Record<
+  SimplifiedSection['instructionType'] | SimplifiedSectionMeetingExam['kind'],
+  string
+> = {
+  se: 'SE',
+  lecture: 'LE',
+  lab: 'LA',
+  discussion: 'DI',
+  pr: 'PR',
+  st: 'ST',
+  tu: 'TU',
+  fw: 'FW',
+  in: 'IN',
+  it: 'IT',
+  cl: 'CL',
+  co: 'CO',
+  ot: 'OT',
+  final: 'FI',
+  midterm: 'MI',
+  other: 'OT'
 }
 const DAYS = 'UMTWRFS'
 function * printMeeting (
-  type: Section['location_details'][number]['type'] | 'Class',
-  { time, location }: Section['location_details' | 'meetings'][number],
-  days?: string[]
+  meeting: SimplifiedSectionMeetingBase,
+  instructionType:
+    SimplifiedSection['instructionType'] | SimplifiedSectionMeetingExam['kind']
 ): Generator<string> {
-  const maybeLocation =
-    location === '' ||
-    location === 'Remote' ||
-    location === 'TBA' ||
-    location === 'tba'
-      ? null
-      : location.split(' ')
-  yield (maybeLocation?.[0] ?? 'TBA').padEnd(5)
-  const isTimeTba = time === '' || time === 'TBA'
-  if (days) {
-    if (isTimeTba) {
-      yield 'TBA  '
-    } else {
-      if (days.length === 0) {
-        throw new Error('Missing days')
-      }
-
-      yield days
-        .map(day => DAYS.indexOf(day))
-        .sort()
-        .join('')
-        // This is probably technically incorrect, ISIS supports up to all 7 days,
-        // but whatever
-        .padEnd(5)
-    }
-  }
-  if (type === 'Class') {
-    // idk
-    yield 'OT'
-  } else {
-    yield types[type]
-  }
-  yield (maybeLocation?.[1].replace(/^B-/, 'B') ?? 'TBA').padEnd(5)
-  if (isTimeTba) {
-    yield 'TBA '
-    yield 'TBA '
-  } else {
-    // '6:30 PM\u20137:50 PM'
-    // '7:00pm-9:59pm'
-    const match = time.match(
-      /^(1?\d):([0-5]\d) ?([aApP])[mM][\u2013-](1?\d):([0-5]\d) ?([aApP])[mM]$/
-    )
-    if (!match) {
-      throw new Error(`Time does not pass regex: '${time}'`)
-    }
-    const [, startHour, startMin, startAmPm, endHour, endMin, endAmPm] = match
-    yield * printTime(startHour, startMin, startAmPm)
-    yield * printTime(endHour, endMin, endAmPm)
-  }
+  const [building, room] = (meeting.location?.room ?? 'TBA TBA').split(' ')
+  yield building.padEnd(5)
+  // TODO: merge days. also need to disable this for exams
+  yield [meeting.day]
+    .map(day => DAYS.indexOf(day))
+    .sort()
+    .join('')
+    // This is probably technically incorrect, ISIS supports up to all 7 days,
+    // but whatever
+    .padEnd(5)
+  yield types[instructionType]
+  yield room.replace(/^B-/, 'B').padEnd(5)
+  yield * printTime(meeting.start)
+  yield * printTime(meeting.end)
 }
 
 export type CourseToFileOptions = {
   buildingsOnly: boolean
 }
 export function * coursesToFile (
-  courses: AllCourses,
-  resolvedDays: ResolvedDay[],
+  sections: SimplifiedSection[],
   { buildingsOnly }: CourseToFileOptions
 ): Generator<string> {
-  const stalenessDates = new Set(
-    courses.values().map(course => course.seat_freshness.label)
+  const scrapeTime = sections.reduce(
+    (cum, curr) =>
+      curr.refreshDate !== null && curr.refreshDate > cum
+        ? curr.refreshDate
+        : cum,
+    0
   )
-  if (stalenessDates.size !== 1) {
-    throw new Error(
-      `Multiple staleness dates: ${Array.from(stalenessDates).join(', ')}`
-    )
-  }
-  const [stalenessDate] = stalenessDates
-  const scrapeTime = new Date(stalenessDate)
-  if (Number.isNaN(scrapeTime.getTime())) {
-    throw new RangeError(`Invalid date time format '${stalenessDate}'`)
-  }
   console.error(
-    `debug: scrape time '${stalenessDate}' parsed as ${scrapeTime.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`
+    `debug: using scrape time ${new Date(scrapeTime).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`
   )
 
-  const resolvedDayMap = new Map(
-    Map.groupBy(resolvedDays, day => day.sectionId)
-      .entries()
-      .map(([sectionId, days]) => [
-        sectionId,
-        new Map(days.values().map(({ index, days }) => [index, days]))
-      ])
+  yield `V4${scrapeTime}\n`
+  for (const [, courseSections] of Map.groupBy(
+    sections,
+    ({ subject, number }) => `${subject}-${number}`
   )
-  yield `V4${scrapeTime.getTime()}\n`
-  for (const { class_name, course_title, sections } of courses
-    .values()
+    .entries()
     .toArray()
-    .sort((a, b) => a.class_name.localeCompare(b.class_name))) {
+    .sort((a, b) => a[0].localeCompare(b[0]))) {
     const groups = Map.groupBy(
-      sections.toSorted(
+      courseSections.toSorted(
         (a, b) =>
-          a.section_code.localeCompare(b.section_code) ||
-          a.section_id.localeCompare(b.section_id)
+          a.sectionCode.localeCompare(b.sectionCode) ||
+          a.sectionId.localeCompare(b.sectionId)
       ),
       // Pretty sure this is 1-indexed
-      section => +section.section_code.split('-')[0]
+      section => +section.sectionCode.split('-')[0]
     )
       .entries()
       .map(([groupCode, group]) => ({
         groupCode,
         meetings: group
           .values()
-          .flatMap(section =>
-            section.location_details.values().map((meeting, index) => ({
-              sectionId: section.section_id,
-              index,
-              seats: section.seats,
-              meetingCode: +section.section_code.split('-')[1],
-              ...meeting
-            }))
+          .flatMap(
+            (
+              section
+            ): Iterable<{
+              meeting: SimplifiedSectionMeetingClass | null
+              section: SimplifiedSection
+            }> =>
+              section.sectionId.startsWith('EL') && !buildingsOnly
+                ? [{ meeting: null, section }]
+                : section.meetings
+                  .values()
+                  .filter(meeting => meeting.kind === 'class')
+                  .filter(meeting => !buildingsOnly || isInPerson(meeting))
+                  .map(meeting => ({ meeting, section }))
           )
-          .filter(meeting => !buildingsOnly || isInPerson(meeting))
-          .filter(meeting => {
-            if (
-              meeting.type !== 'Final' &&
-              meeting.type !== 'Midterm' &&
-              meeting.type !== 'Other'
-            ) {
-              const _type: NormalMeetingType = meeting.type
-              return true
-            } else {
-              return false
-            }
-          })
           .toArray(),
         exams: group
           .values()
           .flatMap(section => section.meetings)
+          .filter(meeting => meeting.kind !== 'class')
           .filter(exam => !buildingsOnly || isInPerson(exam))
-          // Classrooms website assumes exam day is always available
-          .filter(exam => exam.day !== 'TBA')
           .toArray(),
         instructors: new Set(
           group
             .values()
             .flatMap(section =>
-              section.instructors === 'TBA'
+              section.instructors === ''
                 ? []
-                : section.instructors.split(', ')
+                : // Note: may need to update if they ever add support for
+                // multiple instructors
+                section.instructors.split(', ')
             )
             .map(name => {
               // Best effort splitting of first and last name. Unfortunately
@@ -226,12 +159,12 @@ export function * coursesToFile (
       continue
     }
 
-    const [subject, number] = class_name.split('-')
+    const [{ subject, number, courseTitle }] = courseSections
     yield subject.padEnd(4)
     // Remove leading zeroes because UI search isn't designed for them
     yield number.replace(/^0+/, '').padEnd(5)
     if (!buildingsOnly) {
-      yield course_title
+      yield courseTitle
     }
     yield '\n'
 
@@ -242,7 +175,9 @@ export function * coursesToFile (
       .some(group => group.meetings.length > 1)
     if (cantUseLetterCode && cantUseNumberCode) {
       console.error(groups)
-      throw new Error(`Can't use letter nor number code for ${class_name}`)
+      throw new Error(
+        `Can't use letter nor number code for ${subject}-${number}`
+      )
     }
     // Prefer letter code
     const useLetterCode = !cantUseLetterCode
@@ -266,29 +201,39 @@ export function * coursesToFile (
       }
       yield '\n'
 
-      for (const meeting of meetings) {
-        const [, capacity] = meeting.seats.split('/')
-        yield capacity.padStart(4, '0')
+      for (const { meeting, section } of meetings) {
+        yield section.capacity.toString().padStart(4, '0')
 
-        yield * printMeeting(
-          meeting.type,
-          meeting,
-          resolvedDayMap.get(meeting.sectionId)?.get(meeting.index) ?? []
-        )
+        if (meeting === null) {
+          yield 'TBA  ' // building
+          yield 'TBA  ' // days
+          yield types[section.instructionType]
+          yield 'TBA  ' // room
+          yield 'TBA ' // start
+          yield 'TBA ' // end
+        } else {
+          printMeeting(meeting, section.instructionType)
+        }
 
         yield prefix
         if (useLetterCode) {
-          yield meeting.meetingCode.toString().padStart(2, '0')
+          yield section.sectionCode.split('-')[1].slice(-2)
         }
       }
       yield '\n'
 
       if (exams.length > 0) {
         for (const exam of exams) {
-          const [month, date, year] = exam.day.split('/')
-          yield `${year.padStart(4, '0')}${month.padStart(2, '0')}${date.padStart(2, '0')}`
-
-          yield * printMeeting(exam.label, exam)
+          const specificDate = new Date(exam.specificDate)
+          yield `${specificDate.getUTCFullYear().toString().padStart(4, '0')}${(
+            specificDate.getUTCMonth() + 1
+          )
+            .toString()
+            .padStart(2, '0')}${specificDate
+            .getUTCDate()
+            .toString()
+            .padStart(2, '0')}`
+          yield * printMeeting(exam, exam.kind)
         }
         yield '\n'
       }
@@ -298,22 +243,17 @@ export function * coursesToFile (
 
 if (import.meta.main) {
   if (process.argv.length !== 3) {
-    console.error('usage: node tss/coursesToFile.ts <term>')
+    console.error('usage: node tss2/coursesToFile.ts <term>')
     process.exit(1)
   }
   const [, , term] = process.argv
-  const allCourses = new Map(
-    Object.entries(JSON.parse(await readFile('tss/courses.json', 'utf-8')))
-  ) as AllCourses
-  const resolvedDays: ResolvedDay[] = JSON.parse(
-    await readFile('tss/resolvedDays.json', 'utf-8')
+  const sections = JSON.parse(
+    await readFile(`tss2/sections-${term}.json`, 'utf-8')
   )
   await Promise.all(
     [false, true].map(async buildingsOnly => {
       await pipeline(
-        coursesToFile(allCourses, resolvedDays, {
-          buildingsOnly
-        }),
+        coursesToFile(sections, { buildingsOnly }),
         createWriteStream(
           `classrooms-${term}${buildingsOnly ? '' : '-full'}.txt`
         )

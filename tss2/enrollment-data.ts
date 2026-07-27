@@ -23,7 +23,7 @@ function mergeIntoCsv (csv: ParsedCsv, sections: SimplifiedSection[]): void {
           : cum,
       Infinity
     )
-  ).toLocaleString()
+  ).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
   const stalenessDate = new Date(
     sections.reduce(
       (cum, curr) =>
@@ -32,7 +32,7 @@ function mergeIntoCsv (csv: ParsedCsv, sections: SimplifiedSection[]): void {
           : cum,
       0
     )
-  ).toLocaleString()
+  ).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
   console.error({ earliest: earliestStalenessDate, latest: stalenessDate })
 
   if (stalenessDate.includes(SEPARATOR)) {

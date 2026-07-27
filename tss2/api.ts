@@ -155,14 +155,7 @@ const meetingSchema = z.strictObject({
   isTba: z.literal(false)
 })
 type Meeting = z.infer<typeof meetingSchema>
-export type SimplifiedSectionMeeting = (
-  | { kind: 'class' }
-  | {
-      kind: 'final' | 'midterm' | 'other'
-      /** In milliseconds since epoch, UTC date */
-      specificDate: number
-    }
-) & {
+export type SimplifiedSectionMeetingBase = {
   day: Meeting['day_code']
   start: Meeting['start_minutes']
   end: Meeting['end_minutes']
@@ -171,6 +164,16 @@ export type SimplifiedSectionMeeting = (
     id: number
   } | null
 }
+export type SimplifiedSectionMeetingClass = SimplifiedSectionMeetingBase & {
+  kind: 'class'
+}
+export type SimplifiedSectionMeetingExam = SimplifiedSectionMeetingBase & {
+  kind: 'final' | 'midterm' | 'other'
+  /** In milliseconds since epoch, UTC date */
+  specificDate: number
+}
+export type SimplifiedSectionMeeting =
+  SimplifiedSectionMeetingClass | SimplifiedSectionMeetingExam
 const sectionSchema = z.strictObject({
   section_id: sectionIdSchema,
   eventId: sectionIdSchema,
@@ -286,7 +289,7 @@ export type SimplifiedSection = {
   sectionId: Section['section_id']
   sectionCode: CourseDetailSection['section_code']
   instructionType: CourseDetailSection['instruction_type']
-  /** 'TBA' normallized to '' */
+  /** 'TBA' normallized to ''. doesn't seem to contain multiple instructors */
   instructors: string
 
   capacity: number
