@@ -52,18 +52,20 @@ const DAYS = 'UMTWRFS'
 function * printMeeting (
   meeting: SimplifiedSectionMeetingBase,
   instructionType:
-    SimplifiedSection['instructionType'] | SimplifiedSectionMeetingExam['kind']
+    SimplifiedSection['instructionType'] | SimplifiedSectionMeetingExam['kind'],
+  days?: SimplifiedSectionMeetingBase['day'][]
 ): Generator<string> {
   const [building, room] = (meeting.location?.room ?? 'TBA TBA').split(' ')
   yield building.padEnd(5)
-  // TODO: merge days. also need to disable this for exams
-  yield [meeting.day]
-    .map(day => DAYS.indexOf(day))
-    .sort()
-    .join('')
-    // This is probably technically incorrect, ISIS supports up to all 7 days,
-    // but whatever
-    .padEnd(5)
+  if (days) {
+    yield days
+      .map(day => DAYS.indexOf(day))
+      .sort()
+      .join('')
+      // This is probably technically incorrect, ISIS supports up to all 7 days,
+      // but whatever
+      .padEnd(5)
+  }
   yield types[instructionType]
   yield room.replace(/^B-/, 'B').padEnd(5)
   yield * printTime(meeting.start)
@@ -116,14 +118,24 @@ export function * coursesToFile (
             ): Iterable<{
               meeting: SimplifiedSectionMeetingClass | null
               section: SimplifiedSection
+              days: SimplifiedSectionMeetingBase['day'][]
             }> =>
               section.sectionId.startsWith('EL') && !buildingsOnly
-                ? [{ meeting: null, section }]
-                : section.meetings
+                ? [{ meeting: null, section, days: [] }]
+                : Map.groupBy(
+                  section.meetings
+                    .values()
+                    .filter(meeting => meeting.kind === 'class')
+                    .filter(meeting => !buildingsOnly || isInPerson(meeting)),
+                  meeting =>
+                    `${meeting.start} ${meeting.end} ${meeting.location?.room}`
+                )
                   .values()
-                  .filter(meeting => meeting.kind === 'class')
-                  .filter(meeting => !buildingsOnly || isInPerson(meeting))
-                  .map(meeting => ({ meeting, section }))
+                  .map(group => ({
+                    meeting: group[0],
+                    section,
+                    days: group.map(meeting => meeting.day)
+                  }))
           )
           .toArray(),
         exams: group
@@ -201,7 +213,7 @@ export function * coursesToFile (
       }
       yield '\n'
 
-      for (const { meeting, section } of meetings) {
+      for (const { meeting, section, days } of meetings) {
         yield section.capacity.toString().padStart(4, '0')
 
         if (meeting === null) {
@@ -212,7 +224,7 @@ export function * coursesToFile (
           yield 'TBA ' // start
           yield 'TBA ' // end
         } else {
-          printMeeting(meeting, section.instructionType)
+          yield * printMeeting(meeting, section.instructionType, days)
         }
 
         yield prefix

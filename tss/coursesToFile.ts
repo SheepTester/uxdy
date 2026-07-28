@@ -286,7 +286,8 @@ export function * coursesToFile (
       if (exams.length > 0) {
         for (const exam of exams) {
           const [month, date, year] = exam.day.split('/')
-          yield `${year.padStart(4, '0')}${month.padStart(2, '0')}${date.padStart(2, '0')}`
+          // y2k moment
+          yield `20${year}${month.padStart(2, '0')}${date.padStart(2, '0')}`
 
           yield * printMeeting(exam.label, exam)
         }
