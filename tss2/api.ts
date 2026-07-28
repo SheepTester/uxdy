@@ -89,6 +89,7 @@ const courseSchema = courseSchemaBase.extend({
   course_code: z.string(),
   // '8509'
   module_id: z.templateLiteral([z.int()]),
+  event_package_id: z.templateLiteral([z.int()]).optional(),
   // 'https://tss.ucsd.edu/fiori#YSchedule-view&/YUCSD_CON_MODULE(AcademicYear='2026',AcademicPeriod='2',ModuleID='8509')?layout=MidColumnFullScreen'
   // Not particularly interesting since this isn't the actual booking page
   tss_booking_url: z.url(),
@@ -260,6 +261,29 @@ const sectionSchema = z.strictObject({
   course_code: z.string(),
   moduleId: z.templateLiteral([z.int()]),
   module_id: z.templateLiteral([z.int()]),
+  eventPackageIds: z.templateLiteral([z.int()]).array(),
+  event_package_ids: z.templateLiteral([z.int()]).array(),
+  eventPackages: z.array(
+    z.strictObject({
+      module_id: z.templateLiteral([z.int()]),
+      event_package_id: z.templateLiteral([z.int()]),
+      // 'P-001-001', 'CENG-124A#1', 'MAE-207-01', 'POLI-138D-08'
+      event_package_name: z.union([
+        z.templateLiteral([z.string(), '-', z.string(), '-', z.int()]),
+        z.templateLiteral([z.string(), '-', z.string(), '#', z.int()])
+      ])
+    })
+  ),
+  event_packages: z.array(
+    z.strictObject({
+      module_id: z.templateLiteral([z.int()]),
+      event_package_id: z.templateLiteral([z.int()]),
+      event_package_name: z.union([
+        z.templateLiteral([z.string(), '-', z.string(), '-', z.int()]),
+        z.templateLiteral([z.string(), '-', z.string(), '#', z.int()])
+      ])
+    })
+  ),
   enrolledQuantity: z.int(),
   // appears to be identical to enrolledQuantity
   enrolled: z.int(),
