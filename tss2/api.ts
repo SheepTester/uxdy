@@ -424,6 +424,10 @@ const scheduleSchema = z.strictObject({
   term_code: z.string(),
   // 'Fall 2026'
   term_label: z.string(),
+  // '2026-12-05'
+  finals_start_date: z.templateLiteral([z.int(), '-', z.int(), '-', z.int()]),
+  finals_end_date: z.templateLiteral([z.int(), '-', z.int(), '-', z.int()]),
+  valid: z.boolean(),
   section_ids: z.array(sectionIdSchema),
   schedule_ref: z.templateLiteral(['CS2', z.string()]),
   // '2 sections • CSE-210, CSE-227 • No conflicts'
@@ -523,7 +527,101 @@ const scheduleSchema = z.strictObject({
     })
     .array(),
   // depends on ?context=; default is 'standalone'. they reject other parameters
-  context: z.literal(['standalone', 'planner'])
+  context: z.literal(['standalone', 'planner']),
+  map_data: z
+    .strictObject({
+      locations: z.array(
+        z.strictObject({
+          // 'APM'
+          key: z.string(),
+          // 'APM'
+          building_code: z.string(),
+          // 'Applied Physics and Mathematics'
+          display_name: z.string(),
+          latitude: z.number(),
+          longitude: z.number(),
+          // 2985 Muir Lane, La Jolla, 92093
+          address: z.string(),
+          // ['hds-150']
+          course_slugs: z.templateLiteral([z.string(), '-', z.string()]).array()
+        })
+      ),
+      days: z.array(
+        z.strictObject({
+          day_code: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']),
+          stops: z.array(
+            z.strictObject({
+              // starts at 1
+              sequence: z.int(),
+              // 'PODEM'
+              location_key: z.string(),
+              // '597
+              room_id: z.templateLiteral([z.int()]),
+              // 'hds-175'
+              course_slug: z.templateLiteral([z.string(), '-', z.string()]),
+              // 'HDS-175'
+              title: z.templateLiteral([z.string(), '-', z.string()]),
+              type_label: z.literal([
+                'LEC',
+                'SEM',
+                'LAB',
+                'DIS',
+                'STU',
+                'PR',
+                'TU',
+                'FW',
+                'IND',
+                'IT'
+              ]),
+              time_label: z.templateLiteral([
+                z.int(),
+                ':',
+                z.int(),
+                z.literal(['am', 'pm']),
+                '-',
+                z.int(),
+                ':',
+                z.int(),
+                z.literal(['am', 'pm'])
+              ]),
+              // 540
+              start_minutes: z.int(),
+              end_minutes: z.int(),
+              color: z.tuple([
+                z.templateLiteral(['#', z.hex()]),
+                z.templateLiteral(['#', z.hex()]),
+                z.templateLiteral(['#', z.hex()])
+              ])
+            })
+          ),
+          transitions: z.array(
+            z.strictObject({
+              from_sequence: z.int(),
+              to_sequence: z.int(),
+              // 'PODEM'; may match
+              from_location_key: z.string(),
+              to_location_key: z.string(),
+              distance_meters: z.int(),
+              estimated_minutes: z.int(),
+              gap_minutes: z.int(),
+              available: z.literal(true),
+              status: z.literal(['available', 'overlap', 'insufficient']),
+              geometry: z
+                .strictObject({
+                  type: z.literal('LineString'),
+                  coordinates: z.tuple([z.number(), z.number()]).array()
+                })
+                .optional()
+            })
+          )
+        })
+      ),
+      unmapped_locations: z.tuple([]),
+      walking_speed_mps: z.literal(1.4),
+      // '2026-07-24T08:15:26+00:00'
+      routes_generated_at: z.literal('2026-07-24T08:15:26+00:00')
+    })
+    .optional()
 })
 type Schedule = z.infer<typeof scheduleSchema>
 /**
