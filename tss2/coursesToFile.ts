@@ -8,12 +8,13 @@
 import { createWriteStream } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { pipeline } from 'node:stream/promises'
-import type {
-  SimplifiedSection,
-  SimplifiedSectionMeeting,
-  SimplifiedSectionMeetingBase,
-  SimplifiedSectionMeetingClass,
-  SimplifiedSectionMeetingExam
+import {
+  getSections,
+  type SimplifiedSection,
+  type SimplifiedSectionMeeting,
+  type SimplifiedSectionMeetingBase,
+  type SimplifiedSectionMeetingClass,
+  type SimplifiedSectionMeetingExam
 } from './api.ts'
 
 function isInPerson (meeting: SimplifiedSectionMeeting): boolean {
@@ -259,9 +260,7 @@ if (import.meta.main) {
     process.exit(1)
   }
   const [, , term] = process.argv
-  const sections = JSON.parse(
-    await readFile(`tss2/sections-${term}.json`, 'utf-8')
-  )
+  const sections = await getSections(term)
   await Promise.all(
     [false, true].map(async buildingsOnly => {
       await pipeline(

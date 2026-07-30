@@ -12,7 +12,7 @@ import {
   serializeCsv,
   type ParsedCsv
 } from '../tss/enrollment-data.ts'
-import type { SimplifiedSection } from './api.ts'
+import { getSections, type SimplifiedSection } from './api.ts'
 
 function mergeIntoCsv (csv: ParsedCsv, sections: SimplifiedSection[]): void {
   const earliestStalenessDate = new Date(
@@ -56,9 +56,6 @@ if (import.meta.main) {
         : Promise.reject(error)
     )
   )
-  mergeIntoCsv(
-    csv,
-    JSON.parse(await readFile('tss2/sections-FA26.json', 'utf-8'))
-  )
+  mergeIntoCsv(csv, await getSections('FA26'))
   await writeFile('tss/enrollment-data.tsv', serializeCsv(csv))
 }
