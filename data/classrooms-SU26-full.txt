@@ -1,4 +1,4 @@
-V41784789689466
+V41785546954317
 ANES296  Independent Study
  001	Brian M.,Ilfeld
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -528,7 +528,7 @@ NEU 296  Neurosciences Resrch Rotation	/courses/NEU.html#neu296
 NEU 299  Independent Study	/courses/NEU.html#neu299
  001	Dominic Alexander,Ferrey
 0005TBA  TBA  INTBA  TBA TBA 001
- 002
+ 002	Jeffrey Joseph,Gold
 0005TBA  TBA  INTBA  TBA TBA 002
 NEU 401  Neurology Core Clerkship
  A00	Jamie Nicole,LaBuzetta
@@ -1035,6 +1035,8 @@ SOMI220  Core Topics in Biomedical Sci
 0000TBA  TBA  LETBA  TBA TBA A00
 TBA  TBA  DITBA  TBA TBA A01
 SOMI296  Independent Study
+ 001	Katharina,Brandl
+0005TBA  TBA  INTBA  TBA TBA 001
  002	Sean Jeffrey,Evans
 0005TBA  TBA  INTBA  TBA TBA 002
 SOMI421  Subinternship Palliative Med
