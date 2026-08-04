@@ -634,19 +634,24 @@ type ScheduleResult =
   | { success: false; nonexistentSectionIds: SectionId[] }
 const cacheDir = 'tss2/.cache'
 const getUrl = (query: Query) => `${BASE}/schedules/${encodeQuery(query)}`
-export async function getSchedule (query: Query): Promise<ScheduleResult> {
+export async function getSchedule (
+  query: Query,
+  useCache: boolean
+): Promise<ScheduleResult> {
   if (query.sectionIds.size > MAX_SECTION_IDS) {
     throw new RangeError(`Max ${MAX_SECTION_IDS} section IDs`)
   }
 
   const cachePath = join(cacheDir, `${encodeQuery(query)}.json`)
-  const cached = await readFile(cachePath, 'utf-8')
-    .then(JSON.parse)
-    .catch(error =>
-      Error.isError(error) && 'code' in error && error.code === 'ENOENT'
-        ? null
-        : Promise.reject(error)
-    )
+  const cached =
+    useCache &&
+    (await readFile(cachePath, 'utf-8')
+      .then(JSON.parse)
+      .catch(error =>
+        Error.isError(error) && 'code' in error && error.code === 'ENOENT'
+          ? null
+          : Promise.reject(error)
+      ))
   if (cached) {
     return cached
   }
@@ -674,13 +679,22 @@ export async function getSchedule (query: Query): Promise<ScheduleResult> {
   } catch (cause) {
     throw new Error(`Failure: ${getUrl(query)}`, { cause })
   }
-  await mkdir(cacheDir, { recursive: true })
-  await writeFile(cachePath, JSON.stringify(result))
+  if (useCache) {
+    await mkdir(cacheDir, { recursive: true })
+    await writeFile(cachePath, JSON.stringify(result))
+  }
   return result
 }
 
 const PARALLEL_GROUP_SIZE = 10
-export async function getSections (term: string): Promise<SimplifiedSection[]> {
+export type GetSectionsOptions = {
+  /** @default false */
+  useCache?: boolean
+}
+export async function getSections (
+  term: string,
+  { useCache = false }: GetSectionsOptions = {}
+): Promise<SimplifiedSection[]> {
   const sectionMap = new Map<SectionId, SimplifiedSection>()
   await Promise.all(
     (['event', 'eventless'] as const).map(async eventType => {
@@ -699,7 +713,7 @@ export async function getSections (term: string): Promise<SimplifiedSection[]> {
               const query = { sectionIds, term }
               let lastSection: SectionId | undefined
               try {
-                const result = await getSchedule(query)
+                const result = await getSchedule(query, useCache)
                 if (!result.success) {
                   return false
                 }
@@ -967,7 +981,7 @@ if (import.meta.main) {
   const [, , term] = process.argv
   await writeFile(
     `tss2/sections-${term}.json`,
-    JSON.stringify(await getSections(term))
+    JSON.stringify(await getSections(term, { useCache: true }))
   )
   execSync(`npx @biomejs/biome format --write tss2/sections-${term}.json`, {
     stdio: 'inherit'

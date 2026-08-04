@@ -56,6 +56,6 @@ if (import.meta.main) {
         : Promise.reject(error)
     )
   )
-  mergeIntoCsv(csv, await getSections('FA26'))
+  mergeIntoCsv(csv, await getSections('FA26', { useCache: false }))
   await writeFile('tss/enrollment-data.tsv', serializeCsv(csv))
 }
