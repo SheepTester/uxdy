@@ -102,7 +102,9 @@ const courseSchema = courseSchemaBase.extend({
     relative_label: z.string().optional(),
     has_timestamp: z.boolean(),
     is_partial: z.boolean(),
-    refresh_pending: z.boolean()
+    refresh_pending: z.boolean(),
+    // 'Academic History returned HTTP 503'
+    refresh_error: z.string().optional()
   })
 })
 const itemSchema = z.strictObject({
@@ -301,7 +303,12 @@ const sectionSchema = z.strictObject({
   seat_count_refreshed_at: z.string().optional(),
   // '2026-07-25T01:28:07.154667+00:00'; not the same as seat_count_refreshed_at
   waitlist_count_refreshed_at: z.string().optional(),
-  availability_refresh_pending: z.boolean()
+  availability_refresh_pending: z.boolean(),
+  // 'Academic History returned HTTP 503'
+  availability_refresh_error: z.string().optional(),
+  // '2026-08-06T07:13:01.490161+00:00'; maybe appears alongside
+  // availability_refresh_error
+  availability_refresh_retry_at: z.string().optional()
 })
 type Section = z.infer<typeof sectionSchema>
 export type SimplifiedSection = {
