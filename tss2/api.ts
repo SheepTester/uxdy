@@ -269,10 +269,13 @@ const sectionSchema = z.strictObject({
     z.strictObject({
       module_id: z.templateLiteral([z.int()]),
       event_package_id: z.templateLiteral([z.int()]),
-      // 'P-001-001', 'CENG-124A#1', 'MAE-207-01', 'POLI-138D-08'
+      // 'P-001-001', 'CENG-124A#1', 'MAE-207-01', 'POLI-138D-08', 'BISP194|U2',
+      // 'MAE207|N1'
       event_package_name: z.union([
         z.templateLiteral([z.string(), '-', z.string(), '-', z.int()]),
-        z.templateLiteral([z.string(), '-', z.string(), '#', z.int()])
+        z.templateLiteral([z.string(), '-', z.string(), '#', z.int()]),
+        z.templateLiteral([z.string(), '|U', z.int()]),
+        z.templateLiteral([z.string(), '|N', z.int()])
       ])
     })
   ),
@@ -282,7 +285,9 @@ const sectionSchema = z.strictObject({
       event_package_id: z.templateLiteral([z.int()]),
       event_package_name: z.union([
         z.templateLiteral([z.string(), '-', z.string(), '-', z.int()]),
-        z.templateLiteral([z.string(), '-', z.string(), '#', z.int()])
+        z.templateLiteral([z.string(), '-', z.string(), '#', z.int()]),
+        z.templateLiteral([z.string(), '|U', z.int()]),
+        z.templateLiteral([z.string(), '|N', z.int()])
       ])
     })
   ),
