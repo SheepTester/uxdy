@@ -140,7 +140,7 @@ const sectionSchema = z.strictObject({
   // Not sure how they handle multiple instructors, or if this differs within
   // the same course. Can be 'TBA'
   instructors: z.string(),
-  status: z.literal(['AC']),
+  status: z.literal(['AC', 'Cancelled']),
   seats: z.union([
     z.templateLiteral([z.int(), '/', z.int()]),
     z.templateLiteral([z.int(), '/', z.int(), ' (FULL)'])
