@@ -1,4 +1,4 @@
-V41782967147528
+V41787671009540
 AAS 10   Intro/African-American Studies	/courses/AASM.html#aas10
 .A00	Elizabeth Annette,Butler
 0034YORK 3    DI3000A12001250A010034YORK 3    DI3000A13001350A02
@@ -13015,7 +13015,7 @@ PATH296  Pathology Independent Research	/courses/PATH.html#path296
 PATH299  Path/Independent Study Project	/courses/PATH.html#path299
  001	Richard,Klemke
 0005TBA  TBA  INTBA  TBA TBA 001
- 002	Mojgan,Hosseini
+ 002	Mojgan,Hosseini-Hedrick
 0005TBA  TBA  INTBA  TBA TBA 002
 PATH401A Pathology Clerkship/Autopsy
  A00	Hana Marie,Russo
