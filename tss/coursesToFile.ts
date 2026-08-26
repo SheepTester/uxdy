@@ -180,6 +180,7 @@ export function * coursesToFile (
               ...meeting
             }))
           )
+          .filter(meeting => meeting.seats !== 'Not open for direct booking')
           .filter(meeting => !buildingsOnly || isInPerson(meeting))
           .filter(meeting => {
             if (

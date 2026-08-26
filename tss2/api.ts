@@ -87,6 +87,11 @@ const courseSchema = courseSchemaBase.extend({
   subject_code: z.string(),
   // '011'
   course_code: z.string(),
+  // '1 unit', '3 units', '0.5 units'
+  units_display: z.union([
+    z.literal('1 unit'),
+    z.templateLiteral([z.number(), ' units'])
+  ]),
   // '8509'
   module_id: z.templateLiteral([z.int()]),
   event_package_id: z.templateLiteral([z.int()]).optional(),
@@ -205,6 +210,11 @@ const sectionSchema = z.strictObject({
   // 'Accel. Intro to Programming'
   // 'Accel. Intro to Programming'
   moduleName: z.string(),
+  // '1 unit', '3 units'
+  units_display: z.union([
+    z.literal('1 unit'),
+    z.templateLiteral([z.number(), ' units'])
+  ]),
   course_title: z.string(),
   instruction_type_name: z.literal([
     'lecture',
@@ -297,8 +307,8 @@ const sectionSchema = z.strictObject({
   // presence comorbid with last refreshed at and seat/waitlist count refreshed at
   waitlistEnrolled: z.int().optional(),
   waitlist_enrolled: z.int().optional(),
-  eventStatusCode: z.literal(['AC']),
-  status: z.literal(['AC']),
+  eventStatusCode: z.literal(['AC', 'waitlist_only']),
+  status: z.literal(['AC', 'waitlist_only']),
   isCancelled: z.literal(false),
   is_cancelled: z.literal(false),
   // '2026-07-24T10:47:43+00:00'
@@ -912,13 +922,22 @@ export async function getSections (
                     if (section.section_id.startsWith('E ')) {
                       continue
                     }
-                    const [available, capacity] = section.seats
-                      .replace(' (FULL)', '')
-                      .split('/')
-                    // not true
-                    // assert.deepStrictEqual(capacity, enrolled)
-                    assert(+available <= +capacity)
-                    assert(+available >= 0)
+                    let available = 0
+                    let capacity = 0
+                    if (section.seats !== 'Not open for direct booking') {
+                      const [availableStr, capacityStr] = section.seats
+                        .replace(' (FULL)', '')
+                        .split('/')
+                      available = +availableStr
+                      capacity = +capacityStr
+                      // not true
+                      // assert.deepStrictEqual(capacity, enrolled)
+                      assert(
+                        available <= capacity,
+                        `available <= capacity; ${course.class_name} ${section.section_code}`
+                      )
+                      assert(available >= 0)
+                    }
                     assert.deepStrictEqual(section.meetings, [
                       {
                         label: 'Class',
@@ -939,8 +958,8 @@ export async function getSections (
                         section.instructors === 'TBA'
                           ? ''
                           : section.instructors,
-                      capacity: +capacity,
-                      enrolled: +capacity - +available,
+                      capacity: capacity,
+                      enrolled: capacity - available,
                       waitlist:
                         section.waitlist === '' ? null : +section.waitlist,
                       refreshDate:
