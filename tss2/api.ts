@@ -638,7 +638,21 @@ const scheduleSchema = z.strictObject({
           )
         })
       ),
-      unmapped_locations: z.tuple([]),
+      unmapped_locations: z
+        .strictObject({
+          // 'TASB'
+          building_code: z.string(),
+          // 'TASB W1131'
+          room_code: z.templateLiteral([z.string(), ' ', z.string()]),
+          // 'Triton Administrative Services Building'
+          display_name: z.string(),
+          // ['ph-491']
+          course_slugs: z
+            .templateLiteral([z.string(), '-', z.string()])
+            .array(),
+          day_codes: z.literal(['M', 'T', 'W', 'R', 'F', 'S', 'U']).array()
+        })
+        .array(),
       walking_speed_mps: z.literal(1.4),
       // '2026-07-24T08:15:26+00:00'
       routes_generated_at: z.literal('2026-07-24T08:15:26+00:00')
