@@ -837,10 +837,15 @@ export async function getSections (
                       meeting.buildingCode
                     )
                     assert.strictEqual(meeting.room_code, meeting.roomCode)
+                    // room code 'SWC25 25-105' (Room 25-105 Department Space)
+                    // has building code 'SWC-25' ("Southwestern College -
+                    // Building 25"); PH 157 001-000-LE E 00001042. note that
+                    // this doesn't happen to MYR-A
                     assert(
                       meeting.room_code?.startsWith(
-                        `${meeting.building_code} `
-                      ) ?? true
+                        `${meeting.building_code?.replace(/-(\d)/, '$1')} `
+                      ) ?? true,
+                      `room: ${meeting.room_code}; building: ${meeting.building_code}`
                     )
                     assert.strictEqual(
                       meeting.building_name,
