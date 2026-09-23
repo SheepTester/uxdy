@@ -1,4 +1,4 @@
-V41787026667872
+V41790190411064
 ANAR100  Spec Topics/Anth Archaeology	/courses/ANTH.html#anar100
 'A00	Margaret Ann,Morris
 0000TBA  1234 LETBA  08000920A00
@@ -1507,7 +1507,7 @@ SE  101A Mechanics I: Statics	/courses/SE.html#se101a
 RCLAS13   LER55  17001950A00
 20260716CENTRMI214  1400155020260731CENTRFI214  19002159
 SE  101C Mechanics III: Vibrations	/courses/SE.html#se101c
-:A00	Enrique Ger,Simbort Zeballos
+:A00	Enrique Gerardo,Simbort Zeballos
 0027WLH  2    DI2208 08000950A01
 WLH  13   LE2208 08001050A00
 20260731WLH  FI2208 08001059
@@ -1743,7 +1743,7 @@ VIS 149  Contemporary Computer Topics	/courses/VIS.html#vis149
 0035SME  13   SE149  14001650A00
 20260731SME  FI149  15001759
 VIS 194S Fantasy In Film	/courses/VIS.html#vis194s
-'A00	erika,Roos
+'A00	Erika Alicia,Roos
 0040SME  24   LE149  14001650A00
 20260801SME  FI149  15001759
 WCWP10A  The Writing Course A	/courses/WARR.html#wcwp10a

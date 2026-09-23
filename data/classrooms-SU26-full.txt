@@ -1,4 +1,4 @@
-V41787026661480
+V41790190405020
 ANES296  Independent Study
  001	Brian M.,Ilfeld
 0005TBA  TBA  INTBA  TBA TBA 001
@@ -516,7 +516,7 @@ MED 496  Clinical Independent Study
 0005TBA  TBA  INTBA  TBA TBA 001
  002	Harpreet,Bhatia
 0005TBA  TBA  INTBA  TBA TBA 002
- 003
+ 003	Hatim,Husain
 0005TBA  TBA  INTBA  TBA TBA 003
 NEU 296  Neurosciences Resrch Rotation	/courses/NEU.html#neu296
  001	Sean Jeffrey,Evans
@@ -672,7 +672,7 @@ PAE 212  The Physical Exam	/courses/PAS.html#pae212
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 213  Human Anatomy	/courses/PAS.html#pae213
-.A00	Brittany,Pierce
+.A00	Elias,Villarreal Jr.
 0030TBA  TBA  LATBA  TBA TBA A01
 TBA  TBA  LETBA  TBA TBA A00
 PAE 214  Human Phys & Pathophys I	/courses/PAS.html#pae214

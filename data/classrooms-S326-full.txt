@@ -1,4 +1,4 @@
-V41787026688435
+V41790190427649
 AAS 199  Independent Study	/courses/AASM.html#aas199
  0012026062920260822	Elizabeth Annette,Butler
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -471,6 +471,9 @@ EDS 376  Language & Learning Instructn	/courses/EDS.html#eds376
 'A002026071320260808	Rachel Diana,Millstone
 0040RWAC 24   SE0622 09001320A00
 20260808RWAC FI0622 08001059
+ETHN298  Directed Reading	/courses/ETHN.html#ethn298
+ 0012026062920260905	Holly,Okonkwo
+9999TBA  TBA  INTBA  TBA TBA 001
 LTEN199  Special Studies	/courses/LIT.html#lten199
  0012026062920260905	Erin M.,Suzuki
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -486,6 +489,9 @@ MAE 197  Engineering Internship	/courses/MAE.html#mae197
 9999TBA  TBA  ITTBA  TBA TBA 003
  0042026082420260919	Maziar,Ghazinejad
 9999TBA  TBA  ITTBA  TBA TBA 004
+MAE 199  Independent Study/Undergrads	/courses/MAE.html#mae199
+ 0012026062920260822	Farhat N.,Beg
+9999TBA  TBA  INTBA  TBA TBA 001
 MAE 299  Graduate Research	/courses/MAE.html#mae299
  0012026062920260905	Miroslav,Krstic
 9999TBA  TBA  INTBA  TBA TBA 001
@@ -655,7 +661,7 @@ MGTA464  SQL and ETL	/courses/MGT.html#mgta464
  B002026081020260829	Terrence,August
 0000TBA  TBA  LETBA  TBA TBA B00
 MGTF490  Capstone: Applied Finance Proj	/courses/MGT.html#mgtf490
- B002026062920260905	Susan B,Padernacht
+ B002026062920260905	Michael T.,Melvin	Christopher C,Girand	Susan B,Padernacht
 0098WFH  3    LE4N12809001200B00
 SE  197  Engineering Internship	/courses/SE.html#se197
  0012026062920260905	Michael,Todd
