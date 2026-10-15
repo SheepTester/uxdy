@@ -452,6 +452,7 @@ const scheduleSchema = z.strictObject({
   valid: z.boolean(),
   section_ids: z.array(sectionIdSchema),
   schedule_ref: z.templateLiteral(['CS2', z.string()]),
+  custom_events: z.tuple([]),
   // '2 sections • CSE-210, CSE-227 • No conflicts'
   summary: z.string(),
   summary_parts: z.strictObject({
