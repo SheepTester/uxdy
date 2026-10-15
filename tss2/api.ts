@@ -452,7 +452,7 @@ const scheduleSchema = z.strictObject({
   valid: z.boolean(),
   section_ids: z.array(sectionIdSchema),
   schedule_ref: z.templateLiteral(['CS2', z.string()]),
-  custom_events: z.tuple([]),
+  // custom_events: z.tuple([]),
   // '2 sections • CSE-210, CSE-227 • No conflicts'
   summary: z.string(),
   summary_parts: z.strictObject({
@@ -733,6 +733,7 @@ export async function getSections (
   { useCache = false }: GetSectionsOptions = {}
 ): Promise<SimplifiedSection[]> {
   const sectionMap = new Map<SectionId, SimplifiedSection>()
+  let failed = false
   await Promise.all(
     (['event', 'eventless'] as const).map(async eventType => {
       for (let group = 0; ; group++) {
@@ -1008,16 +1009,24 @@ export async function getSections (
               }
               return true
             })
-        ).then(successes =>
-          successes.reduce((cum, curr) => cum + (curr ? 1 : 0), 0)
         )
-        if (successes === 0) {
+        if (successes.includes(false)) {
+          failed = true
+        }
+        const successCount = successes.reduce(
+          (cum, curr) => cum + (curr ? 1 : 0),
+          0
+        )
+        if (successCount === 0) {
           break
         }
       }
     })
   )
   console.error()
+  if (failed) {
+    throw new Error('One of the sections failed')
+  }
   return sectionMap
     .values()
     .toArray()
