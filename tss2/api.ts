@@ -1001,6 +1001,7 @@ export async function getSections (
                   }
                 }
               } catch (error) {
+                failed = true
                 if (lastSection) {
                   console.error(`section: ${lastSection}`)
                 }
@@ -1010,9 +1011,6 @@ export async function getSections (
               return true
             })
         )
-        if (successes.includes(false)) {
-          failed = true
-        }
         const successCount = successes.reduce(
           (cum, curr) => cum + (curr ? 1 : 0),
           0
